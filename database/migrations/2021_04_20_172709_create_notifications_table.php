@@ -18,9 +18,10 @@ class CreateNotificationsTable extends Migration
             $table->string('titulo');
             $table->string('descripcion');
             $table->boolean('visto')->nullable();
-            $table->timestamps();
+            $table->enum('rol',['docente','alumno']);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

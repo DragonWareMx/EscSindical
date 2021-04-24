@@ -22,11 +22,21 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->text('foto')->nullable();
+            $table->date('fecha_nac');
+            $table->string('estado');
+            $table->string('ciudad');
+            $table->string('colonia');
+            $table->string('calle');
+            $table->string('num_ext');
+            $table->string('num_int')->nullable();
+            $table->integer('cp');
+            $table->text('tarjeton_pago');
+            $table->string('matricula');
             $table->rememberToken();
-            $table->timestamps();
-            $table->unsignedBigInteger('role_id');
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+            $table->unsignedBigInteger('categorie_id');
+            $table->foreign('categorie_id')->references('id')->on('categories');
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 
