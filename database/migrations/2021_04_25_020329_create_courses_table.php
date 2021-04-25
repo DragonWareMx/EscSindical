@@ -20,7 +20,7 @@ class CreateCoursesTable extends Migration
             $table->date('fecha_limite');
             $table->unsignedInteger('max');
             $table->unsignedInteger('valor_curricular');
-            $table->enum('acceso', ['','']);
+            $table->enum('acceso', ['enum1','enum2']);
             $table->tinyInteger('status');
             $table->string('tipo',45);
             $table->text('descripcion');

@@ -17,7 +17,7 @@ class CreateEntriesTable extends Migration
             $table->id();
             $table->timestamps();
             $table->string('titulo',45);
-            $table->enum('tipo', ['','']);
+            $table->enum('tipo', ['enum1','enum2']);
             $table->string('contenido',45);
             $table->unsignedInteger('max_calif');
             $table->unsignedBigInteger('module_id');

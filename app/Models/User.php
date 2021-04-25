@@ -40,4 +40,58 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function course(){
+        return $this->belongsToMany('App\Models\Course');
+    }
+
+    public function roles(){
+        return $this->belongsToMany('App\Models\Role');
+    }
+
+    public function logs(){
+        return $this->hasMany('App\Models\Log');
+    }
+
+    public function notifications(){
+        return $this->hasMany('App\Models\Notification');
+    }
+
+    public function comments(){
+        return $this->hasMany('App\Models\Comment');
+    }
+
+    public function entries(){
+        return $this->belongsToMany('App\Models\Entrie')->withPivot("calificacion", "archivo","fecha","editado","comentario","fecha_calif","comentario_retroalimentacion");
+    }
+
+    public function modules(){
+        return $this->belongsToMany('App\Models\Module')->withPivot("calificacion");
+    }
+
+    public function categorie(){
+        return $this->belongsTo('App\Models\Categorie');
+    }
+
+    public function grades(){
+        return $this->hasMany('App\Models\Grade');
+    }
+
+    public function courses(){
+        return $this->belongsToMany('App\Models\Course');
+    }
+
+    public function drop_requests(){
+        return $this->belongsToMany('App\Models\Course','drop_requests');
+    }
+
+    public function delete_requests(){
+        return $this->belongsToMany('App\Models\Course','delete_requests')->withPivot("comentario","status");
+    }
+
+    public function requests(){
+        return $this->hasMany('App\Models\Request');
+    }
+
+    
 }
