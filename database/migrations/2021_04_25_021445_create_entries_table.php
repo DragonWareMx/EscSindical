@@ -27,6 +27,8 @@ class CreateEntriesTable extends Migration
             $table->tinyInteger('editable');
 
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
+
+            $table->softDeletes();
         });
     }
 

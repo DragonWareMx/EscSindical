@@ -22,6 +22,8 @@ class CreateCourseImageTable extends Migration
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->foreign('image_id')->references('id')->on('images')->onDelete('cascade');
 
+            $table->softDeletes();
+
         });
     }
 

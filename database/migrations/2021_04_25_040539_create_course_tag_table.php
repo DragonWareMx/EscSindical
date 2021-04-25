@@ -21,6 +21,8 @@ class CreateCourseTagTable extends Migration
 
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+
+            $table->softDeletes();
         });
     }
 

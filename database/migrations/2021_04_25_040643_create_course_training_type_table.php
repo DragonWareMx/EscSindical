@@ -22,6 +22,8 @@ class CreateCourseTrainingTypeTable extends Migration
 
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->foreign('training_type_id')->references('id')->on('training_types')->onDelete('cascade');
+
+            $table->softDeletes();
         });
     }
 

@@ -28,6 +28,8 @@ class CreateCoursesTable extends Migration
             $table->unsignedBigInteger('teacher_id');
             
             $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->softDeletes();
         });
     }
 
