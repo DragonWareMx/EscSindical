@@ -93,5 +93,12 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Request');
     }
 
+    public function own_reports(){
+        return $this->hasMany('App\Models\Report');
+    }
+
+    public function  other_reports(){
+        return $this->hasMany('App\Models\Report');
+    }
     
 }
