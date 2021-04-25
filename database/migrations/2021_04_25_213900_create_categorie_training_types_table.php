@@ -20,6 +20,7 @@ class CreateCategorieTrainingTypesTable extends Migration
             $table->unsignedBigInteger('training_type');
             $table->foreign('training_type')->references('id')->on('training_types');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

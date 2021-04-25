@@ -24,6 +24,7 @@ class CreateReportsTable extends Migration
             $table->tinyInteger('status')->default(0);
             $table->string('accion')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
