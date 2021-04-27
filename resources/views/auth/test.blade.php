@@ -74,8 +74,8 @@
             <div class="row" style="width: 100%">
                 <div class="col s12 m12 l10" style="display: block">
                     <ul class="tabs">
-                        <li class="tab col l4 m6"><a href="#test1">Ingresar</a></li>
-                        <li class="tab col l4 m6"><a class="active" href="#test2">Registrarse</a></li>
+                        <li class="tab col xl3 l4 m6"><a href="#test1">Ingresar</a></li>
+                        <li class="tab col xl3 l4 m6"><a class="active" href="#test2">Registrarse</a></li>
                     </ul>
                 </div>
             </div>
