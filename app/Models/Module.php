@@ -13,11 +13,11 @@ class Module extends Model
         return $this->belongsTo('App\Models\Course');
     }
 
-    public function user(){
+    public function users(){
         return $this->belongsToMany('App\Models\User');
     }
 
-    public function entry(){
+    public function entries(){
         return $this->hasMany('App\Models\Entry');
     }
 }
