@@ -45,7 +45,7 @@ class Course extends Model
     }
 
     public function delete_request(){
-        return $this->belongsToMany('App\Models\User', 'delete_requests');
+        return $this->belongsToMany('App\Models\User', 'delete_requests')->withPivot("comentario","status");
     }
 
     public function drop_request(){
