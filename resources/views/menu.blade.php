@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{{ asset('materialize/css/materialize.min.css') }}">
     <!-- Compiled and minified JavaScript -->
     <script src="{{ asset('materialize/js/materialize.min.js') }}"></script>
+    <!-- icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>@yield('title')</title>
 </head>
 <body>
@@ -94,10 +96,14 @@
     <!-- menu lateral -->
     <div>
         <ul id="slide-out" class="sidenav sidenav-fixed">
-        <li><a href="#!">First Sidebar Link</a></li>
-        <li><a href="#!">Second Sidebar Link</a></li>
+          <li><a href="#!"><i class="material-icons">home</i>Inicio</a></li>
+          <li><a href="#!"><i class="material-icons">users</i>Usuarios</a></li>
+          <li><a href="#!"><i class="material-icons">home</i>Inicio</a></li>
+          <li><a href="#!"><i class="material-icons">home</i>Inicio</a></li>
+          <li><a href="#!">First Sidebar Link</a></li>
+          <li><a href="#!">Second Sidebar Link</a></li>
         </ul>
-        <a href="#" data-target="slide-out" class="sidenav-trigger">MENU</a>
+        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
 
 
