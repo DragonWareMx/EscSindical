@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ComponentePrueba from './ComponentePrueba'
+
 
 function Example() {
     return (
@@ -20,5 +22,14 @@ function Example() {
 export default Example;
 
 if (document.getElementById('example')) {
-    ReactDOM.render(<Example />, document.getElementById('example'));
+    ReactDOM.render( 
+        //<Example/>,
+        //ReactDOM.render (componente, contenedor);
+         <ComponentePrueba
+             title="soy un título"
+             description="soy una descripción"
+         />,
+        document.getElementById('example')
+        
+    );
 }
