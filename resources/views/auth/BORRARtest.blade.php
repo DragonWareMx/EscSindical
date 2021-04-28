@@ -45,15 +45,13 @@
                     <div class="row">
                         <div class="input-field col s12" style="margin-top: 6.5vh; padding:0">
                             <i class="material-icons prefix">face</i>
-                            <input id="matricula" type="email" class="validate" id="email" name="email"
-                                value="{{ old('email') }}" required autocomplete="email">
+                            <input id="matricula" type="email" class="validate @error('email') invalid @enderror"
+                                id="email" name="email" value="{{ old('email') }}" required autocomplete="email">
                             <label for="matricula">Correo electrónico</label>
+                            @error('email')
+                            <span class="helper-text" data-error="{{$message}}">{{$message}}</span>
+                            @enderror
                         </div>
-                        @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
                         <div class="input-field col s12" style="margin-top: 6.5vh;padding:0">
                             <i class="material-icons prefix">lock</i>
                             <input id="password" type="password" class="validate" name="password" required
