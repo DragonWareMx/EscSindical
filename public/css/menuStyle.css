@@ -112,3 +112,25 @@ body
     
     z-index: 15;
 }
+
+.icono-menu
+{
+    color: rgba(38, 50, 56, 0.8) !important;
+}
+
+.current-menu
+{
+    color: #134E39 !important;
+}
+
+.division-menu
+{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+    /* identical to box height */
+
+    color: #C1C1C1;
+}
