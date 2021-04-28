@@ -9,7 +9,7 @@ class Image extends Model
 {
     use HasFactory;
 
-    public function course(){
+    public function courses(){
         return $this->belongsToMany('App\Models\Course');
     }
 }

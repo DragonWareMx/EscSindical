@@ -9,11 +9,11 @@ class Training_type extends Model
 {
     use HasFactory;
 
-    public function course(){
+    public function courses(){
         return $this->belongsToMany('App\Models\Course');
     }
 
-    public function category(){
+    public function categories(){
         return $this->belongsToMany('App\Models\Category');
     }
 }

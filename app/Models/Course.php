@@ -9,30 +9,30 @@ class Course extends Model
 {
     use HasFactory;
 
-    public function image(){
+    public function images(){
         return $this->belongsToMany('App\Models\Image');
     }
 
     
-    public function tag(){
+    public function tags(){
         return $this->belongsToMany('App\Models\Tag');
     }
 
     
-    public function module(){
+    public function modules(){
         return $this->hasMany('App\Models\Module');
     }
 
     
-    public function training_type(){
+    public function training_types(){
         return $this->belongsToMany('App\Models\Training_type');
     }
 
-    public function grade(){
+    public function grades(){
         return $this->hasMany('App\Models\Grade');
     }
 
-    public function user(){
+    public function users(){
         return $this->belongsToMany('App\Models\User');
     }
 
@@ -40,16 +40,16 @@ class Course extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function request(){
+    public function requests(){
         return $this->belongsToMany('App\Models\User');
     }
 
     public function delete_request(){
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsToMany('App\Models\User', 'delete_requests')->withPivot("comentario","status");
     }
 
     public function drop_request(){
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsToMany('App\Models\User','drop_requests');
     }
 
 }

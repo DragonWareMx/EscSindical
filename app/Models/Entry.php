@@ -13,11 +13,11 @@ class Entry extends Model
         return $this->belongsTo('App\Models\Module');
     }
 
-    public function comment(){
+    public function comments(){
         return $this->hasMany('App\Models\Comment');
     }
 
-    public function user(){
+    public function users(){
         return $this->belongsToMany('App\Models\User');
     }
 }
