@@ -40,22 +40,35 @@
             <div class="form-login col s12">
                 <h1>INICIAR SESIÓN</h1>
                 <h2>Bienvenido de nuevo</h2>
-                <form class="col s12" action="" method="">
+                <form class="col s12" method="POST" action="{{ route('login') }}">
+                    @csrf
                     <div class="row">
                         <div class="input-field col s12" style="margin-top: 6.5vh; padding:0">
                             <i class="material-icons prefix">face</i>
-                            <input id="matricula" type="text" class="validate" required>
-                            <label for="matricula">Matrícula</label>
+                            <input id="matricula" type="email" class="validate" id="email" name="email"
+                                value="{{ old('email') }}" required autocomplete="email">
+                            <label for="matricula">Correo electrónico</label>
                         </div>
+                        @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                         <div class="input-field col s12" style="margin-top: 6.5vh;padding:0">
                             <i class="material-icons prefix">lock</i>
-                            <input id="password" type="password" class="validate" required>
+                            <input id="password" type="password" class="validate" name="password" required
+                                autocomplete="current-password">
                             <label for="password">Contraseña</label>
                         </div>
+                        @error('password')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
-                    <a class="link-forget" href="">¿Olvidaste tu contraseña?</a>
+                    <a class="link-forget" href="{{ route('password.request') }}">¿Olvidaste tu contraseña?</a>
                     <div class="col s12 right-align">
-                        <button class="btn waves-effect waves-light btn-login" type="submit" name="action"
+                        <button class="btn waves-effect waves-teal btn-login" type="submit" name="action"
                             style="height: 54px">Ingresar
                             <i class="material-icons right">login</i>
                         </button>
