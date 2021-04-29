@@ -25,18 +25,25 @@
           {{-- Parte izquierda de la barra superior --}}
           <form action="#" method="post" class="main-bar-search">
             @csrf
-            <i class="small material-icons" style="color: #FFFFFF;">search</i>
-            <input type="text" class="main-bar-input" placeholder="Ingresa tu búsqueda">
+            <div class="row">
+              <div class="col s1" style="padding:10px;">
+                <i class="small material-icons" style="color: #FFFFFF;">search</i>
+              </div>
+              <div class="col s11">
+                <input type="text" class="" placeholder="Ingresa tu búsqueda" style="color:white;">
+              </div>
+            </div>
+            
           </form>
 
           {{-- Parte derecha de la barra superior--}}
           <div class="main-bar-right">
             <div class="main-bar-right-leftSide">
-              <i class="small material-icons" style="color:white;">backpack</i>
+              <img src="/img/icons/mochila blanca.png" alt="Mochila" class="icono-mochila">
               <i class="small material-icons" style="color: #FFFFFF;">notifications_none</i>
             </div>
             <div class="main-bar-right-rightSide">
-              <div class="main-username">Monse Jocabed Marín Piñón</div>
+              <div> <span class="main-username">Monse Jocabed Marín Piñón</span> </div>
               <img class="main-userimage" src="{{ asset('/imgPrueba/profile.jpg') }}" 
                   alt="">
             </div>
@@ -51,7 +58,7 @@
         
         <!-- contenido -->
         <div class="content">
-          <img src="/icons/add_black_24dp.svg" alt="">
+          
             <div class="row">
                 <div class="col s12 m6">
                   <div class="card blue-grey darken-1">
@@ -118,15 +125,17 @@
 
     <!-- menu lateral -->
     <div>
-        <ul id="slide-out" class="sidenav sidenav-fixed" style="color: rgba(38, 50, 56, 0.8);">
+        <ul id="slide-out" class="sidenav sidenav-fixed scroll-menu" style="color: rgba(38, 50, 56, 0.8); ">
           <li>
-            <div class="user-view">
-              <div class="background">
-                <img src="imagenes/Classroom/cuate.svg">
+            <div>
+              <div class="center-align" style="z-index: 100; height:150px">
+                <img src="img/imagenes/Classroom-cuate.svg" style="position: relative;height:150px">
               </div>
-              <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
-              <a href="#name"><span class="white-text name">John Doe</span></a>
-              <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+              <div class="menu-profile-info">
+                <img src="{{ asset('/img/imagenes/1703234.png') }}" class="main-userimage">
+                
+                
+              </div>
             </div>
           </li>
           <li><a href="#!" class="current-menu"><i class="material-icons current-menu">home</i>Inicio</a></li>
@@ -139,8 +148,20 @@
           <li><a href="#!" class="icono-menu"><i class="material-icons icono-menu">history</i>Bitácora</a></li>
           <li><a href="#!" class="icono-menu"><i class="material-icons icono-menu">settings</i>Configuración</a></li>
           <li><a href="#!" class="icono-menu"><i class="material-icons icono-menu">logout</i>Cerrar sesión</a></li>
+          <div class="center-align" style="margin-top: 25px">
+            <a class="btn-floating btn-large waves-effect waves-light" style="background-color: #108058"><i class="material-icons">arrow_back</i></a>
+          </div>
+          <div class="row" style="margin-top: 50px">
+            <div class="col s5 center-align">
+              <img src="/img/imagenes/LogoNacional2.png" alt="logo">
+            </div>
+            <div class="col s7 valign-wrapper" style="height: 64px;">
+              Escuela Sindical
+            </div>
+            
+            
+          </div>
           
-          <li class="green "><a class="btn-floating btn-large waves-effect waves-light purple center-align"><i class="material-icons">arrow_back</i></a></li>
           
           
             
