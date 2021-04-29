@@ -132,6 +132,7 @@
                 <img src="img/imagenes/Classroom-cuate.svg" style="position: relative;height:150px">
               </div>
               <div class="menu-profile-info">
+                
                 <img src="{{ asset('/img/imagenes/1703234.png') }}" class="main-userimage">
                 
                 
