@@ -23,3 +23,12 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/menu', function () {
     return view('menu');
 });
+
+
+Route::get('/inicio', function () {
+    return view('index');
+});
+
+Route::get('/ejemplo',function () {
+    return view('index');
+});
