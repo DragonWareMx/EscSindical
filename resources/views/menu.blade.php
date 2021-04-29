@@ -20,7 +20,28 @@
     <!-- derecha -->
     <div>
         <!-- bara de busqueda superior -->
-        <div class="main-bar"></div>
+        <div class="main-bar">
+
+          {{-- Parte izquierda de la barra superior --}}
+          <form action="#" method="post" class="main-bar-search">
+            @csrf
+            <i class="small material-icons" style="color: #FFFFFF;">search</i>
+            <input type="text" class="main-bar-input" placeholder="Ingresa tu búsqueda">
+          </form>
+
+          {{-- Parte derecha de la barra superior--}}
+          <div class="main-bar-right">
+            <div class="main-bar-right-leftSide">
+              <i class="small material-icons" style="color:white;">backpack</i>
+              <i class="small material-icons" style="color: #FFFFFF;">notifications_none</i>
+            </div>
+            <div class="main-bar-right-rightSide">
+              <div class="main-username">Monse Jocabed Marín Piñón</div>
+              <img class="main-userimage" src="{{ asset('/imgPrueba/profile.jpg') }}" 
+                  alt="">
+            </div>
+          </div>
+        </div>
 
         <!-- contenido -->
         <div class="main-bar-background"></div>
