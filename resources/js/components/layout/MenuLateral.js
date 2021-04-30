@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import { InertiaLink } from "@inertiajs/inertia-react"
 
 export default function MenuLateral(){
     return(
@@ -18,10 +18,14 @@ export default function MenuLateral(){
                 </div>
                 </li>
                 <li>
-                    <Link class="nav-link" to="/inicio" className="current-menu"><i className="material-icons current-menu">home</i>Inicio  </Link>
+                    <InertiaLink className="current-menu" href={route('ejemplo1').url()}>
+                        <i className="material-icons current-menu">home</i>Ejemplo 1
+                    </InertiaLink>
                 </li>
                 <li>
-                    <Link class="nav-link" to="/ejemplo">Ejemplo  </Link>
+                    <InertiaLink className="current-menu" href={route('ejemplo2').url()}>
+                        <i className="material-icons current-menu">home</i>Ejemplo 2
+                    </InertiaLink>
                 </li>
                 <li><a href="#!" className="current-menu"><i className="material-icons current-menu">home</i>Inicio</a></li>
                 <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">people</i>Usuarios</a></li>

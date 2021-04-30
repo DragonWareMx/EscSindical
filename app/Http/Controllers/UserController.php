@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +23,7 @@ class UserController extends Controller
     {
         $users = User::all();
         //return response() -> json(['status' => 200, 'users' => $users]);
-        return $users;
+        return Inertia::render('Ejemplo');
     }
 
     /**

@@ -25,6 +25,9 @@
         "sass-loader": "^8.0.0"
     },
     "dependencies": {
-        "react-router-dom": "^5.2.0"
+        "@inertiajs/inertia": "^0.8.7",
+        "@inertiajs/inertia-react": "^0.5.12",
+        "react-router-dom": "^5.2.0",
+        "ziggy-js": "^0.9.4"
     }
 }
