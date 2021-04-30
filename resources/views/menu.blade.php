@@ -28,18 +28,30 @@
         <div class="main-bar">
 
           {{-- Parte izquierda de la barra superior --}}
-          <form action="#" method="post" class="main-bar-search">
+
+          <nav class="main-bar-search">
+            <div class="nav-wrapper">
+              <form>
+                <div class="input-field">
+                  <input id="search" type="search" required>
+                  <label class="label-icon margin-search-icons" for="search"><i class="material-icons">search</i></label>
+                  <i class="material-icons">close</i>
+                </div>
+              </form>
+            </div>
+          </nav>
+         {{-- <form action="#" method="post" class="main-bar-search">
             @csrf
             <div class="row">
               <div class="col s1" style="padding:10px;">
                 <i class="small material-icons" style="color: #FFFFFF;">search</i>
               </div>
               <div class="col s11">
-                <input type="text" class="" placeholder="Ingresa tu búsqueda" style="color:white;">
+                <input type="text" class="main-bar-input" placeholder="Ingresa tu búsqueda" style="color:white;">
               </div>
             </div>
             
-          </form>
+          </form> --}}
 
           {{-- Parte derecha de la barra superior--}}
           <div class="main-bar-right">
