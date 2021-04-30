@@ -23,3 +23,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/menu', function () {
     return view('menu');
 });
+
+Route::get('/register', function () {
+    return view('register_user');
+});
