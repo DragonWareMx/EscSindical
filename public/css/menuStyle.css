@@ -51,7 +51,17 @@ body
     background-color: #F6F6F6;
     font-family: Montserrat !important;
 }
+.menu-cerrado{
+    margin-left:-300px !important;
+    transition: ease-in-out;
+    transition-duration:500ms ;
+}
 
+.menu-abierto{
+    margin-left:0px !important;
+    transition: ease-in-out;
+    transition-duration:500ms ;
+}
 .main-bar
 {
     position: sticky;

@@ -137,11 +137,11 @@
                 </div>
               </div>
     
-        </div>-->
+        </div>
     </div>
 
-    <!-- menu lateral extendido 
-    <div>
+    <!-- menu lateral extendido -->
+    <div id="menu-grande" class="">
         <ul id="slide-out" class="sidenav sidenav-fixed scroll-menu" style="color: rgba(38, 50, 56, 0.8); ">
           <li>
             <div>
@@ -165,7 +165,7 @@
           <li><a href="#!" class="icono-menu"><i class="material-icons icono-menu">settings</i>Configuración</a></li>
           <li><a href="#!" class="icono-menu"><i class="material-icons icono-menu">logout</i>Cerrar sesión</a></li>
           <div class="center-align" style="margin-top: 25px">
-            <a class="btn-floating btn-large waves-effect waves-light" style="background-color: #108058"><i class="material-icons">arrow_back</i></a>
+            <a  onclick="closeNav()" href="#!" class="btn-floating btn-large waves-effect waves-light sidenav-close" style="background-color: #108058"><i class="material-icons">arrow_back</i></a>
           </div>
           <div class="row" style="margin-top: 50px">
             <div class="col s5 center-align">
@@ -174,19 +174,9 @@
             <div class="col s7 valign-wrapper" style="height: 64px;">
               Escuela Sindical
             </div>
-            
-            
           </div>
-          
-          
-          
-            
-          
-          
         </ul>
-        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        
-    </div>-->
+    </div>
 
     <!-- menu lateral comprimido -->
     <div class="menu-compacto center-align">
@@ -219,17 +209,9 @@
       </div>
       
       <div class="col s12 center-align" style="margin-top: 10px;" >
-        <a class="btn-floating btn-medium waves-effect waves-light" style="background-color: #108058"><i class="material-icons">arrow_forward</i></a>
+        <a onclick="openNav()" data-target="slide-out"  class="btn-floating btn-medium waves-effect waves-light sidenav-trigger" style="background-color: #108058"><i class="material-icons">arrow_forward</i></a>
       </div>
-      
-    </div>
-
-
-
-    
-
-    
-    
+    </div>   
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -237,5 +219,26 @@
         var options;
         var instances = M.Sidenav.init(elems, options);
     });
+
+  function closeNav() {
+    var menu = document.getElementById("slide-out");
+    menu.classList.add("menu-cerrado");
+    menu.classList.remove("menu-abierto");
+    document.body.style.transition = "ease-in-out";
+    document.body.style.transitionDuration = "500ms";
+    if(screen.width>992)
+      document.body.style.paddingLeft = "60px";
+  }
+
+  function openNav() {
+    var menu = document.getElementById("slide-out");
+    menu.classList.remove("menu-cerrado");
+    menu.classList.add("menu-abierto");
+    document.body.style.transition = "ease-in-out";
+    document.body.style.transitionDuration = "500ms";
+    if(screen.width>992)
+      document.body.style.paddingLeft = "300px";
+  }
+
 </script>
 </html>
