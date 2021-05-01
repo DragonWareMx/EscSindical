@@ -35,7 +35,7 @@
                 <div class="input-field">
                   <input id="search" type="search" required>
                   <label class="label-icon margin-search-icons" for="search"><i class="material-icons">search</i></label>
-                  <i class="material-icons">close</i>
+                  <i class="material-icons margin-search-icons">close</i>
                 </div>
               </form>
             </div>
@@ -140,7 +140,7 @@
         </div>-->
     </div>
 
-    <!-- menu lateral -->
+    <!-- menu lateral extendido 
     <div>
         <ul id="slide-out" class="sidenav sidenav-fixed scroll-menu" style="color: rgba(38, 50, 56, 0.8); ">
           <li>
@@ -150,7 +150,7 @@
               </div>
               <div class="menu-profile-info">
                 <img style="margin-left:10px;" src="{{ asset('/img/imagenes/1703234.png') }}" class="main-userimage"> 
-                <div class="profile-info-name">Monse Jocabed Marín Píñón</div>
+                <div class="profile-info-name truncate">Monse Jocabed Marín Píñón</div>
               </div>
             </div>
           </li>
@@ -186,6 +186,42 @@
         </ul>
         <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         
+    </div>-->
+
+    <!-- menu lateral comprimido -->
+    <div class="menu-compacto center-align">
+      <div class="col s12">
+        <img src="/img/imagenes/LogoNacional2.png" alt="logo" class="imagen-menu-compacto">
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto current-menu">home</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">people</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">school</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">timeline</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">assignment_late</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">history</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">settings</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">logout</i>
+      </div>
+      
+      <div class="col s12 center-align" style="margin-top: 10px;" >
+        <a class="btn-floating btn-medium waves-effect waves-light" style="background-color: #108058"><i class="material-icons">arrow_forward</i></a>
+      </div>
+      
     </div>
 
 

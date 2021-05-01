@@ -42,14 +42,14 @@ header, body, footer
 }
 @media only screen and (max-width : 992px) {
     header, body, footer {
-        padding-left: 0px;
+        padding-left: 60px;
     }
 }
 
 body
 {
     background-color: #F6F6F6;
-    font-family: Montserrat;
+    font-family: Montserrat !important;
 }
 
 .main-bar
@@ -130,7 +130,7 @@ body
 
 .main-username{
     color: #FFFFFF;
-    font-family: "Montserrat" !important;
+    font-family: Montserrat !important;
     font-size: 15px;
     width: 80%;
 }
@@ -166,7 +166,7 @@ body
 
 .division-menu
 {
-    font-family: "Montserrat";
+    font-family: Montserrat;
     font-style: normal;
     font-weight: normal;
     font-size: 13px;
@@ -199,12 +199,14 @@ body
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-right: 10px;
 }
 
 .profile-info-name{
     color: white;
     font-size: 16px;
     text-overflow: ellipsis;
+    margin-left: 10px;
 }
 
 @media only screen and (max-width : 1160px) {
@@ -254,4 +256,32 @@ body
     .margin-search-icons{
         margin-top:-3px;
     }
+}
+
+.menu-compacto
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 100%;
+    box-shadow: 0px 4px 4px rgba(207, 207, 207, 0.25);
+    overflow: auto;
+}
+
+.imagen-menu-compacto
+{
+    width: 45px;
+    height: 45px;
+    left: 7px;
+    top: 25px;
+    margin-top: 10px;
+}
+
+.icono-menu-compacto
+{
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+    font-size: 30px !important;
 }
