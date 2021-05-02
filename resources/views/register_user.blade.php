@@ -27,7 +27,7 @@
 
 <body  style="background-color:#F4F4F4">
     <div class="row">
-        <div class="hide-on-small-only col s12 m3 l4 div-info-esc" style="background-color:#F4F4F4; padding-top:3% !important; min-height:100% !important">
+        <div class="hide-on-small-only col s12 m3 l4 div-info-esc" style="position: sticky; top:0px;background-color:#F4F4F4; padding-top:3% !important; min-height:100% !important">
             <div class="row" style="width: 100%">
                 <div class="col s12 m12 l12" style="display: block">
                     <ul class="tabs">
@@ -61,10 +61,13 @@
         </div>
 
         {{---------------- DIV BLANCO DE FORM DE REGISTRO -------------}}
-        <div class="col s12 m9 l8 div-blanco-form" style="padding:4%; padding-bottom:0%; background-color:white !important">
-
+        <div class="col s12 m9 l8 div-blanco-form" style="padding:4%; padding-bottom:0%; background-color:white !important;">
+            
             <div class="col s12 head-login" style="">
-                <div class="titulo2">REGISTRARSE</div>
+                <img src="{{ asset('img/imagenes/LogoSeccional.png') }}" class="col" alt="Escuela Sindical" width="80px" style="display: none">
+                
+                <div class="escHead col" style="display: none">Escuela Sindical Sección XX Michoacán</div>
+                <div class="titulo2 col s12">REGISTRARSE</div>
             </div>
 
             {{-- DIV PADRE DE DIVISIONES --}}
@@ -171,6 +174,20 @@
                         <label>Categoría</label>
                     </div>
 
+                    {{-- INPUT FILE --}}
+                    <div class="area col s12" style="margin-bottom:4%">
+                        <p style="margin-top:0px; font-family:Montserrat; font-size:13px">Tarjetón de pago<i class="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo" style="color:rgb(159, 157, 157); cursor:pointer">help_outline</i></p>
+                        <div class="file-field input-field" style="border: 1px dashed rgba(159, 157, 157, 0.6); box-sizing: border-box;border-radius: 4px;">
+                            <div class="col s12">
+                              <span style="font-size:12px; text-align:center; padding-top:10px" class="col s12">Adjunte aquí el archivo o <b>clic</b> para seleccionarlo</span>
+                              <input type="file">
+                            </div>
+                            <div class="file-path-wrapper">
+                              <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+                    </div>
+
                     <p class="titles-sub" style="margin-left:3%">CUENTA</p>
 
                     <div class="input-field col s12">
@@ -217,6 +234,7 @@
         $('.datepicker').datepicker();
     });
 
+    // IMAGEN DE PERFIL 
     $("#profileImage").click(function(e) {
         $("#imageUpload").click();
     });
@@ -225,16 +243,20 @@
         $("#imageUpload").click();
     });
 
-function fasterPreview( uploader ) {
-    if ( uploader.files && uploader.files[0] ){
-          $('#profileImage').attr('src', 
-             window.URL.createObjectURL(uploader.files[0]) );
+    function fasterPreview( uploader ) {
+        if ( uploader.files && uploader.files[0] ){
+            $('#profileImage').attr('src', 
+                window.URL.createObjectURL(uploader.files[0]) );
+        }
     }
-}
 
-$("#imageUpload").change(function(){
-    fasterPreview( this );
-});
+    $("#imageUpload").change(function(){
+        fasterPreview( this );
+    });
+
+    $(document).ready(function(){
+        $('.tooltipped').tooltip();
+    });
 </script>
 
 </html>

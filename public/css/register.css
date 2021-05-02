@@ -54,9 +54,37 @@
     transition: all ease-in-out 0.25s;
 }
 
+
+
+
+
+@media(max-width:1000px){
+    .head-login .titulo1{
+        font-size: 25px !important;
+    }
+    .head-login .titulo2{
+        font-size: 16px !important;
+    }
+    .right img{
+        width: 60px !important;
+    }
+}
 @media(max-width:900px){
     .div-info-esc{
         display: none !important;
+    }
+    .head-login img{
+        display: block !important;
+    }
+    .head-login{
+        justify-content: right !important;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .escHead{
+        display: block !important;
+        /* width: 100%; */
+        font-size: 15px;
     }
     .div-blanco-form{
         width: 100% !important;
