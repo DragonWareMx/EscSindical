@@ -23,7 +23,14 @@ class UserController extends Controller
     {
         $users = User::all();
         //return response() -> json(['status' => 200, 'users' => $users]);
-        return Inertia::render('Ejemplo');
+        return Inertia::render('Usuarios/Usuarios', ['users' => $users]);
+    }
+
+    public function ejemplo()
+    {
+        $users = User::all();
+        //return response() -> json(['status' => 200, 'users' => $users]);
+        return Inertia::render('Ejemplo', ['users' => $users]);
     }
 
     /**

@@ -295,3 +295,12 @@ body
     margin: 10px;
     font-size: 30px !important;
 }
+
+.page-title{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 27px;
+
+    color: #FFFFFF;
+}

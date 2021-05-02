@@ -30,11 +30,11 @@ Route::get('/inicio', function () {
     return view('index');
 });
 
-Route::get('/ejemplo',[App\Http\Controllers\UserController::class, 'index'])->name('ejemplo1');
-Route::get('/ejemplo2',function (){
-    return Inertia::render('Ejemplo2');
-})->name('ejemplo2');
-
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//--------RUTAS DE EJEMPLO
+Route::get('/ejemplo',[App\Http\Controllers\UserController::class, 'ejemplo'])->name('ejemplo1');
+//--------RUTAS DE EJEMPLO
+
+//--------USUARIOS--------
+Route::get('/usuarios',[App\Http\Controllers\UserController::class, 'index'])->name('usuarios');

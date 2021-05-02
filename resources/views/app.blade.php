@@ -4,13 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
-    {{-- ELIMINAR SI NO SE UTILIZA --}}
-    <link href="{{ mix('/css/app.css') }}" rel="stylesheet" />
-
     <script src="{{ mix('/js/app.js') }}" defer></script>
 
     <link rel="icon" href="{{asset('img/imagenes/LogoNacionalCrop.png')}}"/>
-
         
     <!-- css del menu -->
     <link rel="stylesheet" href="{{ asset('/css/menuStyle.css') }}">
