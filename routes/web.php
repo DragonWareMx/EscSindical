@@ -24,6 +24,6 @@ Route::get('/menu', function () {
     return view('menu');
 });
 
-Route::get('/register', function () {
-    return view('register_user');
-});
+// Route::get('/register', function () {
+//     return view('register_user');
+// });
