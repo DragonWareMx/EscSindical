@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from '../../layouts/Layout';
+import { Inertia } from '@inertiajs/inertia'
 
 const Usuarios = ({users}) => {
+    const [values, setValues] = useState({
+        nombre: "",
+        apellido_p: "",
+        apellido_m: "",
+        email: "",
+    })
+
+    function handleChange(e) {
+        const key = e.target.id;
+        const value = e.target.value
+        setValues(values => ({
+            ...values,
+            [key]: value,
+        }))
+      }
+
+      function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.post('/users', values)
+      }
+
   return (
     <>
         <div className="row">
@@ -29,10 +51,17 @@ const Usuarios = ({users}) => {
                             ))}
                             </tbody>
                         </table>
-                    </div>
-                    <div className="card-action">
-                        <a href="#">This is a link</a>
-                        <a href="#">This is a link</a>
+                        <form onSubmit={handleSubmit}>
+                            <label htmlFor="nombre">Nombre(s):</label>
+                            <input id="nombre" value={values.first_name} onChange={handleChange} />
+                            <label htmlFor="apellido_p">Apellido Paterno:</label>
+                            <input id="apellido_p" value={values.last_name} onChange={handleChange} />
+                            <label htmlFor="apellido_m">Apellido Materno (opcional):</label>
+                            <input id="apellido_m" value={values.last_name} onChange={handleChange} />
+                            <label htmlFor="email">Email:</label>
+                            <input id="email" value={values.email} onChange={handleChange} />
+                            <button type="submit">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>

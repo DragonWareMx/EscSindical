@@ -15,9 +15,10 @@ class CreateLogsTable extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->string('categoria')->nullable();
-            $table->text('accion')->nullable();
+            $table->enum('categoria',['create','update','delete']);
+            $table->text('accion'); //guarda la informacion del log, es decir, lo que el usuario realizo
             $table->unsignedBigInteger('user_id');
+            
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
