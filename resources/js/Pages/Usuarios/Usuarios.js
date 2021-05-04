@@ -1,31 +1,10 @@
-<<<<<<< HEAD
-import React from 'react';
-import FlotanteAyuda from '../../components/common/FlotanteAyuda';
-import Paginacion from '../../components/common/Paginacion';
-=======
 import React, { useState } from 'react';
->>>>>>> origin/Adrian-el-Dios-de-los-palomos
 import Layout from '../../layouts/Layout';
 import { Inertia } from '@inertiajs/inertia'
+import Paginacion from '../../components/common/Paginacion';
+import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 
-<<<<<<< HEAD
 const Usuarios = ({ users }) => {
-    return (
-        <>
-            <div className="row">
-                <div className="col">
-                    <div className="card darken-1">
-                        <div className="card-content">
-                            <span className="card-title">Usuarios</span>
-                            <table className="striped">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                    </tr>
-                                </thead>
-=======
-const Usuarios = ({users}) => {
     const [values, setValues] = useState({
         nombre: "",
         apellido_p: "",
@@ -40,28 +19,27 @@ const Usuarios = ({users}) => {
             ...values,
             [key]: value,
         }))
-      }
+    }
 
-      function handleSubmit(e) {
+    function handleSubmit(e) {
         e.preventDefault()
         Inertia.post('/users', values)
-      }
+    }
 
-  return (
-    <>
-        <div className="row">
-            <div className="col">
-                <div className="card darken-1">
-                    <div className="card-content">
-                        <span className="card-title">Usuarios</span>
-                        <table className="striped">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                            </tr>
-                            </thead>
->>>>>>> origin/Adrian-el-Dios-de-los-palomos
+    return (
+        <>
+            <div className="row">
+                <div className="col">
+                    <div className="card darken-1">
+                        <div className="card-content">
+                            <span className="card-title">Usuarios</span>
+                            <table className="striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
 
                                 <tbody>
                                     {users.map(user => (
@@ -71,37 +49,26 @@ const Usuarios = ({users}) => {
                                             {/*<td>
                                         <InertiaLink href={`/users/${user.id}/edit`}>Edit</InertiaLink>
                                     </td>*/}
-<<<<<<< HEAD
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
+                            <form onSubmit={handleSubmit}>
+                                <label htmlFor="nombre">Nombre(s):</label>
+                                <input id="nombre" value={values.first_name} onChange={handleChange} />
+                                <label htmlFor="apellido_p">Apellido Paterno:</label>
+                                <input id="apellido_p" value={values.last_name} onChange={handleChange} />
+                                <label htmlFor="apellido_m">Apellido Materno (opcional):</label>
+                                <input id="apellido_m" value={values.last_name} onChange={handleChange} />
+                                <label htmlFor="email">Email:</label>
+                                <input id="email" value={values.email} onChange={handleChange} />
+                                <button type="submit">Submit</button>
+                            </form>
                         </div>
-                        <div className="card-action">
-                            <a href="#">This is a link</a>
-                            <a href="#">This is a link</a>
-                        </div>
-                        <Paginacion />
-=======
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
-                        <form onSubmit={handleSubmit}>
-                            <label htmlFor="nombre">Nombre(s):</label>
-                            <input id="nombre" value={values.first_name} onChange={handleChange} />
-                            <label htmlFor="apellido_p">Apellido Paterno:</label>
-                            <input id="apellido_p" value={values.last_name} onChange={handleChange} />
-                            <label htmlFor="apellido_m">Apellido Materno (opcional):</label>
-                            <input id="apellido_m" value={values.last_name} onChange={handleChange} />
-                            <label htmlFor="email">Email:</label>
-                            <input id="email" value={values.email} onChange={handleChange} />
-                            <button type="submit">Submit</button>
-                        </form>
->>>>>>> origin/Adrian-el-Dios-de-los-palomos
                     </div>
                 </div>
             </div>
+            <Paginacion />
             <FlotanteAyuda />
         </>
     )
