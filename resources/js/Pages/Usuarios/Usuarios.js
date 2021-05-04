@@ -6,7 +6,7 @@ import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 import Skeleton from 'react-loading-skeleton';
 
 //componente del esqueleto de la pagina
-const loader = () => {
+const loader = () => {    
     return(
         <>
             <div className="row">
@@ -39,7 +39,7 @@ const loader = () => {
     )
 }
 
-const Usuarios = ({ users}) => {
+const Usuarios = ({ users }) => {
     function handleChange(e) {
         const key = e.target.id;
         const value = e.target.value
@@ -64,15 +64,13 @@ const Usuarios = ({ users}) => {
     //booleano que indica si la pagina ya cargo
     const [loading, setLoading] = useState(false)
 
-    // useEffect(() => {
-    //     Inertia.reload({ 
-    //         only: ['users'],
-    //         onSuccess: () => {setLoading(true)}
-    //     })
-    // }, [])
-
     //si la pagina esta cargando muestra el esqueleto, sino muestra el contenido
-    if(loading){
+    if(!users){
+        Inertia.reload({ 
+            only: ['users'],
+            onSuccess: () => {setLoading(true)}
+        })
+        console.log('recarga')
         return(loader())
     }
     else{
@@ -92,7 +90,7 @@ const Usuarios = ({ users}) => {
                                     </thead>
 
                                     <tbody>
-                                        {users.map(user => (
+                                        {users && users.map(user => (
                                             <tr key={user.id}>
                                                 <td>{user.nombre}</td>
                                                 <td>{user.email}</td>
