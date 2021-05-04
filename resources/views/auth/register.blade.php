@@ -195,12 +195,15 @@
                         </div>
 
                         <div class="input-field col s12">
-                            <select id="categoria" name="categoria" required autocomplete="categoria">
+                            <input type="text" id="autocomplete-input" name="categoria" required autocomplete="categoria" class="autocomplete">
+                            <label for="autocomplete-input">Categoría</label>
+                            {{-- <select id="categoria" name="categoria" required autocomplete="categoria">
                             <option value="" disabled selected>Selecciona una opción</option>
-                            <option value="1" {{ old('categoria') == 1 ? 'selected' : '' }}>Enfermera general</option>
-                            <option value="2" {{ old('categoria') == 2 ? 'selected' : '' }}>Enfermera especialista</option>
+                            @foreach ($categorias as $ct)
+                                <option value='{{$ct->id}}' {{ old('categoria') == $ct->id ? 'selected' : '' }}>{{$ct->nombre}}</option>
+                            @endforeach
                             </select>
-                            <label>Categoría</label>
+                            <label>Categoría</label> --}}
                         </div>
 
                         {{-- INPUT FILE --}}
@@ -279,11 +282,26 @@
 </body>
 
 <script>
+    // SELECTS
     $(document).ready(function(){
         $('select').formSelect();
     });
+    // DATE PICKER
     $(document).ready(function(){
         $('.datepicker').datepicker();
+    });
+    // AUTOCOMPLETE
+    $(document).ready(function(){
+        var ct=JSON.parse('<?php echo empty($categorias) ? '{}' : json_encode($categorias) ?>');
+        var dataCT = {};
+        for(var i in ct){
+                eval("dataCT." + ct[i]["nombre"] + " = null;");
+                alert(eval("dataCT." + ct[i]["nombre"] + " = null;"));
+            }
+        
+        $('input.autocomplete').autocomplete({
+            data: dataCT
+        });
     });
 
     // IMAGEN DE PERFIL 

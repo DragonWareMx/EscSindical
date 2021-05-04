@@ -17,6 +17,10 @@ class CategorySeeder extends Seeder
         //
         DB::table('categories')->insert([
             'nombre' => 'Dioses',
-        ]);
+        ]); 
+
+        DB::table('categories')->insert([
+            'nombre' => 'Enfermera general',
+        ]); 
     }
 }
