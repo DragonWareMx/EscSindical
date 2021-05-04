@@ -81,7 +81,7 @@
                             <p id="txt-profile">Foto de perfil</p>
                         </div>
                         <input id="imageUpload" type="file" class="form-control @error('foto_perfil') is-invalid @enderror"
-                                name="foto_perfil" placeholder="Photo"  value="{{ old('foto_perfil') }}">
+                                name="foto_perfil" placeholder="Photo"  value="{{ old('foto_perfil') }}" accept="image/png, image/jpeg, image/jpg, image/gif">
                         @error('foto_perfil')
                         <span class="invalid-feedback col s12" role="alert" style="margin-bottom:12px; text-align:center">
                             <strong>{{ $message }}</strong>
@@ -209,7 +209,7 @@
                             <div class="file-field input-field" style="border: 1px dashed rgba(159, 157, 157, 0.6); box-sizing: border-box;border-radius: 4px;">
                                 <div class="col s12">
                                 <span style="font-size:12px; text-align:center; padding-top:10px" class="col s12">Adjunte aquí el archivo o <b>clic</b> para seleccionarlo</span>
-                                <input type="file">
+                                <input type="file" accept=".pdf">
                                 </div>
                                 <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text" class="form-control @error('tarjeton') is-invalid @enderror" id="tarjeton" name="tarjeton" value="{{ old('tarjeton') }}" required autocomplete="tarjeton">
@@ -238,7 +238,7 @@
 
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="password" type="password" class="validate form-control @error('password') is-invalid @enderror" name="password" required>
+                            <input id="password" type="password" class="validate form-control @error('password') is-invalid @enderror" name="password"  value="{{ old('password') }}" required>
                             <label for="password">Contraseña</label>
                             
                             @error('password')
@@ -250,7 +250,7 @@
 
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="password-confirm" type="password" class="validate form-control" name="password_confirmation" required>
+                            <input id="password-confirm" type="password" class="validate form-control" name="password_confirmation"  value="{{ old('password_confirmation') }}" required>
                             <label for="password-confirm">Confirmar contraseña</label> 
 
                         </div>

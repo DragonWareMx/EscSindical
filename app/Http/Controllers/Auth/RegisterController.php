@@ -56,7 +56,7 @@ class RegisterController extends Controller
             'nombre' => ['required', 'string', 'max:255'],
             'apellido_paterno' => ['required', 'string', 'max:255'],
             'apellido_materno' => ['string', 'max:255'],
-            'foto_perfil' => ['required', 'string'],
+            'foto_perfil' => ['mimes:jpg,png,gif,jpeg','size:512','required'],
             'sexo' => ['required', 'string'],
             'fecha_nacimiento' => ['required', 'date'],
             'tarjeton' => ['required', 'string'],
@@ -82,11 +82,11 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
             //  regimen unidad categoria 
-            $fileNameWithTheExtension = request('foto_perfil')->getClientOriginalName();
-            $fileName = pathinfo($fileNameWithTheExtension, PATHINFO_FILENAME);
-            $extension = request('foto_perfil')->getClientOriginalExtension();
-            $newFileName = $fileName . '_' . time() . '.' . $extension;
-            $path = request('foto_perfil')->storeAs('/public/fotos_perfil/', $newFileName);
+            // $fileNameWithTheExtension = request('foto_perfil')->getClientOriginalName();
+            // $fileName = pathinfo($fileNameWithTheExtension, PATHINFO_FILENAME);
+            // $extension = request('foto_perfil')->getClientOriginalExtension();
+            // $newFileName = $fileName . '_' . time() . '.' . $extension;
+            // $path = request('foto_perfil')->storeAs('/public/fotos_perfil/', $newFileName);
 
         return User::create([
             'nombre' => $data['nombre'],
