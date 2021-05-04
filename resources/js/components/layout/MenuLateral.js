@@ -37,7 +37,7 @@ function handleContentLoaded () {
 
 export default function MenuLateral(){
     useEffect(() => {
-        handleContentLoaded ();
+        handleContentLoaded();
         window.addEventListener('resize', closeNav2);
     }, [])
     return(
