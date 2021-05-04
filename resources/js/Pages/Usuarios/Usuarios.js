@@ -5,9 +5,11 @@ import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 import Skeleton from 'react-loading-skeleton';
 
+import '../../styles/usersStyle.css'
+
 //componente del esqueleto de la pagina
 const loader = () => {
-    return(
+    return (
         <>
             <div className="row">
                 <div className="col">
@@ -39,7 +41,7 @@ const loader = () => {
     )
 }
 
-const Usuarios = ({ users}) => {
+const Usuarios = ({ users }) => {
     function handleChange(e) {
         const key = e.target.id;
         const value = e.target.value
@@ -65,29 +67,45 @@ const Usuarios = ({ users}) => {
     const [loading, setLoading] = useState(false)
 
     // useEffect(() => {
-    //     Inertia.reload({ 
+    //     Inertia.reload({
     //         only: ['users'],
     //         onSuccess: () => {setLoading(true)}
     //     })
     // }, [])
 
     //si la pagina esta cargando muestra el esqueleto, sino muestra el contenido
-    if(loading){
-        return(loader())
+    if (loading) {
+        return (loader())
     }
-    else{
+    else {
         return (
             <>
                 <div className="row">
-                    <div className="col">
-                        <div className="card darken-1">
+                    <div className="col s12">
+                        <div className="card darken-1 cardUsers">
                             <div className="card-content">
                                 <span className="card-title">Usuarios</span>
-                                <table className="striped">
+                                <nav className="searchUsers">
+                                    <div className="nav-wrapper">
+                                        <form>
+                                            <div className="input-field">
+                                                <input id="search" type="search" required />
+                                                <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                                                <i className="material-icons">close</i>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </nav>
+                                <table className="striped userTable">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Email</th>
+                                            <th>MATRÍCULA</th>
+                                            <th>ROL</th>
+                                            <th>NOMBRE</th>
+                                            <th>UNIDAD</th>
+                                            <th>CATEGORÍA</th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
 
@@ -103,7 +121,7 @@ const Usuarios = ({ users}) => {
                                         ))}
                                     </tbody>
                                 </table>
-                                <form onSubmit={handleSubmit}>
+                                {/* <form onSubmit={handleSubmit}>
                                     <label htmlFor="nombre">Nombre(s):</label>
                                     <input id="nombre" value={values.first_name} onChange={handleChange} />
                                     <label htmlFor="apellido_p">Apellido Paterno:</label>
@@ -113,7 +131,7 @@ const Usuarios = ({ users}) => {
                                     <label htmlFor="email">Email:</label>
                                     <input id="email" value={values.email} onChange={handleChange} />
                                     <button type="submit">Submit</button>
-                                </form>
+                                </form> */}
                             </div>
                         </div>
                     </div>
