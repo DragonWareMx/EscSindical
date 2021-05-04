@@ -25,7 +25,7 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return Inertia::render('Usuarios/Usuarios', ['users' => $users]);
+        return Inertia::render('Usuarios/Usuarios', ['users' => fn () => User::get()]);
     }
 
     public function ejemplo()
