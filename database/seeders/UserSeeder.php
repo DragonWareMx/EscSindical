@@ -18,11 +18,12 @@ class UserSeeder extends Seeder
         //
         DB::table('users')->insert([
             'nombre' => 'Leonardo',
-            'apellido_p' => 'López',
-            'apellido_m' => 'López',
+            'sexo' => 'Masculino',
+            'apellido_p' => 'Sánchez',
+            'apellido_m' => 'García',
             'email' =>  'test@dragonware.com.mx',
             'password' => Hash::make('viledruid9000'),
-            'foto' =>  'img/avatar/monita.jpg',
+            'foto' =>  'imagen.pdf',
             'fecha_nac' => '1999/12/04',
             'estado' => 'Michoacan',
             'ciudad' => 'Morelia',
@@ -31,7 +32,7 @@ class UserSeeder extends Seeder
             'num_ext' => '159',
             'num_int' => '',
             'cp' => '58189',
-            'tarjeton_pago' => 'img/tpago/tarjeton.jpg',
+            'tarjeton_pago' => 'tarjeton.pdf',
             'matricula' => '17121035',
             'categorie_id' => '1',
         ]);
