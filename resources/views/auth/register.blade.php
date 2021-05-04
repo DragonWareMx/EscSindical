@@ -71,7 +71,7 @@
             </div>
 
             {{-- DIV PADRE DE DIVISIONES --}}
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="col s12 div-form-register">
                     <div class="col s6 div-division" style="padding:2%; padding-left:0px; border-right:solid 1px rgba(159, 157, 157, 0.6);">
@@ -80,9 +80,9 @@
                             <img id="profileImage" src="/img/avatar1.png" >
                             <p id="txt-profile">Foto de perfil</p>
                         </div>
-                        <input id="imageUpload" type="file" class="form-control @error('profile_photo') is-invalid @enderror"
-                                name="profile_photo" placeholder="Photo"  value="{{ old('profile_photo') }}">
-                        @error('profile_photo')
+                        <input id="imageUpload" type="file" class="form-control @error('foto_perfil') is-invalid @enderror"
+                                name="foto_perfil" placeholder="Photo"  value="{{ old('foto_perfil') }}" accept="image/png, image/jpeg, image/jpg, image/gif">
+                        @error('foto_perfil')
                         <span class="invalid-feedback col s12" role="alert" style="margin-bottom:12px; text-align:center">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -119,21 +119,21 @@
                         </div>
 
                         <div class="input-field col s6 input-50-re">
-                            <input id="fechaNac" max="2004-01-01" type="date" class=" " name="fechaNac" value="{{ old('fechaNac') }}" required autocomplete="fechaNac">
-                            <label for="fechaNac">Fec. Nacimiento</label>
+                            <input id="fecha_nacimiento" max="2004-01-01" type="date" class=" " name="fecha_nacimiento" value="{{ old('fecha_nacimiento') }}" required autocomplete="fecha_nacimiento">
+                            <label for="fecha_nacimiento">Fec. Nacimiento</label>
                         </div>
                         <div class="input-field col s6 input-50-re">
-                            <select id="genero" name="genero" required autocomplete="genero">
+                            <select id="sexo" name="sexo" required autocomplete="sexo">
                                 {{-- <option value="" disabled selected>Selecciona una opción</option> --}}
-                                <option value="1" {{ old('genero') == 1 ? 'selected' : '' }}>Femenino</option>
-                                <option value="2" {{ old('genero') == 2 ? 'selected' : '' }}>Masculino</option>
+                                <option value="Femenino" {{ old('sexo') == 'Femenino' ? 'selected' : '' }}>Femenino</option>
+                                <option value="Masculino" {{ old('sexo') == 'Masculino' ? 'selected' : '' }}>Masculino</option>
                             </select>
                             <label>Sexo</label>
                         </div>
 
                         <p class="titles-sub" style="margin-left:3%">DIRECCIÓN</p>
 
-                        <div class="input-field col s6 input-50-re">
+                        <div class="input-field col s12 ">
                             <input  id="estado" type="text" class="validate" name="estado" value="{{ old('estado') }}" required autocomplete="estado">
                             <label for="estado">Estado</label>
                         </div>
@@ -152,13 +152,19 @@
                         </div>
 
                         <div class="input-field col s6 input-50-re">
+                            <input  id="codigo_postal" min="0" step="1" type="number" class="validate" name="codigo_postal" value="{{ old('codigo_postal') }}" required autocomplete="codigo_postal">
+                            <label for="codigo_postal">Código Postal</label>
+                        </div>
+
+                        <div class="input-field col s6 input-50-re">
                             <input  id="numero" min="0" step="1" type="number" class="validate" name="numero" value="{{ old('numero') }}" required autocomplete="numero">
                             <label for="numero">No. Exterior</label>
                         </div>
                         <div class="input-field col s6 input-50-re">
-                            <input  id="codigoP" min="0" step="1" type="number" class="validate" name="codigoP" value="{{ old('codigoP') }}" required autocomplete="codigoP">
-                            <label for="codigoP">Código Postal</label>
+                            <input  id="numero_interior" min="0" step="1" type="number" class="validate" name="numero_interior" value="{{ old('numero_interior') }}"  autocomplete="numero_interior">
+                            <label for="numero_interior">No. Interior</label>
                         </div>
+                        
 
 
                     </div>
@@ -202,11 +208,16 @@
                             <p style="margin-top:0px; font-family:Montserrat; font-size:13px">Tarjetón de pago<i class="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo" style="color:rgb(159, 157, 157); cursor:pointer">help_outline</i></p>
                             <div class="file-field input-field" style="border: 1px dashed rgba(159, 157, 157, 0.6); box-sizing: border-box;border-radius: 4px;">
                                 <div class="col s12">
-                                <span style="font-size:12px; text-align:center; padding-top:10px" class="col s12">Adjunte aquí el archivo o <b>clic</b> para seleccionarlo</span>
-                                <input type="file">
+                                <span style="font-size:12px; text-align:center; padding-top:10px" class="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
+                                <input type="file" accept=".pdf" class="form-control @error('tarjeton') is-invalid @enderror" id="tarjeton" name="tarjeton" value="{{ old('tarjeton') }}" required autocomplete="tarjeton">
+                                @error('tarjeton')
+                                    <span class="invalid-feedback col s12" role="alert" style="margin-bottom:12px; text-align:center">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                                 </div>
                                 <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text" id="tarjeton" name="tarjeton" value="{{ old('tarjeton') }}" required autocomplete="tarjeton">
+                                <input class="file-path validate" type="text" >
                                 </div>
                             </div>
                         </div>
@@ -227,7 +238,7 @@
 
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="password" type="password" class="validate form-control @error('password') is-invalid @enderror" name="password" required>
+                            <input id="password" type="password" class="validate form-control @error('password') is-invalid @enderror" name="password"  value="{{ old('password') }}" required>
                             <label for="password">Contraseña</label>
                             
                             @error('password')
@@ -239,7 +250,7 @@
 
                         <div class="input-field col s12">
                             <i class="material-icons prefix">lock</i>
-                            <input id="password-confirm" type="password" class="validate form-control" name="password_confirmation" required>
+                            <input id="password-confirm" type="password" class="validate form-control" name="password_confirmation"  value="{{ old('password_confirmation') }}" required>
                             <label for="password-confirm">Confirmar contraseña</label> 
 
                         </div>
