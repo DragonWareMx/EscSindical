@@ -71,7 +71,7 @@
             </div>
 
             {{-- DIV PADRE DE DIVISIONES --}}
-            <form method="POST" action="{{ route('register') }}">
+            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="col s12 div-form-register">
                     <div class="col s6 div-division" style="padding:2%; padding-left:0px; border-right:solid 1px rgba(159, 157, 157, 0.6);">
@@ -125,8 +125,8 @@
                         <div class="input-field col s6 input-50-re">
                             <select id="sexo" name="sexo" required autocomplete="sexo">
                                 {{-- <option value="" disabled selected>Selecciona una opción</option> --}}
-                                <option value="1" {{ old('sexo') == 1 ? 'selected' : '' }}>Femenino</option>
-                                <option value="2" {{ old('sexo') == 1 ? 'selected' : '' }}>Masculino</option>
+                                <option value="Femenino" {{ old('sexo') == 'Femenino' ? 'selected' : '' }}>Femenino</option>
+                                <option value="Masculino" {{ old('sexo') == 'Masculino' ? 'selected' : '' }}>Masculino</option>
                             </select>
                             <label>Sexo</label>
                         </div>
@@ -208,16 +208,16 @@
                             <p style="margin-top:0px; font-family:Montserrat; font-size:13px">Tarjetón de pago<i class="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo" style="color:rgb(159, 157, 157); cursor:pointer">help_outline</i></p>
                             <div class="file-field input-field" style="border: 1px dashed rgba(159, 157, 157, 0.6); box-sizing: border-box;border-radius: 4px;">
                                 <div class="col s12">
-                                <span style="font-size:12px; text-align:center; padding-top:10px" class="col s12">Adjunte aquí el archivo o <b>clic</b> para seleccionarlo</span>
-                                <input type="file" accept=".pdf">
-                                </div>
-                                <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text" class="form-control @error('tarjeton') is-invalid @enderror" id="tarjeton" name="tarjeton" value="{{ old('tarjeton') }}" required autocomplete="tarjeton">
+                                <span style="font-size:12px; text-align:center; padding-top:10px" class="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
+                                <input type="file" accept=".pdf" class="form-control @error('tarjeton') is-invalid @enderror" id="tarjeton" name="tarjeton" value="{{ old('tarjeton') }}" required autocomplete="tarjeton">
                                 @error('tarjeton')
-                                    <span class="invalid-feedback" role="alert" style="margin-bottom:12px;">
+                                    <span class="invalid-feedback col s12" role="alert" style="margin-bottom:12px; text-align:center">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                                </div>
+                                <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" >
                                 </div>
                             </div>
                         </div>
