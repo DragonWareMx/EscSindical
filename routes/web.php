@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +30,11 @@ Route::get('/inicio', function () {
     return view('index');
 });
 
-Route::get('/ejemplo',function () {
-    return view('index');
-});
+Auth::routes();
+
+//--------RUTAS DE EJEMPLO
+Route::get('/ejemplo',[App\Http\Controllers\UserController::class, 'ejemplo'])->name('ejemplo1');
+//--------RUTAS DE EJEMPLO
+
+//--------USUARIOS--------
+Route::get('/usuarios',[App\Http\Controllers\UserController::class, 'index'])->name('usuarios');

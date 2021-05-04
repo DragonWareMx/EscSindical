@@ -42,16 +42,26 @@ header, body, footer
 }
 @media only screen and (max-width : 992px) {
     header, body, footer {
-        padding-left: 0px;
+        padding-left: 60px;
     }
 }
 
 body
 {
     background-color: #F6F6F6;
-    font-family: Montserrat;
+    font-family: Montserrat !important;
+}
+.menu-cerrado{
+    margin-left:-300px !important;
+    transition: ease-in-out;
+    transition-duration:500ms ;
 }
 
+.menu-abierto{
+    margin-left:0px !important;
+    transition: ease-in-out;
+    transition-duration:500ms ;
+}
 .main-bar
 {
     position: sticky;
@@ -94,17 +104,17 @@ body
     background: rgba(255, 255, 255, 0.14);
     /*justify-content: space-between;*/
     /*align-items: center;*/
-    
+
     font-size: 14px;
     color: #FFFFFF;
 }
 
+.margin-search-icons{
+    margin-top:-8px;
+}
+
 .main-bar-input{
-    width: 95% !important;
-    margin: 0px !important;
-    font-size: 14px !important;
     border-bottom:none !important;
-    color: #FFFFFF;
 }
 
 .main-bar-right{
@@ -114,6 +124,7 @@ body
  align-items: center;
  justify-content: space-between;
 }
+
 .main-bar-right-leftSide{
     display: flex;
     width: 20%;
@@ -129,7 +140,7 @@ body
 
 .main-username{
     color: #FFFFFF;
-    font-family: "Montserrat" !important;
+    font-family: Montserrat !important;
     font-size: 15px;
     width: 80%;
 }
@@ -149,7 +160,7 @@ body
 .content
 {
     margin-top: -150px;
-    
+
     z-index: 15;
 }
 
@@ -165,7 +176,7 @@ body
 
 .division-menu
 {
-    font-family: "Montserrat";
+    font-family: Montserrat;
     font-style: normal;
     font-weight: normal;
     font-size: 13px;
@@ -198,10 +209,107 @@ body
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-right: 10px;
 }
 
 .profile-info-name{
     color: white;
     font-size: 16px;
     text-overflow: ellipsis;
+    margin-left: 10px;
+}
+
+@media only screen and (max-width : 1160px) {
+    .main-bar-search{
+        width: 50%;
+    }
+    .main-bar-right{
+        width: 48%;
+    }
+    .main-bar-right-leftSide{
+        width: 25%;
+    }
+    .main-bar-right-rightSide{
+        width: 70%;
+    }
+}
+
+@media only screen and (max-width: 900px){
+    .main-username{
+        display:none;
+    }
+    .main-bar-search{
+        width: 70%;
+    }
+    .main-bar-right{
+        width: 25%;
+    }
+    .main-bar-right-leftSide{
+        width: 50%;
+    }
+    .main-bar-right-rightSide{
+        width: 50%;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .main-bar-search{
+        width: 50px;
+        border-radius: 5px;
+    }
+    .main-bar-input{
+        display:none;
+    }
+    .main-bar-right{
+        width: 50%;
+    }
+    .margin-search-icons{
+        margin-top:-3px;
+    }
+}
+
+.menu-compacto
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 100%;
+    box-shadow: 0px 4px 4px rgba(207, 207, 207, 0.25);
+    overflow: auto;
+}
+
+.imagen-menu-compacto
+{
+    width: 45px;
+    height: 45px;
+    left: 7px;
+    top: 25px;
+    margin-top: 10px;
+}
+
+.icono-menu-compacto
+{
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+    font-size: 30px !important;
+}
+
+.page-title{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 27px;
+
+    color: #FFFFFF;
+}
+
+.pagination li.active{
+    background-color: #419779 !important;
+}
+
+.green-sind{
+    background-color: #419779 !important;
+    box-shadow: 0px 4px 4px rgba(82, 82, 82, 0.25);
 }

@@ -16,6 +16,7 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->string('sexo');
             $table->string('apellido_p');
             $table->string('apellido_m')->nullable();
             $table->string('email')->unique();
@@ -28,13 +29,15 @@ class CreateUsersTable extends Migration
             $table->string('colonia');
             $table->string('calle');
             $table->string('num_ext');
-            $table->string('num_int')->nullable();
+            $table->string('num_int');
             $table->integer('cp');
             $table->text('tarjeton_pago');
             $table->string('matricula');
             $table->rememberToken();
+
             $table->unsignedBigInteger('categorie_id');
             $table->foreign('categorie_id')->references('id')->on('categories');
+
             $table->softDeletes();
             $table->timestamps();
         });

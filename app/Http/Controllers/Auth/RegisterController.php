@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\Category;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+
 
 class RegisterController extends Controller
 {
@@ -41,6 +44,13 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+    // Llamado de la vista
+    public function showRegistrationForm()
+    {
+        $categorias = Category::distinct()->get();
+        return view('auth.register');
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -49,8 +59,23 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        // dd($data);
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'nombre' => ['required', 'string', 'max:255'],
+            'apellido_paterno' => ['required', 'string', 'max:255'],
+            'apellido_materno' => ['string', 'max:255'],
+            'foto_perfil' => ['image','mimes:jpg,png,gif,jpeg','max:2000','required'],
+            'sexo' => ['required', 'string'],
+            'fecha_nacimiento' => ['required', 'date'],
+            'tarjeton' => ['file','mimes:pdf','required','max:5000'],
+            'estado' => ['required', 'string', 'max:255'],
+            'ciudad' => ['required', 'string', 'max:255'],
+            'colonia' => ['required', 'string', 'max:255'],
+            'calle' => ['required', 'string', 'max:255'],
+            'numero' => ['required', 'string', 'max:255'],
+            'numero_interior' => ['required', 'string', 'max:255'],
+            'codigo_postal' => ['required', 'integer', 'min:1'],
+            'matricula' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -64,8 +89,30 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+            //  regimen unidad categoria 
+            // $fileNameWithTheExtension = request('foto_perfil')->getClientOriginalName();
+            // $fileName = pathinfo($fileNameWithTheExtension, PATHINFO_FILENAME);
+            // $extension = request('foto_perfil')->getClientOriginalExtension();
+            // $newFileName = $fileName . '_' . time() . '.' . $extension;
+            // $path = request('foto_perfil')->storeAs('/public/fotos_perfil/', $newFileName);
+
         return User::create([
-            'name' => $data['name'],
+            'nombre' => $data['nombre'],
+            'foto' => $data['foto_perfil'],
+            // 'foto' => $newFileName,
+            'apellido_p' => $data['apellido_paterno'],
+            'apellido_m' => $data['apellido_materno'],
+            'sexo' => $data['sexo'],
+            'fecha_nac' => $data['fecha_nacimiento'],
+            'estado' => $data['estado'],
+            'ciudad' => $data['ciudad'],
+            'colonia' => $data['colonia'],
+            'calle' => $data['calle'],
+            'num_ext' => $data['numero'],
+            'num_int' => $data['numero_interior'],
+            'cp' => $data['codigo_postal'],
+            'matricula' => $data['matricula'],
+            'tarjeton_pago' => $data['tarjeton'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);

@@ -28,18 +28,30 @@
         <div class="main-bar">
 
           {{-- Parte izquierda de la barra superior --}}
-          <form action="#" method="post" class="main-bar-search">
+
+          <nav class="main-bar-search">
+            <div class="nav-wrapper">
+              <form>
+                <div class="input-field">
+                  <input id="search" type="search" required>
+                  <label class="label-icon margin-search-icons" for="search"><i class="material-icons">search</i></label>
+                  <i class="material-icons margin-search-icons">close</i>
+                </div>
+              </form>
+            </div>
+          </nav>
+         {{-- <form action="#" method="post" class="main-bar-search">
             @csrf
             <div class="row">
               <div class="col s1" style="padding:10px;">
                 <i class="small material-icons" style="color: #FFFFFF;">search</i>
               </div>
               <div class="col s11">
-                <input type="text" class="" placeholder="Ingresa tu búsqueda" style="color:white;">
+                <input type="text" class="main-bar-input" placeholder="Ingresa tu búsqueda" style="color:white;">
               </div>
             </div>
             
-          </form>
+          </form> --}}
 
           {{-- Parte derecha de la barra superior--}}
           <div class="main-bar-right">
@@ -125,11 +137,11 @@
                 </div>
               </div>
     
-        </div>-->
+        </div>
     </div>
 
-    <!-- menu lateral -->
-    <div>
+    <!-- menu lateral extendido -->
+    <div id="menu-grande" class="">
         <ul id="slide-out" class="sidenav sidenav-fixed scroll-menu" style="color: rgba(38, 50, 56, 0.8); ">
           <li>
             <div>
@@ -138,7 +150,7 @@
               </div>
               <div class="menu-profile-info">
                 <img style="margin-left:10px;" src="{{ asset('/img/imagenes/1703234.png') }}" class="main-userimage"> 
-                <div class="profile-info-name">Monse Jocabed Marín Píñón</div>
+                <div class="profile-info-name truncate">Monse Jocabed Marín Píñón</div>
               </div>
             </div>
           </li>
@@ -153,7 +165,7 @@
           <li><a href="#!" class="icono-menu"><i class="material-icons icono-menu">settings</i>Configuración</a></li>
           <li><a href="#!" class="icono-menu"><i class="material-icons icono-menu">logout</i>Cerrar sesión</a></li>
           <div class="center-align" style="margin-top: 25px">
-            <a class="btn-floating btn-large waves-effect waves-light" style="background-color: #108058"><i class="material-icons">arrow_back</i></a>
+            <a  onclick="closeNav()" href="#!" class="btn-floating btn-large waves-effect waves-light sidenav-close" style="background-color: #108058"><i class="material-icons">arrow_back</i></a>
           </div>
           <div class="row" style="margin-top: 50px">
             <div class="col s5 center-align">
@@ -162,26 +174,44 @@
             <div class="col s7 valign-wrapper" style="height: 64px;">
               Escuela Sindical
             </div>
-            
-            
           </div>
-          
-          
-          
-            
-          
-          
         </ul>
-        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-        
     </div>
 
-
-
-    
-
-    
-    
+    <!-- menu lateral comprimido -->
+    <div class="menu-compacto center-align">
+      <div class="col s12">
+        <img src="/img/imagenes/LogoNacional2.png" alt="logo" class="imagen-menu-compacto">
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto current-menu">home</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">people</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">school</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">timeline</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">assignment_late</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">history</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">settings</i>
+      </div>
+      <div class="col s12">
+        <i class="material-icons icono-menu-compacto icono-menu">logout</i>
+      </div>
+      
+      <div class="col s12 center-align" style="margin-top: 10px;" >
+        <a onclick="openNav()"  data-target="slide-out" class="btn-floating btn-medium waves-effect waves-light sidenav-trigger" style="background-color: #108058"><i class="material-icons">arrow_forward</i></a>
+      </div>
+    </div>   
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -189,5 +219,35 @@
         var options;
         var instances = M.Sidenav.init(elems, options);
     });
+
+  function closeNav() {
+    var menu = document.getElementById("slide-out");
+    menu.classList.add("menu-cerrado");
+    menu.classList.remove("menu-abierto");
+    document.body.style.transition = "ease-in-out";
+    document.body.style.transitionDuration = "500ms";
+    document.body.style.paddingLeft = "60px";
+  }
+
+  function openNav() {
+    var menu = document.getElementById("slide-out");
+    menu.classList.remove("menu-cerrado");
+    menu.classList.add("menu-abierto");
+    document.body.style.transition = "ease-in-out";
+    document.body.style.transitionDuration = "500ms";
+    if(window.innerWidth>992)
+      document.body.style.paddingLeft = "300px";
+    else
+    document.body.style.paddingLeft = "60px"
+  }
+
+  window.addEventListener('resize', closeNav2);
+
+  function closeNav2(){
+    var elems = document.querySelectorAll('.sidenav');
+    openNav();
+    closeNav();
+  }
+  
 </script>
 </html>
