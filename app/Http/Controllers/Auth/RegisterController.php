@@ -48,7 +48,8 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         $categorias = Category::distinct()->get();
-        return view('auth.register');
+        // dd($categorias);
+        return view('auth.register',['categorias' => $categorias ]);
     }
 
     /**
