@@ -209,7 +209,7 @@
       </div>
       
       <div class="col s12 center-align" style="margin-top: 10px;" >
-        <a onclick="openNav()" data-target="slide-out"  class="btn-floating btn-medium waves-effect waves-light sidenav-trigger" style="background-color: #108058"><i class="material-icons">arrow_forward</i></a>
+        <a onclick="openNav()"  data-target="slide-out" class="btn-floating btn-medium waves-effect waves-light sidenav-trigger" style="background-color: #108058"><i class="material-icons">arrow_forward</i></a>
       </div>
     </div>   
 </body>
@@ -226,8 +226,7 @@
     menu.classList.remove("menu-abierto");
     document.body.style.transition = "ease-in-out";
     document.body.style.transitionDuration = "500ms";
-    if(screen.width>992)
-      document.body.style.paddingLeft = "60px";
+    document.body.style.paddingLeft = "60px";
   }
 
   function openNav() {
@@ -236,9 +235,19 @@
     menu.classList.add("menu-abierto");
     document.body.style.transition = "ease-in-out";
     document.body.style.transitionDuration = "500ms";
-    if(screen.width>992)
+    if(window.innerWidth>992)
       document.body.style.paddingLeft = "300px";
+    else
+    document.body.style.paddingLeft = "60px"
   }
 
+  window.addEventListener('resize', closeNav2);
+
+  function closeNav2(){
+    var elems = document.querySelectorAll('.sidenav');
+    openNav();
+    closeNav();
+  }
+  
 </script>
 </html>

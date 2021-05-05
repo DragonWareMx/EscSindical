@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\User;
+use App\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -14,8 +23,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return response() -> json(['status' => 200, 'users' => $users]);
+        return Inertia::render('Usuarios/Usuarios', ['users' => fn () => User::get()]);
+    }
+
+    public function ejemplo()
+    {
+        return Inertia::render('Ejemplo');
     }
 
     /**
@@ -29,36 +42,112 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created user in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $newUser = User::create([
-            'nombre' => $request->nombre,
-            'apellido_p' => $request->apellido_p,
-            'apellido_m' => $request->apellido_m,
-            'email' => $request->email,
-            'password' => $request->password,
-            'foto' => $request->foto,
-            'fecha_nac' => $request->fecha_nac,
-            'estado' => $request->estado,
-            'ciudad' => $request->ciudad,
-            'colonia' => $request->colonia,
-            'calle' => $request->calle,
-            'num_ext' => $request->num_ext,
-            'num_int' => $request->num_int,
-            'cp' => $request->cp,
-            'tarjeton_pago' => $request->tarjeton_pago,
-            'matricula' => $request->matricula,
-            'categorie_id' => $request->categorie_id,
+        $validated = $request->validate([
+            'nombre' => 'required|unique:posts|max:255',
+            'apellido_p' => 'required',
+            'apellido_m' => 'required|unique:posts|max:255',
+            'email' => 'required',
+            'foto' => 'required',
+            'fecha_nac' => 'required',
+            'estado' => 'required',
+            'ciudad' => 'required',
+            'colonia' => 'required',
+            'calle' => 'required',
+            'num_ext' => 'required',
+            'num_int' => 'required',
+            'cp' => 'required',
+            'tarjeton_pago' => 'required',
+            'matricula' => 'required',
+            'categorie_id' => 'required',
         ]);
-        if($newUser){
-            return response()->json(["status" => 200]);
-        }
+        // El usuario es valido...
+
+        //COMIENZA LA TRANSACCION
+        DB::beginTransaction();
+
+        try{
+        //SE CREA EL NUEVO USUARIO
+        $newUser = new User;
+        
+        //---informacion personal---
+        $newUser->foto = $request->foto;
+        $newUser->nombre = $request->nombre;
+        $newUser->apellido_p = $request->apellido_p;
+        $newUser->apellido_m = $request->apellido_m;
+        $newUser->fecha_nac = $request->fecha_nac;
+
+        //---informacion institucional---
+        $newUser->matricula = $request->matricula;
+        //regimen...
+        //unidad...
+        $newUser->categorie_id = $request->categorie_id;
+        $newUser->tarjeton_pago = $request->tarjeton_pago;
+
+        //---direccion---
+        $newUser->estado = $request->estado;
+        $newUser->ciudad = $request->ciudad;
+        $newUser->colonia = $request->colonia;
+        $newUser->calle = $request->calle;
+        $newUser->num_ext = $request->num_ext;
+        $newUser->num_int = $request->num_int;
+        $newUser->cp = $request->cp;
+
+        //---cuenta---
+        $newUser->email = $request->email;
+
+        //SE GUARDA EL NUEVO USUARIO
+        $newUser->save();
+
+        //SE CREA EL LOG
+        $newLog = new Log;
+
+        $newLog->categoria = 'create';
+        $newLog->user_id = Auth::id();
+        $newLog->accion = 
+        '{
+            users: {
+                nombre: '.$request->nombre.
+                'apellido_p: '.$request->apellido_p.
+                'apellido_m: '.$request->apellido_m.
+                'fecha_nac: '.$request->fecha_nac.
+
+                'matricula: '.$request->matricula.
+                '//regimen...
+                //unidad...
+                categorie_id: '.$request->categorie_id.
+                'tarjeton_pago: '.$request->tarjeton_pago.
+
+                'estado: '.$request->estado.
+                'ciudad: '.$request->ciudad.
+                'colonia: '.$request->colonia.
+                'calle: '.$request->calle.
+                'num_ext: '.$request->num_ext.
+                'num_int: '.$request->num_int.
+                'cp: '.$request->cp.
+
+                'email: '.$request->email.
+            '}
+        }';
+
+        //SE GUARDA EL LOG
+        
+        DB::commit();
     }
+    catch(\Exception $e){
+        DB::rollBack();
+    }
+
+    if($newUser){
+        return response()->json(["status" => 200]);
+    }
+}
 
     /**
      * Display the specified resource.
