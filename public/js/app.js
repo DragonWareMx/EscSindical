@@ -5143,9 +5143,9 @@ var Usuarios = function Usuarios(_ref) {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
             className: "card darken-1 cardUsers",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
-              "class": "btn-floating btn-large waves-effect waves-light green-sind button-addUser",
+              className: "btn-floating btn-large waves-effect waves-light green-sind button-addUser",
               children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
-                "class": "material-icons",
+                className: "material-icons",
                 children: "add"
               })
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
@@ -5480,6 +5480,10 @@ function initializeCollaps() {
   var instances = M.Collapsible.init(elems);
   var elems = document.querySelectorAll('.modal');
   var instances = M.Modal.init(elems);
+  var elems = document.querySelectorAll('select');
+  var instances = M.FormSelect.init(elems);
+  var elems = document.querySelectorAll('.autocomplete');
+  var instances = M.Autocomplete.init(elems);
 }
 
 function InfoAlumno() {
@@ -5538,9 +5542,12 @@ function InfoAlumno() {
                 action: "{{ route('register') }}",
                 encType: "multipart/form-data",
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                  className: "col s12 div-form-register",
+                  className: "row div-form-register",
+                  style: {
+                    "padding": "3%"
+                  },
                   children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                    className: "col s6 div-division",
+                    className: "col s12 m6 div-division",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
                       className: "titles-sub",
                       style: {
@@ -5561,83 +5568,395 @@ function InfoAlumno() {
                         id: "txt-profile",
                         children: "Foto de perfil"
                       })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                      id: "imageUpload",
+                      type: "file",
+                      className: "form-control "
+                      /*@error('foto_perfil') is-invalid @enderror*/
+                      ,
+                      name: "foto_perfil",
+                      placeholder: "Photo"
+                      /*value="{{ old('foto_perfil') }}"*/
+                      ,
+                      accept: "image/png, image/jpeg, image/jpg, image/gif"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s12",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "nombre",
+                        type: "text",
+                        className: "validate form-control"
+                        /*@error('nombre') is-invalid @enderror*/
+                        ,
+                        name: "nombre"
+                        /*value="{{ old('nombre') }}"*/
+                        ,
+                        required: true,
+                        autoComplete: "nombre",
+                        autoFocus: true
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "nombre",
+                        children: "Nombre"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s6 input-50-re",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "apellido_paterno",
+                        type: "text",
+                        className: "validate form-control"
+                        /*@error('apellido_paterno') is-invalid @enderror*/
+                        ,
+                        name: "apellido_paterno"
+                        /*value="{{ old('apellido_paterno') }}"*/
+                        ,
+                        required: true,
+                        autoComplete: "apellido_paterno"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "apellido_paterno",
+                        children: "Apellido Paterno"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s6 input-50-re",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "apellido_materno",
+                        type: "text",
+                        className: "validate form-control"
+                        /*@error('apellido_materno') is-invalid @enderror*/
+                        ,
+                        name: "apellido_materno"
+                        /*value="{{ old('apellido_materno') }}" */
+                        ,
+                        autoComplete: "apellido_materno"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "apellido_materno",
+                        children: "Apellido Materno"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s6 input-50-re",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "fecha_nacimiento",
+                        max: "2004-01-01",
+                        type: "date",
+                        name: "fecha_nacimiento"
+                        /*value="{{ old('fecha_nacimiento') }}"*/
+                        ,
+                        required: true,
+                        autoComplete: "fecha_nacimiento"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "fecha_nacimiento",
+                        children: "Fec. Nacimiento"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s6 input-50-re",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("select", {
+                        id: "sexo",
+                        name: "sexo",
+                        required: true,
+                        autoComplete: "sexo",
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("option", {
+                          value: "Femenino"
+                          /*{{ old('sexo') == 'Femenino' ? 'selected' : '' }}*/
+                          ,
+                          children: "Femenino"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("option", {
+                          value: "Masculino"
+                          /*{{ old('sexo') == 'Masculino' ? 'selected' : '' }}*/
+                          ,
+                          children: "Masculino"
+                        })]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        children: "Sexo"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+                      className: "titles-sub",
+                      style: {
+                        "marginLeft": "3%"
+                      },
+                      children: "INFORMACI\xD3N INSTITUCIONAL"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s12",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "matricula",
+                        type: "text",
+                        className: "validate",
+                        name: "matricula"
+                        /*value="{{ old('matricula') }}"*/
+                        ,
+                        required: true,
+                        autoComplete: "matricula"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "matricula",
+                        children: "Matr\xEDcula"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s12",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("select", {
+                        id: "regimen",
+                        name: "regimen",
+                        required: true,
+                        autoComplete: "regimen",
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("option", {
+                          value: "",
+                          disabled: true,
+                          selected: true,
+                          children: "Selecciona una opci\xF3n"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("option", {
+                          value: "1"
+                          /*{{ old('regimen') == 1 ? 'selected' : '' }}*/
+                          ,
+                          children: "Ordinario"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("option", {
+                          value: "2"
+                          /*{{ old('regimen') == 2 ? 'selected' : '' }}*/
+                          ,
+                          children: "Bienestar"
+                        })]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        children: "Regimen"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s12",
+                      style: {
+                        "marginTop": "15px"
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("select", {
+                        id: "unidad",
+                        name: "unidad",
+                        required: true,
+                        autoComplete: "unidad",
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("option", {
+                          value: "",
+                          disabled: true,
+                          selected: true,
+                          children: "Selecciona una opci\xF3n"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("option", {
+                          value: "1"
+                          /*{{ old('unidad') == 1 ? 'selected' : '' }}*/
+                          ,
+                          children: "UMF 75 - Morelia c/UMAA"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("option", {
+                          value: "2"
+                          /*{{ old('unidad') == 2 ? 'selected' : '' }}*/
+                          ,
+                          children: "UMF 80 - Morelia"
+                        })]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        children: "Unidad"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s12",
+                      style: {
+                        "marginTop": "15px"
+                      },
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        type: "text",
+                        id: "autocomplete-input",
+                        name: "categoria",
+                        required: true,
+                        autoComplete: "categoria",
+                        className: "autocomplete"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "autocomplete-input",
+                        children: "Categor\xEDa"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("p", {
+                      style: {
+                        "marginTop": "0px",
+                        "fontFamily": "Montserrat",
+                        "fontSize": "13px"
+                      },
+                      children: ["Tarjet\xF3n de pago ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("a", {
+                        children: "NombreDelArchivo.pdf"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+                        style: {
+                          "color": "#7E7E7E"
+                        },
+                        className: "material-icons tiny",
+                        children: "description"
+                      })]
                     })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
-                    id: "imageUpload",
-                    type: "file",
-                    className: "form-control "
-                    /*@error('foto_perfil') is-invalid @enderror*/
-                    ,
-                    name: "foto_perfil",
-                    placeholder: "Photo"
-                    /*value="{{ old('foto_perfil') }}"*/
-                    ,
-                    accept: "image/png, image/jpeg, image/jpg, image/gif"
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                    className: "input-field col s12",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
-                      id: "nombre",
-                      type: "text",
-                      className: "validate form-control"
-                      /*@error('nombre') is-invalid @enderror*/
-                      ,
-                      name: "nombre"
-                      /*value="{{ old('nombre') }}"*/
-                      ,
-                      required: true,
-                      autoComplete: "nombre",
-                      autoFocus: true
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
-                      htmlFor: "nombre",
-                      children: "Nombre"
-                    })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                    className: "input-field col s6 input-50-re",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
-                      id: "apellido_paterno",
-                      type: "text",
-                      className: "validate form-control"
-                      /*@error('apellido_paterno') is-invalid @enderror*/
-                      ,
-                      name: "apellido_paterno"
-                      /*value="{{ old('apellido_paterno') }}"*/
-                      ,
-                      required: true,
-                      autoComplete: "apellido_paterno"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
-                      htmlFor: "apellido_paterno",
-                      children: "Apellido Paterno"
-                    })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                    className: "input-field col s6 input-50-re",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
-                      id: "apellido_materno",
-                      type: "text",
-                      className: "validate form-control"
-                      /*@error('apellido_materno') is-invalid @enderror*/
-                      ,
-                      name: "apellido_materno"
-                      /*value="{{ old('apellido_materno') }}" */
-                      ,
-                      autoComplete: "apellido_materno"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
-                      htmlFor: "apellido_materno",
-                      children: "Apellido Materno"
-                    })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-                    className: "input-field col s6 input-50-re",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
-                      id: "fecha_nacimiento",
-                      max: "2004-01-01",
-                      type: "date",
-                      name: "fecha_nacimiento"
-                      /*value="{{ old('fecha_nacimiento') }}"*/
-                      ,
-                      required: true,
-                      autoComplete: "fecha_nacimiento"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
-                      htmlFor: "fecha_nacimiento",
-                      children: "Fec. Nacimiento"
+                    className: "col s12 m6 div-division",
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+                      className: "titles-sub",
+                      style: {
+                        "marginLeft": "3%"
+                      },
+                      children: "DIRECCI\xD3N"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s6 ",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "estado",
+                        type: "text",
+                        className: "validate",
+                        name: "estado"
+                        /*value="{{ old('estado') }}"*/
+                        ,
+                        required: true,
+                        autoComplete: "estado"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "estado",
+                        children: "Estado"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s6 input-50-re",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "ciudad",
+                        type: "text",
+                        className: "validate",
+                        name: "ciudad"
+                        /*value="{{ old('ciudad') }}"*/
+                        ,
+                        required: true,
+                        autoComplete: "ciudad"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "ciudad",
+                        children: "Ciudad"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s12 input-50-re",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "colonia",
+                        type: "text",
+                        className: "validate",
+                        name: "colonia"
+                        /*value="{{ old('colonia') }}"*/
+                        ,
+                        required: true,
+                        autoComplete: "colonia"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "colonia",
+                        children: "Colonia"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s12 input-50-re",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "calle",
+                        type: "text",
+                        className: "validate",
+                        name: "calle"
+                        /*value="{{ old('calle') }}"*/
+                        ,
+                        required: true,
+                        autoComplete: "calle"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "calle",
+                        children: "Calle"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s6 input-50-re",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "codigo_postal",
+                        min: "0",
+                        step: "1",
+                        type: "number",
+                        className: "validate",
+                        name: "codigo_postal"
+                        /*value="{{ old('codigo_postal') }}"*/
+                        ,
+                        required: true,
+                        autoComplete: "codigo_postal"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "codigo_postal",
+                        children: "C\xF3digo Postal"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s6 input-50-re",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "numero",
+                        min: "0",
+                        step: "1",
+                        type: "number",
+                        className: "validate",
+                        name: "numero"
+                        /*value="{{ old('numero') }}"*/
+                        ,
+                        required: true,
+                        autoComplete: "numero"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "numero",
+                        children: "No. Exterior"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s6 input-50-re",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "numero_interior",
+                        min: "0",
+                        step: "1",
+                        type: "number",
+                        className: "validate",
+                        name: "numero_interior"
+                        /*value="{{ old('numero_interior') }}"*/
+                        ,
+                        autoComplete: "numero_interior"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "numero_interior",
+                        children: "No. Interior"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+                      className: "titles-sub",
+                      style: {
+                        "marginLeft": "3%"
+                      },
+                      children: "CUENTA"
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s12",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "email",
+                        type: "email",
+                        className: "validate form-control"
+                        /*@error('email') is-invalid @enderror*/
+                        ,
+                        name: "email"
+                        /*value="{{ old('email') }}"*/
+                        ,
+                        required: true,
+                        autoComplete: "email"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "email",
+                        children: "Correo electr\xF3nico"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "input-field col s12 input-50-re",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+                        id: "fecha_registro",
+                        type: "text",
+                        className: "validate",
+                        name: "fecha_registro"
+                        /*value="{{ old('ciudad') }}"*/
+                        ,
+                        required: true,
+                        autoComplete: "fecha_registro"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
+                        htmlFor: "fecha_registro",
+                        children: "Fecha de Registro"
+                      })]
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                      className: "row",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                        type: "button",
+                        className: "col s1 center-align offset-s9",
+                        style: {
+                          "border": "none",
+                          "backgroundColor": "transparent",
+                          "color": "#515B60"
+                        },
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+                          className: "material-icons",
+                          children: "edit"
+                        })
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
+                        type: "button",
+                        className: "col s1 center-align",
+                        style: {
+                          "border": "none",
+                          "backgroundColor": "transparent",
+                          "color": "#515B60"
+                        },
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
+                          className: "material-icons",
+                          children: "delete"
+                        })
+                      })]
                     })]
                   })]
                 })
