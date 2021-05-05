@@ -37,13 +37,32 @@ const Perfil = ({ }) => {
                                     <div className="row">
                                         <div className="col s6 red">
                                             INFORMACIÓN PERSONAL
+                                            <div>
+                                                Fecha de Nacimiento: 
+                                            </div>
+                                            <div>
+                                                Sexo:
+                                            </div>
                                         </div>
                                         <div className="col s6 blue">
                                             INFORMACIÓN INSTITUCIONAL
+                                            <div>
+                                                Matrícula:
+                                            </div>
+                                            <div>
+                                                Regimen:
+                                            </div>
+                                            <div>
+                                                Unidad: 
+                                            </div>
+                                            <div>
+                                                Categoría:
+                                            </div>
                                         </div>
                                         <div className="col s6 teal">
                                             DIRECCIÓN
                                         </div>
+                                        
                                         <div className="col s6 pink">
                                             Aquí va el botón
                                         </div>
