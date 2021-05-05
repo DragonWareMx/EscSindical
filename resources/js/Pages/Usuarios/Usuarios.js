@@ -9,7 +9,7 @@ import Skeleton from 'react-loading-skeleton';
 import '../../styles/usersStyle.css'
 import route from 'ziggy-js';
 
-const Usuarios = ({ users }) => {
+const Usuarios = ({ users, user }) => {
     function handleChange(e) {
         const key = e.target.id;
         const value = e.target.value
@@ -54,11 +54,13 @@ const Usuarios = ({ users }) => {
         });
     }
 
+    //obtiene el usuario y abre el modal
     function getUser(id){
         Inertia.reload(
-            { only: ['user'], 
+            { 
+                only: ['user'], 
                 data: {user: id},
-                onSuccess: () => {
+                onSuccess: ({props}) => {
                     const elem = document.getElementById('modalInfoAlumno');
                     const instance = M.Modal.init(elem, {dismissible: false});
                     instance.open();
@@ -135,7 +137,7 @@ const Usuarios = ({ users }) => {
                 </div>
             </div>
             <FlotanteAyuda />
-            <InfoAlumno />
+            <InfoAlumno user = {user}/>
         </>
     )
 }

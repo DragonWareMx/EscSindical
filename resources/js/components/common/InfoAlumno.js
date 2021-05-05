@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
 //import circlesImg from '../images/circles.png'
 //import emptyImg from '../images/empty.png'
@@ -21,6 +21,7 @@ export default function InfoAlumno({user}) {
     useEffect(() => {
         initializeCollaps();
     }, [])
+
     return (
         <div>
             <div className="fixed-action-btn" style={{"marginRight":"70px"}}>
@@ -53,7 +54,7 @@ export default function InfoAlumno({user}) {
                                                 @enderror */}
 
                                             <div className="input-field col s12">
-                                                <input  id="nombre" type="text" className="validate form-control" /*@error('nombre') is-invalid @enderror*/ name="nombre" /*value="{{ old('nombre') }}"*/ required autoComplete="nombre" autoFocus/>
+                                                <input  id="nombre" type="text" className="validate form-control" /*@error('nombre') is-invalid @enderror*/ name="nombre" /*value="{{ old('nombre') }}"*/ required autoComplete="nombre" value={user==null ? "" : user.nombre} autoFocus/>
                                                 <label htmlFor="nombre">Nombre</label>
                                                 {/* @error('nombre')
                                                     <span class="invalid-feedback" role="alert" style="margin-bottom:12px;">
