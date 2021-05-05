@@ -23,11 +23,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Usuarios/Usuarios', ['users' => fn () => User::with('roles', 'categorie')->get()]);
+        return Inertia::render('Usuarios/Usuarios', ['users' => fn () => User::with('roles', 'categorie')->paginate(20)]);
     }
 
     public function ejemplo()
     {
+        $users = User::factory()->count(80)->create();
         return Inertia::render('Ejemplo');
     }
 

@@ -66,13 +66,6 @@ const Usuarios = ({ users }) => {
     //booleano que indica si la pagina ya cargo
     const [loading, setLoading] = useState(false)
 
-    // useEffect(() => {
-    //     Inertia.reload({
-    //         only: ['users'],
-    //         onSuccess: () => {setLoading(true)}
-    //     })
-    // }, [])
-    console.log(users);
     //si la pagina esta cargando muestra el esqueleto, sino muestra el contenido
     if (loading) {
         return (loader())
@@ -111,10 +104,10 @@ const Usuarios = ({ users }) => {
                                     </thead>
 
                                     <tbody>
-                                        {users && users.map(user => (
+                                        {users.data.length > 0 && users.data.map(user => (
                                             <tr key={user.id}>
                                                 <td>{user.matricula}</td>
-                                                <td>{user.roles['0'].name}</td>
+                                                <td>{/*user.roles['0'].name*/}</td>
                                                 <td>{user.nombre} {user.apellido_p} {user.apellido_m}</td>
                                                 <td>UMF80 - Morelia</td>
                                                 <td>{user.categorie.nombre}</td>
@@ -140,7 +133,7 @@ const Usuarios = ({ users }) => {
                                 </form> */}
                                 <div className="row">
                                     <div className="col s12 center-align">
-                                        <Paginacion />
+                                        <Paginacion links={users.links}/>
                                     </div>
                                 </div>
                             </div>
