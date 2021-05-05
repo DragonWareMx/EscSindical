@@ -83,6 +83,7 @@ const Usuarios = ({ users }) => {
                 <div className="row">
                     <div className="col s12">
                         <div className="card darken-1 cardUsers">
+                            <a class="btn-floating btn-large waves-effect waves-light green-sind button-addUser"><i class="material-icons">add</i></a>
                             <div className="card-content">
                                 <span className="card-title">Usuarios</span>
                                 <nav className="searchUsers">
@@ -137,11 +138,15 @@ const Usuarios = ({ users }) => {
                                     <input id="email" value={values.email} onChange={handleChange} />
                                     <button type="submit">Submit</button>
                                 </form> */}
+                                <div className="row">
+                                    <div className="col s12 center-align">
+                                        <Paginacion />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <Paginacion />
                 <FlotanteAyuda />
             </>
         )
