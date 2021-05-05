@@ -12,7 +12,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     /* align-content: space-between; */
-    align-items: center;
+    align-items: center !important;
   }
 
   .divright{
@@ -208,7 +208,26 @@ max-width:100%;height:auto;
   }
 }
 
+@media(min-width:1300px){
+  .form-login{
+    margin-top: -1px !important;
+    margin-bottom: auto !important;
+  }
+}
+
 .form-login{
-  margin-top: 0px !important;
+  margin-top: 0px;
   margin-bottom: auto !important;
+}
+
+.form-reset .row{
+  margin-bottom: 0px;
+}
+
+.form-reset .input-field{
+  margin-top: 2.5vh !important;
+}
+
+.form-reset{
+  margin-top: 10px;
 }

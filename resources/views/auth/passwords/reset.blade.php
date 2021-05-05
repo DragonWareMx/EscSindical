@@ -31,7 +31,8 @@
                 <div class="col s12 m12 l12" style="display: block">
                     <ul class="tabs">
                         <li class="tab col xl6 l6 m6"><a href="{{ route('login') }}">Ingresar</a></li>
-                        <li class="tab col xl6 l6 m6"><a class="" href="#test2">Registrarse</a></li>
+                        <li class="tab col xl6 l6 m6"><a class="" href="{{ route('register') }}">Registrarse</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -49,12 +50,21 @@
             </div>
         </div>
         <div class="divleft col s12 m9 l8">
-            <div class="col s12 head-login">
+            <div class="col hide-on-med-and-up s12 head-login">
+                <div class="left">
+                    <div class="titulo1">Escuela Sindical</div>
+                    <div class="titulo2">Sección XX Michoacán</div>
+                </div>
+                <div class="right">
+                    <img src="{{ asset('img/imagenes/LogoSeccional.png') }}" alt="Escuela Sindical" width="121px">
+                </div>
+            </div>
+            <div class="col s12 hide-on-small-only head-login">
                 <div class="left">
                     <div class="titulo2">RECUPERAR CONTRASEÑA</div>
                 </div>
             </div>
-            <div class="form-login col s12">
+            <div class="form-login form-reset col s12">
                 <h1>RECUPERAR CONTRASEÑA</h1>
                 <h2 style="font-size: 16px">Ingresa tu nueva contraseña</h2>
                 <form class="col s12" method="POST" action="{{ route('password.update') }}">
@@ -87,7 +97,7 @@
                             <label for="password-confirm">Confirmar Contraseña</label>
                         </div>
                     </div>
-
+                    <a class="link-forget" href="{{ route('login') }}">Iniciar Sesión</a>
                     <div class="col s12 right-align">
                         <button class="btn waves-effect waves-teal btn-login" type="submit" name="action"
                             style="height: 54px">Cambiar contraseña
