@@ -110,7 +110,7 @@ const Usuarios = ({ users }) => {
                                     </thead>
 
                                     <tbody>
-                                        {users.map(user => (
+                                        {users && users.map(user => (
                                             <tr key={user.id}>
                                                 <td>{user.matricula}</td>
                                                 <td>{user.roles['0'].name}</td>
