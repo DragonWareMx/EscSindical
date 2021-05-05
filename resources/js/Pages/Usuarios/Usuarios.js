@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout';
 import { Inertia } from '@inertiajs/inertia'
 import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
+import InfoAlumno from '../../components/common/InfoAlumno';
 import Skeleton from 'react-loading-skeleton';
 
 import '../../styles/usersStyle.css'
@@ -148,6 +149,7 @@ const Usuarios = ({ users }) => {
                     </div>
                 </div>
                 <FlotanteAyuda />
+                <InfoAlumno />
             </>
         )
     }
