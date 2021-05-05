@@ -17,7 +17,7 @@ function initializeCollaps() {
     var instances = M.Autocomplete.init(elems);
 }
 
-export default function InfoAlumno() {
+export default function InfoAlumno({user}) {
     useEffect(() => {
         initializeCollaps();
     }, [])
@@ -61,7 +61,7 @@ export default function InfoAlumno() {
                                                     </span>
                                                 @enderror */}
                                             </div>
-                                            <div className="input-field col s6 input-50-re">
+                                            <div className="input-field col s12 input-50-re">
                                                 <input  id="apellido_paterno" type="text" className="validate form-control" /*@error('apellido_paterno') is-invalid @enderror*/ name="apellido_paterno" /*value="{{ old('apellido_paterno') }}"*/ required autoComplete="apellido_paterno"/>
                                                 <label htmlFor="apellido_paterno">Apellido Paterno</label>
                                                 {/* @error('apellido_paterno')
@@ -70,7 +70,7 @@ export default function InfoAlumno() {
                                                     </span>
                                                 @enderror */}
                                             </div>
-                                            <div className="input-field col s6 input-50-re">
+                                            <div className="input-field col s12 input-50-re">
                                                 <input  id="apellido_materno" type="text" className="validate form-control" /*@error('apellido_materno') is-invalid @enderror*/ name="apellido_materno" /*value="{{ old('apellido_materno') }}" */ autoComplete="apellido_materno"/>
                                                 <label htmlFor="apellido_materno">Apellido Materno</label>
                                                 {/* @error('apellido_materno')
@@ -79,11 +79,11 @@ export default function InfoAlumno() {
                                                     </span>
                                                 @enderror */}
                                             </div>
-                                            <div className="input-field col s6 input-50-re">
+                                            <div className="input-field col s12 input-50-re">
                                                 <input id="fecha_nacimiento" max="2004-01-01" type="date" name="fecha_nacimiento" /*value="{{ old('fecha_nacimiento') }}"*/ required autoComplete="fecha_nacimiento"/>
                                                 <label htmlFor="fecha_nacimiento">Fec. Nacimiento</label>
                                             </div>
-                                            <div className="input-field col s6 input-50-re">
+                                            <div className="input-field col s12 input-50-re">
                                                 <select id="sexo" name="sexo" required autoComplete="sexo">
                                                     <option value="Femenino" /*{{ old('sexo') == 'Femenino' ? 'selected' : '' }}*/>Femenino</option>
                                                     <option value="Masculino" /*{{ old('sexo') == 'Masculino' ? 'selected' : '' }}*/>Masculino</option>
@@ -107,7 +107,7 @@ export default function InfoAlumno() {
                                                 <label>Regimen</label>
                                             </div>
 
-                                            <div className="input-field col s12" style={{"marginTop":"15px"}}>
+                                            <div className="input-field col s12" style={{"marginTop":"5px"}}>
                                                 <select id="unidad" name="unidad" required autoComplete="unidad">
                                                     <option value="" disabled selected>Selecciona una opción</option>
                                                     <option value="1" /*{{ old('unidad') == 1 ? 'selected' : '' }}*/>UMF 75 - Morelia c/UMAA</option>
@@ -116,7 +116,7 @@ export default function InfoAlumno() {
                                                 <label>Unidad</label>
                                             </div>
 
-                                            <div className="input-field col s12" style={{"marginTop":"15px"}}>
+                                            <div className="input-field col s12">
                                                 <input type="text" id="autocomplete-input" name="categoria" required autoComplete="categoria" className="autocomplete"/>
                                                 <label htmlFor="autocomplete-input">Categoría</label>
                                             </div>
@@ -179,8 +179,8 @@ export default function InfoAlumno() {
                                             </div>
 
                                             <div className="row">
-                                                <button type="button" className="col s1 center-align offset-s9" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}><i className="material-icons">edit</i></button>
-                                                <button type="button" className="col s1 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}><i className="material-icons">delete</i></button>
+                                                <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}><i className="material-icons">edit</i></button>
+                                                <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}><i className="material-icons">delete</i></button>
                                             </div>
                                         </div>
                                     </div>
