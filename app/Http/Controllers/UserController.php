@@ -19,11 +19,17 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Usuarios/Usuarios', ['users' => fn () => User::with('roles', 'categorie')->paginate(20)]);
+        return Inertia::render('Usuarios/Usuarios', [
+            'users' => fn () => User::with('roles', 'categorie')
+                                    ->when($request->search, function($query, $search){
+                                        $query->where('nombre','LIKE','%'.$search.'%');
+                                    })
+                                    ->paginate(20)]);
     }
 
     public function ejemplo()
