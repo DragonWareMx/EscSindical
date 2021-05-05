@@ -3,7 +3,7 @@ import ReactDom from 'react-dom'
 //import circlesImg from '../images/circles.png'
 //import emptyImg from '../images/empty.png'
 //import './styles/Card.css'
-import '/css/modal.css'
+import '/css/flotanteAyuda.css'
 
 
 function initializeModals() {
@@ -18,7 +18,7 @@ export default function FlotanteAyuda() {
     return (
         <div>
             <div className="fixed-action-btn">
-                <a className="btn-floating btn-large waves-effect waves-light green-sind modal-trigger" href="#modalHelp"><i class="material-icons">help_outline</i></a>
+                <a className="btn-floating btn-large waves-effect waves-light green-sind modal-trigger" href="#modalHelp"><i className="material-icons">help_outline</i></a>
             </div>
             <div id="modalHelp" className="modal little-modal">
                 <div className="modal-content">
@@ -31,26 +31,26 @@ export default function FlotanteAyuda() {
                         <div className="col s12 modal-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod </div>
                         <div className="row" style={{ "margin": "0px" }}>
                             <div className="col s1">
-                                <i class="material-icons" style={{ "color": "#656565", "margin-top": "12px" }}>language</i>
+                                <i className="material-icons" style={{ "color": "#656565", "marginTop": "12px" }}>language</i>
                             </div>
                             <div className="col s11">
-                                <div className="" style={{ "color": "#5C5C5C", "font-size": "15px", "margin-top": "12px", "padding-left": "10px" }}>www.sindicatoxx.com</div>
+                                <div className="" style={{ "color": "#5C5C5C", "fontSize": "15px", "marginTop": "12px", "paddingLeft": "10px" }}>www.sindicatoxx.com</div>
                             </div>
                         </div>
                         <div className="row" style={{ "margin": "0px" }}>
                             <div className="col s1">
-                                <i class="material-icons" style={{ "color": "#656565", "margin-top": "12px" }}>mail_outline</i>
+                                <i className="material-icons" style={{ "color": "#656565", "marginTop": "12px" }}>mail_outline</i>
                             </div>
                             <div className="col s11">
-                                <div className="" style={{ "color": "#5C5C5C", "font-size": "15px", "margin-top": "12px", "padding-left": "10px" }}>escuelasindical@imss.com</div>
+                                <div className="" style={{ "color": "#5C5C5C", "fontSize": "15px", "marginTop": "12px", "paddingLeft": "10px" }}>escuelasindical@imss.com</div>
                             </div>
                         </div>
                         <div className="row" style={{ "margin": "0px" }}>
                             <div className="col s1">
-                                <i class="material-icons" style={{ "color": "#656565", "margin-top": "12px" }}>call</i>
+                                <i className="material-icons" style={{ "color": "#656565", "marginTop": "12px" }}>call</i>
                             </div>
                             <div className="col s11">
-                                <div className="" style={{ "color": "#5C5C5C", "font-size": "15px", "margin-top": "12px", "padding-left": "10px" }}>44 44 44 44 44</div>
+                                <div className="" style={{ "color": "#5C5C5C", "fontSize": "15px", "marginTop": "12px", "paddingLeft": "10px" }}>44 44 44 44 44</div>
                             </div>
                         </div>
                     </div>
