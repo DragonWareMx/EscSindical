@@ -56,3 +56,9 @@
     letter-spacing: 0.05em;
     color: #1E1E1E;
 }
+
+.userTable button{
+    border: 0px;
+    background-color: transparent;
+    cursor: pointer;
+}

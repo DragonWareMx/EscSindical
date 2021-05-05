@@ -38,8 +38,14 @@ class PermissionSeeder extends Seeder
 
 
         $user1 = User::find(1);
+        $user2 = User::find(2);
+        $user3 = User::find(3);
+        $user4 = User::find(4);
 
         $user1->roles()->sync([$rolAdmin->id]);
+        $user2->roles()->sync([$rolAdmin->id]);
+        $user3->roles()->sync([$rolPonente->id]);
+        $user4->roles()->sync([$rolAlumno->id]);
 
         //permisos
         $permission_all = [];

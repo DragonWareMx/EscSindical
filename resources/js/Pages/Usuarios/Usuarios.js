@@ -72,7 +72,7 @@ const Usuarios = ({ users }) => {
     //         onSuccess: () => {setLoading(true)}
     //     })
     // }, [])
-
+    console.log(users);
     //si la pagina esta cargando muestra el esqueleto, sino muestra el contenido
     if (loading) {
         return (loader())
@@ -96,7 +96,7 @@ const Usuarios = ({ users }) => {
                                         </form>
                                     </div>
                                 </nav>
-                                <table className="striped userTable">
+                                <table className="striped userTable responsive-table">
                                     <thead>
                                         <tr>
                                             <th>MATRÍCULA</th>
@@ -112,8 +112,13 @@ const Usuarios = ({ users }) => {
                                     <tbody>
                                         {users.map(user => (
                                             <tr key={user.id}>
-                                                <td>{user.nombre}</td>
-                                                <td>{user.email}</td>
+                                                <td>{user.matricula}</td>
+                                                <td>{user.roles['0'].name}</td>
+                                                <td>{user.nombre} {user.apellido_p} {user.apellido_m}</td>
+                                                <td>UMF80 - Morelia</td>
+                                                <td>{user.categorie.nombre}</td>
+                                                <td><button><i className="material-icons">edit</i> </button></td>
+                                                <td><button><i className="material-icons">delete</i> </button></td>
                                                 {/*<td>
                                             <InertiaLink href={`/users/${user.id}/edit`}>Edit</InertiaLink>
                                         </td>*/}
