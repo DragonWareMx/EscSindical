@@ -30,8 +30,9 @@
             <div class="row" style="width: 100%">
                 <div class="col s12 m12 l12" style="display: block">
                     <ul class="tabs">
-                        <li class="tab col xl6 l6 m6"><a href="{{ route('login') }}">Ingresar</a></li>
-                        <li class="tab col xl6 l6 m6"><a class="" href="{{ route('register') }}">Registrarse</a></li>
+                        <li class="tab col xl6 l6 m6"><a href="{{ route('login') }}" target="_self">Ingresar</a></li>
+                        <li class="tab col xl6 l6 m6"><a class="" href="{{ route('register') }}"
+                                target="_self">Registrarse</a></li>
                     </ul>
                 </div>
             </div>
@@ -83,7 +84,7 @@
                             @endif
                         </div>
                     </div>
-                    <a class="link-forget" href="{{ route('login') }}">Iniciar Sesión</a>
+                    <a class="link-forget hide-on-med-and-up" href="{{ route('login') }}">Iniciar Sesión</a>
                     <div class="col s12 right-align">
                         <button class="btn waves-effect waves-teal btn-login" type="submit" name="action"
                             style="height: 54px">Enviar correo
