@@ -1,0 +1,70 @@
+.cardUsers{
+    width: 90% !important;
+}
+
+.cardUsers .card-title{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 21px;
+
+    color: #134E39;
+}
+
+.searchUsers{
+    height: 40px !important;
+    background-color: rgba(228, 228, 228, 0.14);
+    border-radius: 2px;
+
+    font-size: 14px;
+    color: #134E39;
+
+    margin-top: 15px;
+}
+
+.searchUsers i{
+    margin-top: -10px;
+    color: #134E39;
+}
+
+.searchUsers .input-field label i{
+    color: #134E39;
+}
+
+.userTable{
+    margin-top: 15px;
+}
+
+.userTable th{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+
+    color: #6C6C6C;
+}
+
+.userTable td{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+
+    letter-spacing: 0.05em;
+    color: #1E1E1E;
+}
+
+.userTable tbody button{
+    border: 0px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.button-addUser{
+    position: absolute;
+    right: 25px;
+    top: -30px;
+}

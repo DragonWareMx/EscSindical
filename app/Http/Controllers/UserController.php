@@ -15,7 +15,7 @@ class UserController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -23,9 +23,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-
-        return Inertia::render('Usuarios/Usuarios', ['users' => $users]);
+        return Inertia::render('Usuarios/Usuarios', ['users' => fn () => User::with('roles', 'categorie')->get()]);
     }
 
     public function ejemplo()
@@ -74,82 +72,81 @@ class UserController extends Controller
         //COMIENZA LA TRANSACCION
         DB::beginTransaction();
 
-        try{
-        //SE CREA EL NUEVO USUARIO
-        $newUser = new User;
-        
-        //---informacion personal---
-        $newUser->foto = $request->foto;
-        $newUser->nombre = $request->nombre;
-        $newUser->apellido_p = $request->apellido_p;
-        $newUser->apellido_m = $request->apellido_m;
-        $newUser->fecha_nac = $request->fecha_nac;
+        try {
+            //SE CREA EL NUEVO USUARIO
+            $newUser = new User;
 
-        //---informacion institucional---
-        $newUser->matricula = $request->matricula;
-        //regimen...
-        //unidad...
-        $newUser->categorie_id = $request->categorie_id;
-        $newUser->tarjeton_pago = $request->tarjeton_pago;
+            //---informacion personal---
+            $newUser->foto = $request->foto;
+            $newUser->nombre = $request->nombre;
+            $newUser->apellido_p = $request->apellido_p;
+            $newUser->apellido_m = $request->apellido_m;
+            $newUser->fecha_nac = $request->fecha_nac;
 
-        //---direccion---
-        $newUser->estado = $request->estado;
-        $newUser->ciudad = $request->ciudad;
-        $newUser->colonia = $request->colonia;
-        $newUser->calle = $request->calle;
-        $newUser->num_ext = $request->num_ext;
-        $newUser->num_int = $request->num_int;
-        $newUser->cp = $request->cp;
+            //---informacion institucional---
+            $newUser->matricula = $request->matricula;
+            //regimen...
+            //unidad...
+            $newUser->categorie_id = $request->categorie_id;
+            $newUser->tarjeton_pago = $request->tarjeton_pago;
 
-        //---cuenta---
-        $newUser->email = $request->email;
+            //---direccion---
+            $newUser->estado = $request->estado;
+            $newUser->ciudad = $request->ciudad;
+            $newUser->colonia = $request->colonia;
+            $newUser->calle = $request->calle;
+            $newUser->num_ext = $request->num_ext;
+            $newUser->num_int = $request->num_int;
+            $newUser->cp = $request->cp;
 
-        //SE GUARDA EL NUEVO USUARIO
-        $newUser->save();
+            //---cuenta---
+            $newUser->email = $request->email;
 
-        //SE CREA EL LOG
-        $newLog = new Log;
+            //SE GUARDA EL NUEVO USUARIO
+            $newUser->save();
 
-        $newLog->categoria = 'create';
-        $newLog->user_id = Auth::id();
-        $newLog->accion = 
-        '{
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'create';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+                '{
             users: {
-                nombre: '.$request->nombre.
-                'apellido_p: '.$request->apellido_p.
-                'apellido_m: '.$request->apellido_m.
-                'fecha_nac: '.$request->fecha_nac.
+                nombre: ' . $request->nombre .
+                'apellido_p: ' . $request->apellido_p .
+                'apellido_m: ' . $request->apellido_m .
+                'fecha_nac: ' . $request->fecha_nac .
 
-                'matricula: '.$request->matricula.
+                'matricula: ' . $request->matricula .
                 '//regimen...
                 //unidad...
-                categorie_id: '.$request->categorie_id.
-                'tarjeton_pago: '.$request->tarjeton_pago.
+                categorie_id: ' . $request->categorie_id .
+                'tarjeton_pago: ' . $request->tarjeton_pago .
 
-                'estado: '.$request->estado.
-                'ciudad: '.$request->ciudad.
-                'colonia: '.$request->colonia.
-                'calle: '.$request->calle.
-                'num_ext: '.$request->num_ext.
-                'num_int: '.$request->num_int.
-                'cp: '.$request->cp.
+                'estado: ' . $request->estado .
+                'ciudad: ' . $request->ciudad .
+                'colonia: ' . $request->colonia .
+                'calle: ' . $request->calle .
+                'num_ext: ' . $request->num_ext .
+                'num_int: ' . $request->num_int .
+                'cp: ' . $request->cp .
 
-                'email: '.$request->email.
-            '}
+                'email: ' . $request->email .
+                '}
         }';
 
-        //SE GUARDA EL LOG
-        
-        DB::commit();
-    }
-    catch(\Exception $e){
-        DB::rollBack();
-    }
+            //SE GUARDA EL LOG
 
-    if($newUser){
-        return response()->json(["status" => 200]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+        }
+
+        if ($newUser) {
+            return response()->json(["status" => 200]);
+        }
     }
-}
 
     /**
      * Display the specified resource.
@@ -201,7 +198,7 @@ class UserController extends Controller
         $user->tarjeton_pago = $request->tarjeton_pago;
         $user->matricula = $request->matricula;
         $user->categorie_id = $request->categorie_id;
-        if($user -> save()){
+        if ($user->save()) {
             return response()->json(["status" => 200]);
         }
     }
@@ -215,7 +212,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = Post::find($id);
-        if($user -> delete()){
+        if ($user->delete()) {
             return response()->json(["status" => 200]);
         }
     }
