@@ -30,7 +30,12 @@ class UserController extends Controller
                                         $query->where('nombre','LIKE','%'.$search.'%');
                                     })
                                     ->paginate(20)
-                                    ->withQueryString()
+                                    ->withQueryString(),
+            'user' => Inertia::lazy(fn () => User::when($request->user, function($query, $user){
+                                                        $query->find($user);
+                                                    })
+                                                    ->first()
+                                    )
             ]);
     }
 

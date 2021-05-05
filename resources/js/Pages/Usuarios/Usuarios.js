@@ -54,6 +54,19 @@ const Usuarios = ({ users }) => {
         });
     }
 
+    function getUser(id){
+        Inertia.reload(
+            { only: ['user'], 
+                data: {user: id},
+                onSuccess: () => {
+                    const elem = document.getElementById('modalInfoAlumno');
+                    const instance = M.Modal.init(elem, {dismissible: false});
+                    instance.open();
+                }
+            }
+        )
+    }
+
     return (
         <>
             <div className="row">
@@ -86,7 +99,7 @@ const Usuarios = ({ users }) => {
 
                                 <tbody>
                                     {users.data.length > 0 && users.data.map(user => (
-                                        <tr key={user.id}>
+                                        <tr key={user.id} onClick={() => getUser(user.id)}>
                                             <td>{user.matricula}</td>
                                             <td>{/*user.roles['0'].name*/}</td>
                                             <td>{user.nombre} {user.apellido_p} {user.apellido_m}</td>
