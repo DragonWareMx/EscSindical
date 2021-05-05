@@ -11,7 +11,8 @@ body {
     padding: 4% 3% 2% 3% !important;
     display: flex;
     flex-wrap: wrap;
-    align-content: space-between;
+    /* align-content: space-between; */
+    align-items: center;
   }
 
   .divright{
@@ -35,6 +36,8 @@ body {
 
   display: flex;
   justify-content: space-between;
+  margin-top: 0px !important;
+  margin-bottom: auto !important;
 }
 
 .head-login .titulo1{
@@ -71,11 +74,15 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: auto !important;
+  margin-bottom: 0px !important;
+
 }
 
 .footer-login img{
   margin-left: 8px;
   width: 22px !important;
+  height: 18px !important;
 }
 
 .footer-login a{
@@ -127,7 +134,7 @@ body {
   background-color: #108058;
   box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .tabs{
@@ -174,4 +181,34 @@ body {
 margin-top: auto;
 margin-bottom: auto;
 max-width:100%;height:auto;
+}
+
+@media(max-width:600px){
+  .head-login .titulo1{
+    font-size: 38px;
+    line-height: 42px;
+    padding-top: 3px;
+  }
+
+  .head-login .titulo2{
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .form-login .input-field{
+    margin-top: 4vh !important;
+  }
+
+  .head-login{
+    margin-top: auto !important;
+  }
+
+  .form-login .row{
+    margin-bottom: 0px;
+  }
+}
+
+.form-login{
+  margin-top: 0px !important;
+  margin-bottom: auto !important;
 }
