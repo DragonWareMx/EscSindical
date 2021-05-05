@@ -29,7 +29,9 @@ class UserController extends Controller
                                     ->when($request->search, function($query, $search){
                                         $query->where('nombre','LIKE','%'.$search.'%');
                                     })
-                                    ->paginate(20)]);
+                                    ->paginate(20)
+                                    ->withQueryString()
+            ]);
     }
 
     public function ejemplo()

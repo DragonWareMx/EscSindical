@@ -7,6 +7,7 @@ import InfoAlumno from '../../components/common/InfoAlumno';
 import Skeleton from 'react-loading-skeleton';
 
 import '../../styles/usersStyle.css'
+import route from 'ziggy-js';
 
 const Usuarios = ({ users }) => {
     function handleChange(e) {
@@ -31,24 +32,24 @@ const Usuarios = ({ users }) => {
         email: "",
     })
 
-    const [state, setState] = useState({
-        search: '',
-        typing: false,
+    const [time, setTime] = useState({
         typingTimeout: 0
     })
 
     //realiza la búsqueda cada vez que se escribe en el input
     function changeName(event){  
-        console.log(event.target)      
-        if (state.typingTimeout) {
-           clearTimeout(state.typingTimeout);
+        console.log(event.target.value)
+        if (time.typingTimeout) {
+           clearTimeout(time.typingTimeout);
         }
-    
-        setState({
-            search: event.target.value,
-            typing: false,
+
+        let search = event.target.value
+
+        console.log(route('usuarios').url())
+
+        setTime({
             typingTimeout: setTimeout(function () {
-                Inertia.reload({data: {search: state.search}})
+                Inertia.replace(route('usuarios').url(),{data: {search: search}})
              }, 250)
         });
     }
