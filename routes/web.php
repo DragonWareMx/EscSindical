@@ -38,3 +38,7 @@ Route::get('/ejemplo',[App\Http\Controllers\UserController::class, 'ejemplo'])->
 
 //--------USUARIOS--------
 Route::get('/usuarios',[App\Http\Controllers\UserController::class, 'index'])->name('usuarios');
+
+//------CURSOS----
+Route::get('/cursos',[App\Http\Controllers\CourseController::class, 'index'])->name('cursos');
+Route::post('/storeCourse', [App\Http\Controllers\CourseController::class, 'store'])->name('storeCourse');
