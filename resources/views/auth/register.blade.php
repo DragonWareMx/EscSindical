@@ -119,7 +119,7 @@
                         </div>
 
                         <div class="input-field col s6 input-50-re">
-                            <input id="fecha_nacimiento" max="2004-01-01" type="date" class=" " name="fecha_nacimiento" value="{{ old('fecha_nacimiento') }}" required autocomplete="fecha_nacimiento">
+                            <input id="fecha_nacimiento" max="2004-01-01" type="text" class="datepicker" name="fecha_nacimiento" value="{{ old('fecha_nacimiento') }}" required autocomplete="fecha_nacimiento">
                             <label for="fecha_nacimiento">Fec. Nacimiento</label>
                         </div>
                         <div class="input-field col s6 input-50-re">
@@ -280,9 +280,39 @@
         $('select').formSelect();
     });
     // DATE PICKER
-    $(document).ready(function(){
-        $('.datepicker').datepicker();
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     var elems = document.querySelectorAll('.datepicker');
+    //     var instances = M.Datepicker.init(elems, {maxDate: new Date(2004,1,1)});
+    // });
+
+    $(function(){
+        $('#fecha_nacimiento').datepicker({
+            format: 'yyyy-mm-dd',
+            setDefaultDate: true,
+            defaultDate: new Date(2004,0,1),
+            maxDate: new Date(2004,0,1),
+            i18n: {
+                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+                weekdaysAbbrev: ['D', 'L', 'M', 'Mi', 'J', 'V', 'S'],
+                selectMonths: true,
+                selectYears: 100, // Puedes cambiarlo para mostrar más o menos años
+                today: 'Hoy',
+                clear: 'Limpiar',
+                close: 'Ok',
+                cancel: 'Cancelar',
+                labelMonthNext: 'Siguiente mes',
+                labelMonthPrev: 'Mes anterior',
+                labelMonthSelect: 'Selecciona un mes',
+                labelYearSelect: 'Selecciona un año',
+            }
+        });
     });
+
+
     // AUTOCOMPLETE
     $(document).ready(function(){
         var ct=JSON.parse('<?php echo empty($categorias) ? '{}' : json_encode($categorias) ?>');
