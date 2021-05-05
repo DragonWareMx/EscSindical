@@ -38,3 +38,6 @@ Route::get('/ejemplo',[App\Http\Controllers\UserController::class, 'ejemplo'])->
 
 //--------USUARIOS--------
 Route::get('/usuarios',[App\Http\Controllers\UserController::class, 'index'])->name('usuarios');
+
+//--------PERFIL--------
+Route::get('/perfil',[App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');
