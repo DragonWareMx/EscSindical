@@ -1,22 +1,31 @@
-import React from 'react'
-import ReactDom from 'react-dom'
+import { InertiaLink } from '@inertiajs/inertia-react'
+import React, { useEffect, useState } from 'react';
 //import circlesImg from '../images/circles.png'
 //import emptyImg from '../images/empty.png'
 //import './styles/Card.css'
 
-class Paginacion extends React.Component {
-    render() {
+const Paginacion = ({links}) => {
+    if(links.length > 3){
         return (
             <ul className="pagination">
-                <li className="disabled"><a href="#!"><i className="material-icons">chevron_left</i></a></li>
-                <li className="active"><a href="#!">1</a></li>
-                <li className="waves-effect"><a href="#!">2</a></li>
-                <li className="waves-effect"><a href="#!">3</a></li>
-                <li className="waves-effect"><a href="#!">4</a></li>
-                <li className="waves-effect"><a href="#!">5</a></li>
-                <li className="waves-effect"><a href="#!"><i className="material-icons">chevron_right</i></a></li>
+                {
+                    links.map((link, index) => (
+                        <li className={link.active ? "active" : link.url ? "waves-effect" : "disabled"} key={index}>
+                            <InertiaLink href={link.url ?? "#"} preserveState>{
+                            isNaN(link.label) ? 
+                                index == 0 ? <i className="material-icons">chevron_left</i> 
+                                : index != links.length-1 ? "..."
+                                    : <i className="material-icons">chevron_right</i> 
+                            : link.label}</InertiaLink>
+                        </li>
+                    ))
+                }
             </ul>
         )
+    }
+    else
+    {
+        return (<></>)
     }
 }
 
