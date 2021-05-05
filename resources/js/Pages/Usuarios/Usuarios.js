@@ -84,7 +84,7 @@ const Usuarios = ({ users }) => {
                 <div className="row">
                     <div className="col s12">
                         <div className="card darken-1 cardUsers">
-                            <a class="btn-floating btn-large waves-effect waves-light green-sind button-addUser"><i class="material-icons">add</i></a>
+                            <a className="btn-floating btn-large waves-effect waves-light green-sind button-addUser"><i className="material-icons">add</i></a>
                             <div className="card-content">
                                 <span className="card-title">Usuarios</span>
                                 <nav className="searchUsers">
