@@ -32,7 +32,7 @@
                 <div class="col s12 m12 l12" style="display: block">
                     <ul class="tabs">
                         <li class="tab col xl6 l6 m6"><a href="{{ route('login') }}">Ingresar</a></li>
-                        <li class="tab col xl6 l6 m6"><a class="" href="#test2">Registrarse</a></li>
+                        <li class="tab col xl6 l6 m6"><a class="" href="{{ route('register') }}">Registrarse</a></li>
                     </ul>
                 </div>
             </div>
@@ -195,15 +195,8 @@
                         </div>
 
                         <div class="input-field col s12">
-                            <input type="text" id="autocomplete-input" name="categoria" required autocomplete="categoria" class="autocomplete">
+                            <input type="text" id="autocomplete-input" name="categoria" required autocomplete="categoria" class="autocomplete" value="{{ old('categoria') }}">
                             <label for="autocomplete-input">Categoría</label>
-                            {{-- <select id="categoria" name="categoria" required autocomplete="categoria">
-                            <option value="" disabled selected>Selecciona una opción</option>
-                            @foreach ($categorias as $ct)
-                                <option value='{{$ct->id}}' {{ old('categoria') == $ct->id ? 'selected' : '' }}>{{$ct->nombre}}</option>
-                            @endforeach
-                            </select>
-                            <label>Categoría</label> --}}
                         </div>
 
                         {{-- INPUT FILE --}}
@@ -296,7 +289,7 @@
         var dataCT = {};
         for(var i in ct){
                 eval("dataCT." + ct[i]["nombre"] + " = null;");
-                alert(eval("dataCT." + ct[i]["nombre"] + " = null;"));
+                // alert(eval("dataCT." + ct[i]["nombre"] + " = null;"));
             }
         
         $('input.autocomplete').autocomplete({
