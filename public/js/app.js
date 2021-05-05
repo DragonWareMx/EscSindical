@@ -5128,8 +5128,9 @@ var Usuarios = function Usuarios(_ref) {
   //         onSuccess: () => {setLoading(true)}
   //     })
   // }, [])
-  //si la pagina esta cargando muestra el esqueleto, sino muestra el contenido
 
+
+  console.log(users); //si la pagina esta cargando muestra el esqueleto, sino muestra el contenido
 
   if (loading) {
     return loader();
@@ -5139,9 +5140,15 @@ var Usuarios = function Usuarios(_ref) {
         className: "row",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
           className: "col s12",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
             className: "card darken-1 cardUsers",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("a", {
+              "class": "btn-floating btn-large waves-effect waves-light green-sind button-addUser",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
+                "class": "material-icons",
+                children: "add"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
               className: "card-content",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("span", {
                 className: "card-title",
@@ -5172,7 +5179,7 @@ var Usuarios = function Usuarios(_ref) {
                   })
                 })
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("table", {
-                className: "striped userTable",
+                className: "striped userTable responsive-table",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("thead", {
                   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("tr", {
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("th", {
@@ -5188,21 +5195,47 @@ var Usuarios = function Usuarios(_ref) {
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("th", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("th", {})]
                   })
                 }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("tbody", {
-                  children: users.map(function (user) {
+                  children: users && users.map(function (user) {
                     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("tr", {
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("td", {
-                        children: user.nombre
+                        children: user.matricula
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("td", {
-                        children: user.email
+                        children: user.roles['0'].name
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("td", {
+                        children: [user.nombre, " ", user.apellido_p, " ", user.apellido_m]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("td", {
+                        children: "UMF80 - Morelia"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("td", {
+                        children: user.categorie.nombre
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("td", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("button", {
+                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
+                            className: "material-icons",
+                            children: "edit"
+                          }), " "]
+                        })
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("td", {
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("button", {
+                          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
+                            className: "material-icons",
+                            children: "delete"
+                          }), " "]
+                        })
                       })]
                     }, user.id);
                   })
                 })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                className: "row",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                  className: "col s12 center-align",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_common_Paginacion__WEBPACK_IMPORTED_MODULE_3__.default, {})
+                })
               })]
-            })
+            })]
           })
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_common_Paginacion__WEBPACK_IMPORTED_MODULE_3__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_common_FlotanteAyuda__WEBPACK_IMPORTED_MODULE_4__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_common_InfoAlumno__WEBPACK_IMPORTED_MODULE_5__.default, {})]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_common_FlotanteAyuda__WEBPACK_IMPORTED_MODULE_4__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_common_InfoAlumno__WEBPACK_IMPORTED_MODULE_5__.default, {})]
     });
   }
 };
@@ -5230,13 +5263,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
 
 var el = document.getElementById('app');
-(0,react_dom__WEBPACK_IMPORTED_MODULE_2__.render)( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.App, {
+_inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__.Inertia.on('start', function () {
+  return console.log('se comenzo a cargar');
+});
+_inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__.Inertia.on('finish', function () {
+  return console.log('se termino de cargar');
+});
+(0,react_dom__WEBPACK_IMPORTED_MODULE_2__.render)( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_0__.App, {
   initialPage: JSON.parse(el.dataset.page),
   resolveComponent: function resolveComponent(name) {
     return __webpack_require__("./resources/js/Pages sync recursive ^\\.\\/.*$")("./".concat(name))["default"];
@@ -6410,7 +6451,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".cardUsers{\r\n    width: 90% !important;\r\n}\r\n\r\n.cardUsers .card-title{\r\n    font-family: Montserrat;\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 17px;\r\n    line-height: 21px;\r\n\r\n    color: #134E39;\r\n}\r\n\r\n.searchUsers{\r\n    height: 40px !important;\r\n    background-color: rgba(228, 228, 228, 0.14);\r\n    border-radius: 2px;\r\n\r\n    font-size: 14px;\r\n    color: #134E39;\r\n\r\n    margin-top: 15px;\r\n}\r\n\r\n.searchUsers i{\r\n    margin-top: -10px;\r\n    color: #134E39;\r\n}\r\n\r\n.searchUsers .input-field label i{\r\n    color: #134E39;\r\n}\r\n\r\n.userTable{\r\n    margin-top: 15px;\r\n}\r\n\r\n.userTable th{\r\n    font-family: Montserrat;\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 13px;\r\n    line-height: 16px;\r\n\r\n    color: #6C6C6C;\r\n}\r\n\r\n.userTable td{\r\n    font-family: Montserrat;\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n\r\n    letter-spacing: 0.05em;\r\n    color: #1E1E1E;\r\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".cardUsers{\r\n    width: 90% !important;\r\n}\r\n\r\n.cardUsers .card-title{\r\n    font-family: Montserrat;\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 17px;\r\n    line-height: 21px;\r\n\r\n    color: #134E39;\r\n}\r\n\r\n.searchUsers{\r\n    height: 40px !important;\r\n    background-color: rgba(228, 228, 228, 0.14);\r\n    border-radius: 2px;\r\n\r\n    font-size: 14px;\r\n    color: #134E39;\r\n\r\n    margin-top: 15px;\r\n}\r\n\r\n.searchUsers i{\r\n    margin-top: -10px;\r\n    color: #134E39;\r\n}\r\n\r\n.searchUsers .input-field label i{\r\n    color: #134E39;\r\n}\r\n\r\n.userTable{\r\n    margin-top: 15px;\r\n}\r\n\r\n.userTable th{\r\n    font-family: Montserrat;\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 13px;\r\n    line-height: 16px;\r\n\r\n    color: #6C6C6C;\r\n}\r\n\r\n.userTable td{\r\n    font-family: Montserrat;\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n\r\n    letter-spacing: 0.05em;\r\n    color: #1E1E1E;\r\n}\r\n\r\n.userTable tbody button{\r\n    border: 0px;\r\n    background-color: transparent;\r\n    cursor: pointer;\r\n}\r\n\r\n.button-addUser{\r\n    position: absolute;\r\n    right: 25px;\r\n    top: -30px;\r\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

@@ -36,7 +36,7 @@ class User extends Authenticatable
         'cp',
         'tarjeton_pago',
         'matricula',
-        // 'categorie_id',
+        'categorie_id',
     ];
 
     /**
@@ -101,7 +101,7 @@ class User extends Authenticatable
 
     public function categorie()
     {
-        return $this->belongsTo('App\Models\Categorie');
+        return $this->belongsTo('App\Models\Category');
     }
 
     public function grades()

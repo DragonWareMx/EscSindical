@@ -19,8 +19,5 @@ class CategorySeeder extends Seeder
             'nombre' => 'Dioses',
         ]); 
 
-        DB::table('categories')->insert([
-            'nombre' => 'Enfermera general',
-        ]); 
     }
 }
