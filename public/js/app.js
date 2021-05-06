@@ -2810,8 +2810,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Paginacion__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/common/Paginacion */ "./resources/js/components/common/Paginacion.js");
 /* harmony import */ var _components_common_FlotanteAyuda__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/common/FlotanteAyuda */ "./resources/js/components/common/FlotanteAyuda.js");
 /* harmony import */ var _styles_profileStyle_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../styles/profileStyle.css */ "./resources/js/styles/profileStyle.css");
-/* harmony import */ var _public_img_monita_jpg__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../public/img/monita.jpg */ "./public/img/monita.jpg");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _objectDestructuringEmpty(obj) { if (obj == null) throw new TypeError("Cannot destructure undefined"); }
 
 
 
@@ -2824,170 +2824,54 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Perfil = function Perfil(_ref) {
-  var user = _ref.user;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-      className: "row",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: "col s12 m4",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+  _objectDestructuringEmpty(_ref);
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      className: "row orange",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        className: "col s3",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
           className: "row",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
             className: "col s12",
-            style: {
-              "marginTop": "30px"
-            },
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
               className: "card",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
                 className: "card-content",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                  className: "row",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                    className: "col s12 center-align",
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                      className: "center-align",
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("img", {
-                        src: _public_img_monita_jpg__WEBPACK_IMPORTED_MODULE_6__.default,
-                        alt: "foto de perfil",
-                        className: "img-profile"
-                      })
-                    })
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                    className: "col s12 center-align",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                      className: "profile-txt-category",
-                      children: "Categor\xEDa"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "profile-txt-name",
-                      children: [user.nombre, " ", user.apellido_p, " ", user.apellido_m]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "profile-txt-active-since",
-                      children: ["Activo desde ", user.created_at]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "profile-txt-email truncate",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
-                        "class": "material-icons profile-icon-email",
-                        children: "mail_outline"
-                      }), user.email]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                      className: "col s12",
-                      style: {
-                        "marginTop": "15px"
-                      },
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("a", {
-                        "class": "waves-effect waves-light btn boton-verde",
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
-                          "class": "material-icons right",
-                          style: {
-                            "font-size": "18px"
-                          },
-                          children: "send"
-                        }), "Enviar Mensaje"]
-                      })
-                    })]
-                  })]
-                })
+                children: "Aqui va el nombre"
               })
             })
           })
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-        className: "col s12 m8",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        className: "col s9 purple",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
           className: "row",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
             className: "col s12",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
               className: "card",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
                 className: "card-content",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                  className: "title-section",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
                   children: "INFORMACI\xD3N PERSONAL"
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                  className: "info-section",
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
                   children: "Tu informaci\xF3n personal no ser\xE1 visible para el p\xFAblico."
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
                   className: "row",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                    className: "col s12 m6",
-                    style: {
-                      "marginTop": "15px"
-                    },
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                      className: "titles-sub",
-                      children: "INFORMACI\xD3N PERSONAL"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "info-txt-format",
-                      children: ["Fecha de Nacimiento: ", user.fecha_nac]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "info-txt-format",
-                      children: ["Sexo: ", user.sexo]
-                    })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                    className: "col s12 m6",
-                    style: {
-                      "marginTop": "15px"
-                    },
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                      className: "titles-sub",
-                      children: "INFORMACI\xD3N INSTITUCIONAL"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "info-txt-format",
-                      children: ["Matr\xEDcula: ", user.matricula]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                      className: "info-txt-format",
-                      children: "Regimen:"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                      className: "info-txt-format",
-                      children: "Unidad:"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "info-txt-format",
-                      children: ["Categor\xEDa: ", user.categorie_id]
-                    })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                    className: "col s12 m6",
-                    style: {
-                      "marginTop": "15px"
-                    },
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                      className: "titles-sub",
-                      children: "DIRECCI\xD3N"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "info-txt-format",
-                      children: ["Estado: ", user.estado]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "info-txt-format",
-                      children: ["Ciudad: ", user.ciudad]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "info-txt-format",
-                      children: ["Colonia: ", user.colonia]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "info-txt-format",
-                      children: ["Calle: ", user.calle]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "info-txt-format",
-                      children: ["No. Exterior: ", user.num_ext]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "info-txt-format",
-                      children: ["C\xF3digo Postal: ", user.cp]
-                    })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                    className: "col s12 m6 right-align",
-                    style: {
-                      "marginTop": "15px"
-                    },
-                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("a", {
-                      "class": "waves-effect waves-light btn boton-verde",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
-                        "class": "material-icons right",
-                        style: {
-                          "font-size": "18px"
-                        },
-                        children: "edit"
-                      }), "Editar"]
-                    })
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                    className: "col s6 red",
+                    children: "INFORMACI\xD3N PERSONAL"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                    className: "col s6 blue",
+                    children: "INFORMACI\xD3N INSTITUCIONAL"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                    className: "col s6 teal",
+                    children: "DIRECCI\xD3N"
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                    className: "col s6 pink",
+                    children: "Aqu\xED va el bot\xF3n"
                   })]
                 })]
               })
@@ -2995,12 +2879,12 @@ var Perfil = function Perfil(_ref) {
           })
         })
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_common_FlotanteAyuda__WEBPACK_IMPORTED_MODULE_4__.default, {})]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_components_common_FlotanteAyuda__WEBPACK_IMPORTED_MODULE_4__.default, {})]
   });
 };
 
 Perfil.layout = function (page) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_layouts_Layout__WEBPACK_IMPORTED_MODULE_1__.default, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_layouts_Layout__WEBPACK_IMPORTED_MODULE_1__.default, {
     children: page,
     title: "Escuela Sindical - Perfil",
     pageTitle: "PERFIL"
@@ -3044,12 +2928,6 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 
 
 
@@ -3067,36 +2945,12 @@ var Usuarios = function Usuarios(_ref) {
   var users = _ref.users,
       user = _ref.user;
 
-  function handleChange(e) {
-    var key = e.target.id;
-    var value = e.target.value;
-    setValues(function (values) {
-      return _objectSpread(_objectSpread({}, values), {}, _defineProperty({}, key, value));
-    });
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.post('/users', values);
-  } //valores para formulario
-
-
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-    nombre: "",
-    apellido_p: "",
-    apellido_m: "",
-    email: ""
-  }),
-      _useState2 = _slicedToArray(_useState, 2),
-      values = _useState2[0],
-      setValues = _useState2[1];
-
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
     typingTimeout: 0
   }),
-      _useState4 = _slicedToArray(_useState3, 2),
-      time = _useState4[0],
-      setTime = _useState4[1]; //realiza la búsqueda cada vez que se escribe en el input
+      _useState2 = _slicedToArray(_useState, 2),
+      time = _useState2[0],
+      setTime = _useState2[1]; //realiza la búsqueda cada vez que se escribe en el input
 
 
   function changeName(event) {
@@ -3132,6 +2986,7 @@ var Usuarios = function Usuarios(_ref) {
         var instance = M.Modal.init(elem, {
           dismissible: false
         });
+        M.updateTextFields();
         instance.open();
       }
     });
@@ -3468,6 +3323,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _css_register_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../css/register.css */ "./public/css/register.css");
 /* harmony import */ var _css_login_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../css/login.css */ "./public/css/login.css");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
  //import circlesImg from '../images/circles.png'
 //import emptyImg from '../images/empty.png'
@@ -3492,6 +3365,31 @@ function initializeCollaps() {
 
 function InfoAlumno(_ref) {
   var user = _ref.user;
+
+  function handleChange(e) {
+    var key = e.target.id;
+    var value = e.target.value;
+    setValues(function (values) {
+      return _objectSpread(_objectSpread({}, values), {}, _defineProperty({}, key, value));
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    Inertia.post('/users', values);
+  } //valores para formulario
+
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    nombre: user == null ? "" : user.nombre,
+    apellido_p: "",
+    apellido_m: "",
+    email: ""
+  }),
+      _useState2 = _slicedToArray(_useState, 2),
+      values = _useState2[0],
+      setValues = _useState2[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     initializeCollaps();
   }, []);
@@ -3592,12 +3490,11 @@ function InfoAlumno(_ref) {
                         className: "validate form-control"
                         /*@error('nombre') is-invalid @enderror*/
                         ,
-                        name: "nombre"
-                        /*value="{{ old('nombre') }}"*/
-                        ,
+                        name: "nombre",
                         required: true,
                         autoComplete: "nombre",
-                        value: user == null ? "" : user.nombre,
+                        value: values.nombre,
+                        onChange: handleChange,
                         autoFocus: true
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("label", {
                         htmlFor: "nombre",
@@ -4637,7 +4534,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "html,\r\nbody {\r\n    height: 100%;\r\n}\r\n\r\n.divleft {\r\n    background-color: #fffffF;\r\n    color: rgb(0, 0, 0);\r\n    min-height: 100vh !important;\r\n    text-align: left;\r\n    padding: 4% 3% 2% 3% !important;\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n    /* align-content: space-between; */\r\n    align-items: center !important;\r\n  }\r\n\r\n  .divright{\r\n    background-color: #E5E5E5;\r\n    color: rgb(0, 0, 0);\r\n    min-height: 100vh !important;\r\n    line-height: 50px;\r\n    text-align: center;\r\n    padding: 3% 4% 5% 4% !important;\r\n\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n  }\r\n\r\n.head-login{\r\n  font-family: Montserrat;\r\n  font-style: normal;\r\n  font-weight: bold;\r\n  /* identical to box height */\r\n  color: #134E39;\r\n\r\n  display: flex;\r\n  justify-content: space-between;\r\n  margin-top: 0px !important;\r\n  margin-bottom: auto !important;\r\n}\r\n\r\n.head-login .titulo1{\r\n  font-size: 45px;\r\n  line-height: 55px;\r\n  padding-top: 5px;\r\n}\r\n\r\n.head-login .titulo2{\r\n  font-size: 28px;\r\n  line-height: 34px;\r\n}\r\n\r\n.forgot .titulo1{\r\n  font-size: 30px;\r\n  line-height: 37px;\r\n\r\n}\r\n\r\n.forgot .titulo2{\r\n  font-size: 18px;\r\n  line-height: 22px;\r\n}\r\n\r\n.footer-login{\r\n  font-family: Montserrat;\r\n  font-style: normal;\r\n  font-weight: normal;\r\n  font-size: 15px;\r\n  line-height: 18px;\r\n\r\n  text-align: center !important;\r\n  vertical-align: middle;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: center;\r\n  margin-top: auto !important;\r\n  margin-bottom: 0px !important;\r\n\r\n}\r\n\r\n.footer-login img{\r\n  margin-left: 8px;\r\n  width: 22px !important;\r\n  height: 18px !important;\r\n}\r\n\r\n.footer-login a{\r\n  color: black;\r\n  display: flex;\r\n  vertical-align: middle;\r\n}\r\n\r\n.form-login{\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  font-family: Montserrat;\r\n  font-style: normal;\r\n}\r\n\r\n.form-login h1{\r\n  font-weight: bold;\r\n  font-size: 22px;\r\n  line-height: 27px;\r\n  color: rgba(38, 50, 56, 0.8);\r\n  padding-bottom: 10px;\r\n  border-bottom: 3px solid rgba(38, 50, 56, 0.8) ;\r\n  margin: 0px;\r\n}\r\n\r\n.form-login h2{\r\n  font-weight: 500;\r\n  font-size: 18px;\r\n  line-height: 22px;\r\n  /* identical to box height */\r\n  margin: 1rem 0px 0px 0px;\r\n  width: 100%;\r\n  color: #646464;\r\n}\r\n\r\n.input-field label {\r\n  color:  #108058 !important;\r\n}\r\n\r\n.link-forget{\r\n  font-weight: 500;\r\n  font-size: 16px;\r\n  line-height: 20px;\r\n  color: #134E39;\r\n  margin: 40px 0px 20px 0px!important;\r\n}\r\n\r\n.btn-login{\r\n  background-color: #108058;\r\n  box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);\r\n  border-radius: 5px;\r\n  margin-top: 20px;\r\n}\r\n\r\n.tabs{\r\n  background-color: transparent;\r\n}\r\n\r\n.tab{\r\n  font-family: Montserrat;\r\n  font-style: normal;\r\n  font-weight: bold;\r\n  font-size: 14px;\r\n  line-height: 17px;\r\n\r\n  color: #134E39 !important;\r\n}\r\n\r\n.tabs .tab a.active{\r\n  color: #134E39 !important;\r\n  background-color: transparent;\r\n} /*Background and text color when a tab is active*/\r\n\r\n.tabs .tab a{\r\n  background-color: transparent;\r\n  color: rgba(159, 157, 157, 0.6);\r\n} /*Black color to the text*/\r\n\r\n.tabs .tab a:hover {\r\n  background-color:#eee;\r\n  color:#000;\r\n} /*Text color on hover*/\r\n\r\n.tabs .tab a:focus {\r\n  background-color: rgba(0, 255, 0, 0.1);\r\n}\r\n.tabs .tab a:focus.active {\r\n  background-color: rgba(0, 255, 0, 0.1);\r\n}\r\n\r\n.tabs .indicator {\r\n  background-color:#134E39;\r\n} /*Color of underline*/\r\n\r\n.divright img{\r\nmargin-top: auto;\r\nmargin-bottom: auto;\r\nmax-width:100%;height:auto;\r\n}\r\n\r\n@media(max-width:600px){\r\n  .head-login .titulo1{\r\n    font-size: 38px;\r\n    line-height: 42px;\r\n    padding-top: 3px;\r\n  }\r\n\r\n  .head-login .titulo2{\r\n    font-size: 18px;\r\n    line-height: 24px;\r\n  }\r\n\r\n  .form-login .input-field{\r\n    margin-top: 4vh !important;\r\n  }\r\n\r\n  .head-login{\r\n    margin-top: auto !important;\r\n  }\r\n\r\n  .form-login .row{\r\n    margin-bottom: 0px;\r\n  }\r\n}\r\n\r\n@media(min-width:1300px){\r\n  .form-login{\r\n    margin-top: -1px !important;\r\n    margin-bottom: auto !important;\r\n  }\r\n}\r\n\r\n.form-login{\r\n  margin-top: 0px;\r\n  margin-bottom: auto !important;\r\n}\r\n\r\n.form-reset .row{\r\n  margin-bottom: 0px;\r\n}\r\n\r\n.form-reset .input-field{\r\n  margin-top: 2.5vh !important;\r\n}\r\n\r\n.form-reset{\r\n  margin-top: 10px;\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "html,\r\nbody {\r\n    height: 100%;\r\n}\r\n\r\n.divleft {\r\n    background-color: #fffffF;\r\n    color: rgb(0, 0, 0);\r\n    min-height: 100vh !important;\r\n    text-align: left;\r\n    padding: 4% 3% 2% 3% !important;\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n    align-content: space-between;\r\n  }\r\n\r\n  .divright{\r\n    background-color: #E5E5E5;\r\n    color: rgb(0, 0, 0);\r\n    min-height: 100vh !important;\r\n    line-height: 50px;\r\n    text-align: center;\r\n    padding: 3% 4% 5% 4% !important;\r\n\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n  }\r\n\r\n.head-login{\r\n  font-family: Montserrat;\r\n  font-style: normal;\r\n  font-weight: bold;\r\n  /* identical to box height */\r\n  color: #134E39;\r\n\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n.head-login .titulo1{\r\n  font-size: 45px;\r\n  line-height: 55px;\r\n  padding-top: 5px;\r\n}\r\n\r\n.head-login .titulo2{\r\n  font-size: 28px;\r\n  line-height: 34px;\r\n}\r\n\r\n.forgot .titulo1{\r\n  font-size: 30px;\r\n  line-height: 37px;\r\n\r\n}\r\n\r\n.forgot .titulo2{\r\n  font-size: 18px;\r\n  line-height: 22px;\r\n}\r\n\r\n.footer-login{\r\n  font-family: Montserrat;\r\n  font-style: normal;\r\n  font-weight: normal;\r\n  font-size: 15px;\r\n  line-height: 18px;\r\n\r\n  text-align: center !important;\r\n  vertical-align: middle;\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: center;\r\n}\r\n\r\n.footer-login img{\r\n  margin-left: 8px;\r\n  width: 22px !important;\r\n}\r\n\r\n.footer-login a{\r\n  color: black;\r\n  display: flex;\r\n  vertical-align: middle;\r\n}\r\n\r\n.form-login{\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  font-family: Montserrat;\r\n  font-style: normal;\r\n}\r\n\r\n.form-login h1{\r\n  font-weight: bold;\r\n  font-size: 22px;\r\n  line-height: 27px;\r\n  color: rgba(38, 50, 56, 0.8);\r\n  padding-bottom: 10px;\r\n  border-bottom: 3px solid rgba(38, 50, 56, 0.8) ;\r\n  margin: 0px;\r\n}\r\n\r\n.form-login h2{\r\n  font-weight: 500;\r\n  font-size: 18px;\r\n  line-height: 22px;\r\n  /* identical to box height */\r\n  margin: 1rem 0px 0px 0px;\r\n  width: 100%;\r\n  color: #646464;\r\n}\r\n\r\n.input-field label {\r\n  color:  #108058 !important;\r\n}\r\n\r\n.link-forget{\r\n  font-weight: 500;\r\n  font-size: 16px;\r\n  line-height: 20px;\r\n  color: #134E39;\r\n  margin: 40px 0px 20px 0px!important;\r\n}\r\n\r\n.btn-login{\r\n  background-color: #108058;\r\n  box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);\r\n  border-radius: 5px;\r\n  margin-top: 10px;\r\n}\r\n\r\n.tabs{\r\n  background-color: transparent;\r\n}\r\n\r\n.tab{\r\n  font-family: Montserrat;\r\n  font-style: normal;\r\n  font-weight: bold;\r\n  font-size: 14px;\r\n  line-height: 17px;\r\n\r\n  color: #134E39 !important;\r\n}\r\n\r\n.tabs .tab a.active{\r\n  color: #134E39 !important;\r\n  background-color: transparent;\r\n} /*Background and text color when a tab is active*/\r\n\r\n.tabs .tab a{\r\n  background-color: transparent;\r\n  color: rgba(159, 157, 157, 0.6);\r\n} /*Black color to the text*/\r\n\r\n.tabs .tab a:hover {\r\n  background-color:#eee;\r\n  color:#000;\r\n} /*Text color on hover*/\r\n\r\n.tabs .tab a:focus {\r\n  background-color: rgba(0, 255, 0, 0.1);\r\n}\r\n.tabs .tab a:focus.active {\r\n  background-color: rgba(0, 255, 0, 0.1);\r\n}\r\n\r\n.tabs .indicator {\r\n  background-color:#134E39;\r\n} /*Color of underline*/\r\n\r\n.divright img{\r\nmargin-top: auto;\r\nmargin-bottom: auto;\r\nmax-width:100%;height:auto;\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -4685,7 +4582,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".titles-sub{\r\n    color:#515b60;\r\n    font-family: Montserrat;\r\n    font-style: normal;\r\n    font-weight: bold;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n    padding-bottom: 5px;\r\n    border-bottom: 3px solid #515b60;\r\n    width: -webkit-max-content !important;\r\n    width: -moz-max-content !important;\r\n    width: max-content !important;\r\n    /* text-decoration-line: underline;\r\n    text-decoration-color: 3px solid #515b60; */\r\n}\r\n\r\n.info-txt-format\r\n{\r\n    color: #263238;\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 10px;\r\n}\r\n\r\n.boton-verde\r\n{\r\n    background: #108058;\r\n    box-shadow: 0px 4px 6px #D3D3D3;\r\n    border-radius: 5px;\r\n\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 11px;\r\n}\r\n\r\n.title-section\r\n{\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 16px;\r\n    line-height: 20px;\r\n\r\n    color: #134E39;\r\n}\r\n\r\n.info-section\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 13px;\r\n    line-height: 16px;\r\n    \r\n    color: #ACACAC;\r\n    margin-top: 10px;\r\n}\r\n\r\n.img-profile\r\n{\r\n    width: 130px;\r\n    height: 130px;\r\n    margin-top: -65px;\r\n\r\n    \r\n    filter: drop-shadow(0px 0px 12px #535353);\r\n    border-radius: 100px;\r\n}\r\n\r\n.profile-txt-category\r\n{\r\n    font-style: normal;\r\n    font-weight: 600;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 15px;\r\n\r\n    color: #134E39;\r\n}\r\n\r\n.profile-txt-name\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 15px;\r\n    line-height: 18px;\r\n    margin-top: 15px;\r\n    \r\n    color: #343434;\r\n}\r\n\r\n.profile-txt-active-since\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 15px;\r\n\r\n    color: #9E9E9E;   \r\n}\r\n\r\n.profile-txt-email{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n\r\n    color: #585858;\r\n}\r\n\r\n.profile-icon-email\r\n{\r\n    font-size: 18px;\r\n    margin: 10px;\r\n    color: #134E39;\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -4948,21 +4845,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/profile.jpg?30f2c17a6786134f6c84340d14ea2a90");
-
-/***/ }),
-
-/***/ "./public/img/monita.jpg":
-/*!*******************************!*\
-  !*** ./public/img/monita.jpg ***!
-  \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/monita.jpg?852c9b1a66f6b2bd7e01b4ff60fa3efc");
 
 /***/ }),
 

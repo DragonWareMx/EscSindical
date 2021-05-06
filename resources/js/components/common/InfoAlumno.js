@@ -18,6 +18,27 @@ function initializeCollaps() {
 }
 
 export default function InfoAlumno({user}) {
+    function handleChange(e) {
+        const key = e.target.id;
+        const value = e.target.value
+        setValues(values => ({
+            ...values,
+            [key]: value,
+        }))
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.post('/users', values)
+    }
+
+    //valores para formulario
+    const [values, setValues] = useState({
+        nombre: user==null ? "" : user.nombre,
+        apellido_p: "",
+        apellido_m: "",
+        email: "",
+    })
     useEffect(() => {
         initializeCollaps();
     }, [])
@@ -41,10 +62,12 @@ export default function InfoAlumno({user}) {
                                     <div className="row div-form-register" style={{"padding":"3%"}}>
                                         <div className="col s12 m6 div-division">
                                             <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN PERSONAL</p>
+
                                             <div className="col s12" style={{"display": "flex","justifyContent":"center", "flexDirection":"column"}}>
                                                 <img id="profileImage" src="/storage/fotos_perfil/avatar1.png" ></img>
                                                 <p id="txt-profile">Foto de perfil</p>
                                             </div>
+
                                             <input id="imageUpload" type="file" className="form-control " /*@error('foto_perfil') is-invalid @enderror*/
                                                 name="foto_perfil" placeholder="Photo"   /*value="{{ old('foto_perfil') }}"*/ accept="image/png, image/jpeg, image/jpg, image/gif"></input>
                                                 {/* @error('foto_perfil')
@@ -54,7 +77,7 @@ export default function InfoAlumno({user}) {
                                                 @enderror */}
 
                                             <div className="input-field col s12">
-                                                <input  id="nombre" type="text" className="validate form-control" /*@error('nombre') is-invalid @enderror*/ name="nombre" /*value="{{ old('nombre') }}"*/ required autoComplete="nombre" value={user==null ? "" : user.nombre} autoFocus/>
+                                                <input  id="nombre" type="text" className="validate form-control" /*@error('nombre') is-invalid @enderror*/ name="nombre" required autoComplete="nombre" value={values.nombre} onChange={handleChange} autoFocus/>
                                                 <label htmlFor="nombre">Nombre</label>
                                                 {/* @error('nombre')
                                                     <span class="invalid-feedback" role="alert" style="margin-bottom:12px;">
