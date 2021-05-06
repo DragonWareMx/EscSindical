@@ -10,7 +10,7 @@ import '../../styles/usersStyle.css'
 import route from 'ziggy-js';
 
 const Usuarios = ({ users, user }) => {
-    const [time, setTime] = useState({
+    const [state, setState] = useState({
         typingTimeout: 0
     })
 
@@ -25,7 +25,7 @@ const Usuarios = ({ users, user }) => {
 
         console.log(route('usuarios').url())
 
-        setTime({
+        setState({
             typingTimeout: setTimeout(function () {
                 Inertia.replace(route('usuarios').url(),{data: {search: search}})
              }, 250)
