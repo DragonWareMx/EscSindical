@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { usePage } from '@inertiajs/inertia-react'
+import { Inertia } from '@inertiajs/inertia'
 import ReactDom from 'react-dom'
 //import circlesImg from '../images/circles.png'
 //import emptyImg from '../images/empty.png'
@@ -6,6 +8,7 @@ import ReactDom from 'react-dom'
 import '/css/infoAlumno.css'
 import '/css/register.css'
 import '/css/login.css'
+import route from 'ziggy-js'
 function initializeCollaps() {
     var elems = document.querySelectorAll('.collapsible');
     var instances = M.Collapsible.init(elems);
@@ -18,6 +21,8 @@ function initializeCollaps() {
 }
 
 export default function InfoAlumno({user}) {
+    const { errors } = usePage().props
+
     function handleChange(e) {
         const key = e.target.id;
         const value = e.target.value
@@ -28,17 +33,24 @@ export default function InfoAlumno({user}) {
     }
 
     function handleSubmit(e) {
-        e.preventDefault()
-        Inertia.post('/users', values)
+        if(user){
+            e.preventDefault()
+            Inertia.post(route('usuarios.edit', user.id), values)
+        }
     }
 
     //valores para formulario
     const [values, setValues] = useState({
-        nombre: user==null ? "" : user.nombre,
+        nombre: "",
         apellido_p: "",
         apellido_m: "",
         email: "",
     })
+
+    const [state, setState] = useState({
+        edit: false
+    })
+
     useEffect(() => {
         initializeCollaps();
     }, [])
@@ -56,9 +68,8 @@ export default function InfoAlumno({user}) {
                         <li className="active">
                             <div className="collapsible-header" style={{"color":"#108058"}}><i className="material-icons">person</i>Información personal</div>
                             <div className="collapsible-body collapsible-padding">
-                                <form method="POST" action="{{ route('register') }}" encType="multipart/form-data">
-                                    {/* <input type="hidden" name="_token" value="{{ csrf_token() }}"></input>
-                                    <meta name="csrf-token" content="{{ csrf_token() }}"/> */}
+
+                                <form onSubmit={handleSubmit}>
                                     <div className="row div-form-register" style={{"padding":"3%"}}>
                                         <div className="col s12 m6 div-division">
                                             <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN PERSONAL</p>
@@ -77,8 +88,12 @@ export default function InfoAlumno({user}) {
                                                 @enderror */}
 
                                             <div className="input-field col s12">
-                                                <input  id="nombre" type="text" className="validate form-control" /*@error('nombre') is-invalid @enderror*/ name="nombre" required autoComplete="nombre" value={values.nombre} onChange={handleChange} autoFocus/>
+                                                <input  id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={state.edit ? values.nombre : user == null ? "" : user.nombre} onChange={handleChange} autoFocus/>
                                                 <label htmlFor="nombre">Nombre</label>
+                                                {
+                                                    errors.nombre && 
+                                                    <span className="helper-text" data-error={errors.nombre} style={{"marginBottom":"10px"}}>{errors.nombre}</span>
+                                                }
                                                 {/* @error('nombre')
                                                     <span class="invalid-feedback" role="alert" style="margin-bottom:12px;">
                                                         <strong>{{ $message }}</strong>
@@ -207,6 +222,9 @@ export default function InfoAlumno({user}) {
                                                 <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}><i className="material-icons">delete</i></button>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className="row">
+                                        <button type="submit">Submit</button>
                                     </div>
                                 </form>
                             </div>

@@ -194,6 +194,25 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validated = $request->validate([
+            'nombre' => 'required|unique:users|max:1',
+            'apellido_p' => 'required',
+            'apellido_m' => 'required|unique:users|max:255',
+            'email' => 'required',
+            'foto' => 'required',
+            'fecha_nac' => 'required',
+            'estado' => 'required',
+            'ciudad' => 'required',
+            'colonia' => 'required',
+            'calle' => 'required',
+            'num_ext' => 'required',
+            'num_int' => 'required',
+            'cp' => 'required',
+            'tarjeton_pago' => 'required',
+            'matricula' => 'required',
+            'categorie_id' => 'required',
+        ]);
+
         $user = Post::find($id);
         $user->nombre = $request->nombre;
         $user->apellido_p = $request->apellido_p;
