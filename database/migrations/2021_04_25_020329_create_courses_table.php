@@ -16,12 +16,13 @@ class CreateCoursesTable extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('nombre',250);
             $table->date('fecha_inicio');
             $table->date('fecha_limite');
             $table->unsignedInteger('max');
             $table->unsignedInteger('valor_curricular');
             $table->enum('acceso', ['enum1','enum2']);
-            $table->tinyInteger('status');
+            $table->tinyInteger('estatus');
             $table->string('tipo',45);
             $table->text('descripcion');
             $table->string('tipo_acceso',45);   
