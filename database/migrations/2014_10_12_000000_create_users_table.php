@@ -35,8 +35,11 @@ class CreateUsersTable extends Migration
             $table->string('matricula');
             $table->rememberToken();
 
-            $table->unsignedBigInteger('categorie_id');
+            $table->unsignedBigInteger('categorie_id')->nullable();
             $table->foreign('categorie_id')->references('id')->on('categories');
+
+            $table->unsignedBigInteger('regime_id')->nullable();
+            $table->foreign('regime_id')->references('id')->on('regimes');
 
             $table->softDeletes();
             $table->timestamps();
