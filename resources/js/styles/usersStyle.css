@@ -78,3 +78,17 @@
     right: 25px;
     top: -30px;
 }
+
+.filter-div{
+    height: 40px !important;
+    border-right: 0.2px solid rgba(128, 128, 128, 0.692);
+}
+
+#dropdown-filter{
+    top: 40px !important;
+}
+
+#dropdown-filter .selected{
+    background-color: #134E39;
+    color: white;
+}

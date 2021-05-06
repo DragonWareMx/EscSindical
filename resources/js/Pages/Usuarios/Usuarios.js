@@ -9,6 +9,11 @@ import Skeleton from 'react-loading-skeleton';
 import '../../styles/usersStyle.css'
 import route from 'ziggy-js';
 
+function initializeMat() {
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems);
+}
+
 const Usuarios = ({ users, user }) => {
     const [state, setState] = useState({
         typingTimeout: 0
@@ -48,6 +53,10 @@ const Usuarios = ({ users, user }) => {
         )
     }
 
+    useEffect(() => {
+        initializeMat();
+    }, [])
+
     return (
         <>
             <div className="row">
@@ -58,7 +67,16 @@ const Usuarios = ({ users, user }) => {
                             <span className="card-title">Usuarios</span>
                             <nav className="searchUsers">
                                 <div className="nav-wrapper">
-                                    <div className="input-field">
+                                    <div className="col filter-div">
+                                        {/* Dropdown Structure */}
+                                        <a className="dropdown-trigger" href="#!" data-target="dropdown-filter"><i className="material-icons">filter_alt</i></a>
+                                        <ul id="dropdown-filter" className="dropdown-content" style={{ top: "0px" }}>
+                                            <li><a href="#!" className="selected">one</a></li>
+                                            <li><a href="#!">two</a></li>
+                                            <li><a href="#!">three</a></li>
+                                        </ul>
+                                    </div>
+                                    <div className="input-field col s11">
                                         <input id="search" type="search" onChange={changeName} />
                                         <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                                         <i className="material-icons">close</i>
