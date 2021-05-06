@@ -15,10 +15,10 @@ const Usuarios = ({ users, user }) => {
     })
 
     //realiza la búsqueda cada vez que se escribe en el input
-    function changeName(event){  
+    function changeName(event) {
         console.log(event.target.value)
         if (time.typingTimeout) {
-           clearTimeout(time.typingTimeout);
+            clearTimeout(time.typingTimeout);
         }
 
         let search = event.target.value
@@ -27,20 +27,20 @@ const Usuarios = ({ users, user }) => {
 
         setState({
             typingTimeout: setTimeout(function () {
-                Inertia.replace(route('usuarios').url(),{data: {search: search}})
-             }, 250)
+                Inertia.replace(route('usuarios').url(), { data: { search: search } })
+            }, 250)
         });
     }
 
     //obtiene el usuario y abre el modal
-    function getUser(id){
+    function getUser(id) {
         Inertia.reload(
-            { 
-                only: ['user'], 
-                data: {user: id},
-                onSuccess: ({props}) => {
+            {
+                only: ['user'],
+                data: { user: id },
+                onSuccess: ({ props }) => {
                     const elem = document.getElementById('modalInfoAlumno');
-                    const instance = M.Modal.init(elem, {dismissible: false});
+                    const instance = M.Modal.init(elem, { dismissible: false });
                     M.updateTextFields();
                     instance.open();
                 }
@@ -59,7 +59,7 @@ const Usuarios = ({ users, user }) => {
                             <nav className="searchUsers">
                                 <div className="nav-wrapper">
                                     <div className="input-field">
-                                        <input id="search" type="search" onChange={changeName}/>
+                                        <input id="search" type="search" onChange={changeName} />
                                         <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                                         <i className="material-icons">close</i>
                                     </div>
@@ -68,11 +68,46 @@ const Usuarios = ({ users, user }) => {
                             <table className="striped userTable responsive-table">
                                 <thead>
                                     <tr>
-                                        <th>MATRÍCULA</th>
-                                        <th>ROL</th>
-                                        <th>NOMBRE</th>
-                                        <th>UNIDAD</th>
-                                        <th>CATEGORÍA</th>
+                                        <th>
+                                            <a href="">
+                                                <div>
+                                                    MATRÍCULA
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="">
+                                                <div>
+                                                    ROL
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="">
+                                                <div>
+                                                    NOMBRE
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="">
+                                                <div>
+                                                    UNIDAD
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="">
+                                                <div>
+                                                    CATEGORÍA
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                            </a>
+                                        </th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -82,7 +117,7 @@ const Usuarios = ({ users, user }) => {
                                     {users.data.length > 0 && users.data.map(user => (
                                         <tr key={user.id} onClick={() => getUser(user.id)}>
                                             <td>{user.matricula}</td>
-                                            <td>{/*user.roles['0'].name*/}</td>
+                                            <td>{/*user.roles['0'].name*/}Es admin</td>
                                             <td>{user.nombre} {user.apellido_p} {user.apellido_m}</td>
                                             <td>UMF80 - Morelia</td>
                                             <td>{user.categorie.nombre}</td>
@@ -108,7 +143,7 @@ const Usuarios = ({ users, user }) => {
                             </form> */}
                             <div className="row">
                                 <div className="col s12 center-align">
-                                    <Paginacion links={users.links}/>
+                                    <Paginacion links={users.links} />
                                 </div>
                             </div>
                         </div>
@@ -116,7 +151,7 @@ const Usuarios = ({ users, user }) => {
                 </div>
             </div>
             <FlotanteAyuda />
-            <InfoAlumno user = {user}/>
+            <InfoAlumno user={user} />
         </>
     )
 }
