@@ -4973,22 +4973,24 @@ var Perfil = function Perfil(_ref) {
                         "class": "material-icons profile-icon-email",
                         children: "mail_outline"
                       }), user.email]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                      className: "col s12",
-                      style: {
-                        "marginTop": "15px"
-                      },
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("a", {
-                        "class": "waves-effect waves-light btn boton-verde",
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
-                          "class": "material-icons right",
-                          style: {
-                            "font-size": "18px"
-                          },
-                          children: "send"
-                        }), "Enviar Mensaje"]
-                      })
                     })]
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                    className: "col s12 center-align",
+                    style: ({
+                      "marginTop": "15px"
+                    }, {
+                      "padding": "0%"
+                    }),
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("a", {
+                      "class": "waves-effect waves-light btn boton-verde",
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
+                        "class": "material-icons right",
+                        style: {
+                          "font-size": "18px"
+                        },
+                        children: "send"
+                      }), "Mensaje"]
+                    })
                   })]
                 })
               })
@@ -5077,9 +5079,9 @@ var Perfil = function Perfil(_ref) {
                       children: ["C\xF3digo Postal: ", user.cp]
                     })]
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
-                    className: "col s12 m6 right-align",
+                    className: "col s12 m12 right-align",
                     style: {
-                      "marginTop": "15px"
+                      "marginTop": "25px"
                     },
                     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("a", {
                       "class": "waves-effect waves-light btn boton-verde",
@@ -5088,8 +5090,8 @@ var Perfil = function Perfil(_ref) {
                         style: {
                           "font-size": "18px"
                         },
-                        children: "edit"
-                      }), "Editar"]
+                        children: "settings"
+                      }), "Configuraci\xF3n"]
                     })
                   })]
                 })]
@@ -5998,6 +6000,43 @@ function BarraBusqueda() {
 
 /***/ }),
 
+/***/ "./resources/js/components/layout/Footer.js":
+/*!**************************************************!*\
+  !*** ./resources/js/components/layout/Footer.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Footer)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _public_images_dragonBlanco1_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../public/images/dragonBlanco1.png */ "./public/images/dragonBlanco1.png");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+function Footer() {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "footer-copyright center-align",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        style: {
+          "color": "#707070"
+        },
+        children: ["\xA9 2021 Escuela Sindical   |   Desarrollado por DragonWare ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
+          src: _public_images_dragonBlanco1_png__WEBPACK_IMPORTED_MODULE_1__.default,
+          alt: "logo"
+        })]
+      })
+    })
+  });
+}
+
+/***/ }),
+
 /***/ "./resources/js/components/layout/MenuLateral.js":
 /*!*******************************************************!*\
   !*** ./resources/js/components/layout/MenuLateral.js ***!
@@ -6317,7 +6356,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _components_layout_MenuLateral__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/layout/MenuLateral */ "./resources/js/components/layout/MenuLateral.js");
 /* harmony import */ var _components_layout_BarraBusqueda__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/layout/BarraBusqueda */ "./resources/js/components/layout/BarraBusqueda.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _components_layout_Footer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/layout/Footer */ "./resources/js/components/layout/Footer.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
@@ -6330,17 +6371,17 @@ function Layout(_ref) {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     document.title = title;
   }, [title]);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_layout_BarraBusqueda__WEBPACK_IMPORTED_MODULE_2__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_layout_BarraBusqueda__WEBPACK_IMPORTED_MODULE_2__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
       className: "content",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "row page-title",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           className: "col",
           children: pageTitle
         })
       }), children]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_layout_MenuLateral__WEBPACK_IMPORTED_MODULE_1__.default, {})]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_layout_MenuLateral__WEBPACK_IMPORTED_MODULE_1__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_layout_Footer__WEBPACK_IMPORTED_MODULE_3__.default, {})]
   });
 }
 
@@ -6543,7 +6584,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".titles-sub{\r\n    color:#515b60;\r\n    font-family: Montserrat;\r\n    font-style: normal;\r\n    font-weight: bold;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n    padding-bottom: 5px;\r\n    border-bottom: 3px solid #515b60;\r\n    width: -webkit-max-content !important;\r\n    width: -moz-max-content !important;\r\n    width: max-content !important;\r\n    /* text-decoration-line: underline;\r\n    text-decoration-color: 3px solid #515b60; */\r\n}\r\n\r\n.info-txt-format\r\n{\r\n    color: #263238;\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 10px;\r\n}\r\n\r\n.boton-verde\r\n{\r\n    background: #108058;\r\n    box-shadow: 0px 4px 6px #D3D3D3;\r\n    border-radius: 5px;\r\n\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 11px;\r\n}\r\n\r\n.title-section\r\n{\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 16px;\r\n    line-height: 20px;\r\n\r\n    color: #134E39;\r\n}\r\n\r\n.info-section\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 13px;\r\n    line-height: 16px;\r\n    \r\n    color: #ACACAC;\r\n    margin-top: 10px;\r\n}\r\n\r\n.img-profile\r\n{\r\n    width: 130px;\r\n    height: 130px;\r\n    margin-top: -65px;\r\n\r\n    \r\n    filter: drop-shadow(0px 0px 12px #535353);\r\n    border-radius: 100px;\r\n}\r\n\r\n.profile-txt-category\r\n{\r\n    font-style: normal;\r\n    font-weight: 600;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 15px;\r\n\r\n    color: #134E39;\r\n}\r\n\r\n.profile-txt-name\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 15px;\r\n    line-height: 18px;\r\n    margin-top: 15px;\r\n    \r\n    color: #343434;\r\n}\r\n\r\n.profile-txt-active-since\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 15px;\r\n\r\n    color: #9E9E9E;   \r\n}\r\n\r\n.profile-txt-email{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n\r\n    color: #585858;\r\n}\r\n\r\n.profile-icon-email\r\n{\r\n    font-size: 18px;\r\n    margin: 10px;\r\n    color: #134E39;\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".titles-sub{\r\n    color:#515b60;\r\n    font-family: Montserrat;\r\n    font-style: normal;\r\n    font-weight: bold;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n    padding-bottom: 5px;\r\n    border-bottom: 3px solid #515b60;\r\n    width: -webkit-fit-content;\r\n    width: -moz-fit-content;\r\n    width: fit-content;\r\n    /* text-decoration-line: underline;\r\n    text-decoration-color: 3px solid #515b60; */\r\n    \r\n}\r\n\r\n.info-txt-format\r\n{\r\n    color: #263238;\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 10px;\r\n    \r\n}\r\n\r\n.boton-verde\r\n{\r\n    background: #108058;\r\n    box-shadow: 0px 4px 6px #D3D3D3;\r\n    border-radius: 5px;\r\n\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 11px;\r\n}\r\n\r\n.title-section\r\n{\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 16px;\r\n    line-height: 20px;\r\n\r\n    color: #134E39;\r\n}\r\n\r\n.info-section\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 13px;\r\n    line-height: 16px;\r\n    \r\n    color: #ACACAC;\r\n    margin-top: 10px;\r\n}\r\n\r\n.img-profile\r\n{\r\n    width: 130px;\r\n    height: 130px;\r\n    margin-top: -65px;\r\n\r\n    \r\n    filter: drop-shadow(0px 0px 12px #535353);\r\n    border-radius: 100px;\r\n}\r\n\r\n.profile-txt-category\r\n{\r\n    font-style: normal;\r\n    font-weight: 600;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 15px;\r\n\r\n    color: #134E39;\r\n}\r\n\r\n.profile-txt-name\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 15px;\r\n    line-height: 18px;\r\n    margin-top: 15px;\r\n    \r\n    color: #343434;\r\n}\r\n\r\n.profile-txt-active-since\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 15px;\r\n\r\n    color: #9E9E9E;   \r\n}\r\n\r\n.profile-txt-email{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n\r\n    color: #585858;\r\n}\r\n\r\n.profile-icon-email\r\n{\r\n    font-size: 18px;\r\n    margin: 10px;\r\n    color: #134E39;\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -6791,6 +6832,21 @@ var deepmerge_1 = deepmerge;
 
 module.exports = deepmerge_1;
 
+
+/***/ }),
+
+/***/ "./public/images/dragonBlanco1.png":
+/*!*****************************************!*\
+  !*** ./public/images/dragonBlanco1.png ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/dragonBlanco1.png?bf1cd3250fa4e6d52d79b49d9c4f918e");
 
 /***/ }),
 

@@ -7,9 +7,10 @@
     line-height: 17px;
     padding-bottom: 5px;
     border-bottom: 3px solid #515b60;
-    width: max-content !important;
+    width: fit-content;
     /* text-decoration-line: underline;
     text-decoration-color: 3px solid #515b60; */
+    
 }
 
 .info-txt-format
@@ -20,6 +21,7 @@
     font-size: 12px;
     line-height: 15px;
     margin-top: 10px;
+    
 }
 
 .boton-verde
