@@ -36,7 +36,14 @@
                     <img src="{{ asset('img/imagenes/LogoSeccional.png') }}" alt="Escuela Sindical" width="121px">
                 </div>
             </div>
-
+            <div class="col  hide-on-med-and-up s12" style="display: block; margin-bottom: 20px">
+                <ul class="tabs">
+                    <li class="tab col s6"><a href="#{{ route('login') }}" target="_self" class="active">Ingresar</a>
+                    </li>
+                    <li class="tab col s6"><a href="{{ route('register') }}" target="_self">Registrarse</a>
+                    </li>
+                </ul>
+            </div>
             <div class="form-login col s12">
                 <h1>INICIAR SESIÓN</h1>
                 <h2>Bienvenido de nuevo</h2>
@@ -85,8 +92,10 @@
             <div class="row" style="width: 100%">
                 <div class="col s12 m12 l10" style="display: block">
                     <ul class="tabs">
-                        <li class="tab col xl3 l4 m6"><a href="#test1" class="active">Ingresar</a></li>
-                        <li class="tab col xl3 l4 m6"><a href="#test2">Registrarse</a></li>
+                        <li class="tab col xl3 l4 m6"><a href="#{{ route('login') }}" target="_self"
+                                class="active">Ingresar</a></li>
+                        <li class="tab col xl3 l4 m6"><a href="{{ route('register') }}" target="_self">Registrarse</a>
+                        </li>
                     </ul>
                 </div>
             </div>

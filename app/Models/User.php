@@ -138,4 +138,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Report');
     }
+
+    public function regime()
+    {
+        return $this->belongsTo('App\Models\Regime');
+    }
 }
