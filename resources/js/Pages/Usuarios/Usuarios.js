@@ -9,44 +9,96 @@ import Skeleton from 'react-loading-skeleton';
 import '../../styles/usersStyle.css'
 import route from 'ziggy-js';
 
-const Usuarios = ({ users, user }) => {
+function initializeMat() {
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems);
+}
+
+const Usuarios = ({ users, user, request }) => {
     const [state, setState] = useState({
-        typingTimeout: 0
+        typingTimeout: 0,
+        sortMatricula: false,
+        sortRol: false,
+        sortNombre: false,
+        sortUnidad: false,
+        sortCategoria: false,
+        filter: "nombre",
     })
 
     //realiza la búsqueda cada vez que se escribe en el input
-    function changeName(event){  
-        console.log(event.target.value)
-        if (time.typingTimeout) {
-           clearTimeout(time.typingTimeout);
+    function changeName(event) {
+        if (state.typingTimeout) {
+            clearTimeout(state.typingTimeout);
         }
 
         let search = event.target.value
 
-        console.log(route('usuarios').url())
-
         setState({
             typingTimeout: setTimeout(function () {
-                Inertia.replace(route('usuarios').url(),{data: {search: search}})
-             }, 250)
+                Inertia.replace(route('usuarios').url(), { data: { user_search: search } })
+            }, 250)
         });
     }
 
+    function sort(campo){
+        console.log(campo)
+
+        switch (campo) {
+            case "matricula":
+                
+                break;
+            case "rol":
+                
+                    break;
+            case "nombre":
+                
+                break;
+            case "unidad":
+                
+                break;
+            case "categoria":
+                
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+    function filter(filtro){
+        state.filter = filtro
+    }
+
     //obtiene el usuario y abre el modal
-    function getUser(id){
+    function getUser(id) {
         Inertia.reload(
-            { 
-                only: ['user'], 
-                data: {user: id},
-                onSuccess: ({props}) => {
+            {
+                only: ['user'],
+                data: { user: id },
+                onSuccess: ({ props }) => {
+                    //busca el modal infoAlumno
                     const elem = document.getElementById('modalInfoAlumno');
-                    const instance = M.Modal.init(elem, {dismissible: false});
+                    const instance = M.Modal.init(elem, { dismissible: false });
+
+                    //actualiza los textfields para que no se amontonen los labels
                     M.updateTextFields();
+
+                    //abre el modal
                     instance.open();
                 }
             }
         )
     }
+
+    useEffect(() => {
+        initializeMat();
+
+        //si hay una busqueda en el url se pone en el input
+        if(request.user_search){
+            const elem = document.getElementById('user_search');
+            elem.value = request.user_search;
+        }
+    }, [])
 
     return (
         <>
@@ -58,8 +110,20 @@ const Usuarios = ({ users, user }) => {
                             <span className="card-title">Usuarios</span>
                             <nav className="searchUsers">
                                 <div className="nav-wrapper">
-                                    <div className="input-field">
-                                        <input id="search" type="search" onChange={changeName}/>
+                                    <div className="col filter-div">
+                                        {/* Dropdown Structure */}
+                                        <a className="dropdown-trigger" href="#!" data-target="dropdown-filter"><i className="material-icons">filter_alt</i></a>
+                                        <ul id="dropdown-filter" className="dropdown-content" style={{ top: "0px" }}>
+                                            <li><a onClick={() => {filter("matricula")}} className={request.filter == "matricula" ? "selected" : ""}>Matrícula</a></li>
+                                            <li><a onClick={() => {filter("rol")}} className={request.filter == "rol" ? "selected" : ""}>Rol</a></li>
+                                            <li><a onClick={() => {filter("nombre")}} className={request.filter == "nombre" || request.filter ? "selected" : ""}>Nombre</a></li>
+                                            <li><a onClick={() => {filter("unidad")}} className={request.filter == "unidad" ? "selected" : ""}>Unidad</a></li>
+                                            <li><a onClick={() => {filter("categoria")}} className={request.filter == "categoria" ? "selected" : ""}>Categoría</a></li>
+                                            <li><a onClick={() => {filter("eliminado")}} className={request.filter == "eliminado" ? "selected" : ""}>Eliminado</a></li>
+                                        </ul>
+                                    </div>
+                                    <div className="input-field col s11">
+                                        <input id="user_search" type="search" onChange={changeName}/>
                                         <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                                         <i className="material-icons">close</i>
                                     </div>
@@ -68,11 +132,46 @@ const Usuarios = ({ users, user }) => {
                             <table className="striped userTable responsive-table">
                                 <thead>
                                     <tr>
-                                        <th>MATRÍCULA</th>
-                                        <th>ROL</th>
-                                        <th>NOMBRE</th>
-                                        <th>UNIDAD</th>
-                                        <th>CATEGORÍA</th>
+                                        <th>
+                                            <a onClick={() => {sort("matricula")}}>
+                                                <div>
+                                                    MATRÍCULA
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a onClick={() => {sort("rol")}}>
+                                                <div>
+                                                    ROL
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a onClick={() => {sort("nombre")}}>
+                                                <div>
+                                                    NOMBRE
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a onClick={() => {sort("unidad")}}>
+                                                <div>
+                                                    UNIDAD
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a onClick={() => {sort("categoria")}}>
+                                                <div>
+                                                    CATEGORÍA
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                            </a>
+                                        </th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -82,7 +181,7 @@ const Usuarios = ({ users, user }) => {
                                     {users.data.length > 0 && users.data.map(user => (
                                         <tr key={user.id} onClick={() => getUser(user.id)}>
                                             <td>{user.matricula}</td>
-                                            <td>{/*user.roles['0'].name*/}</td>
+                                            <td>{/*user.roles['0'].name*/}Es admin</td>
                                             <td>{user.nombre} {user.apellido_p} {user.apellido_m}</td>
                                             <td>UMF80 - Morelia</td>
                                             <td>{user.categorie.nombre}</td>
@@ -108,7 +207,7 @@ const Usuarios = ({ users, user }) => {
                             </form> */}
                             <div className="row">
                                 <div className="col s12 center-align">
-                                    <Paginacion links={users.links}/>
+                                    <Paginacion links={users.links} />
                                 </div>
                             </div>
                         </div>
@@ -116,7 +215,7 @@ const Usuarios = ({ users, user }) => {
                 </div>
             </div>
             <FlotanteAyuda />
-            <InfoAlumno user = {user}/>
+            <InfoAlumno user={user} />
         </>
     )
 }
