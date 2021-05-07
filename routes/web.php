@@ -40,5 +40,9 @@ Route::get('/ejemplo', [App\Http\Controllers\UserController::class, 'ejemplo'])-
 Route::get('/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios');
 Route::post('/usuarios/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('usuarios.edit');
 
+//------CURSOS----
+Route::get('/cursos',[App\Http\Controllers\CourseController::class, 'index'])->name('cursos');
+Route::post('/storeCourse', [App\Http\Controllers\CourseController::class, 'store'])->name('storeCourse');
+
 //--------PERFIL--------
-Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');
+Route::get('/perfil',[App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');

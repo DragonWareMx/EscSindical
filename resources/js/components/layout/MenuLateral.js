@@ -68,26 +68,26 @@ export default function MenuLateral() {
               <i className="material-icons icono-menu">people</i>
                     Usuarios
                 </InertiaLink>
-          </li>
-          <li><a className="subheader division-menu">CURSOS</a></li>
-          <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">school</i>Mis cursos</a></li>
-          <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">timeline</i>Buscar cursos</a></li>
-          <li><a className="subheader division-menu">SISTEMA</a></li>
-          <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">assignment_late</i>Reportes</a></li>
-          <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">history</i>Bitácora</a></li>
-          <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">settings</i>Configuración</a></li>
-          <li><InertiaLink href="/logout" method="post" className="icono-menu"><i className="material-icons icono-menu">logout</i>Cerrar sesión</InertiaLink></li>
-          <div className="center-align" style={{ marginTop: '25px' }}>
-            <a onClick={closeNav} href="#!" className="btn-floating btn-large waves-effect waves-light sidenav-close" style={{ backgroundColor: '#108058' }}><i className="material-icons">arrow_back</i></a>
-          </div>
-          <div className="row" style={{ marginTop: '50px' }}>
-            <div className="col s5 center-align">
-              <img src="/img/imagenes/LogoNacional2.png" alt="logo" />
+            </li>
+            <li><a className="subheader division-menu">CURSOS</a></li>
+            <li><a href={route('cursos').url()} className="icono-menu"><i className="material-icons icono-menu">school</i>Mis cursos</a></li>
+            <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">timeline</i>Buscar cursos</a></li>
+            <li><a className="subheader division-menu">SISTEMA</a></li>
+            <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">assignment_late</i>Reportes</a></li>
+            <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">history</i>Bitácora</a></li>
+            <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">settings</i>Configuración</a></li>
+            <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">logout</i>Cerrar sesión</a></li>
+            <div className="center-align" style={{marginTop: '25px'}}>
+              <a onClick={closeNav} href="#!" className="btn-floating btn-large waves-effect waves-light sidenav-close" style={{backgroundColor: '#108058'}}><i className="material-icons">arrow_back</i></a>
             </div>
-            <div className="col s7 valign-wrapper" style={{ height: '64px' }}>
-              Escuela Sindical
+            <div className="row" style={{ marginTop: '50px' }}>
+              <div className="col s5 center-align">
+                <img src="/img/imagenes/LogoNacional2.png" alt="logo" />
               </div>
-          </div>
+              <div className="col s7 valign-wrapper" style={{ height: '64px' }}>
+                Escuela Sindical
+                </div>
+            </div>
         </ul>
       </div>
       {/* menu lateral comprimido */}
