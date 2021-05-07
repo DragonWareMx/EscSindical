@@ -12,7 +12,7 @@ return(
             <div className="nav-wrapper">
             <form>
                 <div className="input-field">
-                    <input id="search" type="search" required />
+                    <input id="search" className="main-bar-search-2" type="search" required style={{"border-radius":"4px"}} />
                     <label className="label-icon margin-search-icons" htmlFor="search"><i className="material-icons">search</i></label>
                     <i className="material-icons margin-search-icons">close</i>
                 </div>
@@ -23,13 +23,16 @@ return(
         <div className="main-bar-right">
             <div className="main-bar-right-leftSide">
                 <img src="/img/icons/mochila blanca.png" alt="Mochila" className="icono-mochila" />
-                <i className="small material-icons" style={{color: '#FFFFFF'}}>notifications_none</i>
+                <i className="material-icons icono-notificaciones">notifications_none</i>
             </div>
             <div className="main-bar-right-rightSide">
-                <div>
+                <div className="truncate">
                     <span className="main-username">Monse Jocabed Marín Piñón</span>
                 </div>
-                <img className="main-userimage" src={ProfilePic} alt="" />
+                <div>
+                    <img className="main-userimage" src={ProfilePic} alt="" />
+                </div>
+                
             </div>
         </div>
         </div>
