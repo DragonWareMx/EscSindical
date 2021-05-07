@@ -3,8 +3,17 @@ import { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
 import '../../styles/cursos.css'
 
+function initializeDROP() {
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    var options;
+    var instances = M.Dropdown.init(elems, options);
+}
 
-export default function CursoActualPonente() {
+
+export default function HistorialCursosPonente() {
+    useEffect(() => {
+        initializeDROP();
+    }, [])
         return (
             <div className="row">                
                 <div className="col s12">
@@ -13,7 +22,7 @@ export default function CursoActualPonente() {
                             {/* TITULO CARD */}
                             <div className="row" style={{"marginBottom":"0px"}}>
                                 <div className="col s12" style={{ "marginBottom": "10px"}}>
-                                    <span className="txt-title-card">CURSOS ACTUALES
+                                    <span className="txt-title-card">HISTORIAL DE CURSOS
                                     </span>
                                 </div>
 
