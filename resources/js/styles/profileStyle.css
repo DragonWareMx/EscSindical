@@ -107,11 +107,22 @@
     line-height: 17px;
 
     color: #585858;
+    margin-bottom: 15px;
 }
 
 .profile-icon-email
 {
     font-size: 18px;
     margin: 10px;
+    color: #134E39;
+}
+
+.title-configuracion
+{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+
     color: #134E39;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../../layouts/Layout';
 import { Inertia } from '@inertiajs/inertia'
 import Paginacion from '../../components/common/Paginacion';
@@ -6,8 +6,17 @@ import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 
 import '../../styles/profileStyle.css'
 import ProfilePic from '../../../../public/img/monita.jpg'
+import InfoAlumno from '../../components/common/InfoAlumno';
+
+function initializeMat() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems);
+}
 
 const Perfil = ({ user }) => {
+    useEffect(() => {
+        initializeMat();
+    }, [])
 
     return (
         <>
@@ -33,13 +42,10 @@ const Perfil = ({ user }) => {
                                             <div className="profile-txt-active-since">
                                                 Activo desde {user.created_at}
                                             </div>
-                                            <div className="profile-txt-email truncate">
-                                                    <i class="material-icons profile-icon-email">mail_outline</i>
-                                                    {user.email}
-                                            </div>
+                                            <div className="profile-txt-email valign-wrapper truncate"><i class="material-icons profile-icon-email">mail_outline</i>{user.email}</div>
                                         </div>
                                         {/* Boton de enviar mensaje */}
-                                        <div className="col s12 center-align" style={{"marginTop":"15px"},{"padding":"0%"}}>
+                                        <div className="col s12 center-align" style={{"padding":"0%"}}>
                                             <a class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{"font-size":"18px"}}>send</i>Mensaje</a>
                                         </div>
                                     </div>
@@ -89,7 +95,7 @@ const Perfil = ({ user }) => {
                                                 Unidad: 
                                             </div>
                                             <div className="info-txt-format">
-                                                Categoría: {user.categorie_id}
+                                                Categoría: {user.categorie.nombre}
                                             </div>
                                         </div>
                                         <div className="col s12 m6" style={{"marginTop":"15px"}}>
@@ -117,8 +123,26 @@ const Perfil = ({ user }) => {
                                         </div>
                                         {/* Boton de editar */}
                                         <div className="col s12 m12 right-align" style={{"marginTop":"25px"}}>
-                                            <a class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{"font-size":"18px"}}>settings</i>Configuración</a>
+                                            <a href="#modal-editar" class="waves-effect waves-light btn boton-verde modal-trigger"><i class="material-icons right" style={{"font-size":"18px"}}>settings</i>Configuración</a>
                                         </div>
+                                        {/* Modal */}
+                                        <div id="modal-editar" className="modal">
+                                            <div className="modal-content">
+                                                <div className="row">
+                                                    <div className="col s11">
+                                                        <div className="title-configuracion valign-wrapper"><i className="material-icons" style={{"marginRight":"10px"}}>settings</i>CONFIGURACIÓN</div>
+                                                    </div>
+                                                    <div className="col s1">
+                                                        <i className="material-icons">close</i>
+                                                    </div>
+                                                    <div className="col s12">
+                                                        <InfoAlumno/>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* <InfoAlumno/> */}
                                     </div>
                                 </div>
                             </div>
