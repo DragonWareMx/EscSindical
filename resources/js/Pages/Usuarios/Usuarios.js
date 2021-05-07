@@ -14,27 +14,59 @@ function initializeMat() {
     var instances = M.Dropdown.init(elems);
 }
 
-const Usuarios = ({ users, user }) => {
+const Usuarios = ({ users, user, request }) => {
     const [state, setState] = useState({
-        typingTimeout: 0
+        typingTimeout: 0,
+        sortMatricula: false,
+        sortRol: false,
+        sortNombre: false,
+        sortUnidad: false,
+        sortCategoria: false,
+        filter: "nombre",
     })
 
     //realiza la búsqueda cada vez que se escribe en el input
     function changeName(event) {
-        console.log(event.target.value)
-        if (time.typingTimeout) {
-            clearTimeout(time.typingTimeout);
+        if (state.typingTimeout) {
+            clearTimeout(state.typingTimeout);
         }
 
         let search = event.target.value
 
-        console.log(route('usuarios').url())
-
         setState({
             typingTimeout: setTimeout(function () {
-                Inertia.replace(route('usuarios').url(), { data: { search: search } })
+                Inertia.replace(route('usuarios').url(), { data: { user_search: search } })
             }, 250)
         });
+    }
+
+    function sort(campo){
+        console.log(campo)
+
+        switch (campo) {
+            case "matricula":
+                
+                break;
+            case "rol":
+                
+                    break;
+            case "nombre":
+                
+                break;
+            case "unidad":
+                
+                break;
+            case "categoria":
+                
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+    function filter(filtro){
+        state.filter = filtro
     }
 
     //obtiene el usuario y abre el modal
@@ -44,9 +76,14 @@ const Usuarios = ({ users, user }) => {
                 only: ['user'],
                 data: { user: id },
                 onSuccess: ({ props }) => {
+                    //busca el modal infoAlumno
                     const elem = document.getElementById('modalInfoAlumno');
                     const instance = M.Modal.init(elem, { dismissible: false });
+
+                    //actualiza los textfields para que no se amontonen los labels
                     M.updateTextFields();
+
+                    //abre el modal
                     instance.open();
                 }
             }
@@ -55,6 +92,12 @@ const Usuarios = ({ users, user }) => {
 
     useEffect(() => {
         initializeMat();
+
+        //si hay una busqueda en el url se pone en el input
+        if(request.user_search){
+            const elem = document.getElementById('user_search');
+            elem.value = request.user_search;
+        }
     }, [])
 
     return (
@@ -71,13 +114,16 @@ const Usuarios = ({ users, user }) => {
                                         {/* Dropdown Structure */}
                                         <a className="dropdown-trigger" href="#!" data-target="dropdown-filter"><i className="material-icons">filter_alt</i></a>
                                         <ul id="dropdown-filter" className="dropdown-content" style={{ top: "0px" }}>
-                                            <li><a href="#!" className="selected">one</a></li>
-                                            <li><a href="#!">two</a></li>
-                                            <li><a href="#!">three</a></li>
+                                            <li><a onClick={() => {filter("matricula")}} className={request.filter == "matricula" ? "selected" : ""}>Matrícula</a></li>
+                                            <li><a onClick={() => {filter("rol")}} className={request.filter == "rol" ? "selected" : ""}>Rol</a></li>
+                                            <li><a onClick={() => {filter("nombre")}} className={request.filter == "nombre" || request.filter ? "selected" : ""}>Nombre</a></li>
+                                            <li><a onClick={() => {filter("unidad")}} className={request.filter == "unidad" ? "selected" : ""}>Unidad</a></li>
+                                            <li><a onClick={() => {filter("categoria")}} className={request.filter == "categoria" ? "selected" : ""}>Categoría</a></li>
+                                            <li><a onClick={() => {filter("eliminado")}} className={request.filter == "eliminado" ? "selected" : ""}>Eliminado</a></li>
                                         </ul>
                                     </div>
                                     <div className="input-field col s11">
-                                        <input id="search" type="search" onChange={changeName} />
+                                        <input id="user_search" type="search" onChange={changeName}/>
                                         <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                                         <i className="material-icons">close</i>
                                     </div>
@@ -87,7 +133,7 @@ const Usuarios = ({ users, user }) => {
                                 <thead>
                                     <tr>
                                         <th>
-                                            <a href="">
+                                            <a onClick={() => {sort("matricula")}}>
                                                 <div>
                                                     MATRÍCULA
                                                 </div>
@@ -95,7 +141,7 @@ const Usuarios = ({ users, user }) => {
                                             </a>
                                         </th>
                                         <th>
-                                            <a href="">
+                                            <a onClick={() => {sort("rol")}}>
                                                 <div>
                                                     ROL
                                                 </div>
@@ -103,7 +149,7 @@ const Usuarios = ({ users, user }) => {
                                             </a>
                                         </th>
                                         <th>
-                                            <a href="">
+                                            <a onClick={() => {sort("nombre")}}>
                                                 <div>
                                                     NOMBRE
                                                 </div>
@@ -111,7 +157,7 @@ const Usuarios = ({ users, user }) => {
                                             </a>
                                         </th>
                                         <th>
-                                            <a href="">
+                                            <a onClick={() => {sort("unidad")}}>
                                                 <div>
                                                     UNIDAD
                                                 </div>
@@ -119,7 +165,7 @@ const Usuarios = ({ users, user }) => {
                                             </a>
                                         </th>
                                         <th>
-                                            <a href="">
+                                            <a onClick={() => {sort("categoria")}}>
                                                 <div>
                                                     CATEGORÍA
                                                 </div>

@@ -26,7 +26,7 @@ class UserController extends Controller
     {
         return Inertia::render('Usuarios/Usuarios', [
             'users' => fn () => User::with('roles', 'categorie')
-                                    ->when($request->search, function($query, $search){
+                                    ->when($request->user_search, function($query, $search){
                                         $query->where('nombre','LIKE','%'.$search.'%');
                                     })
                                     ->paginate(20)
@@ -35,7 +35,8 @@ class UserController extends Controller
                                                         $query->find($user);
                                                     })
                                                     ->first()
-                                    )
+                                                ),
+            'request' => $request
             ]);
     }
 
