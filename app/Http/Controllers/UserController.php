@@ -23,12 +23,63 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
+    { 
         return Inertia::render('Usuarios/Usuarios', [
             'users' => fn () => User::with('roles', 'categorie')
+                                    ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
+                                    ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
+                                    ->leftJoin('categories', 'categories.id', '=', 'users.categorie_id')
                                     ->when($request->user_search, function($query, $search){
-                                        $query->where('nombre','LIKE','%'.$search.'%');
+                                        $query->where('users.nombre','LIKE','%'.$search.'%');
                                     })
+                                    ->when($request->sort, function ($query, $sort) use ($request) {
+                                        switch ($sort) {
+                                            case 'matricula':
+                                                if($request->order == 'asc')
+                                                    return $query->orderBy('matricula', 'ASC');
+                                                else if($request->order == 'desc')
+                                                    return $query->orderBy('matricula', 'DESC');
+                                                else
+                                                    return $query;
+                                                break;
+                                            case 'rol':
+                                                if($request->order == 'asc')
+                                                    return $query->orderBy('roles.name', 'ASC');
+                                                else if($request->order == 'desc')
+                                                    return $query->orderBy('roles.name', 'DESC');
+                                                else
+                                                    return $query;
+                                                break;
+                                            case 'nombre':
+                                                if($request->order == 'asc')
+                                                    return $query->orderBy('nombre', 'ASC');
+                                                else if($request->order == 'desc')
+                                                    return $query->orderBy('nombre', 'DESC');
+                                                else
+                                                    return $query;
+                                                break;
+                                            // case 'unidad':
+                                            //     if($request->order == 'asc')
+                                            //         return $query->orderBy('matricula', 'ASC');
+                                            //     else if($request->order == 'desc')
+                                            //         return $query->orderBy('matricula', 'DESC');
+                                            //     else
+                                            //         return $query;
+                                            //     break;
+                                            case 'categoria':
+                                                if($request->order == 'asc')
+                                                    return $query->orderBy('categories.nombre', 'ASC');
+                                                else if($request->order == 'desc')
+                                                    return $query->orderBy('categories.nombre', 'DESC');
+                                                else
+                                                    return $query;
+                                                break;
+                                            default:
+                                                # code...
+                                                break;
+                                        }
+                                    })
+                                    ->select('users.id','matricula','users.nombre','apellido_p','apellido_m','categorie_id')
                                     ->paginate(20)
                                     ->withQueryString(),
             'user' => Inertia::lazy(fn () => User::when($request->user, function($query, $user){
