@@ -92,3 +92,12 @@
     background-color: #134E39;
     color: white;
 }
+
+.icon-active{
+    color: #134E39 !important;
+    font-weight: 800 !important;
+}
+
+.icon-active svg {
+    fill: #134E39 !important;
+}

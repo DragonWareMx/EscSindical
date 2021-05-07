@@ -15,13 +15,16 @@ function initializeMat() {
 }
 
 const Usuarios = ({ users, user, request }) => {
+    const iconASC = "M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z"
+    const iconDESC = "M6 2l-6 8h4v12h4v-12h4l-6-8zm11.694.003h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z"
+    
     const [state, setState] = useState({
         typingTimeout: 0,
-        sortMatricula: false,
-        sortRol: false,
-        sortNombre: false,
-        sortUnidad: false,
-        sortCategoria: false,
+        sortMatricula: true,
+        sortRol: true,
+        sortNombre: true,
+        sortUnidad: true,
+        sortCategoria: true,
         filter: "nombre",
     })
 
@@ -32,32 +35,272 @@ const Usuarios = ({ users, user, request }) => {
         }
 
         let search = event.target.value
+        let data;
 
         setState({
             typingTimeout: setTimeout(function () {
-                Inertia.replace(route('usuarios').url(), { data: { user_search: search } })
+                data = {
+                    user_search: search
+                }
+                if(request.filter)
+                    data.filter = request.filter
+                Inertia.replace(route('usuarios').url(), { data: data })
             }, 250)
         });
     }
 
-    function sort(campo) {
-        console.log(campo)
-
+    function sort(campo){
+        let data;
         switch (campo) {
             case "matricula":
+                //si no hay order en el request entonces el orden es de AZ
+                if(!request.order)
+                    setState(state => ({
+                            ...state, 
+                            sortMatricula: true,
+                            sortRol: true,
+                            sortNombre: true,
+                            sortUnidad: true,
+                            sortCategoria: true,
+                        })
+                    )
+                else
+                    setState(state => ({
+                            ...state, 
+                            sortMatricula: !state.sortMatricula,
+                            sortRol: true,
+                            sortNombre: true,
+                            sortUnidad: true,
+                            sortCategoria: true,
+                        })
+                    )
+                
+                //se inicializan los datos del request
+                data = {
+                    sort: "matricula"
+                }
 
+                //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
+                if(!state.sortMatricula)
+                    data.order = "asc"
+                else
+                    data.order = "desc"
+                    
+                if(request.user_search)
+                    data.user_search = request.user_search
+
+                if(request.filter)
+                    data.filter = request.filter
+
+                Inertia.replace(route('usuarios').url(), 
+                { 
+                    data: data,
+                    preserveScroll: true,
+                    preserveState: true,
+                    onSuccess: (data2) => {
+                        console.log(data2)
+                    }
+                })
                 break;
             case "rol":
+                //si no hay order en el request entonces el orden es de AZ
+                if(!request.order)
+                    setState(state => ({
+                            ...state, 
+                            sortMatricula: true,
+                            sortRol: true,
+                            sortNombre: true,
+                            sortUnidad: true,
+                            sortCategoria: true,
+                        })
+                    )
+                else
+                    setState(state => ({
+                            ...state, 
+                            sortMatricula: true,
+                            sortRol: !state.sortRol,
+                            sortNombre: true,
+                            sortUnidad: true,
+                            sortCategoria: true,
+                        })
+                    )
+                
+                //se inicializan los datos del request
+                data = {
+                    sort: "rol"
+                }
 
+                //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
+                if(!state.sortRol)
+                    data.order = "asc"
+                else
+                    data.order = "desc"
+                    
+                if(request.user_search)
+                    data.user_search = request.user_search
+                
+                if(request.filter)
+                    data.filter = request.filter
+
+                Inertia.replace(route('usuarios').url(), 
+                { 
+                    data: data,
+                    preserveScroll: true,
+                    preserveState: true,
+                    onSuccess: (data2) => {
+                        console.log(data2)
+                    }
+                })
                 break;
             case "nombre":
+                //si no hay order en el request entonces el orden es de AZ
+                if(!request.order)
+                    setState(state => ({
+                            ...state, 
+                            sortMatricula: true,
+                            sortRol: true,
+                            sortNombre: true,
+                            sortUnidad: true,
+                            sortCategoria: true,
+                        })
+                    )
+                else
+                    setState(state => ({
+                            ...state, 
+                            sortMatricula: true,
+                            sortRol: true,
+                            sortNombre: !state.sortNombre,
+                            sortUnidad: true,
+                            sortCategoria: true,
+                        })
+                    )
+                
+                //se inicializan los datos del request
+                data = {
+                    sort: "nombre"
+                }
 
+                //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
+                if(!state.sortNombre)
+                    data.order = "asc"
+                else
+                    data.order = "desc"
+                    
+                if(request.user_search)
+                    data.user_search = request.user_search
+
+                if(request.filter)
+                    data.filter = request.filter
+
+                Inertia.replace(route('usuarios').url(), 
+                { 
+                    data: data,
+                    preserveScroll: true,
+                    preserveState: true,
+                    onSuccess: (data2) => {
+                        console.log(data2)
+                    }
+                })
                 break;
             case "unidad":
+                //si no hay order en el request entonces el orden es de AZ
+                if(!request.order)
+                    setState(state => ({
+                            ...state, 
+                            sortMatricula: true,
+                            sortRol: true,
+                            sortNombre: true,
+                            sortUnidad: true,
+                            sortCategoria: true,
+                        })
+                    )
+                else
+                    setState(state => ({
+                            ...state, 
+                            sortMatricula: true,
+                            sortRol: true,
+                            sortNombre: true,
+                            sortUnidad: !state.sortUnidad,
+                            sortCategoria: true,
+                        })
+                    )
+                
+                //se inicializan los datos del request
+                data = {
+                    sort: "unidad"
+                }
 
+                //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
+                if(!state.sortUnidad)
+                    data.order = "asc"
+                else
+                    data.order = "desc"
+                    
+                if(request.user_search)
+                    data.user_search = request.user_search
+
+                if(request.filter)
+                    data.filter = request.filter
+
+                Inertia.replace(route('usuarios').url(), 
+                { 
+                    data: data,
+                    preserveScroll: true,
+                    preserveState: true,
+                    onSuccess: (data2) => {
+                        console.log(data2)
+                    }
+                })
                 break;
             case "categoria":
+                //si no hay order en el request entonces el orden es de AZ
+                if(!request.order)
+                    setState(state => ({
+                            ...state, 
+                            sortMatricula: true,
+                            sortRol: true,
+                            sortNombre: true,
+                            sortUnidad: true,
+                            sortCategoria: true,
+                        })
+                    )
+                else
+                    setState(state => ({
+                            ...state, 
+                            sortMatricula: true,
+                            sortRol: true,
+                            sortNombre: true,
+                            sortUnidad: true,
+                            sortCategoria: !state.sortCategoria,
+                        })
+                    )
+                
+                //se inicializan los datos del request
+                data = {
+                    sort: "categoria"
+                }
 
+                //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
+                if(!state.sortCategoria)
+                    data.order = "asc"
+                else
+                    data.order = "desc"
+                    
+                if(request.user_search)
+                    data.user_search = request.user_search
+
+                if(request.filter)
+                    data.filter = request.filter
+
+                Inertia.replace(route('usuarios').url(), 
+                { 
+                    data: data,
+                    preserveScroll: true,
+                    preserveState: true,
+                    onSuccess: (data2) => {
+                        console.log(data2)
+                    }
+                })
                 break;
 
             default:
@@ -67,6 +310,126 @@ const Usuarios = ({ users, user, request }) => {
 
     function filter(filtro) {
         state.filter = filtro
+        let data
+        switch (filtro) {
+            case "matricula":                
+                //se inicializan los datos del request
+                data = {
+                    filter: "matricula"
+                }
+                    
+                if(request.user_search)
+                    data.user_search = request.user_search
+
+                Inertia.replace(route('usuarios').url(), 
+                { 
+                    data: data,
+                    preserveScroll: true,
+                    preserveState: true,
+                    onSuccess: (data2) => {
+                        console.log(data2)
+                    }
+                })
+                break;
+            case "rol":
+                //se inicializan los datos del request
+                data = {
+                    filter: "rol"
+                }
+
+                if(request.user_search)
+                    data.user_search = request.user_search
+
+                Inertia.replace(route('usuarios').url(), 
+                { 
+                    data: data,
+                    preserveScroll: true,
+                    preserveState: true,
+                    onSuccess: (data2) => {
+                        console.log(data2)
+                    }
+                })
+                break;
+            case "nombre":        
+                //se inicializan los datos del request
+                data = {
+                    filter: "nombre"
+                }
+                    
+                if(request.user_search)
+                    data.user_search = request.user_search
+
+                Inertia.replace(route('usuarios').url(), 
+                { 
+                    data: data,
+                    preserveScroll: true,
+                    preserveState: true,
+                    onSuccess: (data2) => {
+                        console.log(data2)
+                    }
+                })
+                break;
+            case "unidad":
+                //se inicializan los datos del request
+                data = {
+                    filter: "unidad"
+                }
+
+                if(request.user_search)
+                    data.user_search = request.user_search
+
+                Inertia.replace(route('usuarios').url(), 
+                { 
+                    data: data,
+                    preserveScroll: true,
+                    preserveState: true,
+                    onSuccess: (data2) => {
+                        console.log(data2)
+                    }
+                })
+                break;
+                case "categoria":
+                    //se inicializan los datos del request
+                    data = {
+                        filter: "categoria"
+                    }
+                        
+                    if(request.user_search)
+                        data.user_search = request.user_search
+    
+                    Inertia.replace(route('usuarios').url(), 
+                    { 
+                        data: data,
+                        preserveScroll: true,
+                        preserveState: true,
+                        onSuccess: (data2) => {
+                            console.log(data2)
+                        }
+                    })
+                    break;
+            case "eliminado":
+                //se inicializan los datos del request
+                data = {
+                    filter: "eliminado"
+                }
+                    
+                if(request.user_search)
+                    data.user_search = request.user_search
+
+                Inertia.replace(route('usuarios').url(), 
+                { 
+                    data: data,
+                    preserveScroll: true,
+                    preserveState: true,
+                    onSuccess: (data2) => {
+                        console.log(data2)
+                    }
+                })
+                break;
+
+            default:
+                break;
+        }
     }
 
     //obtiene el usuario y abre el modal
@@ -116,7 +479,7 @@ const Usuarios = ({ users, user, request }) => {
                                         <ul id="dropdown-filter" className="dropdown-content" style={{ top: "0px" }}>
                                             <li><a onClick={() => { filter("matricula") }} className={request.filter == "matricula" ? "selected" : ""}>Matrícula</a></li>
                                             <li><a onClick={() => { filter("rol") }} className={request.filter == "rol" ? "selected" : ""}>Rol</a></li>
-                                            <li><a onClick={() => { filter("nombre") }} className={request.filter == "nombre" || request.filter ? "selected" : ""}>Nombre</a></li>
+                                            <li><a onClick={() => { filter("nombre") }} className={request.filter == "nombre" ? "selected" : ""}>Nombre</a></li>
                                             <li><a onClick={() => { filter("unidad") }} className={request.filter == "unidad" ? "selected" : ""}>Unidad</a></li>
                                             <li><a onClick={() => { filter("categoria") }} className={request.filter == "categoria" ? "selected" : ""}>Categoría</a></li>
                                             <li><a onClick={() => { filter("eliminado") }} className={request.filter == "eliminado" ? "selected" : ""}>Eliminado</a></li>
@@ -133,43 +496,88 @@ const Usuarios = ({ users, user, request }) => {
                                 <thead>
                                     <tr>
                                         <th>
-                                            <a onClick={() => { sort("matricula") }}>
+                                            <a onClick={() => {sort("matricula")}} style={{cursor: "pointer", userSelect: "none"}} className={request.sort == "matricula" && request.order ? "icon-active" : ""}>
                                                 <div>
                                                     MATRÍCULA
                                                 </div>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d={
+                                                    request.sort ? 
+                                                        request.sort == "matricula" ? 
+                                                            request.order ? 
+                                                                request.order == "desc" ? iconDESC 
+                                                                : iconASC
+                                                            : iconASC 
+                                                        : iconASC 
+                                                    : iconASC
+                                                } /></svg>
                                             </a>
                                         </th>
                                         <th>
-                                            <a onClick={() => { sort("rol") }}>
+                                            <a onClick={() => {sort("rol")}} style={{cursor: "pointer", userSelect: "none"}} className={request.sort == "rol" && request.order ? "icon-active" : ""}>
                                                 <div>
                                                     ROL
                                                 </div>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d={
+                                                    request.sort ? 
+                                                        request.sort == "rol" ? 
+                                                            request.order ? 
+                                                                request.order == "desc" ? iconDESC 
+                                                                : iconASC
+                                                            : iconDESC 
+                                                        : iconASC 
+                                                    : iconASC
+                                                } /></svg>
                                             </a>
                                         </th>
                                         <th>
-                                            <a onClick={() => { sort("nombre") }}>
+                                            <a onClick={() => {sort("nombre")}} style={{cursor: "pointer", userSelect: "none"}} className={request.sort == "nombre" && request.order ? "icon-active" : ""}>
                                                 <div>
                                                     NOMBRE
                                                 </div>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d={
+                                                    request.sort ? 
+                                                        request.sort == "nombre" ? 
+                                                            request.order ? 
+                                                                request.order == "desc" ? iconDESC 
+                                                                : iconASC   
+                                                            : iconDESC 
+                                                        : iconASC 
+                                                    : iconASC
+                                                } /></svg>
                                             </a>
                                         </th>
                                         <th>
-                                            <a onClick={() => { sort("unidad") }}>
+                                            <a onClick={() => {sort("unidad")}} style={{cursor: "pointer", userSelect: "none"}} className={request.sort == "unidad" && request.order ? "icon-active" : ""}>
                                                 <div>
                                                     UNIDAD
                                                 </div>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d={
+                                                    request.sort ? 
+                                                        request.sort == "unidad" ? 
+                                                            request.order ? 
+                                                                request.order == "desc" ? iconDESC 
+                                                                : iconASC
+                                                            : iconDESC 
+                                                        : iconASC 
+                                                    : iconASC
+                                                } /></svg>
                                             </a>
                                         </th>
                                         <th>
-                                            <a onClick={() => { sort("categoria") }}>
+                                            <a onClick={() => {sort("categoria")}} style={{cursor: "pointer", userSelect: "none"}} className={request.sort == "categoria" && request.order ? "icon-active" : ""}>
                                                 <div>
                                                     CATEGORÍA
                                                 </div>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d="M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z" /></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d={
+                                                    request.sort ? 
+                                                        request.sort == "categoria" ? 
+                                                            request.order ? 
+                                                                request.order == "desc" ? iconDESC 
+                                                                : iconASC
+                                                            : iconDESC 
+                                                        : iconASC 
+                                                    : iconASC
+                                                } /></svg>
                                             </a>
                                         </th>
                                         <th></th>
@@ -178,13 +586,13 @@ const Usuarios = ({ users, user, request }) => {
                                 </thead>
 
                                 <tbody>
-                                    {users.data.length > 0 && users.data.map(user => (
-                                        <tr key={user.id} onClick={() => getUser(user.id)}>
-                                            <td>{user.matricula}</td>
-                                            <td>{/*user.roles['0'].name*/}Es admin</td>
-                                            <td>{user.nombre} {user.apellido_p} {user.apellido_m}</td>
+                                    {users.data.length > 0 && users.data.map(usuario => (
+                                        <tr key={usuario.id} onClick={() => getUser(usuario.id)}>
+                                            <td>{usuario.matricula}</td>
+                                            <td>{usuario.roles && usuario.roles.length > 0 ? usuario.roles.map(rol => (rol.name + " ")) : "Sin Rol"}</td>
+                                            <td>{usuario.nombre} {usuario.apellido_p} {usuario.apellido_m}</td>
                                             <td>UMF80 - Morelia</td>
-                                            <td>{user.categorie.nombre}</td>
+                                            <td>{usuario.categorie ? usuario.categorie.nombre : "Sin Categoría"}</td>
                                             <td><button><i className="material-icons">edit</i> </button></td>
                                             <td><button><i className="material-icons">delete</i> </button></td>
                                             {/*<td>
