@@ -26,9 +26,9 @@ class UserController extends Controller
     { 
         return Inertia::render('Usuarios/Usuarios', [
             'users' => fn () => User::with('roles', 'categorie')
-                                    ->join('role_user', 'role_user.user_id', '=', 'users.id')
-                                    ->join('roles', 'roles.id', '=', 'role_user.role_id')
-                                    ->join('categories', 'categories.id', '=', 'users.categorie_id')
+                                    ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
+                                    ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
+                                    ->leftJoin('categories', 'categories.id', '=', 'users.categorie_id')
                                     ->when($request->user_search, function($query, $search){
                                         $query->where('users.nombre','LIKE','%'.$search.'%');
                                     })
