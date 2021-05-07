@@ -110,7 +110,7 @@ export default function InfoAlumno({user}) {
                                             <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN PERSONAL</p>
 
                                             <div className="col s12" style={{"display": "flex","justifyContent":"center", "flexDirection":"column"}}>
-                                                <img id="profileImage" src={"/storage/fotos_perfil/" + (state.edit ? values.foto : user == null ? "" : user.foto ? user.foto : "avatar1.png")} ></img>
+                                                <img id="profileImage" src={state.edit ? values.foto : user == null ? "" : user.foto ? "/storage/fotos_perfil/"+user.foto : "/storage/fotos_perfil/avatar1.png"} ></img>
                                                 <p id="txt-profile">Foto de perfil</p>
                                             </div>
 
