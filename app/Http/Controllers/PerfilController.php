@@ -11,11 +11,9 @@ class PerfilController extends Controller
 {
     public function index()
     {
-        $usuario = User::where('id',Auth::id())->get();
-        
+        //$usuario = User::where('id',Auth::id())->get();
         //return $usuario;
 
         return Inertia::render('Perfil/Perfil',['user'=>Auth::user()]);
-        
     }
 }

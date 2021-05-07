@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import MenuLateral from '../components/layout/MenuLateral';
 import BarraBusqueda from '../components/layout/BarraBusqueda';
+import Footer from '../components/layout/Footer';
 
 export default function Layout({ title, pageTitle, children }) {
     useEffect(() => {
@@ -21,6 +22,7 @@ export default function Layout({ title, pageTitle, children }) {
                     {children}
                 </div>
             <MenuLateral />
+            <Footer />
         </React.Fragment>
     )
 }
