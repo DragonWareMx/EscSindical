@@ -37,10 +37,10 @@ const Perfil = ({ user }) => {
                                                     <i class="material-icons profile-icon-email">mail_outline</i>
                                                     {user.email}
                                             </div>
-                                            {/* Boton de enviar mensaje */}
-                                            <div className="col s12" style={{"marginTop":"15px"}}>
-                                                <a class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{"font-size":"18px"}}>send</i>Enviar Mensaje</a>
-                                            </div>
+                                        </div>
+                                        {/* Boton de enviar mensaje */}
+                                        <div className="col s12 center-align" style={{"marginTop":"15px"},{"padding":"0%"}}>
+                                            <a class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{"font-size":"18px"}}>send</i>Mensaje</a>
                                         </div>
                                     </div>
                                 </div>
@@ -64,6 +64,10 @@ const Perfil = ({ user }) => {
                                             <div className="titles-sub">
                                                 INFORMACIÓN PERSONAL
                                             </div>
+                                            
+                                            {/* <div style={{"marginTop":"20px"}}>
+                                                <br/>
+                                            </div> */}
                                             <div className="info-txt-format">
                                                 Fecha de Nacimiento: {user.fecha_nac}
                                             </div>
@@ -112,8 +116,8 @@ const Perfil = ({ user }) => {
                                             </div>
                                         </div>
                                         {/* Boton de editar */}
-                                        <div className="col s12 m6 right-align" style={{"marginTop":"15px"}}>
-                                            <a class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{"font-size":"18px"}}>edit</i>Editar</a>
+                                        <div className="col s12 m12 right-align" style={{"marginTop":"25px"}}>
+                                            <a class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{"font-size":"18px"}}>settings</i>Configuración</a>
                                         </div>
                                     </div>
                                 </div>
