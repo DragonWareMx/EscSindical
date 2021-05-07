@@ -15,7 +15,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('home');
 });
 
 Auth::routes();
@@ -33,12 +33,12 @@ Route::get('/inicio', function () {
 Auth::routes();
 
 //--------RUTAS DE EJEMPLO
-Route::get('/ejemplo',[App\Http\Controllers\UserController::class, 'ejemplo'])->name('ejemplo1');
+Route::get('/ejemplo', [App\Http\Controllers\UserController::class, 'ejemplo'])->name('ejemplo1');
 //--------RUTAS DE EJEMPLO
 
 //--------USUARIOS--------
-Route::get('/usuarios',[App\Http\Controllers\UserController::class, 'index'])->name('usuarios');
-Route::post('/usuarios/{id}',[App\Http\Controllers\UserController::class, 'update'])->name('usuarios.edit');
+Route::get('/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios');
+Route::post('/usuarios/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('usuarios.edit');
 
 //------CURSOS----
 Route::get('/cursos',[App\Http\Controllers\CourseController::class, 'index'])->name('cursos');
