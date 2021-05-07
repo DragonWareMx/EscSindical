@@ -20,9 +20,6 @@ export default function InfoAlumno({user}) {
 
     return (
         <div>
-            <div className="fixed-action-btn" style={{"marginRight":"70px"}}>
-                <a className="btn-floating btn-large waves-effect waves-light green-sind modal-trigger" href="#modalInfoAlumno"><i className="material-icons">accessibility</i></a>
-            </div>
             <div id="modalInfoAlumno" className="modal">
                 <div className="modal-content">
                     <div className="modal-close right"><i className="material-icons">close</i></div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
+import '/css/infoAlumno.css'
 
 export default function InfoAlumno({user}) {
     const { errors } = usePage().props
@@ -76,7 +77,7 @@ export default function InfoAlumno({user}) {
     return(
         <form onSubmit={handleSubmit}>
             <div className="row div-form-register" style={{"padding":"3%"}}>
-                <div className="col s12 m6 div-division">
+                <div className="col s12 m6 div-division user-form-border">
                     <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN PERSONAL</p>
 
                     <div className="col s12" style={{"display": "flex","justifyContent":"center", "flexDirection":"column"}}>
