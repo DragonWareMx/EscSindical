@@ -14,7 +14,7 @@ class CourseController extends Controller
     //
     public function index()
     {
-        return Inertia::render('Cursos');
+        return Inertia::render('Cursos/Cursos'); 
     }
     
     public function store(Request $request)

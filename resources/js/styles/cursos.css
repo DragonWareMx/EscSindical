@@ -1,0 +1,108 @@
+.txt-title-card{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 21px;
+    color: #134E39;
+}
+.txt-course-title{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px !important;
+    line-height: 20px;
+    color: #242424;
+}
+.txt-course-title-teacher{
+    font-size: 14px !important;
+}
+.txt-teacher-name{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #585858;
+}
+.txt-presentation{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 16px;
+    color: rgba(38, 50, 56, 0.8);
+}
+.txt-date-course{
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 20px;
+    color: #263238;
+}
+.txt-presentation-content{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #1E1E1E;
+    margin-top: 5px;
+}
+.div-tag{
+    display:flex;
+    align-items: center;
+    border: 1px solid #108058;
+    box-sizing: border-box;
+    border-radius: 10px;
+    width: max-content;
+    padding:2px;
+    padding-right:6px;
+    padding-left:6px;
+    margin-right:5px;
+    margin-bottom:5px;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 13px;
+    color: #108058;
+}
+.container-tags{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.txt-video-course{
+    display:flex;
+    align-items: center;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #134E39;
+    margin-top:10px;
+}
+
+.div-cousers-teacher{
+    margin-bottom: 30px;
+}
+.txt-progress-course{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 20px;
+    color: #A6A6A6;
+}
+.title-course-hover{
+    color: #242424;
+    transition: all ease-in-out 0.25s;
+}
+.title-course-hover:hover{
+    color: #108058;
+    transition: all ease-in-out 0.25s;
+}
+
+@media(max-width:600px){
+    .img-course{
+        width: 150px !important;
+    }
+    .txt-teacher-name{
+        font-size:12px;
+    }
+}
