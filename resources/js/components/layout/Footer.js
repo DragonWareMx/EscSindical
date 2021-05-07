@@ -7,7 +7,7 @@ return(
     <div>
         {/* footer de la pagina */}
         <div className="footer-copyright center-align">
-            <div style={{"color":"#707070"}}>
+            <div style={{"color":"#707070"},{"marginBottom":"20px"}}>
                 © 2021 Escuela Sindical   |   Desarrollado por DragonWare <img src={Logo} alt="logo"/>
             </div>
             
