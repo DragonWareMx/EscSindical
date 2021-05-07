@@ -6,6 +6,7 @@ import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 
 import '../../styles/profileStyle.css'
 import ProfilePic from '../../../../public/img/monita.jpg'
+import InfoAlumno from '../../components/common/InfoAlumno';
 
 function initializeMat() {
     var elems = document.querySelectorAll('.modal');
@@ -135,11 +136,13 @@ const Perfil = ({ user }) => {
                                                         <i className="material-icons">close</i>
                                                     </div>
                                                     <div className="col s12">
-                                                        AQUI VA EL FORMULARIO PARA EDITAR
+                                                        <InfoAlumno/>
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        {/* <InfoAlumno/> */}
                                     </div>
                                 </div>
                             </div>
