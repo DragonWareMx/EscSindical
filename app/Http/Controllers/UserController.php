@@ -31,7 +31,8 @@ class UserController extends Controller
                                     })
                                     ->paginate(20)
                                     ->withQueryString(),
-            'user' => Inertia::lazy(fn () => User::when($request->user, function($query, $user){
+            'user' => Inertia::lazy(fn () => User::with('categorie')
+                                                    ->when($request->user, function($query, $user){
                                                         $query->find($user);
                                                     })
                                                     ->first()

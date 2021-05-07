@@ -54,13 +54,13 @@ class RegisterController extends Controller
 
     /**
      * Get a validator for an incoming registration request.
-     *
+     *s
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
-        
+        // dd($data);
         return Validator::make($data, [
             'nombre' => ['required', 'string', 'max:255'],
             'apellido_paterno' => ['required', 'string', 'max:255'],
@@ -107,7 +107,6 @@ class RegisterController extends Controller
             $newFileName2=$fileName2.'_'.time().'.'.$extension2;
             $path2 = request('tarjeton')->storeAs('/public/tarjetones_pago/',$newFileName2);
 
-
             // Obtener id de la categoria
             // obtener categorias
             $categorias = Category::get();
@@ -116,6 +115,7 @@ class RegisterController extends Controller
                 if($ct["nombre"]==$data['categoria'])
                     $idct=$ct["id"];
             }
+        
         return User::create([
             'nombre' => $data['nombre'],
             'foto' => $newFileName,
@@ -135,6 +135,9 @@ class RegisterController extends Controller
             'categorie_id' => $idct,
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+
         ]);
+        // $newUser->roles()->sync(3);
+        
     }
 }

@@ -20,6 +20,7 @@ function initializeCollaps() {
     var instances = M.Autocomplete.init(elems);
 }
 
+
 export default function InfoAlumno({user}) {
     const { errors } = usePage().props
 
@@ -45,7 +46,39 @@ export default function InfoAlumno({user}) {
         apellido_p: "",
         apellido_m: "",
         email: "",
+        fecha_nac: "",
+        sexo: "",
+        matricula: "",
+        regime_id: "",
+        unity_id: "",
+        categorie: "",
+        estado: "",
+        ciudad: "",
+        colonia: "",
+        calle: "",
+        cp: "",
+        num_ext: "",
+        num_int: "",
+        email: "",
+        created_at: "",
+        foto: "",
     })
+
+
+    function parseFecha(date){
+        var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+    }
+
 
     const [state, setState] = useState({
         edit: false
@@ -75,146 +108,198 @@ export default function InfoAlumno({user}) {
                                             <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN PERSONAL</p>
 
                                             <div className="col s12" style={{"display": "flex","justifyContent":"center", "flexDirection":"column"}}>
-                                                <img id="profileImage" src="/storage/fotos_perfil/avatar1.png" ></img>
+                                                <img id="profileImage" src={"/storage/fotos_perfil/" + (state.edit ? values.foto : user == null ? "" : user.foto ? user.foto : "avatar1.png")} ></img>
                                                 <p id="txt-profile">Foto de perfil</p>
                                             </div>
 
-                                            <input id="imageUpload" type="file" className="form-control " /*@error('foto_perfil') is-invalid @enderror*/
-                                                name="foto_perfil" placeholder="Photo"   /*value="{{ old('foto_perfil') }}"*/ accept="image/png, image/jpeg, image/jpg, image/gif"></input>
-                                                {/* @error('foto_perfil')
-                                                <span class="invalid-feedback col s12" role="alert" style="margin-bottom:12px; text-align:center">
-                                                    <strong>{{ $message }}</strong>
-                                                </span> 
-                                                @enderror */}
+                                            <input id="imageUpload" type="file" className={errors.foto ? "validate form-control invalid" : "validate form-control"}
+                                                name="foto" placeholder="Photo" accept="image/png, image/jpeg, image/jpg, image/gif"></input>
+                                                {
+                                                    errors.foto && 
+                                                    <span className="helper-text" data-error={errors.foto} style={{"marginBottom":"10px"}}>{errors.foto}</span>
+                                                }
 
                                             <div className="input-field col s12">
-                                                <input  id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={state.edit ? values.nombre : user == null ? "" : user.nombre} onChange={handleChange} autoFocus/>
+                                                <input  disabled id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={state.edit ? values.nombre : user == null ? "" : user.nombre} onChange={handleChange} autoFocus/>
                                                 <label htmlFor="nombre">Nombre</label>
                                                 {
                                                     errors.nombre && 
                                                     <span className="helper-text" data-error={errors.nombre} style={{"marginBottom":"10px"}}>{errors.nombre}</span>
                                                 }
-                                                {/* @error('nombre')
-                                                    <span class="invalid-feedback" role="alert" style="margin-bottom:12px;">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror */}
                                             </div>
+
                                             <div className="input-field col s12 input-50-re">
-                                                <input  id="apellido_paterno" type="text" className="validate form-control" /*@error('apellido_paterno') is-invalid @enderror*/ name="apellido_paterno" /*value="{{ old('apellido_paterno') }}"*/ required autoComplete="apellido_paterno"/>
+                                                <input disabled id="apellido_p" type="text" className={errors.apellido_p ? "validate form-control invalid" : "validate form-control"}  name="apellido_p" value={state.edit ? values.apellido_p : user == null ? "" : user.apellido_p} required autoComplete="apellido_paterno"/>
                                                 <label htmlFor="apellido_paterno">Apellido Paterno</label>
-                                                {/* @error('apellido_paterno')
-                                                    <span class="invalid-feedback" role="alert" style="margin-bottom:12px;">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror */}
+                                                {
+                                                    errors.apellido_p && 
+                                                    <span className="helper-text" data-error={errors.apellido_p} style={{"marginBottom":"10px"}}>{errors.apellido_p}</span>
+                                                }
+                                                
                                             </div>
+
                                             <div className="input-field col s12 input-50-re">
-                                                <input  id="apellido_materno" type="text" className="validate form-control" /*@error('apellido_materno') is-invalid @enderror*/ name="apellido_materno" /*value="{{ old('apellido_materno') }}" */ autoComplete="apellido_materno"/>
+                                                <input  disabled id="apellido_m" type="text" className={errors.apellido_m ? "validate form-control invalid" : "validate form-control"} name="apellido_m" value={state.edit ? values.apellido_m : user == null ? "" : user.apellido_m} autoComplete="apellido_materno"/>
                                                 <label htmlFor="apellido_materno">Apellido Materno</label>
-                                                {/* @error('apellido_materno')
-                                                    <span class="invalid-feedback" role="alert" style="margin-bottom:12px;">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror */}
+                                                {
+                                                    errors.apellido_m && 
+                                                    <span className="helper-text" data-error={errors.apellido_m} style={{"marginBottom":"10px"}}>{errors.apellido_m}</span>
+                                                }
                                             </div>
+
                                             <div className="input-field col s12 input-50-re">
-                                                <input id="fecha_nacimiento" max="2004-01-01" type="date" name="fecha_nacimiento" /*value="{{ old('fecha_nacimiento') }}"*/ required autoComplete="fecha_nacimiento"/>
-                                                <label htmlFor="fecha_nacimiento">Fec. Nacimiento</label>
+                                                <input disabled id="fecha_nac" max="2004-01-01" type="date" name="fecha_nac" required autoComplete="fecha_nacimiento" value={state.edit ? values.fecha_nac : user == null ? "" : user.fecha_nac} />
+                                                <label htmlFor="fecha_nacimiento">Fecha de Nacimiento</label>
+                                                {
+                                                    errors.fecha_nac && 
+                                                    <span className="helper-text" data-error={errors.fecha_nac} style={{"marginBottom":"10px"}}>{errors.fecha_nac}</span>
+                                                }
                                             </div>
+
                                             <div className="input-field col s12 input-50-re">
-                                                <select id="sexo" name="sexo" required autoComplete="sexo">
-                                                    <option value="Femenino" /*{{ old('sexo') == 'Femenino' ? 'selected' : '' }}*/>Femenino</option>
-                                                    <option value="Masculino" /*{{ old('sexo') == 'Masculino' ? 'selected' : '' }}*/>Masculino</option>
+                                                <select disabled id="sexo" name="sexo" required autoComplete="sexo" defaultValue={state.edit ? values.sexo : user == null ? "" : user.sexo} onChange={handleChange}>
+                                                    <option value="Femenino">Femenino</option>
+                                                    <option value="Masculino">Masculino</option>
                                                 </select>
                                                 <label>Sexo</label>
+                                                {
+                                                    errors.sexo && 
+                                                    <span className="helper-text" data-error={errors.sexo} style={{"marginBottom":"10px"}}>{errors.sexo}</span>
+                                                }
                                             </div>
 
                                             <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN INSTITUCIONAL</p>
 
                                             <div className="input-field col s12">
-                                                <input  id="matricula" type="text" className="validate" name="matricula" /*value="{{ old('matricula') }}"*/ required autoComplete="matricula"/>
+                                                <input  disabled id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={state.edit ? values.matricula : user == null ? "" : user.matricula} required autoComplete="matricula"/>
                                                 <label htmlFor="matricula">Matrícula</label>
+                                                {
+                                                    errors.matricula && 
+                                                    <span className="helper-text" data-error={errors.matricula} style={{"marginBottom":"10px"}}>{errors.matricula}</span>
+                                                }
                                             </div>
 
                                             <div className="input-field col s12">
-                                                <select id="regimen" name="regimen" required autoComplete="regimen">
-                                                    <option value="" disabled selected>Selecciona una opción</option>
-                                                    <option value="1" /*{{ old('regimen') == 1 ? 'selected' : '' }}*/>Ordinario</option>
-                                                    <option value="2" /*{{ old('regimen') == 2 ? 'selected' : '' }}*/>Bienestar</option>
+                                                <select disabled id="regime_id" name="regime_id" required autoComplete="regime_id" value={state.edit ? values.regime_id : user == null ? "" : user.regime_id}>
+                                                    <option value="" disabled >Selecciona una opción</option>
+                                                    <option value="1">Ordinario</option>
+                                                    <option value="2">Bienestar</option>
                                                 </select>
                                                 <label>Regimen</label>
+                                                {
+                                                    errors.regime_id && 
+                                                    <span className="helper-text" data-error={errors.regime_id} style={{"marginBottom":"10px"}}>{errors.regime_id}</span>
+                                                }
                                             </div>
 
                                             <div className="input-field col s12" style={{"marginTop":"5px"}}>
-                                                <select id="unidad" name="unidad" required autoComplete="unidad">
-                                                    <option value="" disabled selected>Selecciona una opción</option>
-                                                    <option value="1" /*{{ old('unidad') == 1 ? 'selected' : '' }}*/>UMF 75 - Morelia c/UMAA</option>
-                                                    <option value="2" /*{{ old('unidad') == 2 ? 'selected' : '' }}*/>UMF 80 - Morelia</option>
+                                                <select disabled id="unity_id" name="unity_id" required autoComplete="unity_id" value={state.edit ? values.unity_id : user == null ? "" : user.unity_id}>
+                                                    <option value="" disabled>Selecciona una opción</option>
+                                                    <option value="1">UMF 75 - Morelia c/UMAA</option>
+                                                    <option value="2">UMF 80 - Morelia</option>
                                                 </select>
                                                 <label>Unidad</label>
+                                                {
+                                                    errors.unity_id && 
+                                                    <span className="helper-text" data-error={errors.unity_id} style={{"marginBottom":"10px"}}>{errors.unity_id}</span>
+                                                }
                                             </div>
 
                                             <div className="input-field col s12">
-                                                <input type="text" id="autocomplete-input" name="categoria" required autoComplete="categoria" className="autocomplete"/>
+                                                <input disabled type="text" id="categoria" name="categoria" required autoComplete="categoria" className="autocomplete" value={state.edit ? values.categoria : user == null ? "" : user.categorie.nombre}/>
                                                 <label htmlFor="autocomplete-input">Categoría</label>
+                                                {
+                                                    errors.categoria && 
+                                                    <span className="helper-text" data-error={errors.categoria} style={{"marginBottom":"10px"}}>{errors.categoria}</span>
+                                                }
                                             </div>
 
-                                            <p style={{"marginTop":"0px", "fontFamily":"Montserrat" ,"fontSize":"13px"}}>Tarjetón de pago <a>NombreDelArchivo.pdf</a><i style={{"color":"#7E7E7E"}} className="material-icons tiny">description</i></p>
+                                            <p style={{"marginTop":"0px", "fontFamily":"Montserrat" ,"fontSize":"13px"}}>Tarjetón de pago <a target="_blank" href={user == null || user.tarjeton_pago == null ? "" : "/storage/tarjetones_pago/"+user.tarjeton_pago}>{user == null ? "" : user.tarjeton_pago}</a><i style={{"color":"#7E7E7E"}} className="material-icons tiny">description</i></p>
                                         </div>
                                         <div className="col s12 m6 div-division">
                                             <p className="titles-sub" style={{"marginLeft":"3%"}}>DIRECCIÓN</p>
 
                                             <div className="input-field col s6 ">
-                                                <input  id="estado" type="text" className="validate" name="estado" /*value="{{ old('estado') }}"*/ required autoComplete="estado"/>
+                                                <input disabled id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado"  value={state.edit ? values.estado : user == null ? "" : user.estado} required autoComplete="estado"/>
                                                 <label htmlFor="estado">Estado</label>
+                                                {
+                                                    errors.estado && 
+                                                    <span className="helper-text" data-error={errors.estado} style={{"marginBottom":"10px"}}>{errors.estado}</span>
+                                                }
                                             </div>
 
                                             <div className="input-field col s6 input-50-re">
-                                                <input  id="ciudad" type="text" className="validate" name="ciudad" /*value="{{ old('ciudad') }}"*/ required autoComplete="ciudad"/>
+                                                <input disabled id="ciudad" type="text" className={errors.ciudad ? "validate form-control invalid" : "validate"} name="ciudad" value={state.edit ? values.ciudad : user == null ? "" : user.ciudad} required autoComplete="ciudad"/>
                                                 <label htmlFor="ciudad">Ciudad</label>
+                                                {
+                                                    errors.ciudad && 
+                                                    <span className="helper-text" data-error={errors.ciudad} style={{"marginBottom":"10px"}}>{errors.ciudad}</span>
+                                                }
                                             </div>
 
                                             <div className="input-field col s12 input-50-re">
-                                                <input  id="colonia" type="text" className="validate" name="colonia" /*value="{{ old('colonia') }}"*/ required autoComplete="colonia"/>
+                                                <input disabled id="colonia" type="text" className={errors.colonia ? "validate form-control invalid" : "validate"} name="colonia" value={state.edit ? values.colonia : user == null ? "" : user.colonia} required autoComplete="colonia"/>
                                                 <label htmlFor="colonia">Colonia</label>
+                                                {
+                                                    errors.colonia && 
+                                                    <span className="helper-text" data-error={errors.colonia} style={{"marginBottom":"10px"}}>{errors.colonia}</span>
+                                                }
                                             </div>
 
                                             <div className="input-field col s12 input-50-re">
-                                                <input  id="calle" type="text" className="validate" name="calle" /*value="{{ old('calle') }}"*/ required autoComplete="calle"/>
+                                                <input  disabled id="calle" type="text" className={errors.calle ? "validate form-control invalid" : "validate"} name="calle" value={state.edit ? values.calle : user == null ? "" : user.calle} required autoComplete="calle"/>
                                                 <label htmlFor="calle">Calle</label>
+                                                {
+                                                    errors.calle && 
+                                                    <span className="helper-text" data-error={errors.calle} style={{"marginBottom":"10px"}}>{errors.calle}</span>
+                                                }
                                             </div>
 
                                             <div className="input-field col s6 input-50-re">
-                                                <input  id="codigo_postal" min="0" step="1" type="number" className="validate" name="codigo_postal" /*value="{{ old('codigo_postal') }}"*/ required autoComplete="codigo_postal"/>
-                                                <label htmlFor="codigo_postal">Código Postal</label>
+                                                <input disabled id="cp" min="0" step="1" type="number"  className={errors.cp ? "validate form-control invalid" : "validate"} name="cp" value={state.edit ? values.cp : user == null ? "" : user.cp} required autoComplete="cp"/>
+                                                <label htmlFor="cp">Código Postal</label>
+                                                {
+                                                    errors.cp && 
+                                                    <span className="helper-text" data-error={errors.cp} style={{"marginBottom":"10px"}}>{errors.cp}</span>
+                                                }
                                             </div>
 
                                             <div className="input-field col s6 input-50-re">
-                                                <input  id="numero" min="0" step="1" type="number" className="validate" name="numero" /*value="{{ old('numero') }}"*/ required autoComplete="numero"/>
-                                                <label htmlFor="numero">No. Exterior</label>
+                                                <input disabled id="num_ext" min="0" step="1" type="number" className={errors.num_ext ? "validate form-control invalid" : "validate"} name="num_ext" value={state.edit ? values.num_ext : user == null ? "" : user.num_ext} required autoComplete="num_ext"/>
+                                                <label htmlFor="num_ext">No. Exterior</label>
+                                                {
+                                                    errors.num_ext && 
+                                                    <span className="helper-text" data-error={errors.num_ext} style={{"marginBottom":"10px"}}>{errors.num_ext}</span>
+                                                }
                                             </div>
+
                                             <div className="input-field col s6 input-50-re">
-                                                <input  id="numero_interior" min="0" step="1" type="number" className="validate" name="numero_interior" /*value="{{ old('numero_interior') }}"*/  autoComplete="numero_interior"/>
-                                                <label htmlFor="numero_interior">No. Interior</label>
+                                                <input disabled id="num_int" min="0" step="1" type="number" className={errors.num_int ? "validate form-control invalid" : "validate"} name="num_int" value={state.edit ? values.num_int : user == null ? "" : user.num_int}  autoComplete="num_int"/>
+                                                <label htmlFor="num_int">No. Interior</label>
+                                                {
+                                                    errors.num_int && 
+                                                    <span className="helper-text" data-error={errors.num_int} style={{"marginBottom":"10px"}}>{errors.num_int}</span>
+                                                }
                                             </div>
 
                                             <p className="titles-sub" style={{"marginLeft":"3%"}}>CUENTA</p>
 
                                             <div className="input-field col s12">
-                                                <input id="email" type="email" className="validate form-control" /*@error('email') is-invalid @enderror*/ name="email" /*value="{{ old('email') }}"*/ required autoComplete="email"/>
+                                                <input disabled id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"}  name="email" value={state.edit ? values.email : user == null ? "" : user.email} required autoComplete="email"/>
                                                 <label htmlFor="email">Correo electrónico</label>
-
-                                                {/* @error('email')
-                                                    <span className="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror */}
+                                                {
+                                                    errors.email && 
+                                                    <span className="helper-text" data-error={errors.email} style={{"marginBottom":"10px"}}>{errors.email}</span>
+                                                }
                                             </div>
 
                                             <div className="input-field col s12 input-50-re">
-                                                <input  id="fecha_registro" type="text" className="validate" name="fecha_registro" /*value="{{ old('ciudad') }}"*/ required autoComplete="fecha_registro"/>
-                                                <label htmlFor="fecha_registro">Fecha de Registro</label>
+                                                <input disabled id="created_at" max="2004-01-01" type="date" name="created_at" required autoComplete="created_at" value={state.edit ? values.created_at : user == null ? "" : user.created_at ? parseFecha(user.created_at) : ""} />
+                                                <label htmlFor="created_at">Fecha de Registro</label>
+                                                {
+                                                    errors.created_at && 
+                                                    <span className="helper-text" data-error={errors.created_at} style={{"marginBottom":"10px"}}>{errors.created_at}</span>
+                                                }
                                             </div>
 
                                             <div className="row">
