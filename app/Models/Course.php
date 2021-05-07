@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Course extends Model
 {
@@ -51,5 +52,7 @@ class Course extends Model
     public function drop_request(){
         return $this->belongsToMany('App\Models\User','drop_requests');
     }
+    
+    use SoftDeletes;
 
 }
