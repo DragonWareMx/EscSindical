@@ -162,6 +162,7 @@ body
     margin-top: -150px;
 
     z-index: 15;
+    padding: 0px 25px;
 }
 
 .icono-menu
@@ -305,6 +306,10 @@ body
     color: #FFFFFF;
 }
 
+.page-title .col{
+    padding: 0px !important;
+}
+
 .pagination li.active{
     background-color: #419779 !important;
 }
@@ -312,4 +317,12 @@ body
 .green-sind{
     background-color: #419779 !important;
     box-shadow: 0px 4px 4px rgba(82, 82, 82, 0.25);
+}
+
+.row.contenedor{
+    padding: 0px !important;
+}
+
+.col.contenedor{
+    padding: 0px !important;
 }
