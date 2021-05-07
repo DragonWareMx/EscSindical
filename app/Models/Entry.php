@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Entry extends Model
 {
@@ -20,4 +21,6 @@ class Entry extends Model
     public function users(){
         return $this->belongsToMany('App\Models\User');
     }
+    
+    use SoftDeletes;
 }
