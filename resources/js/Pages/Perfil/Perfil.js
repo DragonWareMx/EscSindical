@@ -39,7 +39,7 @@ const Perfil = ({ user }) => {
                                             </div>
                                         </div>
                                         {/* Boton de enviar mensaje */}
-                                        <div className="col s12 center-align" style={{"marginTop":"15px"},{"padding":"0%"}}>
+                                        <div className="col s12 center-align" style={{"padding":"0%"}}>
                                             <a class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{"font-size":"18px"}}>send</i>Mensaje</a>
                                         </div>
                                     </div>
