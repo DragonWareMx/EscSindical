@@ -1,8 +1,9 @@
 import React from 'react';
 
-import ProfilePic from '../../../../public/imgPrueba/profile.jpg'
+import { usePage } from '@inertiajs/inertia-react'
 
 export default function BarraBusqueda() {
+    const { auth } = usePage().props;
     return (
         <div>
             {/* bara de busqueda superior */}
@@ -27,9 +28,9 @@ export default function BarraBusqueda() {
                     </div>
                     <div className="main-bar-right-rightSide">
                         <div>
-                            <span className="main-username">window.User.name</span>
+                            <span className="main-username"> {auth.user.nombre} {auth.user.apellido_p} {auth.user_apellido_m}</span>
                         </div>
-                        <img className="main-userimage" src={ProfilePic} alt="" />
+                        <img className="main-userimage" src={"/storage/fotos_perfil/" + auth.user.foto} alt="" />
                     </div>
                 </div>
             </div>
