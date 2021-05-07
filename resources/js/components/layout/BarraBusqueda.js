@@ -1,4 +1,6 @@
 import React from 'react';
+import { InertiaLink } from "@inertiajs/inertia-react"
+import route from 'ziggy-js';
 
 import ProfilePic from '../../../../public/imgPrueba/profile.jpg'
 
@@ -22,18 +24,23 @@ return(
         {/* Parte derecha de la barra superior*/}
         <div className="main-bar-right">
             <div className="main-bar-right-leftSide">
-                <img src="/img/icons/mochila blanca.png" alt="Mochila" className="icono-mochila" />
-                <i className="material-icons icono-notificaciones">notifications_none</i>
+                <i className="material-icons icono-notificaciones">backpack</i>
+                <i className="material-icons icono-notificaciones">notifications</i>
             </div>
+            
             <div className="main-bar-right-rightSide">
                 <div className="truncate">
-                    <span className="main-username">Monse Jocabed Marín Piñón</span>
+                    <InertiaLink href={route('perfil').url()}>
+                        <span className="main-username">Monse Jocabed Marín Piñón</span>
+                    </InertiaLink>
                 </div>
                 <div>
-                    <img className="main-userimage" src={ProfilePic} alt="" />
+                    <InertiaLink href={route('perfil').url()}>
+                        <img className="main-userimage" src={ProfilePic} alt="" />
+                    </InertiaLink>
                 </div>
-                
             </div>
+            
         </div>
         </div>
         {/* contenido */}

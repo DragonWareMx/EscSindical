@@ -35,9 +35,15 @@ function handleContentLoaded () {
     var instances = M.Sidenav.init(elems, options);
 }
 
+function initializeTooltip() {
+  var elems = document.querySelectorAll('.tooltipped');
+  var instances = M.Tooltip.init(elems);
+}
+
 export default function MenuLateral(){
     useEffect(() => {
         handleContentLoaded();
+        initializeTooltip();
         window.addEventListener('resize', closeNav2);
     }, [])
     return(
@@ -50,10 +56,12 @@ export default function MenuLateral(){
                 <div className="center-align" style={{zIndex: 100, height: '150px'}}>
                   <img src="img/imagenes/Classroom-cuate.svg" style={{position: 'relative', height: '150px'}} />
                 </div>
-                <div className="menu-profile-info">
-                  <img style={{marginLeft: '10px'}} src="/img/imagenes/1703234.png" className="main-userimage" /> 
-                  <div className="profile-info-name truncate">Monse Jocabed Marín Píñón</div>
-                </div>
+                <InertiaLink href={route('perfil').url()} className="icono-menu">
+                  <div className="menu-profile-info">
+                    <img style={{marginLeft: '10px'}} src="/img/imagenes/1703234.png" className="main-userimage" /> 
+                    <div className="profile-info-name truncate">Monse Jocabed Marín Píñón</div>
+                  </div>
+                </InertiaLink>
               </div>
             </li>
             <li onClick={closeNav}>
@@ -70,11 +78,19 @@ export default function MenuLateral(){
             </li>
             <li><a className="subheader division-menu">CURSOS</a></li>
             <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">school</i>Mis cursos</a></li>
-            <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">timeline</i>Buscar cursos</a></li>
+            <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">search</i>Buscar cursos</a></li>
             <li><a className="subheader division-menu">SISTEMA</a></li>
             <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">assignment_late</i>Reportes</a></li>
-            <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">history</i>Bitácora</a></li>
-            <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">settings</i>Configuración</a></li>
+            <li>
+              {/* <InertiaLink href={route('perfil').url()} className="icono-menu"> */}
+                <a><i className="material-icons icono-menu">history</i>Bitácora</a>
+              {/* </InertiaLink> */}
+            </li>
+            <li>
+              <InertiaLink href={route('perfil').url()} className="icono-menu">
+                <i className="material-icons icono-menu">settings</i>Configuración
+              </InertiaLink>
+            </li>
             <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">logout</i>Cerrar sesión</a></li>
             <div className="center-align" style={{marginTop: '25px'}}>
               <a onClick={closeNav} href="#!" className="btn-floating btn-large waves-effect waves-light sidenav-close" style={{backgroundColor: '#108058'}}><i className="material-icons">arrow_back</i></a>
@@ -92,38 +108,40 @@ export default function MenuLateral(){
         {/* menu lateral comprimido */}
         <div className="menu-compacto center-align">
           <div className="col s12">
-            <img src="/img/imagenes/LogoNacional2.png" alt="logo" className="imagen-menu-compacto" />
+            <img src="/img/imagenes/LogoNacional2.png" alt="logo" className="imagen-menu-compacto tooltipped" data-position="right" data-tooltip="Escuela Sindical" />
           </div>
           <div className="col s12">
             <InertiaLink href={route('ejemplo1').url()} className="icono-menu">
-                <i className="material-icons icono-menu-compacto current-menu">home</i>
+                <i className="material-icons tooltipped icono-menu-compacto current-menu" data-position="right" data-tooltip="Inicio">home</i>
             </InertiaLink>
           </div>
           <div className="col s12">
             <InertiaLink href={route('usuarios').url()} className="icono-menu">
-                <i className="material-icons icono-menu-compacto current-menu">people</i>
+                <i className="material-icons tooltipped icono-menu-compacto current-menu" data-position="right" data-tooltip="Usuarios">people</i>
             </InertiaLink>
           </div>
           <div className="col s12">
-            <i className="material-icons icono-menu-compacto icono-menu">school</i>
+            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Mis cursos">school</i>
           </div>
           <div className="col s12">
-            <i className="material-icons icono-menu-compacto icono-menu">timeline</i>
+            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Buscar cursos">search</i>
           </div>
           <div className="col s12">
-            <i className="material-icons icono-menu-compacto icono-menu">assignment_late</i>
+            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Reportes">assignment_late</i>
           </div>
           <div className="col s12">
-            <i className="material-icons icono-menu-compacto icono-menu">history</i>
+            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Bitácora">history</i>
           </div>
           <div className="col s12">
-            <i className="material-icons icono-menu-compacto icono-menu">settings</i>
+            <InertiaLink href={route('perfil').url()} className="icono-menu">
+              <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Configuración">settings</i>
+            </InertiaLink>
           </div>
           <div className="col s12">
-            <i className="material-icons icono-menu-compacto icono-menu">logout</i>
+            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Cerrar sesión">logout</i>
           </div>
           <div className="col s12 center-align" style={{marginTop: '10px'}}>
-            <a onClick={openNav} data-target="slide-out" className="btn-floating btn-medium waves-effect waves-light sidenav-trigger" style={{backgroundColor: '#108058'}}><i className="material-icons">arrow_forward</i></a>
+            <a onClick={openNav} data-target="slide-out" className="btn-floating btn-medium waves-effect waves-light sidenav-trigger tooltipped" style={{backgroundColor: '#108058'}} data-position="right" data-tooltip="Abrir menú"><i className="material-icons">arrow_forward</i></a>
           </div>
         </div>
       </div>
