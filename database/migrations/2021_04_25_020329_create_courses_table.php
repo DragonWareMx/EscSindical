@@ -18,14 +18,15 @@ class CreateCoursesTable extends Migration
             $table->timestamps();
             $table->string('nombre',250);
             $table->date('fecha_inicio');
-            $table->date('fecha_limite');
+            $table->date('fecha_final');
+            $table->date('inicio_inscripciones')->nullable();            
+            $table->date('fecha_limite')->nullable();
+            $table->text('link');
             $table->unsignedInteger('max');
             $table->unsignedInteger('valor_curricular');
-            $table->enum('acceso', ['enum1','enum2']);
+            $table->enum('tipo_acceso', ['Automática','Solicitud','Sólo yo']);
             $table->tinyInteger('estatus');
-            $table->string('tipo',45);
-            $table->text('descripcion');
-            $table->string('tipo_acceso',45);   
+            $table->text('descripcion');   
             $table->unsignedBigInteger('teacher_id');
             
             $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');

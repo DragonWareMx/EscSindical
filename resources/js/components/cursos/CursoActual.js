@@ -13,7 +13,7 @@ function initializeDROP() {
 }
 
 
-export default function CursoActual() {
+export default function CursoActual({cursos, profesor, tags}) {
     useEffect(() => {
         initializeDROP();
     }, [])
@@ -41,27 +41,24 @@ export default function CursoActual() {
                                     <a href="#!"><img src="img/imagenes/Teacher-cuate.svg" className="img-course" style={{"width":"100%"}} /></a>
                                 </div>
                                 <div className="col s12 m9 l10">
-                                    <div className="txt-course-title"><a href="#!" className="title-course-hover">Programación Lógica y Funcional (Grupo de las 8 am)</a></div>
+                                    <div className="txt-course-title"><a href="#!" className="title-course-hover">{cursos['0'].nombre}</a></div>
                                     <div className="" style={{"display": "flex", "alignItems": "center", "marginTop": "10px"}}>
                                         <div style={{"width": "max-content", "marginRight": "10px"}}><img src="images/profile.jpg" style={{"width": "25px", "height": "25px", "borderRadius": "50%", "objectFit": "cover"}} /></div>
-                                        <a className="txt-teacher-name" style={{"width": "max-content"}} href="#!">José Agustín Aguilar Sólorzano</a>
+                                        <a className="txt-teacher-name" style={{"width": "max-content"}} href="#!">{profesor.nombre} {profesor.apellido_p} {profesor.apellido_m}</a>
                                     </div>
                                     {/* Container tags */}
                                     <div className="container-tags">
-                                        <a className="div-tag" href="#!">
-                                            course tag&nbsp;<i class="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
-                                        </a>
-                                        <a className="div-tag" href="#!">
-                                            course tag&nbsp;<i class="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
-                                        </a>
-                                        <a className="div-tag" href="#!">
-                                            course tag&nbsp;<i class="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
-                                        </a>
+                                        {tags.map (tag =>
+                                            <a className="div-tag" href="#!">
+                                                {tag.nombre}&nbsp;<i class="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
+                                            </a>
+                                            )
+                                        }
+                                        
                                     </div>
                                     <div className="txt-presentation">Presentación del curso</div>
                                     <div className="txt-presentation-content">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mattis ultricies ex, eget imperdiet magna auctor nec. Sed ut consequat ipsum. Mauris consectetur pulvinar sapien, nec maximus massa 
-                                        venenatis vitae. Duis ut bibendum nulla, sit amet faucibus massa. Nam ac mi sit amet arcu vulputate ultricies. Sed odio ante, placerat...
+                                        {cursos['0'].descripcion}                                        
                                     </div>
                                 </div>
                             </div>
