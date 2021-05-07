@@ -92,7 +92,7 @@ export default function MenuLateral() {
               <i className="material-icons icono-menu">settings</i>Configuración
               </InertiaLink>
           </li>
-          <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">logout</i>Cerrar sesión</a></li>
+          <li><InertiaLink href="/logout" method="post" className="icono-menu"><i className="material-icons icono-menu">logout</i>Cerrar sesión</InertiaLink></li>
           <div className="center-align" style={{ marginTop: '25px' }}>
             <a onClick={closeNav} href="#!" className="btn-floating btn-large waves-effect waves-light sidenav-close" style={{ backgroundColor: '#108058' }}><i className="material-icons">arrow_back</i></a>
           </div>
@@ -139,7 +139,9 @@ export default function MenuLateral() {
           </InertiaLink>
         </div>
         <div className="col s12">
-          <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Cerrar sesión">logout</i>
+          <InertiaLink href="/logout" method="post" className="icono-menu">
+            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Cerrar sesión">logout</i>
+          </InertiaLink>
         </div>
         <div className="col s12 center-align" style={{ marginTop: '10px' }}>
           <a onClick={openNav} data-target="slide-out" className="btn-floating btn-medium waves-effect waves-light sidenav-trigger tooltipped" style={{ backgroundColor: '#108058' }} data-position="right" data-tooltip="Abrir menú"><i className="material-icons">arrow_forward</i></a>
