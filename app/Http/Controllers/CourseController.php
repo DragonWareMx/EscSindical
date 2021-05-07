@@ -23,21 +23,33 @@ class CourseController extends Controller
 
     public function index()
     {
-        $cursos = Course::where('teacher_id', Auth::id())->with('users')->get();
         $user = User::find(Auth::id());
-
-        $curso_actual = $user->courses[0];
-        $profesor = $curso_actual->teacher;
-        $tags = $curso_actual->tags;
+        
+        if($user->roles[0]->name == 'Ponente'){
+            $cursos = Course::where('teacher_id', Auth::id())->with('users')->get();
+           
+            return Inertia::render('Cursos/Cursos', [
+                'user'=> fn () => User::with(['roles', 'courses'=>function($query){$query->join('users','users.id','=','courses.teacher_id');}
+                ])->where('id',Auth::id())->first(), 
+                'cursos' => fn () => $cursos,
+            ]);
+        }
+        else {
+            $curso_actual = $user->courses[0];
+            $profesor = $curso_actual->teacher;
+            $tags = $curso_actual->tags;
+            return Inertia::render('Cursos/Cursos', [
+                'user'=> fn () => User::with(['roles', 'courses'=>function($query){$query->join('users','users.id','=','courses.teacher_id');}
+                ])->where('id',Auth::id())->first(), 
+                'profesor' => $profesor,
+                'tags' => $tags,
+                ]); 
+        }
+        
 
         
-        return Inertia::render('Cursos/Cursos', [
-            'user'=> fn () => User::with(['roles', 'courses'=>function($query){$query->join('users','users.id','=','courses.teacher_id');}
-            ])->where('id',Auth::id())->first(), 
-            'cursos' => fn () => $cursos,
-            'profesor' => $profesor,
-            'tags' => $tags,
-            ]); 
+        
+        
     }
     
     public function store(Request $request)

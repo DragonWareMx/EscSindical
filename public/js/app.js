@@ -2765,11 +2765,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
 /* harmony import */ var _layouts_Layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../layouts/Layout */ "./resources/js/layouts/Layout.js");
-/* harmony import */ var _components_FormCurso__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/FormCurso */ "./resources/js/components/FormCurso.js");
+/* harmony import */ var _components_cursos_FormCurso__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/cursos/FormCurso */ "./resources/js/components/cursos/FormCurso.js");
 /* harmony import */ var _components_cursos_CursoActual__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/cursos/CursoActual */ "./resources/js/components/cursos/CursoActual.js");
 /* harmony import */ var _components_cursos_CursoActualPonente__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/cursos/CursoActualPonente */ "./resources/js/components/cursos/CursoActualPonente.js");
 /* harmony import */ var _components_cursos_HistorialCursosPonente__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/cursos/HistorialCursosPonente */ "./resources/js/components/cursos/HistorialCursosPonente.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
@@ -2786,14 +2787,14 @@ var Cursos = function Cursos(_ref) {
       profesor = _ref.profesor,
       tags = _ref.tags;
   console.log(user.courses);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
-    children: user.roles['0'].name == 'Ponente' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_cursos_CursoActualPonente__WEBPACK_IMPORTED_MODULE_5__.default, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
+    children: [user.roles['0'].name == 'Ponente' ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_cursos_CursoActualPonente__WEBPACK_IMPORTED_MODULE_5__.default, {
       cursos: cursos
     }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_cursos_CursoActual__WEBPACK_IMPORTED_MODULE_4__.default, {
       cursos: user.courses,
       profesor: profesor,
       tags: tags
-    })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_cursos_FormCurso__WEBPACK_IMPORTED_MODULE_3__.default, {})]
   });
 };
 
@@ -2868,7 +2869,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_common_Paginacion__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/common/Paginacion */ "./resources/js/components/common/Paginacion.js");
 /* harmony import */ var _components_common_FlotanteAyuda__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/common/FlotanteAyuda */ "./resources/js/components/common/FlotanteAyuda.js");
 /* harmony import */ var _styles_profileStyle_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../styles/profileStyle.css */ "./resources/js/styles/profileStyle.css");
-/* harmony import */ var _public_img_monita_jpg__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../../public/img/monita.jpg */ "./public/img/monita.jpg");
+/* harmony import */ var _components_common_InfoAlumno__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../components/common/InfoAlumno */ "./resources/js/components/common/InfoAlumno.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
@@ -2881,8 +2882,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+function initializeMat() {
+  var elems = document.querySelectorAll('.modal');
+  var instances = M.Modal.init(elems);
+}
+
 var Perfil = function Perfil(_ref) {
   var user = _ref.user;
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    initializeMat();
+  }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
       className: "row",
@@ -2906,7 +2915,7 @@ var Perfil = function Perfil(_ref) {
                     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                       className: "center-align",
                       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("img", {
-                        src: _public_img_monita_jpg__WEBPACK_IMPORTED_MODULE_6__.default,
+                        src: "/storage/fotos_perfil/" + user.foto,
                         alt: "foto de perfil",
                         className: "img-profile"
                       })
@@ -2923,7 +2932,7 @@ var Perfil = function Perfil(_ref) {
                       className: "profile-txt-active-since",
                       children: ["Activo desde ", user.created_at]
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
-                      className: "profile-txt-email truncate",
+                      className: "profile-txt-email valign-wrapper truncate",
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
                         "class": "material-icons profile-icon-email",
                         children: "mail_outline"
@@ -2931,11 +2940,9 @@ var Perfil = function Perfil(_ref) {
                     })]
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
                     className: "col s12 center-align",
-                    style: ({
-                      "marginTop": "15px"
-                    }, {
+                    style: {
                       "padding": "0%"
-                    }),
+                    },
                     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("a", {
                       "class": "waves-effect waves-light btn boton-verde",
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
@@ -3004,7 +3011,7 @@ var Perfil = function Perfil(_ref) {
                       children: "Unidad:"
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
                       className: "info-txt-format",
-                      children: ["Categor\xEDa: ", user.categorie_id]
+                      children: ["Categor\xEDa: ", user.categorie.nombre]
                     })]
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
                     className: "col s12 m6",
@@ -3039,7 +3046,8 @@ var Perfil = function Perfil(_ref) {
                       "marginTop": "25px"
                     },
                     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("a", {
-                      "class": "waves-effect waves-light btn boton-verde",
+                      href: "#modal-editar",
+                      "class": "waves-effect waves-light btn boton-verde modal-trigger",
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
                         "class": "material-icons right",
                         style: {
@@ -3047,6 +3055,37 @@ var Perfil = function Perfil(_ref) {
                         },
                         children: "settings"
                       }), "Configuraci\xF3n"]
+                    })
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                    id: "modal-editar",
+                    className: "modal",
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                      className: "modal-content",
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                        className: "row",
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                          className: "col s11",
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+                            className: "title-configuracion valign-wrapper",
+                            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
+                              className: "material-icons",
+                              style: {
+                                "marginRight": "10px"
+                              },
+                              children: "settings"
+                            }), "CONFIGURACI\xD3N"]
+                          })
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                          className: "col s1",
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("i", {
+                            className: "material-icons",
+                            children: "close"
+                          })
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+                          className: "col s12",
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_common_InfoAlumno__WEBPACK_IMPORTED_MODULE_6__.default, {})
+                        })]
+                      })
                     })
                   })]
                 })]
@@ -3155,12 +3194,15 @@ var Usuarios = function Usuarios(_ref) {
     }
 
     var search = event.target.value;
+    var data;
     setState({
       typingTimeout: setTimeout(function () {
+        data = {
+          user_search: search
+        };
+        if (request.filter) data.filter = request.filter;
         _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.replace(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios').url(), {
-          data: {
-            user_search: search
-          }
+          data: data
         });
       }, 250)
     });
@@ -3196,6 +3238,7 @@ var Usuarios = function Usuarios(_ref) {
 
         if (!state.sortMatricula) data.order = "asc";else data.order = "desc";
         if (request.user_search) data.user_search = request.user_search;
+        if (request.filter) data.filter = request.filter;
         _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.replace(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios').url(), {
           data: data,
           preserveScroll: true,
@@ -3232,6 +3275,7 @@ var Usuarios = function Usuarios(_ref) {
 
         if (!state.sortRol) data.order = "asc";else data.order = "desc";
         if (request.user_search) data.user_search = request.user_search;
+        if (request.filter) data.filter = request.filter;
         _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.replace(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios').url(), {
           data: data,
           preserveScroll: true,
@@ -3268,6 +3312,7 @@ var Usuarios = function Usuarios(_ref) {
 
         if (!state.sortNombre) data.order = "asc";else data.order = "desc";
         if (request.user_search) data.user_search = request.user_search;
+        if (request.filter) data.filter = request.filter;
         _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.replace(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios').url(), {
           data: data,
           preserveScroll: true,
@@ -3304,6 +3349,7 @@ var Usuarios = function Usuarios(_ref) {
 
         if (!state.sortUnidad) data.order = "asc";else data.order = "desc";
         if (request.user_search) data.user_search = request.user_search;
+        if (request.filter) data.filter = request.filter;
         _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.replace(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios').url(), {
           data: data,
           preserveScroll: true,
@@ -3340,6 +3386,7 @@ var Usuarios = function Usuarios(_ref) {
 
         if (!state.sortCategoria) data.order = "asc";else data.order = "desc";
         if (request.user_search) data.user_search = request.user_search;
+        if (request.filter) data.filter = request.filter;
         _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.replace(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios').url(), {
           data: data,
           preserveScroll: true,
@@ -3357,6 +3404,108 @@ var Usuarios = function Usuarios(_ref) {
 
   function filter(filtro) {
     state.filter = filtro;
+    var data;
+
+    switch (filtro) {
+      case "matricula":
+        //se inicializan los datos del request
+        data = {
+          filter: "matricula"
+        };
+        if (request.user_search) data.user_search = request.user_search;
+        _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.replace(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios').url(), {
+          data: data,
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: function onSuccess(data2) {
+            console.log(data2);
+          }
+        });
+        break;
+
+      case "rol":
+        //se inicializan los datos del request
+        data = {
+          filter: "rol"
+        };
+        if (request.user_search) data.user_search = request.user_search;
+        _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.replace(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios').url(), {
+          data: data,
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: function onSuccess(data2) {
+            console.log(data2);
+          }
+        });
+        break;
+
+      case "nombre":
+        //se inicializan los datos del request
+        data = {
+          filter: "nombre"
+        };
+        if (request.user_search) data.user_search = request.user_search;
+        _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.replace(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios').url(), {
+          data: data,
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: function onSuccess(data2) {
+            console.log(data2);
+          }
+        });
+        break;
+
+      case "unidad":
+        //se inicializan los datos del request
+        data = {
+          filter: "unidad"
+        };
+        if (request.user_search) data.user_search = request.user_search;
+        _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.replace(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios').url(), {
+          data: data,
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: function onSuccess(data2) {
+            console.log(data2);
+          }
+        });
+        break;
+
+      case "categoria":
+        //se inicializan los datos del request
+        data = {
+          filter: "categoria"
+        };
+        if (request.user_search) data.user_search = request.user_search;
+        _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.replace(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios').url(), {
+          data: data,
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: function onSuccess(data2) {
+            console.log(data2);
+          }
+        });
+        break;
+
+      case "eliminado":
+        //se inicializan los datos del request
+        data = {
+          filter: "eliminado"
+        };
+        if (request.user_search) data.user_search = request.user_search;
+        _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.replace(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios').url(), {
+          data: data,
+          preserveScroll: true,
+          preserveState: true,
+          onSuccess: function onSuccess(data2) {
+            console.log(data2);
+          }
+        });
+        break;
+
+      default:
+        break;
+    }
   } //obtiene el usuario y abre el modal
 
 
@@ -3448,7 +3597,7 @@ var Usuarios = function Usuarios(_ref) {
                         onClick: function onClick() {
                           filter("nombre");
                         },
-                        className: request.filter == "nombre" || request.filter ? "selected" : "",
+                        className: request.filter == "nombre" ? "selected" : "",
                         children: "Nombre"
                       })
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("li", {
@@ -3725,60 +3874,135 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
+
+
+
+function initializeChips() {
+  var elems = document.querySelectorAll('.chips');
+  var instances = M.Chips.init(elems);
+  var elems2 = document.querySelectorAll('.tooltipped');
+  var instances = M.Tooltip.init(elems2);
+}
 
 var Create1 = function Create1(_ref) {
   var change = _ref.change,
       values = _ref.values;
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    initializeChips();
+  }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Nombre del curso"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "text",
-      id: "nombre",
-      value: values.nombre,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Tags de b\xFAsqueda"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "text",
-      id: "tags",
-      value: values.tags,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Fecha de inicio de curso"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "date",
-      id: "dateIni",
-      value: values.dateIni,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Fecha de t\xE9rmino de curso"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "date",
-      id: "dateFin",
-      value: values.dateFin,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Link de videoconferencias"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "url",
-      id: "link",
-      value: values.link,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Valor curricular"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "hidden",
-      id: "vc",
-      value: values.vc,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Siguiente"
+    className: "row",
+    style: {
+      "marginLeft": "-1.5rem",
+      "marginRight": "-1.5rem"
+    },
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "input-field col s12",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        id: "nombre",
+        value: values.nombre,
+        onChange: change,
+        type: "text",
+        className: "validate"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+        "for": "nombre",
+        children: "Nombre del curso"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "input-field col s12",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
+        style: {
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "fontFamily": "Montserrat",
+          "fontSize": "13px"
+        },
+        children: ["Tags de b\xFAsqueda", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
+          className: "material-icons tiny tooltipped",
+          "data-position": "top",
+          "data-tooltip": "Los tags ayudar\xE1n con el filtrado y b\xFAsqueda de los cursos (Enter para agregar)",
+          style: {
+            "color": "rgb(159, 157, 157)",
+            "cursor": "pointer"
+          },
+          children: "help_outline"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        className: "chips",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", _defineProperty({
+          className: "custom-class",
+          id: "tags",
+          value: values.tags,
+          onChange: change
+        }, "className", "validate"))
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "input-field col s6",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        id: "dateIni",
+        value: values.dateIni,
+        onChange: change,
+        type: "date",
+        className: "validate"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+        "for": "dateIni",
+        children: "Fecha de inicio de curso"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "input-field col s6",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        id: "dateFin",
+        value: values.dateFin,
+        onChange: change,
+        type: "date",
+        className: "validate"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+        "for": "dateFin",
+        children: "Fecha de t\xE9rmino de curso"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "input-field col s6",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        id: "link",
+        value: values.link,
+        onChange: change,
+        type: "url",
+        className: "validate"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+        "for": "link",
+        children: "Link de videoconferencias"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "input-field col s6",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+        style: {
+          "marginTop": "0px",
+          "marginBottom": "8px",
+          "fontFamily": "Montserrat",
+          "fontSize": "13px"
+        },
+        children: "Valor curricular"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        "class": "switch",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("label", {
+          children: ["Si", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            id: "vc",
+            value: values.vc,
+            onChange: change,
+            type: "checkbox"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+            "class": "lever"
+          }), "No"]
+        })
+      })]
     })]
-  });
+  }) //     {/*falta lo de los horarios  */}
+  //     <label>Siguiente</label>
+  ;
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Create1);
@@ -3802,71 +4026,112 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+function initializeChips() {
+  var elems = document.querySelectorAll('.chips');
+  var instances = M.Chips.init(elems);
+  var elems2 = document.querySelectorAll('.tooltipped');
+  var instances = M.Tooltip.init(elems2);
+}
+
 var Create2 = function Create2(_ref) {
   var change = _ref.change,
       values = _ref.values;
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    initializeChips();
+  }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Categor\xEDas de estudiante permitidas"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "text",
-      id: "categorias",
-      value: values.categorias,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Activar fechas de inscripci\xF3n "
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "text",
-      id: "active",
-      value: values.active,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Fecha de inicio de inscripciones"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "date",
-      id: "inscIni",
-      value: values.inscIni,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Fecha de t\xE9rmino de inscripciones"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "date",
-      id: "inscFin",
-      value: values.inscFin,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Tipo de inscripci\xF3n al curso"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "radio",
-      id: "auto",
-      name: "tipo",
-      value: values.tipo,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      htmlFor: "auto",
-      children: "Autom\xE1tica"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "radio",
-      id: "solicitud",
-      name: "tipo",
-      value: values.tipo,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      htmlFor: "solicitud",
-      children: "Solicitud"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "radio",
-      id: "onlyMe",
-      name: "tipo",
-      value: values.tipo,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      htmlFor: "onlyMe",
-      children: "S\xF3lo yo puedo inscribir participantes"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Anterior"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Siguiente"
+    className: "row",
+    style: {
+      "marginLeft": "-1.5rem",
+      "marginRight": "-1.5rem"
+    },
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "input-field col s12",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        id: "categorias",
+        value: values.categorias,
+        onChange: change,
+        type: "text",
+        className: "validate"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+        "for": "categorias",
+        children: "Categor\xEDas de estudiante permitidas"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "input-field col s6",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        id: "inscIni",
+        value: values.inscIni,
+        onChange: change,
+        type: "date",
+        className: "validate"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+        "for": "inscIni",
+        children: "Fecha de inicio de inscripciones"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "input-field col s6",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        id: "inscFin",
+        value: values.inscFin,
+        onChange: change,
+        type: "date",
+        className: "validate"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+        "for": "inscFin",
+        children: "Fecha de t\xE9rmino de inscripciones"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "input-field col s12",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+        style: {
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "fontFamily": "Montserrat",
+          "fontSize": "13px"
+        },
+        children: "Activar fechas de inscripci\xF3n"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            tipo: "group1",
+            id: "auto",
+            type: "radio",
+            value: values.tipo,
+            onChange: change
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+            style: {
+              "width": "100%"
+            },
+            children: "Autom\xE1tica"
+          })]
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            tipo: "group1",
+            id: "solicitud",
+            type: "radio",
+            value: values.tipo,
+            onChange: change
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+            children: "Solicitud"
+          })]
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("label", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            tipo: "group1",
+            id: "onlyMe",
+            type: "radio",
+            value: values.tipo,
+            onChange: change
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+            children: "S\xF3lo yo puedo inscribir participantes"
+          })]
+        })
+      })]
     })]
   });
 };
@@ -3896,142 +4161,99 @@ var Create3 = function Create3(_ref) {
   var change = _ref.change,
       values = _ref.values;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Descripci\xF3n breve del curso"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "text",
-      id: "descripcion",
-      value: values.descripcion,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Im\xE1genes del curso"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "text",
-      id: "imgs",
-      value: values.imgs,
-      onChange: change
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      children: "Anterior"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-      type: "submit",
-      children: "Agregar"
+    className: "row",
+    style: {
+      "marginLeft": "-1.5rem",
+      "marginRight": "-1.5rem"
+    },
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "input-field col s12",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("p", {
+        style: {
+          "marginTop": "0px",
+          "marginBottom": "0px",
+          "fontFamily": "Montserrat",
+          "fontSize": "13px"
+        },
+        children: ["Descripci\xF3n breve del curso", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
+          className: "material-icons tiny tooltipped",
+          "data-position": "top",
+          "data-tooltip": "Presentaci\xF3n o introducci\xF3n al curso",
+          style: {
+            "color": "rgb(159, 157, 157)",
+            "cursor": "pointer"
+          },
+          children: "help_outline"
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        type: "text",
+        id: "descripcion",
+        value: values.descripcion,
+        onChange: change
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      className: "area col s12",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("p", {
+        style: {
+          "marginTop": "0px",
+          "marginBottom": "8px",
+          "fontFamily": "Montserrat",
+          "fontSize": "13px"
+        },
+        children: "Imagenes del curso"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        className: "file-field input-field",
+        style: {
+          "border": "1px dashed rgba(159, 157, 157, 0.6)",
+          "boxSizing": "border-box",
+          "bordeRadius": "4px"
+        },
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+          className: "col s12",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("span", {
+            style: {
+              "fontSize": "12px",
+              "textAlign": "center",
+              "paddingTop": "10px"
+            },
+            className: "col s12",
+            children: ["Arrastre aqu\xED las imagenes o ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("b", {
+              children: "clic"
+            }), " para seleccionarlas"]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            type: "file",
+            "class": "",
+            id: "imgs",
+            name: "imgs",
+            value: values.imgs,
+            onChange: change
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          className: "file-path-wrapper",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            className: "file-path validate",
+            type: "text"
+          })
+        })]
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "col s12 ",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("button", {
+        type: "submit",
+        className: "btn-primary btn waves-effect waves-teal btn-login right",
+        style: {
+          "height": "54px"
+        },
+        children: ["Agregar", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("i", {
+          className: "material-icons right",
+          children: "arrow_forward"
+        })]
+      })
     })]
   });
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Create3);
-
-/***/ }),
-
-/***/ "./resources/js/components/FormCurso.js":
-/*!**********************************************!*\
-  !*** ./resources/js/components/FormCurso.js ***!
-  \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
-/* harmony import */ var _Create1_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Create1.js */ "./resources/js/components/Create1.js");
-/* harmony import */ var _Create2_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Create2.js */ "./resources/js/components/Create2.js");
-/* harmony import */ var _Create3_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Create3.js */ "./resources/js/components/Create3.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-
-
-
-
-
-
-
-
-
-var FormCurso = function FormCurso() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-    nombre: "",
-    tags: "",
-    dateIni: "",
-    dateFin: "",
-    link: "",
-    vc: 0,
-    categorias: "",
-    active: false,
-    inscIni: "",
-    inscFin: "",
-    tipo: "",
-    descripcion: "",
-    imgs: ""
-  }),
-      _useState2 = _slicedToArray(_useState, 2),
-      values = _useState2[0],
-      setValues = _useState2[1];
-
-  function handleChange(e) {
-    var key = e.target.id;
-    var value = e.target.value;
-    setValues(function (values) {
-      return _objectSpread(_objectSpread({}, values), {}, _defineProperty({}, key, value));
-    });
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.post('/storeCourse', values);
-  }
-
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-      children: "Agregar curso"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
-      className: "linea",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-        className: "circle",
-        children: "1 Generalidades"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-        className: "circle",
-        children: "1 Participantes"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-        className: "circle",
-        children: "1 Presentaci\xF3n"
-      })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("form", {
-      onSubmit: handleSubmit,
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Create1_js__WEBPACK_IMPORTED_MODULE_2__.default, {
-        change: handleChange,
-        values: react__WEBPACK_IMPORTED_MODULE_0__.useState
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Create2_js__WEBPACK_IMPORTED_MODULE_3__.default, {
-        change: handleChange,
-        values: react__WEBPACK_IMPORTED_MODULE_0__.useState
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_Create3_js__WEBPACK_IMPORTED_MODULE_4__.default, {
-        change: handleChange,
-        values: react__WEBPACK_IMPORTED_MODULE_0__.useState
-      })]
-    })]
-  });
-};
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FormCurso);
 
 /***/ }),
 
@@ -4208,39 +4430,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ InfoAlumno)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
-/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var _css_infoAlumno_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../css/infoAlumno.css */ "./public/css/infoAlumno.css");
-/* harmony import */ var _css_register_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../css/register.css */ "./public/css/register.css");
-/* harmony import */ var _css_login_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../css/login.css */ "./public/css/login.css");
-/* harmony import */ var ziggy_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/js/route.min.js");
-/* harmony import */ var ziggy_js__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(ziggy_js__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
- //import circlesImg from '../images/circles.png'
-//import emptyImg from '../images/empty.png'
-//import './styles/Card.css'
+/* harmony import */ var _css_infoAlumno_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../css/infoAlumno.css */ "./public/css/infoAlumno.css");
+/* harmony import */ var _css_register_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../css/register.css */ "./public/css/register.css");
+/* harmony import */ var _css_login_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../css/login.css */ "./public/css/login.css");
+/* harmony import */ var _components_common_UserForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/common/UserForm */ "./resources/js/components/common/UserForm.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
 
@@ -4254,560 +4448,81 @@ function initializeCollaps() {
   var instances = M.Collapsible.init(elems);
   var elems = document.querySelectorAll('.modal');
   var instances = M.Modal.init(elems);
-  var elems = document.querySelectorAll('select');
-  var instances = M.FormSelect.init(elems);
-  var elems = document.querySelectorAll('.autocomplete');
-  var instances = M.Autocomplete.init(elems);
 }
 
 function InfoAlumno(_ref) {
   var user = _ref.user;
-  var errors = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.usePage)().props.errors;
-
-  function handleChange(e) {
-    var key = e.target.id;
-    var value = e.target.value;
-    setValues(function (values) {
-      return _objectSpread(_objectSpread({}, values), {}, _defineProperty({}, key, value));
-    });
-  }
-
-  function handleSubmit(e) {
-    if (user) {
-      e.preventDefault();
-      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.post(ziggy_js__WEBPACK_IMPORTED_MODULE_7___default()('usuarios.edit', user.id), values);
-    }
-  } //valores para formulario
-
-
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-    nombre: "",
-    apellido_p: "",
-    apellido_m: "",
-    email: ""
-  }),
-      _useState2 = _slicedToArray(_useState, 2),
-      values = _useState2[0],
-      setValues = _useState2[1];
-
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
-    edit: false
-  }),
-      _useState4 = _slicedToArray(_useState3, 2),
-      state = _useState4[0],
-      setState = _useState4[1];
-
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     initializeCollaps();
   }, []);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
-      className: "fixed-action-btn",
-      style: {
-        "marginRight": "70px"
-      },
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("a", {
-        className: "btn-floating btn-large waves-effect waves-light green-sind modal-trigger",
-        href: "#modalInfoAlumno",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
-          className: "material-icons",
-          children: "accessibility"
-        })
-      })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
       id: "modalInfoAlumno",
       className: "modal",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
         className: "modal-content",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           className: "modal-close right",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
             className: "material-icons",
             children: "close"
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
           style: {
             "color": "#134E39",
             "fontSize": "16px",
             "fontStyle": "normal"
           },
           children: "VER USUARIO"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("ul", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("ul", {
           className: "collapsible",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("li", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
             className: "active",
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
               className: "collapsible-header",
               style: {
                 "color": "#108058"
               },
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
                 className: "material-icons",
                 children: "person"
               }), "Informaci\xF3n personal"]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
               className: "collapsible-body collapsible-padding",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("form", {
-                onSubmit: handleSubmit,
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                  className: "row div-form-register",
-                  style: {
-                    "padding": "3%"
-                  },
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                    className: "col s12 m6 div-division",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
-                      className: "titles-sub",
-                      style: {
-                        "marginLeft": "3%"
-                      },
-                      children: "INFORMACI\xD3N PERSONAL"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "col s12",
-                      style: {
-                        "display": "flex",
-                        "justifyContent": "center",
-                        "flexDirection": "column"
-                      },
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("img", {
-                        id: "profileImage",
-                        src: "/storage/fotos_perfil/avatar1.png"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
-                        id: "txt-profile",
-                        children: "Foto de perfil"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                      id: "imageUpload",
-                      type: "file",
-                      className: "form-control "
-                      /*@error('foto_perfil') is-invalid @enderror*/
-                      ,
-                      name: "foto_perfil",
-                      placeholder: "Photo"
-                      /*value="{{ old('foto_perfil') }}"*/
-                      ,
-                      accept: "image/png, image/jpeg, image/jpg, image/gif"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "nombre",
-                        type: "text",
-                        className: errors.nombre ? "validate form-control invalid" : "validate form-control",
-                        name: "nombre",
-                        required: true,
-                        autoComplete: "nombre",
-                        value: state.edit ? values.nombre : user == null ? "" : user.nombre,
-                        onChange: handleChange,
-                        autoFocus: true
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "nombre",
-                        children: "Nombre"
-                      }), errors.nombre && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
-                        className: "helper-text",
-                        "data-error": errors.nombre,
-                        style: {
-                          "marginBottom": "10px"
-                        },
-                        children: errors.nombre
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12 input-50-re",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "apellido_paterno",
-                        type: "text",
-                        className: "validate form-control"
-                        /*@error('apellido_paterno') is-invalid @enderror*/
-                        ,
-                        name: "apellido_paterno"
-                        /*value="{{ old('apellido_paterno') }}"*/
-                        ,
-                        required: true,
-                        autoComplete: "apellido_paterno"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "apellido_paterno",
-                        children: "Apellido Paterno"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12 input-50-re",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "apellido_materno",
-                        type: "text",
-                        className: "validate form-control"
-                        /*@error('apellido_materno') is-invalid @enderror*/
-                        ,
-                        name: "apellido_materno"
-                        /*value="{{ old('apellido_materno') }}" */
-                        ,
-                        autoComplete: "apellido_materno"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "apellido_materno",
-                        children: "Apellido Materno"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12 input-50-re",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "fecha_nacimiento",
-                        max: "2004-01-01",
-                        type: "date",
-                        name: "fecha_nacimiento"
-                        /*value="{{ old('fecha_nacimiento') }}"*/
-                        ,
-                        required: true,
-                        autoComplete: "fecha_nacimiento"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "fecha_nacimiento",
-                        children: "Fec. Nacimiento"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12 input-50-re",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("select", {
-                        id: "sexo",
-                        name: "sexo",
-                        required: true,
-                        autoComplete: "sexo",
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
-                          value: "Femenino"
-                          /*{{ old('sexo') == 'Femenino' ? 'selected' : '' }}*/
-                          ,
-                          children: "Femenino"
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
-                          value: "Masculino"
-                          /*{{ old('sexo') == 'Masculino' ? 'selected' : '' }}*/
-                          ,
-                          children: "Masculino"
-                        })]
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        children: "Sexo"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
-                      className: "titles-sub",
-                      style: {
-                        "marginLeft": "3%"
-                      },
-                      children: "INFORMACI\xD3N INSTITUCIONAL"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "matricula",
-                        type: "text",
-                        className: "validate",
-                        name: "matricula"
-                        /*value="{{ old('matricula') }}"*/
-                        ,
-                        required: true,
-                        autoComplete: "matricula"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "matricula",
-                        children: "Matr\xEDcula"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("select", {
-                        id: "regimen",
-                        name: "regimen",
-                        required: true,
-                        autoComplete: "regimen",
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
-                          value: "",
-                          disabled: true,
-                          selected: true,
-                          children: "Selecciona una opci\xF3n"
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
-                          value: "1"
-                          /*{{ old('regimen') == 1 ? 'selected' : '' }}*/
-                          ,
-                          children: "Ordinario"
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
-                          value: "2"
-                          /*{{ old('regimen') == 2 ? 'selected' : '' }}*/
-                          ,
-                          children: "Bienestar"
-                        })]
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        children: "Regimen"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12",
-                      style: {
-                        "marginTop": "5px"
-                      },
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("select", {
-                        id: "unidad",
-                        name: "unidad",
-                        required: true,
-                        autoComplete: "unidad",
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
-                          value: "",
-                          disabled: true,
-                          selected: true,
-                          children: "Selecciona una opci\xF3n"
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
-                          value: "1"
-                          /*{{ old('unidad') == 1 ? 'selected' : '' }}*/
-                          ,
-                          children: "UMF 75 - Morelia c/UMAA"
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("option", {
-                          value: "2"
-                          /*{{ old('unidad') == 2 ? 'selected' : '' }}*/
-                          ,
-                          children: "UMF 80 - Morelia"
-                        })]
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        children: "Unidad"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        type: "text",
-                        id: "autocomplete-input",
-                        name: "categoria",
-                        required: true,
-                        autoComplete: "categoria",
-                        className: "autocomplete"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "autocomplete-input",
-                        children: "Categor\xEDa"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("p", {
-                      style: {
-                        "marginTop": "0px",
-                        "fontFamily": "Montserrat",
-                        "fontSize": "13px"
-                      },
-                      children: ["Tarjet\xF3n de pago ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("a", {
-                        children: "NombreDelArchivo.pdf"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
-                        style: {
-                          "color": "#7E7E7E"
-                        },
-                        className: "material-icons tiny",
-                        children: "description"
-                      })]
-                    })]
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                    className: "col s12 m6 div-division",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
-                      className: "titles-sub",
-                      style: {
-                        "marginLeft": "3%"
-                      },
-                      children: "DIRECCI\xD3N"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s6 ",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "estado",
-                        type: "text",
-                        className: "validate",
-                        name: "estado"
-                        /*value="{{ old('estado') }}"*/
-                        ,
-                        required: true,
-                        autoComplete: "estado"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "estado",
-                        children: "Estado"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s6 input-50-re",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "ciudad",
-                        type: "text",
-                        className: "validate",
-                        name: "ciudad"
-                        /*value="{{ old('ciudad') }}"*/
-                        ,
-                        required: true,
-                        autoComplete: "ciudad"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "ciudad",
-                        children: "Ciudad"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12 input-50-re",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "colonia",
-                        type: "text",
-                        className: "validate",
-                        name: "colonia"
-                        /*value="{{ old('colonia') }}"*/
-                        ,
-                        required: true,
-                        autoComplete: "colonia"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "colonia",
-                        children: "Colonia"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12 input-50-re",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "calle",
-                        type: "text",
-                        className: "validate",
-                        name: "calle"
-                        /*value="{{ old('calle') }}"*/
-                        ,
-                        required: true,
-                        autoComplete: "calle"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "calle",
-                        children: "Calle"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s6 input-50-re",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "codigo_postal",
-                        min: "0",
-                        step: "1",
-                        type: "number",
-                        className: "validate",
-                        name: "codigo_postal"
-                        /*value="{{ old('codigo_postal') }}"*/
-                        ,
-                        required: true,
-                        autoComplete: "codigo_postal"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "codigo_postal",
-                        children: "C\xF3digo Postal"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s6 input-50-re",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "numero",
-                        min: "0",
-                        step: "1",
-                        type: "number",
-                        className: "validate",
-                        name: "numero"
-                        /*value="{{ old('numero') }}"*/
-                        ,
-                        required: true,
-                        autoComplete: "numero"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "numero",
-                        children: "No. Exterior"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s6 input-50-re",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "numero_interior",
-                        min: "0",
-                        step: "1",
-                        type: "number",
-                        className: "validate",
-                        name: "numero_interior"
-                        /*value="{{ old('numero_interior') }}"*/
-                        ,
-                        autoComplete: "numero_interior"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "numero_interior",
-                        children: "No. Interior"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("p", {
-                      className: "titles-sub",
-                      style: {
-                        "marginLeft": "3%"
-                      },
-                      children: "CUENTA"
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "email",
-                        type: "email",
-                        className: "validate form-control"
-                        /*@error('email') is-invalid @enderror*/
-                        ,
-                        name: "email"
-                        /*value="{{ old('email') }}"*/
-                        ,
-                        required: true,
-                        autoComplete: "email"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "email",
-                        children: "Correo electr\xF3nico"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "input-field col s12 input-50-re",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("input", {
-                        id: "fecha_registro",
-                        type: "text",
-                        className: "validate",
-                        name: "fecha_registro"
-                        /*value="{{ old('ciudad') }}"*/
-                        ,
-                        required: true,
-                        autoComplete: "fecha_registro"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("label", {
-                        htmlFor: "fecha_registro",
-                        children: "Fecha de Registro"
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
-                      className: "row",
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
-                        type: "button",
-                        className: "col s3 m2 center-align offset-s6 offset-m8",
-                        style: {
-                          "border": "none",
-                          "backgroundColor": "transparent",
-                          "color": "#515B60"
-                        },
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
-                          className: "material-icons",
-                          children: "edit"
-                        })
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
-                        type: "button",
-                        className: "col s3 m2 center-align",
-                        style: {
-                          "border": "none",
-                          "backgroundColor": "transparent",
-                          "color": "#515B60"
-                        },
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
-                          className: "material-icons",
-                          children: "delete"
-                        })
-                      })]
-                    })]
-                  })]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
-                  className: "row",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("button", {
-                    type: "submit",
-                    children: "Submit"
-                  })
-                })]
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_common_UserForm__WEBPACK_IMPORTED_MODULE_4__.default, {
+                user: user
               })
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("li", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
               className: "collapsible-header",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
                 className: "material-icons",
                 children: "person"
               }), "Second"]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
               className: "collapsible-body",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
                 children: "Lorem ipsum dolor sit amet."
               })
             })]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("li", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("li", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
               className: "collapsible-header",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("i", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("i", {
                 className: "material-icons",
                 children: "whatshot"
               }), "Third"]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
               className: "collapsible-body",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("span", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
                 children: "Lorem ipsum dolor sit amet."
               })
             })]
           })]
         })]
       })
-    })]
+    })
   });
 }
 
@@ -4866,6 +4581,666 @@ var Paginacion = function Paginacion(_ref) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Paginacion);
+
+/***/ }),
+
+/***/ "./resources/js/components/common/UserForm.js":
+/*!****************************************************!*\
+  !*** ./resources/js/components/common/UserForm.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ InfoAlumno)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var _css_infoAlumno_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../css/infoAlumno.css */ "./public/css/infoAlumno.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+
+
+
+
+function InfoAlumno(_ref) {
+  var _useState3;
+
+  var user = _ref.user;
+  var errors = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.usePage)().props.errors;
+
+  function handleChange(e) {
+    var key = e.target.id;
+    var value = e.target.value;
+    setValues(function (values) {
+      return _objectSpread(_objectSpread({}, values), {}, _defineProperty({}, key, value));
+    });
+  }
+
+  function handleSubmit(e) {
+    if (user) {
+      e.preventDefault();
+      _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_2__.Inertia.post(route('usuarios.edit', user.id), values);
+    }
+  } //valores para formulario
+
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)((_useState3 = {
+    nombre: "",
+    apellido_p: "",
+    apellido_m: "",
+    email: "",
+    fecha_nac: "",
+    sexo: "",
+    matricula: "",
+    regime_id: "",
+    unity_id: "",
+    categorie: "",
+    estado: "",
+    ciudad: "",
+    colonia: "",
+    calle: "",
+    cp: "",
+    num_ext: "",
+    num_int: ""
+  }, _defineProperty(_useState3, "email", ""), _defineProperty(_useState3, "created_at", ""), _defineProperty(_useState3, "foto", ""), _useState3)),
+      _useState2 = _slicedToArray(_useState, 2),
+      values = _useState2[0],
+      setValues = _useState2[1];
+
+  var _useState4 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    edit: false
+  }),
+      _useState5 = _slicedToArray(_useState4, 2),
+      state = _useState5[0],
+      setState = _useState5[1];
+
+  function initializeSelects() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems);
+    var elems = document.querySelectorAll('.autocomplete');
+    var instances = M.Autocomplete.init(elems);
+  }
+
+  function parseFecha(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
+  }
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    initializeSelects();
+  }, []);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("form", {
+    onSubmit: handleSubmit,
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+      className: "row div-form-register",
+      style: {
+        "padding": "3%"
+      },
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "col s12 m6 div-division user-form-border",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+          className: "titles-sub",
+          style: {
+            "marginLeft": "3%"
+          },
+          children: "INFORMACI\xD3N PERSONAL"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "col s12",
+          style: {
+            "display": "flex",
+            "justifyContent": "center",
+            "flexDirection": "column"
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {
+            id: "profileImage",
+            src: state.edit ? values.foto : user == null ? "" : user.foto ? "/storage/fotos_perfil/" + user.foto : "/storage/fotos_perfil/avatar1.png"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+            id: "txt-profile",
+            children: "Foto de perfil"
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+          id: "imageUpload",
+          type: "file",
+          className: errors.foto ? "validate form-control invalid" : "validate form-control",
+          name: "foto",
+          placeholder: "Photo",
+          accept: "image/png, image/jpeg, image/jpg, image/gif"
+        }), errors.foto && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+          className: "helper-text",
+          "data-error": errors.foto,
+          style: {
+            "marginBottom": "10px"
+          },
+          children: errors.foto
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "nombre",
+            type: "text",
+            className: errors.nombre ? "validate form-control invalid" : "validate form-control",
+            name: "nombre",
+            required: true,
+            autoComplete: "nombre",
+            value: state.edit ? values.nombre : user == null ? "" : user.nombre,
+            onChange: handleChange,
+            autoFocus: true
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "nombre",
+            children: "Nombre"
+          }), errors.nombre && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.nombre,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.nombre
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12 input-50-re",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "apellido_p",
+            type: "text",
+            className: errors.apellido_p ? "validate form-control invalid" : "validate form-control",
+            name: "apellido_p",
+            value: state.edit ? values.apellido_p : user == null ? "" : user.apellido_p,
+            required: true,
+            autoComplete: "apellido_paterno"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "apellido_paterno",
+            children: "Apellido Paterno"
+          }), errors.apellido_p && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.apellido_p,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.apellido_p
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12 input-50-re",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "apellido_m",
+            type: "text",
+            className: errors.apellido_m ? "validate form-control invalid" : "validate form-control",
+            name: "apellido_m",
+            value: state.edit ? values.apellido_m : user == null ? "" : user.apellido_m,
+            autoComplete: "apellido_materno"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "apellido_materno",
+            children: "Apellido Materno"
+          }), errors.apellido_m && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.apellido_m,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.apellido_m
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12 input-50-re",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "fecha_nac",
+            max: "2004-01-01",
+            type: "date",
+            name: "fecha_nac",
+            required: true,
+            autoComplete: "fecha_nacimiento",
+            value: state.edit ? values.fecha_nac : user == null ? "" : user.fecha_nac
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "fecha_nacimiento",
+            children: "Fecha de Nacimiento"
+          }), errors.fecha_nac && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.fecha_nac,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.fecha_nac
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12 input-50-re",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
+            disabled: true,
+            id: "sexo",
+            name: "sexo",
+            required: true,
+            autoComplete: "sexo",
+            defaultValue: state.edit ? values.sexo : user == null ? "" : user.sexo,
+            onChange: handleChange,
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: "Femenino",
+              children: "Femenino"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: "Masculino",
+              children: "Masculino"
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            children: "Sexo"
+          }), errors.sexo && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.sexo,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.sexo
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+          className: "titles-sub",
+          style: {
+            "marginLeft": "3%"
+          },
+          children: "INFORMACI\xD3N INSTITUCIONAL"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "matricula",
+            type: "text",
+            className: errors.matricula ? "validate form-control invalid" : "validate",
+            name: "matricula",
+            value: state.edit ? values.matricula : user == null ? "" : user.matricula,
+            required: true,
+            autoComplete: "matricula"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "matricula",
+            children: "Matr\xEDcula"
+          }), errors.matricula && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.matricula,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.matricula
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
+            disabled: true,
+            id: "regime_id",
+            name: "regime_id",
+            required: true,
+            autoComplete: "regime_id",
+            value: state.edit ? values.regime_id : user == null ? "" : user.regime_id,
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: "",
+              disabled: true,
+              children: "Selecciona una opci\xF3n"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: "1",
+              children: "Ordinario"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: "2",
+              children: "Bienestar"
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            children: "Regimen"
+          }), errors.regime_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.regime_id,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.regime_id
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12",
+          style: {
+            "marginTop": "5px"
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("select", {
+            disabled: true,
+            id: "unity_id",
+            name: "unity_id",
+            required: true,
+            autoComplete: "unity_id",
+            value: state.edit ? values.unity_id : user == null ? "" : user.unity_id,
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: "",
+              disabled: true,
+              children: "Selecciona una opci\xF3n"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: "1",
+              children: "UMF 75 - Morelia c/UMAA"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("option", {
+              value: "2",
+              children: "UMF 80 - Morelia"
+            })]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            children: "Unidad"
+          }), errors.unity_id && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.unity_id,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.unity_id
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            type: "text",
+            id: "categoria",
+            name: "categoria",
+            required: true,
+            autoComplete: "categoria",
+            className: "autocomplete",
+            value: state.edit ? values.categoria : user == null ? "" : user.categorie.nombre
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "autocomplete-input",
+            children: "Categor\xEDa"
+          }), errors.categoria && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.categoria,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.categoria
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+          style: {
+            "marginTop": "0px",
+            "fontFamily": "Montserrat",
+            "fontSize": "13px"
+          },
+          children: ["Tarjet\xF3n de pago ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("a", {
+            target: "_blank",
+            href: user == null || user.tarjeton_pago == null ? "" : "/storage/tarjetones_pago/" + user.tarjeton_pago,
+            children: user == null ? "" : user.tarjeton_pago
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+            style: {
+              "color": "#7E7E7E"
+            },
+            className: "material-icons tiny",
+            children: "description"
+          })]
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "col s12 m6 div-division",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+          className: "titles-sub",
+          style: {
+            "marginLeft": "3%"
+          },
+          children: "DIRECCI\xD3N"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s6 ",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "estado",
+            type: "text",
+            className: errors.estado ? "validate form-control invalid" : "validate",
+            name: "estado",
+            value: state.edit ? values.estado : user == null ? "" : user.estado,
+            required: true,
+            autoComplete: "estado"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "estado",
+            children: "Estado"
+          }), errors.estado && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.estado,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.estado
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s6 input-50-re",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "ciudad",
+            type: "text",
+            className: errors.ciudad ? "validate form-control invalid" : "validate",
+            name: "ciudad",
+            value: state.edit ? values.ciudad : user == null ? "" : user.ciudad,
+            required: true,
+            autoComplete: "ciudad"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "ciudad",
+            children: "Ciudad"
+          }), errors.ciudad && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.ciudad,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.ciudad
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12 input-50-re",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "colonia",
+            type: "text",
+            className: errors.colonia ? "validate form-control invalid" : "validate",
+            name: "colonia",
+            value: state.edit ? values.colonia : user == null ? "" : user.colonia,
+            required: true,
+            autoComplete: "colonia"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "colonia",
+            children: "Colonia"
+          }), errors.colonia && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.colonia,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.colonia
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12 input-50-re",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "calle",
+            type: "text",
+            className: errors.calle ? "validate form-control invalid" : "validate",
+            name: "calle",
+            value: state.edit ? values.calle : user == null ? "" : user.calle,
+            required: true,
+            autoComplete: "calle"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "calle",
+            children: "Calle"
+          }), errors.calle && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.calle,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.calle
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s6 input-50-re",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "cp",
+            min: "0",
+            step: "1",
+            type: "number",
+            className: errors.cp ? "validate form-control invalid" : "validate",
+            name: "cp",
+            value: state.edit ? values.cp : user == null ? "" : user.cp,
+            required: true,
+            autoComplete: "cp"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "cp",
+            children: "C\xF3digo Postal"
+          }), errors.cp && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.cp,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.cp
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s6 input-50-re",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "num_ext",
+            min: "0",
+            step: "1",
+            type: "number",
+            className: errors.num_ext ? "validate form-control invalid" : "validate",
+            name: "num_ext",
+            value: state.edit ? values.num_ext : user == null ? "" : user.num_ext,
+            required: true,
+            autoComplete: "num_ext"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "num_ext",
+            children: "No. Exterior"
+          }), errors.num_ext && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.num_ext,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.num_ext
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s6 input-50-re",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "num_int",
+            min: "0",
+            step: "1",
+            type: "number",
+            className: errors.num_int ? "validate form-control invalid" : "validate",
+            name: "num_int",
+            value: state.edit ? values.num_int : user == null ? "" : user.num_int,
+            autoComplete: "num_int"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "num_int",
+            children: "No. Interior"
+          }), errors.num_int && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.num_int,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.num_int
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+          className: "titles-sub",
+          style: {
+            "marginLeft": "3%"
+          },
+          children: "CUENTA"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "email",
+            type: "email",
+            className: errors.email ? "validate form-control invalid" : "validate form-control",
+            name: "email",
+            value: state.edit ? values.email : user == null ? "" : user.email,
+            required: true,
+            autoComplete: "email"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "email",
+            children: "Correo electr\xF3nico"
+          }), errors.email && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.email,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.email
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "input-field col s12 input-50-re",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+            disabled: true,
+            id: "created_at",
+            max: "2004-01-01",
+            type: "date",
+            name: "created_at",
+            required: true,
+            autoComplete: "created_at",
+            value: state.edit ? values.created_at : user == null ? "" : user.created_at ? parseFecha(user.created_at) : ""
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+            htmlFor: "created_at",
+            children: "Fecha de Registro"
+          }), errors.created_at && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
+            className: "helper-text",
+            "data-error": errors.created_at,
+            style: {
+              "marginBottom": "10px"
+            },
+            children: errors.created_at
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "row",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "col s3 m2 center-align offset-s6 offset-m8",
+            style: {
+              "border": "none",
+              "backgroundColor": "transparent",
+              "color": "#515B60"
+            },
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+              className: "material-icons",
+              children: "edit"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+            type: "button",
+            className: "col s3 m2 center-align",
+            style: {
+              "border": "none",
+              "backgroundColor": "transparent",
+              "color": "#515B60"
+            },
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("i", {
+              className: "material-icons",
+              children: "delete"
+            })
+          })]
+        })]
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "row",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+        type: "submit",
+        children: "Submit"
+      })
+    })]
+  });
+}
 
 /***/ }),
 
@@ -5171,6 +5546,188 @@ function CursoActualPonente(_ref) {
 
 /***/ }),
 
+/***/ "./resources/js/components/cursos/FormCurso.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/cursos/FormCurso.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
+/* harmony import */ var _Create1_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Create1.js */ "./resources/js/components/Create1.js");
+/* harmony import */ var _Create2_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Create2.js */ "./resources/js/components/Create2.js");
+/* harmony import */ var _Create3_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Create3.js */ "./resources/js/components/Create3.js");
+/* harmony import */ var _styles_cursos_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../styles/cursos.css */ "./resources/js/styles/cursos.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+
+
+function initializeModals() {
+  var elems = document.querySelectorAll('.modal');
+  var instances = M.Modal.init(elems); // TABS
+
+  var el = document.querySelectorAll('.tabs');
+  var instance = M.Tabs.init(el);
+}
+
+var FormCurso = function FormCurso() {
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    initializeModals();
+  }, []);
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    nombre: "",
+    tags: "",
+    dateIni: "",
+    dateFin: "",
+    link: "",
+    vc: 0,
+    categorias: "",
+    active: false,
+    inscIni: "",
+    inscFin: "",
+    tipo: "",
+    descripcion: "",
+    imgs: ""
+  }),
+      _useState2 = _slicedToArray(_useState, 2),
+      values = _useState2[0],
+      setValues = _useState2[1];
+
+  function handleChange(e) {
+    var key = e.target.id;
+    var value = e.target.value;
+    setValues(function (values) {
+      return _objectSpread(_objectSpread({}, values), {}, _defineProperty({}, key, value));
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_1__.Inertia.post('/storeCourse', values);
+  }
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        className: "fixed-action-btn",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
+          className: "btn-floating btn-large waves-effect waves-light  teal darken-3 modal-trigger",
+          href: "#modalAddCourse",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
+            className: "material-icons",
+            children: "add_circle_outline"
+          })
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+        id: "modalAddCourse",
+        className: "modal little-modal",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("form", {
+          onSubmit: handleSubmit,
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            className: "modal-content",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+              className: "modal-close right",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("i", {
+                className: "material-icons",
+                children: "close"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+              className: "row",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("span", {
+                className: "txt-title-card",
+                children: "AGREGAR CURSO"
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("ul", {
+                id: "tabs-swipe-demo",
+                "class": "tabs",
+                style: {
+                  "marginBottom": "20px"
+                },
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("li", {
+                  "class": "tab col s4",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
+                    href: "#test-swipe-2",
+                    "class": "active",
+                    children: "1. Generalidades"
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("li", {
+                  "class": "tab col s4",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
+                    href: "#test-swipe-1",
+                    children: "2. Participantes"
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("li", {
+                  "class": "tab col s4",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("a", {
+                    href: "#test-swipe-3",
+                    children: "3. Presentaci\xF3n"
+                  })
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                id: "test-swipe-1",
+                "class": "col s12",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Create2_js__WEBPACK_IMPORTED_MODULE_3__.default, {
+                  change: handleChange,
+                  values: react__WEBPACK_IMPORTED_MODULE_0__.useState
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                id: "test-swipe-2",
+                "class": "col s12",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Create1_js__WEBPACK_IMPORTED_MODULE_2__.default, {
+                  change: handleChange,
+                  values: react__WEBPACK_IMPORTED_MODULE_0__.useState
+                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+                id: "test-swipe-3",
+                "class": "col s12",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_Create3_js__WEBPACK_IMPORTED_MODULE_4__.default, {
+                  change: handleChange,
+                  values: react__WEBPACK_IMPORTED_MODULE_0__.useState
+                })
+              })]
+            })]
+          })
+        })
+      })]
+    })
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (FormCurso);
+
+/***/ }),
+
 /***/ "./resources/js/components/cursos/HistorialCursosPonente.js":
 /*!******************************************************************!*\
   !*** ./resources/js/components/cursos/HistorialCursosPonente.js ***!
@@ -5329,71 +5886,83 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-react */ "./node_modules/@inertiajs/inertia-react/dist/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var ziggy_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ziggy-js */ "./node_modules/ziggy-js/dist/js/route.min.js");
+/* harmony import */ var ziggy_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(ziggy_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
 
 
 
 
 function BarraBusqueda() {
   var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.usePage)().props.auth;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
       className: "main-bar",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("nav", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("nav", {
         className: "main-bar-search",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
           className: "nav-wrapper",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("form", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("form", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
               className: "input-field",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
                 id: "search",
                 type: "search",
-                required: true
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
+                required: true,
+                style: {
+                  "border-radius": "4px"
+                }
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
                 className: "label-icon margin-search-icons",
                 htmlFor: "search",
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
                   className: "material-icons",
                   children: "search"
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
                 className: "material-icons margin-search-icons",
                 children: "close"
               })]
             })
           })
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "main-bar-right",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "main-bar-right-leftSide",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
-            src: "/img/icons/mochila blanca.png",
-            alt: "Mochila",
-            className: "icono-mochila"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("i", {
-            className: "small material-icons",
-            style: {
-              color: '#FFFFFF'
-            },
-            children: "notifications_none"
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+            className: "material-icons icono-notificaciones",
+            children: "backpack"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+            className: "material-icons icono-notificaciones",
+            children: "notifications"
           })]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "main-bar-right-rightSide",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("span", {
-              className: "main-username",
-              children: [" ", auth.user.nombre, " ", auth.user.apellido_p, " ", auth.user_apellido_m]
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            className: "truncate",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+              href: ziggy_js__WEBPACK_IMPORTED_MODULE_2___default()('perfil').url(),
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("span", {
+                className: "main-username",
+                children: [auth.user.nombre, " ", auth.user.apellido_p, " ", auth.user.apellido_m]
+              })
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("img", {
-            className: "main-userimage",
-            src: "/storage/fotos_perfil/" + auth.user.foto,
-            alt: ""
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+              href: ziggy_js__WEBPACK_IMPORTED_MODULE_2___default()('perfil').url(),
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+                className: "main-userimage",
+                src: "/storage/fotos_perfil/" + auth.user.foto,
+                alt: ""
+              })
+            })
           })]
         })]
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "main-bar-background"
     })]
   });
@@ -5490,10 +6059,16 @@ function handleContentLoaded() {
   var instances = M.Sidenav.init(elems, options);
 }
 
+function initializeTooltip() {
+  var elems = document.querySelectorAll('.tooltipped');
+  var instances = M.Tooltip.init(elems);
+}
+
 function MenuLateral() {
   var auth = (0,_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.usePage)().props.auth;
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     handleContentLoaded();
+    initializeTooltip();
     window.addEventListener('resize', closeNav2);
   }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
@@ -5520,18 +6095,22 @@ function MenuLateral() {
                   height: '150px'
                 }
               })
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-              className: "menu-profile-info",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
-                style: {
-                  marginLeft: '10px'
-                },
-                src: "/storage/fotos_perfil/" + auth.user.foto,
-                className: "main-userimage"
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-                className: "profile-info-name truncate",
-                children: [" ", auth.user.nombre, " ", auth.user.apellido_p, " ", auth.user_apellido_m]
-              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+              href: ziggy_js__WEBPACK_IMPORTED_MODULE_2___default()('perfil').url(),
+              className: "icono-menu",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                className: "menu-profile-info",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
+                  style: {
+                    marginLeft: '10px'
+                  },
+                  src: "/storage/fotos_perfil/" + auth.user.foto,
+                  className: "main-userimage"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "profile-info-name truncate",
+                  children: [auth.user.nombre, " ", auth.user.apellido_p, " ", auth.user.apellido_m]
+                })]
+              })
             })]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
@@ -5561,7 +6140,7 @@ function MenuLateral() {
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("a", {
-            href: "#!",
+            href: ziggy_js__WEBPACK_IMPORTED_MODULE_2___default()('cursos').url(),
             className: "icono-menu",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
               className: "material-icons icono-menu",
@@ -5574,7 +6153,7 @@ function MenuLateral() {
             className: "icono-menu",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
               className: "material-icons icono-menu",
-              children: "timeline"
+              children: "search"
             }), "Buscar cursos"]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
@@ -5593,16 +6172,14 @@ function MenuLateral() {
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("a", {
-            href: "#!",
-            className: "icono-menu",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
               className: "material-icons icono-menu",
               children: "history"
             }), "Bit\xE1cora"]
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("li", {
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("a", {
-            href: "#!",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+            href: ziggy_js__WEBPACK_IMPORTED_MODULE_2___default()('perfil').url(),
             className: "icono-menu",
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
               className: "material-icons icono-menu",
@@ -5663,7 +6240,9 @@ function MenuLateral() {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("img", {
           src: "/img/imagenes/LogoNacional2.png",
           alt: "logo",
-          className: "imagen-menu-compacto"
+          className: "imagen-menu-compacto tooltipped",
+          "data-position": "right",
+          "data-tooltip": "Escuela Sindical"
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "col s12",
@@ -5671,7 +6250,9 @@ function MenuLateral() {
           href: ziggy_js__WEBPACK_IMPORTED_MODULE_2___default()('ejemplo1').url(),
           className: "icono-menu",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
-            className: "material-icons icono-menu-compacto current-menu",
+            className: "material-icons tooltipped icono-menu-compacto current-menu",
+            "data-position": "right",
+            "data-tooltip": "Inicio",
             children: "home"
           })
         })
@@ -5681,39 +6262,55 @@ function MenuLateral() {
           href: ziggy_js__WEBPACK_IMPORTED_MODULE_2___default()('usuarios').url(),
           className: "icono-menu",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
-            className: "material-icons icono-menu-compacto current-menu",
+            className: "material-icons tooltipped icono-menu-compacto current-menu",
+            "data-position": "right",
+            "data-tooltip": "Usuarios",
             children: "people"
           })
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "col s12",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
-          className: "material-icons icono-menu-compacto icono-menu",
+          className: "material-icons tooltipped icono-menu-compacto icono-menu",
+          "data-position": "right",
+          "data-tooltip": "Mis cursos",
           children: "school"
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "col s12",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
-          className: "material-icons icono-menu-compacto icono-menu",
-          children: "timeline"
+          className: "material-icons tooltipped icono-menu-compacto icono-menu",
+          "data-position": "right",
+          "data-tooltip": "Buscar cursos",
+          children: "search"
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "col s12",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
-          className: "material-icons icono-menu-compacto icono-menu",
+          className: "material-icons tooltipped icono-menu-compacto icono-menu",
+          "data-position": "right",
+          "data-tooltip": "Reportes",
           children: "assignment_late"
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "col s12",
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
-          className: "material-icons icono-menu-compacto icono-menu",
+          className: "material-icons tooltipped icono-menu-compacto icono-menu",
+          "data-position": "right",
+          "data-tooltip": "Bit\xE1cora",
           children: "history"
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "col s12",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
-          className: "material-icons icono-menu-compacto icono-menu",
-          children: "settings"
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.InertiaLink, {
+          href: ziggy_js__WEBPACK_IMPORTED_MODULE_2___default()('perfil').url(),
+          className: "icono-menu",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
+            className: "material-icons tooltipped icono-menu-compacto icono-menu",
+            "data-position": "right",
+            "data-tooltip": "Configuraci\xF3n",
+            children: "settings"
+          })
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "col s12",
@@ -5722,7 +6319,9 @@ function MenuLateral() {
           method: "post",
           className: "icono-menu",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
-            className: "material-icons icono-menu-compacto icono-menu",
+            className: "material-icons tooltipped icono-menu-compacto icono-menu",
+            "data-position": "right",
+            "data-tooltip": "Cerrar sesi\xF3n",
             children: "logout"
           })
         })
@@ -5734,10 +6333,12 @@ function MenuLateral() {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("a", {
           onClick: openNav,
           "data-target": "slide-out",
-          className: "btn-floating btn-medium waves-effect waves-light sidenav-trigger",
+          className: "btn-floating btn-medium waves-effect waves-light sidenav-trigger tooltipped",
           style: {
             backgroundColor: '#108058'
           },
+          "data-position": "right",
+          "data-tooltip": "Abrir men\xFA",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("i", {
             className: "material-icons",
             children: "arrow_forward"
@@ -5920,7 +6521,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".collapsible-padding{\r\n   padding: 0px;\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".collapsible-padding{\r\n   padding: 0px;\r\n}\r\n\r\n.user-form-border{\r\n   border-right: 1px solid rgba(159, 157, 157, 0.6);\r\n}\r\n\r\n\r\n@media (max-width:600px) {\r\n   .user-form-border{\r\n      border:none;\r\n   }\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -5992,7 +6593,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".txt-title-card{\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 17px;\r\n    line-height: 21px;\r\n    color: #134E39;\r\n}\r\n.txt-course-title{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 16px !important;\r\n    line-height: 20px;\r\n    color: #242424;\r\n}\r\n.txt-course-title-teacher{\r\n    font-size: 14px !important;\r\n}\r\n.txt-teacher-name{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n    color: #585858;\r\n}\r\n.txt-presentation{\r\n    font-style: normal;\r\n    font-weight: bold;\r\n    font-size: 13px;\r\n    line-height: 16px;\r\n    color: rgba(38, 50, 56, 0.8);\r\n}\r\n.txt-date-course{\r\n    margin-top: 5px;\r\n    font-size: 12px;\r\n    line-height: 20px;\r\n    color: #263238;\r\n}\r\n.txt-presentation-content{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    color: #1E1E1E;\r\n    margin-top: 5px;\r\n}\r\n.div-tag{\r\n    display:flex;\r\n    align-items: center;\r\n    border: 1px solid #108058;\r\n    box-sizing: border-box;\r\n    border-radius: 10px;\r\n    width: -webkit-max-content;\r\n    width: -moz-max-content;\r\n    width: max-content;\r\n    padding:2px;\r\n    padding-right:6px;\r\n    padding-left:6px;\r\n    margin-right:5px;\r\n    margin-bottom:5px;\r\n\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 11px;\r\n    line-height: 13px;\r\n    color: #108058;\r\n}\r\n.container-tags{\r\n    margin-top: 10px;\r\n    margin-bottom: 10px;\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n}\r\n.txt-video-course{\r\n    display:flex;\r\n    align-items: center;\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    color: #134E39;\r\n    margin-top:10px;\r\n}\r\n\r\n.div-cousers-teacher{\r\n    margin-bottom: 30px;\r\n    /* border: 1px solid #DDDDDD;\r\n    box-sizing: border-box;\r\n    box-shadow: 0px 4px 4px rgba(129, 129, 129, 0.25);\r\n    border-radius: 2px; */\r\n    /* padding:10px !important; */\r\n}\r\n.txt-progress-course{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 11px;\r\n    line-height: 20px;\r\n    color: #A6A6A6;\r\n}\r\n.title-course-hover{\r\n    color: #242424;\r\n    transition: all ease-in-out 0.25s;\r\n}\r\n.title-course-hover:hover{\r\n    color: #108058;\r\n    transition: all ease-in-out 0.25s;\r\n}\r\n\r\n@media(max-width:600px){\r\n    .img-course{\r\n        width: 150px !important;\r\n    }\r\n    .txt-teacher-name{\r\n        font-size:12px;\r\n    }\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".txt-title-card{\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 17px;\r\n    line-height: 21px;\r\n    color: #134E39;\r\n}\r\n.txt-course-title{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 16px !important;\r\n    line-height: 20px;\r\n    color: #242424;\r\n}\r\n.txt-course-title-teacher{\r\n    font-size: 14px !important;\r\n}\r\n.txt-teacher-name{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n    color: #585858;\r\n}\r\n.txt-presentation{\r\n    font-style: normal;\r\n    font-weight: bold;\r\n    font-size: 13px;\r\n    line-height: 16px;\r\n    color: rgba(38, 50, 56, 0.8);\r\n}\r\n.txt-date-course{\r\n    margin-top: 5px;\r\n    font-size: 12px;\r\n    line-height: 20px;\r\n    color: #263238;\r\n}\r\n.txt-presentation-content{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    color: #1E1E1E;\r\n    margin-top: 5px;\r\n}\r\n.div-tag{\r\n    display:flex;\r\n    align-items: center;\r\n    border: 1px solid #108058;\r\n    box-sizing: border-box;\r\n    border-radius: 10px;\r\n    width: -webkit-max-content;\r\n    width: -moz-max-content;\r\n    width: max-content;\r\n    padding:2px;\r\n    padding-right:6px;\r\n    padding-left:6px;\r\n    margin-right:5px;\r\n    margin-bottom:5px;\r\n\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 11px;\r\n    line-height: 13px;\r\n    color: #108058;\r\n}\r\n.container-tags{\r\n    margin-top: 10px;\r\n    margin-bottom: 10px;\r\n    display: flex;\r\n    flex-wrap: wrap;\r\n}\r\n.txt-video-course{\r\n    display:flex;\r\n    align-items: center;\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    color: #134E39;\r\n    margin-top:10px;\r\n}\r\n\r\n.div-cousers-teacher{\r\n    margin-bottom: 30px;\r\n    /* border: 1px solid #DDDDDD;\r\n    box-sizing: border-box;\r\n    box-shadow: 0px 4px 4px rgba(129, 129, 129, 0.25);\r\n    border-radius: 2px; */\r\n    /* padding:10px !important; */\r\n}\r\n.txt-progress-course{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 11px;\r\n    line-height: 20px;\r\n    color: #A6A6A6;\r\n}\r\n.title-course-hover{\r\n    color: #242424;\r\n    transition: all ease-in-out 0.25s;\r\n}\r\n.title-course-hover:hover{\r\n    color: #108058;\r\n    transition: all ease-in-out 0.25s;\r\n}\r\n\r\n/* TABS CURSO */\r\n.tabs{\r\n    background-color: transparent;\r\n  }\r\n  \r\n  .tab{\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 10px;\r\n    line-height: 12px;\r\n    color: #134E39 !important;\r\n  }\r\n  \r\n  .tabs .tab a.active{\r\n    color: #134E39 !important;\r\n    background-color: transparent !important;\r\n  } /*Background and text color when a tab is active*/\r\n  \r\n  .tabs .tab a{\r\n    background-color: transparent;\r\n    color: #A3A3A3;\r\n  } /*Black color to the text*/\r\n  \r\n  .tabs .tab a:hover {\r\n    background-color:#eee;\r\n    color:#000;\r\n  } /*Text color on hover*/\r\n  \r\n  .tabs .tab a:focus {\r\n    background-color:#eee;\r\n    /* background-color: rgba(0, 255, 0, 0.1); */\r\n  }\r\n  .tabs .tab a:focus.active {\r\n    background-color:#eee;\r\n    /* background-color: rgba(0, 255, 0, 0.1); */\r\n  }\r\n  \r\n  .tabs .indicator {\r\n    background-color:#134E39;\r\n  } /*Color of underline*/\r\n\r\n  /* FORM CURSO */\r\n.input-field{\r\n    margin: 0px !important;\r\n    /* margin-left: -10px !important; */\r\n    margin-bottom: 8px !important; \r\n}\r\n.input-field label {\r\n    color:  #108058 !important;\r\n}\r\n.btn-Next-Modal{\r\n    display: flex;\r\n    align-items: center;\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    color: #108058;\r\n}\r\n\r\n@media(max-width:600px){\r\n    .img-course{\r\n        width: 150px !important;\r\n    }\r\n    .txt-teacher-name{\r\n        font-size:12px;\r\n    }\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -6016,7 +6617,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".titles-sub{\r\n    color:#515b60;\r\n    font-family: Montserrat;\r\n    font-style: normal;\r\n    font-weight: bold;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n    padding-bottom: 5px;\r\n    border-bottom: 3px solid #515b60;\r\n    width: -webkit-fit-content;\r\n    width: -moz-fit-content;\r\n    width: fit-content;\r\n    /* text-decoration-line: underline;\r\n    text-decoration-color: 3px solid #515b60; */\r\n    \r\n}\r\n\r\n.info-txt-format\r\n{\r\n    color: #263238;\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 10px;\r\n    \r\n}\r\n\r\n.boton-verde\r\n{\r\n    background: #108058;\r\n    box-shadow: 0px 4px 6px #D3D3D3;\r\n    border-radius: 5px;\r\n\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 11px;\r\n}\r\n\r\n.title-section\r\n{\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 16px;\r\n    line-height: 20px;\r\n\r\n    color: #134E39;\r\n}\r\n\r\n.info-section\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 13px;\r\n    line-height: 16px;\r\n    \r\n    color: #ACACAC;\r\n    margin-top: 10px;\r\n}\r\n\r\n.img-profile\r\n{\r\n    width: 130px;\r\n    height: 130px;\r\n    margin-top: -65px;\r\n\r\n    \r\n    filter: drop-shadow(0px 0px 12px #535353);\r\n    border-radius: 100px;\r\n}\r\n\r\n.profile-txt-category\r\n{\r\n    font-style: normal;\r\n    font-weight: 600;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 15px;\r\n\r\n    color: #134E39;\r\n}\r\n\r\n.profile-txt-name\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 15px;\r\n    line-height: 18px;\r\n    margin-top: 15px;\r\n    \r\n    color: #343434;\r\n}\r\n\r\n.profile-txt-active-since\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 15px;\r\n\r\n    color: #9E9E9E;   \r\n}\r\n\r\n.profile-txt-email{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n\r\n    color: #585858;\r\n}\r\n\r\n.profile-icon-email\r\n{\r\n    font-size: 18px;\r\n    margin: 10px;\r\n    color: #134E39;\r\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".titles-sub{\r\n    color:#515b60;\r\n    font-family: Montserrat;\r\n    font-style: normal;\r\n    font-weight: bold;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n    padding-bottom: 5px;\r\n    border-bottom: 3px solid #515b60;\r\n    width: -webkit-fit-content;\r\n    width: -moz-fit-content;\r\n    width: fit-content;\r\n    /* text-decoration-line: underline;\r\n    text-decoration-color: 3px solid #515b60; */\r\n\r\n}\r\n\r\n.info-txt-format\r\n{\r\n    color: #263238;\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 10px;\r\n\r\n}\r\n\r\n.boton-verde\r\n{\r\n    background: #108058;\r\n    box-shadow: 0px 4px 6px #D3D3D3;\r\n    border-radius: 5px;\r\n\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 11px;\r\n}\r\n\r\n.title-section\r\n{\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 16px;\r\n    line-height: 20px;\r\n\r\n    color: #134E39;\r\n}\r\n\r\n.info-section\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 13px;\r\n    line-height: 16px;\r\n\r\n    color: #ACACAC;\r\n    margin-top: 10px;\r\n}\r\n\r\n.img-profile\r\n{\r\n    width: 130px;\r\n    height: 130px;\r\n    margin-top: -65px;\r\n\r\n\r\n    filter: drop-shadow(0px 0px 12px #535353);\r\n    border-radius: 100px;\r\n    -o-object-fit: cover;\r\n       object-fit: cover;\r\n}\r\n\r\n.profile-txt-category\r\n{\r\n    font-style: normal;\r\n    font-weight: 600;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 15px;\r\n\r\n    color: #134E39;\r\n}\r\n\r\n.profile-txt-name\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 15px;\r\n    line-height: 18px;\r\n    margin-top: 15px;\r\n\r\n    color: #343434;\r\n}\r\n\r\n.profile-txt-active-since\r\n{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 12px;\r\n    line-height: 15px;\r\n    margin-top: 15px;\r\n\r\n    color: #9E9E9E;\r\n}\r\n\r\n.profile-txt-email{\r\n    font-style: normal;\r\n    font-weight: normal;\r\n    font-size: 14px;\r\n    line-height: 17px;\r\n\r\n    color: #585858;\r\n    margin-bottom: 15px;\r\n}\r\n\r\n.profile-icon-email\r\n{\r\n    font-size: 18px;\r\n    margin: 10px;\r\n    color: #134E39;\r\n}\r\n\r\n.title-configuracion\r\n{\r\n    font-style: normal;\r\n    font-weight: 500;\r\n    font-size: 16px;\r\n    line-height: 20px;\r\n\r\n    color: #134E39;\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -6279,21 +6880,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/dragonBlanco1.png?bf1cd3250fa4e6d52d79b49d9c4f918e");
-
-/***/ }),
-
-/***/ "./public/img/monita.jpg":
-/*!*******************************!*\
-  !*** ./public/img/monita.jpg ***!
-  \*******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/monita.jpg?852c9b1a66f6b2bd7e01b4ff60fa3efc");
 
 /***/ }),
 
