@@ -37,7 +37,7 @@ class Course extends Model
         return $this->belongsToMany('App\Models\User');
     }
 
-    public function userTeach(){
+    public function teacher(){
         return $this->belongsTo('App\Models\User');
     }
 
