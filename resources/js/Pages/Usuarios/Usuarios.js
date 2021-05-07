@@ -10,29 +10,7 @@ import '../../styles/usersStyle.css'
 import route from 'ziggy-js';
 
 const Usuarios = ({ users, user }) => {
-    function handleChange(e) {
-        const key = e.target.id;
-        const value = e.target.value
-        setValues(values => ({
-            ...values,
-            [key]: value,
-        }))
-    }
-
-    function handleSubmit(e) {
-        e.preventDefault()
-        Inertia.post('/users', values)
-    }
-
-    //valores para formulario
-    const [values, setValues] = useState({
-        nombre: "",
-        apellido_p: "",
-        apellido_m: "",
-        email: "",
-    })
-
-    const [time, setTime] = useState({
+    const [state, setState] = useState({
         typingTimeout: 0
     })
 
@@ -47,7 +25,7 @@ const Usuarios = ({ users, user }) => {
 
         console.log(route('usuarios').url())
 
-        setTime({
+        setState({
             typingTimeout: setTimeout(function () {
                 Inertia.replace(route('usuarios').url(),{data: {search: search}})
              }, 250)
@@ -63,6 +41,7 @@ const Usuarios = ({ users, user }) => {
                 onSuccess: ({props}) => {
                     const elem = document.getElementById('modalInfoAlumno');
                     const instance = M.Modal.init(elem, {dismissible: false});
+                    M.updateTextFields();
                     instance.open();
                 }
             }
