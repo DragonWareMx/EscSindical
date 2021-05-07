@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\ResetPasswordNotification;
 use App\Permission\Traits\UserTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
@@ -143,4 +144,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\Regime');
     }
+    
+    use SoftDeletes;
 }

@@ -1,31 +1,81 @@
 import React from 'react'
+import { useEffect } from 'react'
+
+
+function initializeChips() {
+    var elems = document.querySelectorAll('.chips');
+    var instances = M.Chips.init(elems);
+
+    var elems2 = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems2);
+}
 
 const Create2 = ({ change, values }) => {
+    useEffect(() => {
+        initializeChips();
+    }, [])
     return (
-        <div>
-            <label>Categorías de estudiante permitidas</label>
-            <input type="text" id="categorias" value={values.categorias} onChange={change}/>
+        <div className="row" style={{"marginLeft": "-1.5rem", "marginRight": "-1.5rem"}}>
+            <div className="input-field col s12" >
+                <input  id="categorias" value={values.categorias} onChange={change} type="text" className="validate"/>
+                <label for="categorias">Categorías de estudiante permitidas</label>
+            </div>
 
-            <label>Activar fechas de inscripción </label>
-            <input type="text" id="active" value={values.active} onChange={change}/>
+            {/* <div className="input-field col s12 yellow" style={{"paddingBottom": "10px !important"}}>
+                <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Activar fechas de inscripción</p>
+                <div class="switch">
+                    <label>
+                    Si
+                    <input id="active" value={values.active} onChange={change} type="checkbox"/>
+                    <span class="lever"></span>
+                    No
+                    </label>
+                </div>
+            </div> */}
 
-            <label>Fecha de inicio de inscripciones</label>
-            <input type="date" id="inscIni" value={values.inscIni} onChange={change}/>
+            <div className="input-field col s6">
+                <input  id="inscIni" value={values.inscIni} onChange={change} type="date" className="validate"/>
+                <label for="inscIni">Fecha de inicio de inscripciones</label>
+            </div>
 
-            <label>Fecha de término de inscripciones</label>
-            <input type="date" id="inscFin" value={values.inscFin} onChange={change}/>
+            <div className="input-field col s6" >
+                <input  id="inscFin" value={values.inscFin} onChange={change} type="date" className="validate"/>
+                <label for="inscFin">Fecha de término de inscripciones</label>
+            </div>
+
+            <div className="input-field col s12">
+                <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Activar fechas de inscripción</p>
+                <p>
+                    <label>
+                    <input tipo="group1" id="auto" type="radio" value={values.tipo} onChange={change} />
+                        <span style={{"width":"100%"}}>Automática</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input tipo="group1" id="solicitud" type="radio" value={values.tipo} onChange={change} />
+                        <span>Solicitud</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input tipo="group1" id="onlyMe" type="radio" value={values.tipo} onChange={change} />
+                        <span>Sólo yo puedo inscribir participantes</span>
+                    </label>
+                </p>
+            </div>
             
-            <label>Tipo de inscripción al curso</label>
-            <input type="radio" id="auto" name="tipo" value={values.tipo} onChange={change} />
-            <label htmlFor="auto">Automática</label>
-            <input type="radio" id="solicitud" name="tipo" value={values.tipo} onChange={change}/>
-            <label htmlFor="solicitud">Solicitud</label>
-            <input type="radio" id="onlyMe" name="tipo" value={values.tipo} onChange={change}/>
-            <label htmlFor="onlyMe">Sólo yo puedo inscribir participantes</label>
+            {/* <div className="col s12" style={{"padding":"0px", "marginTop": "5px"}}>
+                <div className="col s2 left ">
+                    <a  href="#" className="btn-Next-Modal"><i class="material-icons tiny">chevron_left</i>Regresar </a>
+                </div>
+                <div className="col s2 right">
+                    <a  href="#" className="btn-Next-Modal right">Siguiente <i class="material-icons tiny">chevron_right</i></a>
+                </div>
+            </div> */}
             
-            <label>Anterior</label>
-            <label>Siguiente</label>
         </div>
+
     )
        
 }

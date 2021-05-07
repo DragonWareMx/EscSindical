@@ -29,8 +29,35 @@ class UserController extends Controller
                                     ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
                                     ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
                                     ->leftJoin('categories', 'categories.id', '=', 'users.categorie_id')
-                                    ->when($request->user_search, function($query, $search){
-                                        $query->where('users.nombre','LIKE','%'.$search.'%');
+                                    ->when($request->user_search, function($query, $search) use ($request){
+                                        if($request->filter){
+                                            switch ($request->filter) {
+                                                case 'matricula':
+                                                    return $query->where('users.matricula','LIKE','%'.$search.'%');
+                                                    break;
+                                                case 'rol':
+                                                    if($search == "Sin Rol")
+                                                        return $query->whereNull('role_user.role_id');
+                                                    else
+                                                        return $query->where('roles.name','LIKE','%'.$search.'%');
+                                                    break;
+                                                case 'nombre':
+                                                    return $query->where('users.nombre','LIKE','%'.$search.'%');
+                                                    break;
+                                                case 'categoria':
+                                                    return $query->where('categories.nombre','LIKE','%'.$search.'%');
+                                                    break;
+                                                case 'eliminado':
+                                                    return $query->onlyTrashed()->where('users.matricula','LIKE','%'.$search.'%');
+                                                    break;
+                                                
+                                                default:
+                                                    return $query->where('users.nombre','LIKE','%'.$search.'%');
+                                                    break;
+                                            }
+                                        }
+                                        else
+                                            return $query->where('users.nombre','LIKE','%'.$search.'%');
                                     })
                                     ->when($request->sort, function ($query, $sort) use ($request) {
                                         switch ($sort) {
@@ -82,7 +109,8 @@ class UserController extends Controller
                                     ->select('users.id','matricula','users.nombre','apellido_p','apellido_m','categorie_id')
                                     ->paginate(20)
                                     ->withQueryString(),
-            'user' => Inertia::lazy(fn () => User::when($request->user, function($query, $user){
+            'user' => Inertia::lazy(fn () => User::with('categorie')
+                                                    ->when($request->user, function($query, $user){
                                                         $query->find($user);
                                                     })
                                                     ->first()

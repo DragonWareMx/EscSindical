@@ -10,7 +10,7 @@
     width: fit-content;
     /* text-decoration-line: underline;
     text-decoration-color: 3px solid #515b60; */
-    
+
 }
 
 .info-txt-format
@@ -21,7 +21,7 @@
     font-size: 12px;
     line-height: 15px;
     margin-top: 10px;
-    
+
 }
 
 .boton-verde
@@ -51,7 +51,7 @@
     font-weight: normal;
     font-size: 13px;
     line-height: 16px;
-    
+
     color: #ACACAC;
     margin-top: 10px;
 }
@@ -62,9 +62,10 @@
     height: 130px;
     margin-top: -65px;
 
-    
+
     filter: drop-shadow(0px 0px 12px #535353);
     border-radius: 100px;
+    object-fit: cover;
 }
 
 .profile-txt-category
@@ -85,7 +86,7 @@
     font-size: 15px;
     line-height: 18px;
     margin-top: 15px;
-    
+
     color: #343434;
 }
 
@@ -97,7 +98,7 @@
     line-height: 15px;
     margin-top: 15px;
 
-    color: #9E9E9E;   
+    color: #9E9E9E;
 }
 
 .profile-txt-email{
@@ -107,11 +108,22 @@
     line-height: 17px;
 
     color: #585858;
+    margin-bottom: 15px;
 }
 
 .profile-icon-email
 {
     font-size: 18px;
     margin: 10px;
+    color: #134E39;
+}
+
+.title-configuracion
+{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+
     color: #134E39;
 }

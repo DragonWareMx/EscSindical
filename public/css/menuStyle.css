@@ -102,11 +102,22 @@ body
     height: 46px;
     width: 65%;
     background: rgba(255, 255, 255, 0.14);
+    border-radius: 4px;
     /*justify-content: space-between;*/
     /*align-items: center;*/
 
     font-size: 14px;
     color: #FFFFFF;
+}
+
+.main-bar-search-2
+{
+    color: white;
+}
+
+.main-bar-search-2:focus
+{
+    color: black;
 }
 
 .margin-search-icons{
@@ -150,6 +161,7 @@ body
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+    margin-left: 10px;
 }
 
 .ajuste-contenido
@@ -187,10 +199,10 @@ body
     color: #C1C1C1;
 }
 
-.icono-mochila
+.icono-notificaciones
 {
-    width: 2rem;
-    height: 2rem;
+    font-size: 28px !important;
+    color: white;
 }
 
 .btn-ocultar-menu
