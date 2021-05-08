@@ -4,7 +4,7 @@ import { Inertia } from '@inertiajs/inertia'
 import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 import InfoAlumno from '../../components/common/InfoAlumno';
-import Skeleton from 'react-loading-skeleton';
+import UserForm from '../../components/common/UserForm';
 
 import '../../styles/usersStyle.css'
 import route from 'ziggy-js';
@@ -12,6 +12,11 @@ import route from 'ziggy-js';
 function initializeMat() {
     var elems = document.querySelectorAll('.dropdown-trigger');
     var instances = M.Dropdown.init(elems);
+
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems);
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems);
 }
 
 const Usuarios = ({ users, user, request }) => {
@@ -461,6 +466,7 @@ const Usuarios = ({ users, user, request }) => {
             const elem = document.getElementById('user_search');
             elem.value = request.user_search;
         }
+        
     }, [])
 
     return (
@@ -468,7 +474,7 @@ const Usuarios = ({ users, user, request }) => {
             <div className="row contenedor">
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
-                        <a className="btn-floating btn-large waves-effect waves-light green-sind button-addUser"><i className="material-icons">add</i></a>
+                        <a className="btn-floating btn-large waves-effect waves-light green-sind button-addUser" href="#modalAgregarUsuario"><i className="material-icons">add</i></a>
                         <div className="card-content">
                             <span className="card-title">Usuarios</span>
                             <nav className="searchUsers">
@@ -620,6 +626,29 @@ const Usuarios = ({ users, user, request }) => {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div id="modalAgregarUsuario" className="modal">
+                <div className="modal-content">
+                    <div className="modal-close right"><i className="material-icons">close</i></div>
+                    <div style={{"color":"#134E39","fontSize":"16px","fontStyle": "normal"}}>VER USUARIO</div>
+                    <ul className="collapsible">
+                        <li className="active">
+                            <div className="collapsible-header" style={{"color":"#108058"}}><i className="material-icons">person</i>Información personal</div>
+                            <div className="collapsible-body collapsible-padding">
+
+                                <UserForm user={user}/>
+                            </div>
+                        </li>
+                        <li>
+                            <div className="collapsible-header"><i className="material-icons">person</i>Second</div>
+                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                        </li>
+                        <li>
+                            <div className="collapsible-header"><i className="material-icons">whatshot</i>Third</div>
+                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <FlotanteAyuda />
