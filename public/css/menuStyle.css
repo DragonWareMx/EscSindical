@@ -42,7 +42,7 @@ header, body, footer
 }
 @media only screen and (max-width : 992px) {
     header, body, footer {
-        padding-left: 60px;
+        padding-left: 0px;
     }
 }
 
@@ -290,6 +290,25 @@ body
     height: 100%;
     box-shadow: 0px 4px 4px rgba(207, 207, 207, 0.25);
     overflow: auto;
+}
+
+@media (max-width:992px){
+    .menu-compacto{
+        display: none;
+    }
+}
+
+@media (min-width:992px){
+    #amburger{
+        display: none;
+    }
+}
+
+.menu-celular{
+    background-color: transparent;
+    margin-top: 5px;
+    color: #FFFFFF;
+    margin-right: 15px;
 }
 
 .imagen-menu-compacto
