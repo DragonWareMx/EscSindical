@@ -74,17 +74,17 @@ export default function MenuLateral() {
               </InertiaLink>
             </div>
           </li>
-          <li onClick={closeNav}>
+          <li>
             <InertiaLink href={route('ejemplo1').url()} className="icono-menu">
               <i className="material-icons current-menu">home</i>
-                    Inicio
-                </InertiaLink>
+                  Inicio
+            </InertiaLink>
           </li>
-          <li onClick={closeNav}>
+          <li>
             <InertiaLink href={route('usuarios').url()} className="icono-menu">
               <i className="material-icons icono-menu">people</i>
-                    Usuarios
-                </InertiaLink>
+                  Usuarios
+              </InertiaLink>
           </li>
           <li><a className="subheader division-menu">CURSOS</a></li>
           <li><a href={route('cursos').url()} className="icono-menu"><i className="material-icons icono-menu">school</i>Mis cursos</a></li>
