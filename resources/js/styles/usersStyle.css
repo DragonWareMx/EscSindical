@@ -67,6 +67,10 @@
     color: #1E1E1E;
 }
 
+.userTable tr{
+    cursor: pointer;
+}
+
 .userTable tbody button{
     border: 0px;
     background-color: transparent;
