@@ -3,9 +3,16 @@ import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import '/css/infoAlumno.css'
 
+//este componente muestra el formulario para editar usuario o crear uno nuevo
+
+//user es el usuario recibido, si no tiene usuario entonces se muestra el formulario para agregar usuario
+//onEditChange sirve para poder modificar el state de edit en el componente padre
+//bEdit recibe el state de edit del componente padre
 export default function InfoAlumno({user, onEditChange, bEdit}) {
+    //errores de la validacion de laravel
     const { errors } = usePage().props
 
+    //actualiza los hooks cada vez que se modifica un input
     function handleChange(e) {
         const key = e.target.id;
         const value = e.target.value
@@ -15,7 +22,16 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
         }))
     }
 
-    function handleSubmit(e) {
+    //este metodo se ejecuta cuando se manda el formulario de crear nuevo usuario
+    function handleCreate(e) {
+        if(user){
+            e.preventDefault()
+            Inertia.post(route('usuarios.edit', user.id), values)
+        }
+    }
+
+    //este metodo se ejecuta cuando se manda el formulario de editar usuario
+    function handleEdit(e) {
         if(user){
             e.preventDefault()
             Inertia.post(route('usuarios.edit', user.id), values)
@@ -80,10 +96,12 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
         
     }
 
+    //Este metodo se ejecuta cuando se presiona el boton de editar usuario
     function editUser(){
         onEditChange(true)
     }
 
+    //este metodo se ejecuta cuando se presiona el boton de cancelar para editar usuario
     function cancelEditUser(){
         onEditChange(false)
     }
@@ -93,7 +111,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
     }, [])
 
     return(
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={user ? handleEdit : handleCreate}>
             <div className="row div-form-register" style={{"padding":"3%"}}>
                 <div className="col s12 m6 div-division user-form-border">
                     <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN PERSONAL</p>
@@ -111,7 +129,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                         }
 
                     <div className="input-field col s12">
-                        <input  disabled id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={bEdit ? values.nombre : user == null ? null : user.nombre} onChange={handleChange} autoFocus/>
+                        <input  disabled={bEdit ? false : user ? true : false} id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={bEdit ? values.nombre : user != null && user.nombre} onChange={handleChange} autoFocus/>
                         <label htmlFor="nombre">Nombre</label>
                         {
                             errors.nombre && 
@@ -120,7 +138,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input disabled id="apellido_p" type="text" className={errors.apellido_p ? "validate form-control invalid" : "validate form-control"}  name="apellido_p" value={bEdit ? values.apellido_p : user == null ? null : user.apellido_p} required autoComplete="apellido_paterno"/>
+                        <input disabled={bEdit ? false : user ? true : false} id="apellido_p" type="text" className={errors.apellido_p ? "validate form-control invalid" : "validate form-control"}  name="apellido_p" value={bEdit ? values.apellido_p : user != null && user.apellido_p} onChange={handleChange} required autoComplete="apellido_paterno"/>
                         <label htmlFor="apellido_paterno">Apellido Paterno</label>
                         {
                             errors.apellido_p && 
@@ -130,7 +148,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input  disabled id="apellido_m" type="text" className={errors.apellido_m ? "validate form-control invalid" : "validate form-control"} name="apellido_m" value={bEdit ? values.apellido_m : user == null ? null : user.apellido_m} autoComplete="apellido_materno"/>
+                        <input  disabled={bEdit ? false : user ? true : false} id="apellido_m" type="text" className={errors.apellido_m ? "validate form-control invalid" : "validate form-control"} name="apellido_m" value={bEdit ? values.apellido_m : user != null && user.apellido_m} onChange={handleChange} autoComplete="apellido_materno"/>
                         <label htmlFor="apellido_materno">Apellido Materno</label>
                         {
                             errors.apellido_m && 
@@ -139,7 +157,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input disabled id="fecha_nac" max="2004-01-01" type="date" name="fecha_nac" required autoComplete="fecha_nacimiento" value={bEdit ? values.fecha_nac : user == null ? null : user.fecha_nac} />
+                        <input disabled={bEdit ? false : user ? true : false} id="fecha_nac" max="2004-01-01" type="date" name="fecha_nac" required autoComplete="fecha_nacimiento" value={bEdit ? values.fecha_nac : user != null && user.fecha_nac} onChange={handleChange} />
                         <label htmlFor="fecha_nacimiento">Fecha de Nacimiento</label>
                         {
                             errors.fecha_nac && 
@@ -148,7 +166,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <select disabled id="sexo" name="sexo" required autoComplete="sexo" defaultValue={bEdit ? values.sexo : user == null ? null : user.sexo} onChange={handleChange}>
+                        <select disabled={bEdit ? false : user ? true : false} id="sexo" name="sexo" required autoComplete="sexo" defaultValue={bEdit ? values.sexo : user != null && user.sexo} onChange={handleChange}>
                             <option value="Femenino">Femenino</option>
                             <option value="Masculino">Masculino</option>
                         </select>
@@ -162,7 +180,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN INSTITUCIONAL</p>
 
                     <div className="input-field col s12">
-                        <input  disabled id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={bEdit ? values.matricula : user == null ? null : user.matricula} required autoComplete="matricula"/>
+                        <input  disabled={bEdit ? false : user ? true : false} id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={bEdit ? values.matricula : user != null && user.matricula} onChange={handleChange} required autoComplete="matricula"/>
                         <label htmlFor="matricula">Matrícula</label>
                         {
                             errors.matricula && 
@@ -171,8 +189,8 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12">
-                        <select disabled id="regime_id" name="regime_id" required autoComplete="regime_id" value={bEdit ? values.regime_id : user == null ? null : user.regime_id}>
-                            <option value="" disabled >Selecciona una opción</option>
+                        <select disabled={bEdit ? false : user ? true : false} id="regime_id" name="regime_id" required autoComplete="regime_id" value={bEdit ? values.regime_id : user != null && user.regime_id} onChange={handleChange}>
+                            <option value="" disabled={bEdit ? false : user ? true : false} >Selecciona una opción</option>
                             <option value="1">Ordinario</option>
                             <option value="2">Bienestar</option>
                         </select>
@@ -184,8 +202,8 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12" style={{"marginTop":"5px"}}>
-                        <select disabled id="unity_id" name="unity_id" required autoComplete="unity_id" value={bEdit ? values.unity_id : user == null ? null : user.unity_id}>
-                            <option value="" disabled>Selecciona una opción</option>
+                        <select disabled={bEdit ? false : user ? true : false} id="unity_id" name="unity_id" required autoComplete="unity_id" value={bEdit ? values.unity_id : user != null && user.unity_id} onChange={handleChange}>
+                            <option value="" disabled={bEdit ? false : user ? true : false}>Selecciona una opción</option>
                             <option value="1">UMF 75 - Morelia c/UMAA</option>
                             <option value="2">UMF 80 - Morelia</option>
                         </select>
@@ -197,7 +215,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12">
-                        <input disabled type="text" id="categoria" name="categoria" required autoComplete="categoria" className="autocomplete" value={bEdit ? values.categoria : user == null ? null : user.categorie.nombre}/>
+                        <input disabled={bEdit ? false : user ? true : false} type="text" id="categoria" name="categoria" required autoComplete="categoria" className="autocomplete" value={bEdit ? values.categoria : user != null && user.categorie.nombre} onChange={handleChange}/>
                         <label htmlFor="autocomplete-input">Categoría</label>
                         {
                             errors.categoria && 
@@ -205,13 +223,13 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                         }
                     </div>
 
-                    <p style={{"marginTop":"0px", "fontFamily":"Montserrat" ,"fontSize":"13px"}}>Tarjetón de pago <a target="_blank" href={user == null || user.tarjeton_pago == null ? null : "/storage/tarjetones_pago/"+user.tarjeton_pago}>{user == null ? null : user.tarjeton_pago}</a><i style={{"color":"#7E7E7E"}} className="material-icons tiny">description</i></p>
+                    <p style={{"marginTop":"0px", "fontFamily":"Montserrat" ,"fontSize":"13px"}}>Tarjetón de pago <a target="_blank" href={user == null || user.tarjeton_pago == null ? null : "/storage/tarjetones_pago/"+user.tarjeton_pago}>{user != null && user.tarjeton_pago}</a><i style={{"color":"#7E7E7E"}} className="material-icons tiny">description</i></p>
                 </div>
                 <div className="col s12 m6 div-division">
                     <p className="titles-sub" style={{"marginLeft":"3%"}}>DIRECCIÓN</p>
 
                     <div className="input-field col s6 ">
-                        <input disabled id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado"  value={bEdit ? values.estado : user == null ? null : user.estado} required autoComplete="estado"/>
+                        <input disabled={bEdit ? false : user ? true : false} id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado"  value={bEdit ? values.estado : user != null && user.estado} required autoComplete="estado" onChange={handleChange}/>
                         <label htmlFor="estado">Estado</label>
                         {
                             errors.estado && 
@@ -220,7 +238,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s6 input-50-re">
-                        <input disabled id="ciudad" type="text" className={errors.ciudad ? "validate form-control invalid" : "validate"} name="ciudad" value={bEdit ? values.ciudad : user == null ? null : user.ciudad} required autoComplete="ciudad"/>
+                        <input disabled={bEdit ? false : user ? true : false} id="ciudad" type="text" className={errors.ciudad ? "validate form-control invalid" : "validate"} name="ciudad" value={bEdit ? values.ciudad : user != null && user.ciudad} required autoComplete="ciudad" onChange={handleChange}/>
                         <label htmlFor="ciudad">Ciudad</label>
                         {
                             errors.ciudad && 
@@ -229,7 +247,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input disabled id="colonia" type="text" className={errors.colonia ? "validate form-control invalid" : "validate"} name="colonia" value={bEdit ? values.colonia : user == null ? null : user.colonia} required autoComplete="colonia"/>
+                        <input disabled={bEdit ? false : user ? true : false} id="colonia" type="text" className={errors.colonia ? "validate form-control invalid" : "validate"} name="colonia" value={bEdit ? values.colonia : user != null && user.colonia} required autoComplete="colonia" onChange={handleChange}/>
                         <label htmlFor="colonia">Colonia</label>
                         {
                             errors.colonia && 
@@ -238,7 +256,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input  disabled id="calle" type="text" className={errors.calle ? "validate form-control invalid" : "validate"} name="calle" value={bEdit ? values.calle : user == null ? null : user.calle} required autoComplete="calle"/>
+                        <input  disabled={bEdit ? false : user ? true : false} id="calle" type="text" className={errors.calle ? "validate form-control invalid" : "validate"} name="calle" value={bEdit ? values.calle : user != null && user.calle} required autoComplete="calle" onChange={handleChange}/>
                         <label htmlFor="calle">Calle</label>
                         {
                             errors.calle && 
@@ -247,7 +265,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s6 input-50-re">
-                        <input disabled id="cp" min="0" step="1" type="number"  className={errors.cp ? "validate form-control invalid" : "validate"} name="cp" value={bEdit ? values.cp : user == null ? null : user.cp} required autoComplete="cp"/>
+                        <input disabled={bEdit ? false : user ? true : false} id="cp" min="0" step="1" type="number"  className={errors.cp ? "validate form-control invalid" : "validate"} name="cp" value={bEdit ? values.cp : user != null && user.cp} required autoComplete="cp" onChange={handleChange}/>
                         <label htmlFor="cp">Código Postal</label>
                         {
                             errors.cp && 
@@ -256,7 +274,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s6 input-50-re">
-                        <input disabled id="num_ext" min="0" step="1" type="number" className={errors.num_ext ? "validate form-control invalid" : "validate"} name="num_ext" value={bEdit ? values.num_ext : user == null ? null : user.num_ext} required autoComplete="num_ext"/>
+                        <input disabled={bEdit ? false : user ? true : false} id="num_ext" min="0" step="1" type="number" className={errors.num_ext ? "validate form-control invalid" : "validate"} name="num_ext" value={bEdit ? values.num_ext : user != null && user.num_ext} required autoComplete="num_ext" onChange={handleChange}/>
                         <label htmlFor="num_ext">No. Exterior</label>
                         {
                             errors.num_ext && 
@@ -265,7 +283,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s6 input-50-re">
-                        <input disabled id="num_int" min="0" step="1" type="number" className={errors.num_int ? "validate form-control invalid" : "validate"} name="num_int" value={bEdit ? values.num_int : user == null ? null : user.num_int}  autoComplete="num_int"/>
+                        <input disabled={bEdit ? false : user ? true : false} id="num_int" min="0" step="1" type="number" className={errors.num_int ? "validate form-control invalid" : "validate"} name="num_int" value={bEdit ? values.num_int : user != null && user.num_int}  autoComplete="num_int" onChange={handleChange}/>
                         <label htmlFor="num_int">No. Interior</label>
                         {
                             errors.num_int && 
@@ -276,7 +294,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     <p className="titles-sub" style={{"marginLeft":"3%"}}>CUENTA</p>
 
                     <div className="input-field col s12">
-                        <input disabled id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"}  name="email" value={bEdit ? values.email : user == null ? null : user.email} required autoComplete="email"/>
+                        <input disabled={bEdit ? false : user ? true : false} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"}  name="email" value={bEdit ? values.email : user != null && user.email} required autoComplete="email" onChange={handleChange}/>
                         <label htmlFor="email">Correo electrónico</label>
                         {
                             errors.email && 
@@ -285,23 +303,29 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input disabled id="created_at" max="2004-01-01" type="date" name="created_at" required autoComplete="created_at" value={bEdit ? values.created_at : user == null ? null : user.created_at ? parseFecha(user.created_at) : null} />
+                        <input disabled={bEdit ? false : user ? true : false} id="created_at" max="2004-01-01" type="date" name="created_at" required autoComplete="created_at" value={bEdit ? values.created_at : user != null && user.created_at && parseFecha(user.created_at)} onChange={handleChange}/>
                         <label htmlFor="created_at">Fecha de Registro</label>
                         {
                             errors.created_at && 
                             <span className="helper-text" data-error={errors.created_at} style={{"marginBottom":"10px"}}>{errors.created_at}</span>
                         }
                     </div>
-                        {bEdit ?
+                        {user ?
+                            bEdit ?
+                            <div className="row">
+                                <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={cancelEditUser}>Cancelar</button>
+                                <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}>Guardar</button>
+                            </div> 
+                            : 
+                            <div className="row">
+                                <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={editUser}><i className="material-icons">edit</i></button>
+                                <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}><i className="material-icons">delete</i></button>
+                            </div>
+                        :
                         <div className="row">
                             <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={cancelEditUser}>Cancelar</button>
                             <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}>Guardar</button>
                         </div> 
-                        : 
-                        <div className="row">
-                            <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={editUser}><i className="material-icons">edit</i></button>
-                            <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}><i className="material-icons">delete</i></button>
-                        </div>
                         }
                 </div>
             </div>

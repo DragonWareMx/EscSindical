@@ -16,7 +16,6 @@ export default function InfoAlumno({user}) {
     const [edit, setEdit] = useState(false)
 
     function handleEditChange(newValue) {
-        console.log("se cambia el edit")
         setEdit(newValue)
     }
 
