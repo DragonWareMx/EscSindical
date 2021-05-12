@@ -104,9 +104,9 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
     //setea la const values con los valores del usuario, si el usuario es nulo los valores tambien
     function setUserValues(){
         setValues({
-            nombre: user == null ? "" : user.nombre,
-            apellido_p: user == null ? "" : user.apellido_p,
-            apellido_m: user == null ? "" : user.apellido_m,
+        nombre: user == null ? "" : user.nombre,
+        apellido_p: user == null ? "" : user.apellido_p,
+        apellido_m: user == null ? "" : user.apellido_m,
             email: user == null ? "" : user.email,
             fecha_nac: user == null ? "" : user.fecha_nac,
             sexo: user == null ? "" : user.sexo,
