@@ -38,8 +38,8 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('categorie_id')->nullable();
             $table->foreign('categorie_id')->references('id')->on('categories');
 
-            $table->unsignedBigInteger('regime_id')->nullable();
-            $table->foreign('regime_id')->references('id')->on('regimes');
+            $table->unsignedBigInteger('unit_id')->nullable();
+            $table->foreign('unit_id')->references('id')->on('units');
 
             $table->softDeletes();
             $table->timestamps();
