@@ -44,7 +44,27 @@ class CourseSeeder extends Seeder
             'estatus'=>'1',
             'descripcion' =>'Laravel es un framework muy usado en la actualidad, convinado con React puede crear aplicaciones realmente poderosas y con interfaces muy agradables para el usuario final',   
             'teacher_id' =>'3',
-            ]);
+        ]);
+
+        DB::table('course_user')->insert([
+            'course_id'=>1,
+            'user_id'=>4
+        ]);
+
+        DB::table('course_user')->insert([
+            'course_id'=>2,
+            'user_id'=>4
+        ]);
+
+        DB::table('course_image')->insert([
+            'image_id'=>1,
+            'course_id'=>1
+        ]);
+
+        DB::table('course_image')->insert([
+            'image_id'=>2,
+            'course_id'=>2
+        ]);
 
     }
 }

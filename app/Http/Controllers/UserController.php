@@ -109,7 +109,7 @@ class UserController extends Controller
                                     ->select('users.id','matricula','users.nombre','apellido_p','apellido_m','categorie_id')
                                     ->paginate(20)
                                     ->withQueryString(),
-            'user' => Inertia::lazy(fn () => User::with('categorie')
+            'user' => Inertia::lazy(fn () => User::with(['categorie','activeCourses','finishedCourses','activeCourses.firstImage','finishedCourses.firstImage'])
                                                     ->when($request->user, function($query, $user){
                                                         $query->find($user);
                                                     })
