@@ -42,7 +42,7 @@ export default function InfoAlumno({user}) {
                                 <div className="row">
                                     {!user ? "" :  user.active_courses.length > 0 ? 
                                         user.active_courses.map(curso=>(
-                                            <div><CourseCard curso={curso}/></div>
+                                            <div><CourseCard curso={curso} actuales={true}/></div>
                                         ))
                                     : "Este usuario aún no pertenece a algún curso activo"}
                                 </div>
@@ -51,7 +51,7 @@ export default function InfoAlumno({user}) {
                                 <div className="row">
                                     {!user ? "" :  user.finished_courses.length > 0 ? 
                                         user.finished_courses.map(curso=>(
-                                            <div><CourseCard curso={curso}/></div>
+                                            <div><CourseCard curso={curso} actuales={false}/></div>
                                         ))
                                     : "Este usuario aún no tiene cursos terminados"}
                                 </div>
