@@ -3,7 +3,7 @@ import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import '/css/infoAlumno.css'
 
-export default function InfoAlumno({user}) {
+export default function InfoAlumno({user, onEditChange, bEdit}) {
     const { errors } = usePage().props
 
     function handleChange(e) {
@@ -46,10 +46,6 @@ export default function InfoAlumno({user}) {
         foto: "",
     })
 
-    const [state, setState] = useState({
-        edit: false
-    })
-
     function initializeSelects() {
         var elems = document.querySelectorAll('select');
         var instances = M.FormSelect.init(elems);
@@ -84,9 +80,18 @@ export default function InfoAlumno({user}) {
         
     }
 
+    function editUser(){
+        onEditChange(true)
+    }
+
+    function cancelEditUser(){
+        onEditChange(false)
+    }
+
     useEffect(() => {
         initializeSelects();
     }, [])
+
     return(
         <form onSubmit={handleSubmit}>
             <div className="row div-form-register" style={{"padding":"3%"}}>
@@ -94,7 +99,7 @@ export default function InfoAlumno({user}) {
                     <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN PERSONAL</p>
 
                     <div className="col s12" style={{"display": "flex","justifyContent":"center", "flexDirection":"column","marginTop":"5px","marginBottom":"5px"}}>
-                        <img id="profileImage" onClick={() => {clickFoto()}} src={state.edit ? values.foto : user == null ? "" : user.foto ? "/storage/fotos_perfil/"+user.foto : "/storage/fotos_perfil/avatar1.png"} ></img>
+                        <img id="profileImage" onClick={() => {clickFoto()}} src={bEdit ? values.foto : user == null ? "" : user.foto ? "/storage/fotos_perfil/"+user.foto : "/storage/fotos_perfil/avatar1.png"} ></img>
                         <p id="txt-profile" style={{"cursor":"pointer"}} onClick={() => {clickFoto()}}>Foto de perfil</p>
                     </div>
 
@@ -106,7 +111,7 @@ export default function InfoAlumno({user}) {
                         }
 
                     <div className="input-field col s12">
-                        <input  disabled id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={state.edit ? values.nombre : user == null ? "" : user.nombre} onChange={handleChange} autoFocus/>
+                        <input  disabled id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={bEdit ? values.nombre : user == null ? null : user.nombre} onChange={handleChange} autoFocus/>
                         <label htmlFor="nombre">Nombre</label>
                         {
                             errors.nombre && 
@@ -115,7 +120,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input disabled id="apellido_p" type="text" className={errors.apellido_p ? "validate form-control invalid" : "validate form-control"}  name="apellido_p" value={state.edit ? values.apellido_p : user == null ? "" : user.apellido_p} required autoComplete="apellido_paterno"/>
+                        <input disabled id="apellido_p" type="text" className={errors.apellido_p ? "validate form-control invalid" : "validate form-control"}  name="apellido_p" value={bEdit ? values.apellido_p : user == null ? null : user.apellido_p} required autoComplete="apellido_paterno"/>
                         <label htmlFor="apellido_paterno">Apellido Paterno</label>
                         {
                             errors.apellido_p && 
@@ -125,7 +130,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input  disabled id="apellido_m" type="text" className={errors.apellido_m ? "validate form-control invalid" : "validate form-control"} name="apellido_m" value={state.edit ? values.apellido_m : user == null ? "" : user.apellido_m} autoComplete="apellido_materno"/>
+                        <input  disabled id="apellido_m" type="text" className={errors.apellido_m ? "validate form-control invalid" : "validate form-control"} name="apellido_m" value={bEdit ? values.apellido_m : user == null ? null : user.apellido_m} autoComplete="apellido_materno"/>
                         <label htmlFor="apellido_materno">Apellido Materno</label>
                         {
                             errors.apellido_m && 
@@ -134,7 +139,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input disabled id="fecha_nac" max="2004-01-01" type="date" name="fecha_nac" required autoComplete="fecha_nacimiento" value={state.edit ? values.fecha_nac : user == null ? "" : user.fecha_nac} />
+                        <input disabled id="fecha_nac" max="2004-01-01" type="date" name="fecha_nac" required autoComplete="fecha_nacimiento" value={bEdit ? values.fecha_nac : user == null ? null : user.fecha_nac} />
                         <label htmlFor="fecha_nacimiento">Fecha de Nacimiento</label>
                         {
                             errors.fecha_nac && 
@@ -143,7 +148,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <select disabled id="sexo" name="sexo" required autoComplete="sexo" defaultValue={state.edit ? values.sexo : user == null ? "" : user.sexo} onChange={handleChange}>
+                        <select disabled id="sexo" name="sexo" required autoComplete="sexo" defaultValue={bEdit ? values.sexo : user == null ? null : user.sexo} onChange={handleChange}>
                             <option value="Femenino">Femenino</option>
                             <option value="Masculino">Masculino</option>
                         </select>
@@ -157,7 +162,7 @@ export default function InfoAlumno({user}) {
                     <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN INSTITUCIONAL</p>
 
                     <div className="input-field col s12">
-                        <input  disabled id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={state.edit ? values.matricula : user == null ? "" : user.matricula} required autoComplete="matricula"/>
+                        <input  disabled id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={bEdit ? values.matricula : user == null ? null : user.matricula} required autoComplete="matricula"/>
                         <label htmlFor="matricula">Matrícula</label>
                         {
                             errors.matricula && 
@@ -166,7 +171,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s12">
-                        <select disabled id="regime_id" name="regime_id" required autoComplete="regime_id" value={state.edit ? values.regime_id : user == null ? "" : user.regime_id}>
+                        <select disabled id="regime_id" name="regime_id" required autoComplete="regime_id" value={bEdit ? values.regime_id : user == null ? null : user.regime_id}>
                             <option value="" disabled >Selecciona una opción</option>
                             <option value="1">Ordinario</option>
                             <option value="2">Bienestar</option>
@@ -179,7 +184,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s12" style={{"marginTop":"5px"}}>
-                        <select disabled id="unity_id" name="unity_id" required autoComplete="unity_id" value={state.edit ? values.unity_id : user == null ? "" : user.unity_id}>
+                        <select disabled id="unity_id" name="unity_id" required autoComplete="unity_id" value={bEdit ? values.unity_id : user == null ? null : user.unity_id}>
                             <option value="" disabled>Selecciona una opción</option>
                             <option value="1">UMF 75 - Morelia c/UMAA</option>
                             <option value="2">UMF 80 - Morelia</option>
@@ -192,7 +197,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s12">
-                        <input disabled type="text" id="categoria" name="categoria" required autoComplete="categoria" className="autocomplete" value={state.edit ? values.categoria : user == null ? "" : user.categorie.nombre}/>
+                        <input disabled type="text" id="categoria" name="categoria" required autoComplete="categoria" className="autocomplete" value={bEdit ? values.categoria : user == null ? null : user.categorie.nombre}/>
                         <label htmlFor="autocomplete-input">Categoría</label>
                         {
                             errors.categoria && 
@@ -200,13 +205,13 @@ export default function InfoAlumno({user}) {
                         }
                     </div>
 
-                    <p style={{"marginTop":"0px", "fontFamily":"Montserrat" ,"fontSize":"13px"}}>Tarjetón de pago <a target="_blank" href={user == null || user.tarjeton_pago == null ? "" : "/storage/tarjetones_pago/"+user.tarjeton_pago}>{user == null ? "" : user.tarjeton_pago}</a><i style={{"color":"#7E7E7E"}} className="material-icons tiny">description</i></p>
+                    <p style={{"marginTop":"0px", "fontFamily":"Montserrat" ,"fontSize":"13px"}}>Tarjetón de pago <a target="_blank" href={user == null || user.tarjeton_pago == null ? null : "/storage/tarjetones_pago/"+user.tarjeton_pago}>{user == null ? null : user.tarjeton_pago}</a><i style={{"color":"#7E7E7E"}} className="material-icons tiny">description</i></p>
                 </div>
                 <div className="col s12 m6 div-division">
                     <p className="titles-sub" style={{"marginLeft":"3%"}}>DIRECCIÓN</p>
 
                     <div className="input-field col s6 ">
-                        <input disabled id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado"  value={state.edit ? values.estado : user == null ? "" : user.estado} required autoComplete="estado"/>
+                        <input disabled id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado"  value={bEdit ? values.estado : user == null ? null : user.estado} required autoComplete="estado"/>
                         <label htmlFor="estado">Estado</label>
                         {
                             errors.estado && 
@@ -215,7 +220,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s6 input-50-re">
-                        <input disabled id="ciudad" type="text" className={errors.ciudad ? "validate form-control invalid" : "validate"} name="ciudad" value={state.edit ? values.ciudad : user == null ? "" : user.ciudad} required autoComplete="ciudad"/>
+                        <input disabled id="ciudad" type="text" className={errors.ciudad ? "validate form-control invalid" : "validate"} name="ciudad" value={bEdit ? values.ciudad : user == null ? null : user.ciudad} required autoComplete="ciudad"/>
                         <label htmlFor="ciudad">Ciudad</label>
                         {
                             errors.ciudad && 
@@ -224,7 +229,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input disabled id="colonia" type="text" className={errors.colonia ? "validate form-control invalid" : "validate"} name="colonia" value={state.edit ? values.colonia : user == null ? "" : user.colonia} required autoComplete="colonia"/>
+                        <input disabled id="colonia" type="text" className={errors.colonia ? "validate form-control invalid" : "validate"} name="colonia" value={bEdit ? values.colonia : user == null ? null : user.colonia} required autoComplete="colonia"/>
                         <label htmlFor="colonia">Colonia</label>
                         {
                             errors.colonia && 
@@ -233,7 +238,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input  disabled id="calle" type="text" className={errors.calle ? "validate form-control invalid" : "validate"} name="calle" value={state.edit ? values.calle : user == null ? "" : user.calle} required autoComplete="calle"/>
+                        <input  disabled id="calle" type="text" className={errors.calle ? "validate form-control invalid" : "validate"} name="calle" value={bEdit ? values.calle : user == null ? null : user.calle} required autoComplete="calle"/>
                         <label htmlFor="calle">Calle</label>
                         {
                             errors.calle && 
@@ -242,7 +247,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s6 input-50-re">
-                        <input disabled id="cp" min="0" step="1" type="number"  className={errors.cp ? "validate form-control invalid" : "validate"} name="cp" value={state.edit ? values.cp : user == null ? "" : user.cp} required autoComplete="cp"/>
+                        <input disabled id="cp" min="0" step="1" type="number"  className={errors.cp ? "validate form-control invalid" : "validate"} name="cp" value={bEdit ? values.cp : user == null ? null : user.cp} required autoComplete="cp"/>
                         <label htmlFor="cp">Código Postal</label>
                         {
                             errors.cp && 
@@ -251,7 +256,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s6 input-50-re">
-                        <input disabled id="num_ext" min="0" step="1" type="number" className={errors.num_ext ? "validate form-control invalid" : "validate"} name="num_ext" value={state.edit ? values.num_ext : user == null ? "" : user.num_ext} required autoComplete="num_ext"/>
+                        <input disabled id="num_ext" min="0" step="1" type="number" className={errors.num_ext ? "validate form-control invalid" : "validate"} name="num_ext" value={bEdit ? values.num_ext : user == null ? null : user.num_ext} required autoComplete="num_ext"/>
                         <label htmlFor="num_ext">No. Exterior</label>
                         {
                             errors.num_ext && 
@@ -260,7 +265,7 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s6 input-50-re">
-                        <input disabled id="num_int" min="0" step="1" type="number" className={errors.num_int ? "validate form-control invalid" : "validate"} name="num_int" value={state.edit ? values.num_int : user == null ? "" : user.num_int}  autoComplete="num_int"/>
+                        <input disabled id="num_int" min="0" step="1" type="number" className={errors.num_int ? "validate form-control invalid" : "validate"} name="num_int" value={bEdit ? values.num_int : user == null ? null : user.num_int}  autoComplete="num_int"/>
                         <label htmlFor="num_int">No. Interior</label>
                         {
                             errors.num_int && 
@@ -271,7 +276,7 @@ export default function InfoAlumno({user}) {
                     <p className="titles-sub" style={{"marginLeft":"3%"}}>CUENTA</p>
 
                     <div className="input-field col s12">
-                        <input disabled id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"}  name="email" value={state.edit ? values.email : user == null ? "" : user.email} required autoComplete="email"/>
+                        <input disabled id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"}  name="email" value={bEdit ? values.email : user == null ? null : user.email} required autoComplete="email"/>
                         <label htmlFor="email">Correo electrónico</label>
                         {
                             errors.email && 
@@ -280,18 +285,24 @@ export default function InfoAlumno({user}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input disabled id="created_at" max="2004-01-01" type="date" name="created_at" required autoComplete="created_at" value={state.edit ? values.created_at : user == null ? "" : user.created_at ? parseFecha(user.created_at) : ""} />
+                        <input disabled id="created_at" max="2004-01-01" type="date" name="created_at" required autoComplete="created_at" value={bEdit ? values.created_at : user == null ? null : user.created_at ? parseFecha(user.created_at) : null} />
                         <label htmlFor="created_at">Fecha de Registro</label>
                         {
                             errors.created_at && 
                             <span className="helper-text" data-error={errors.created_at} style={{"marginBottom":"10px"}}>{errors.created_at}</span>
                         }
                     </div>
-
-                    <div className="row">
-                        <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}><i className="material-icons">edit</i></button>
-                        <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}><i className="material-icons">delete</i></button>
-                    </div>
+                        {bEdit ?
+                        <div className="row">
+                            <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={cancelEditUser}>Cancelar</button>
+                            <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}>Guardar</button>
+                        </div> 
+                        : 
+                        <div className="row">
+                            <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={editUser}><i className="material-icons">edit</i></button>
+                            <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}><i className="material-icons">delete</i></button>
+                        </div>
+                        }
                 </div>
             </div>
             <div className="row">
