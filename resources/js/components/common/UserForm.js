@@ -57,7 +57,6 @@ export default function InfoAlumno({user}) {
         var instances = M.Autocomplete.init(elems);
     }
 
-
     function parseFecha(date){
         var d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -71,6 +70,20 @@ export default function InfoAlumno({user}) {
 
         return [year, month, day].join('-');
     }
+
+    // Estos dos métodos detectan el click y al suceder ejecutan el click en el input vacío
+    function clickFoto(){
+        document.getElementById("imageUpload").click();
+    }
+
+    function changeFoto(){
+        var inputFotos = document.getElementById('imageUpload');
+        if ( inputFotos.files && inputFotos.files[0] ){
+            document.getElementById("profileImage").src = window.URL.createObjectURL(inputFotos.files[0]);
+        }
+        
+    }
+
     useEffect(() => {
         initializeSelects();
     }, [])
@@ -80,13 +93,13 @@ export default function InfoAlumno({user}) {
                 <div className="col s12 m6 div-division user-form-border">
                     <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN PERSONAL</p>
 
-                    <div className="col s12" style={{"display": "flex","justifyContent":"center", "flexDirection":"column"}}>
-                        <img id="profileImage" src={state.edit ? values.foto : user == null ? "" : user.foto ? "/storage/fotos_perfil/"+user.foto : "/storage/fotos_perfil/avatar1.png"} ></img>
-                        <p id="txt-profile">Foto de perfil</p>
+                    <div className="col s12" style={{"display": "flex","justifyContent":"center", "flexDirection":"column","marginTop":"5px","marginBottom":"5px"}}>
+                        <img id="profileImage" onClick={() => {clickFoto()}} src={state.edit ? values.foto : user == null ? "" : user.foto ? "/storage/fotos_perfil/"+user.foto : "/storage/fotos_perfil/avatar1.png"} ></img>
+                        <p id="txt-profile" style={{"cursor":"pointer"}} onClick={() => {clickFoto()}}>Foto de perfil</p>
                     </div>
 
                     <input id="imageUpload" type="file" className={errors.foto ? "validate form-control invalid" : "validate form-control"}
-                        name="foto" placeholder="Photo" accept="image/png, image/jpeg, image/jpg, image/gif"></input>
+                        name="foto" placeholder="Photo" accept="image/png, image/jpeg, image/jpg, image/gif" onChange={() => {changeFoto()}}></input>
                         {
                             errors.foto && 
                             <span className="helper-text" data-error={errors.foto} style={{"marginBottom":"10px"}}>{errors.foto}</span>
