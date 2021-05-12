@@ -70,9 +70,21 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($token));
     }
 
-    public function course()
+    public function courses()
     {
         return $this->belongsToMany('App\Models\Course');
+    }
+
+    public function activeCourses(){
+        return $this->courses()->where('estatus','Activo');
+    }
+
+    public function finishedCourses(){
+        return $this->courses()->where('estatus','Terminado');
+    }
+
+    public function canceledCourses(){
+        return $this->courses()->where('estatus','Cancelado');
     }
 
     public function logs()
@@ -108,11 +120,6 @@ class User extends Authenticatable
     public function grades()
     {
         return $this->hasMany('App\Models\Grade');
-    }
-
-    public function courses()
-    {
-        return $this->belongsToMany('App\Models\Course');
     }
 
     public function drop_requests()
