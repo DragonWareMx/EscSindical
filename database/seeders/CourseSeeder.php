@@ -66,5 +66,22 @@ class CourseSeeder extends Seeder
             'course_id'=>2
         ]);
 
+        DB::table('course_tag')->insert([
+            'tag_id'=>1,
+            'course_id'=>1
+        ]);
+        DB::table('course_tag')->insert([
+            'tag_id'=>2,
+            'course_id'=>1
+        ]);
+        DB::table('course_tag')->insert([
+            'tag_id'=>3,
+            'course_id'=>1
+        ]);
+        DB::table('course_tag')->insert([
+            'tag_id'=>1,
+            'course_id'=>2
+        ]);
+
     }
 }
