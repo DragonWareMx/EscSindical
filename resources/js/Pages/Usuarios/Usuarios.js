@@ -5,6 +5,7 @@ import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 import InfoAlumno from '../../components/common/InfoAlumno';
 import UserForm from '../../components/common/UserForm';
+import ModalEliminarUsuario from '../../components/common/ModalEliminarUsuario';
 
 import '../../styles/usersStyle.css'
 import route from 'ziggy-js';
@@ -53,6 +54,7 @@ const Usuarios = ({ users, user, request }) => {
             }, 250)
         });
     }
+
 
     function sort(campo) {
         let data;
@@ -587,20 +589,18 @@ const Usuarios = ({ users, user, request }) => {
                                             </a>
                                         </th>
                                         <th></th>
-                                        <th></th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     {users.data.length > 0 && users.data.map(usuario => (
-                                        <tr key={usuario.id} onClick={() => getUser(usuario.id)}>
+                                        <tr style={{"cursor":"pointer"}} key={usuario.id} onClick={() => getUser(usuario.id)}>
                                             <td>{usuario.matricula}</td>
                                             <td>{usuario.roles && usuario.roles.length > 0 ? usuario.roles.map(rol => (rol.name + " ")) : "Sin Rol"}</td>
                                             <td>{usuario.nombre} {usuario.apellido_p} {usuario.apellido_m}</td>
                                             <td>UMF80 - Morelia</td>
                                             <td>{usuario.categorie ? usuario.categorie.nombre : "Sin Categoría"}</td>
                                             <td><button><i className="material-icons">edit</i> </button></td>
-                                            <td><button><i className="material-icons">delete</i> </button></td>
                                             {/*<td>
                                         <InertiaLink href={`/users/${user.id}/edit`}>Edit</InertiaLink>
                                     </td>*/}
@@ -653,6 +653,7 @@ const Usuarios = ({ users, user, request }) => {
             </div>
             <FlotanteAyuda />
             <InfoAlumno user={user} />
+            <ModalEliminarUsuario user={user}/>
         </>
     )
 }

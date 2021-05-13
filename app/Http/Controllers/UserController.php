@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -293,7 +294,7 @@ class UserController extends Controller
             'categorie_id' => 'required',
         ]);
 
-        $user = Post::find($id);
+        $user = User::find($id);
         $user->nombre = $request->nombre;
         $user->apellido_p = $request->apellido_p;
         $user->apellido_m = $request->apellido_m;
@@ -324,9 +325,30 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = Post::find($id);
-        if ($user->delete()) {
-            return response()->json(["status" => 200]);
+        DB::beginTransaction();
+        try{
+            $user = User::find($id);
+            if(!$user || $user->id == Auth::id()){
+                DB::rollBack();
+                return;
+            }
+            $user->delete();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'delete';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                users: {
+                    id: ' . $id .
+                '}
+            }';
+            $newLog->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
         }
     }
 }
