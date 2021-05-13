@@ -162,6 +162,36 @@
     line-height: 15px;
     color: #108058;
 }
+/* HISTORIAL DE CURSOS */
+.txt-title-course-history{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: #585858;
+}
+
+.txt-grade-course{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #585858;
+}
+
+.date-course-history{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 13px;
+    color: #585858;
+}
+.course-status-rejectec{
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 12px;
+    color: #D14747;
+}
 
 .btn-login{
     background-color: #108058;

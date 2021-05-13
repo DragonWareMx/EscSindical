@@ -4,13 +4,15 @@ import Layout from '../../layouts/Layout';
 import FormCurso from '../../components/cursos/FormCurso';
 import CursoActual from '../../components/cursos/CursoActual';
 import CursoActualPonente from '../../components/cursos/CursoActualPonente';
-import HistorialCursosPonente from '../../components/cursos/HistorialCursosPonente';
+import HistorialCursos from '../../components/cursos/HistorialCursos';
 
 const Cursos = () => {
   return (
     <>
     {/* Componente para cursos actuales de estudiantes */}
     <CursoActual />
+    {/* Componente para el historial de cursos de estudiantes y solicitudes */}
+    <HistorialCursos />
 
     {/* Componente para cursos actuales de ponentes */}
     {/* <CursoActualPonente /> */}
@@ -18,7 +20,7 @@ const Cursos = () => {
     <FormCurso />
 
     {/* Componente para el historial de cursos de ponentes */}
-    {/* <HistorialCursosPonente /> */}
+    {/* <HistorialCursos /> */}
     
     </>
   )
