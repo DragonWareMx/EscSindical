@@ -44,5 +44,7 @@ Route::post('/usuarios/{id}', [App\Http\Controllers\UserController::class, 'upda
 Route::get('/cursos', [App\Http\Controllers\CourseController::class, 'index'])->name('cursos');
 Route::post('/storeCourse', [App\Http\Controllers\CourseController::class, 'store'])->name('storeCourse');
 
+Route::get('/cursos/buscar', [App\Http\Controllers\CourseController::class, 'searchIndex'])->name('cursosBuscar');
+
 //--------PERFIL--------
 Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');
