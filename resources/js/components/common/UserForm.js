@@ -57,7 +57,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
         cp: "",
         num_ext: "",
         num_int: "",
-        email: "",
+        tarjeton_pago: "",        
         created_at: "",
         foto: "",
     })
@@ -99,30 +99,32 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
     //Este metodo se ejecuta cuando se presiona el boton de editar usuario
     function editUser(){
         onEditChange(true)
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
     }
     
     //setea la const values con los valores del usuario, si el usuario es nulo los valores tambien
     function setUserValues(){
         setValues({
-        nombre: user == null ? "" : user.nombre,
-        apellido_p: user == null ? "" : user.apellido_p,
-        apellido_m: user == null ? "" : user.apellido_m,
+            nombre: user == null ? "" : user.nombre,
+            apellido_p: user == null ? "" : user.apellido_p,
+            apellido_m: user == null ? "" : user.apellido_m,
             email: user == null ? "" : user.email,
             fecha_nac: user == null ? "" : user.fecha_nac,
             sexo: user == null ? "" : user.sexo,
             matricula: user == null ? "" : user.matricula,
             unit_id: user == null ? "" : user.unit_id,
-            categorie: "",
-            estado: "",
-            ciudad: "",
-            colonia: "",
-            calle: "",
-            cp: "",
-            num_ext: "",
-            num_int: "",
-            email: "",
+            categorie_id: user == null ? "" : user.categorie_id,
+            estado: user == null ? "" : user.estado,
+            ciudad: user == null ? "" : user.ciudad,
+            colonia: user == null ? "" : user.colonia,
+            calle: user == null ? "" : user.calle,
+            cp: user == null ? "" : user.cp,
+            num_ext: user == null ? "" : user.num_ext,
+            num_int: user == null ? "" : user.num_int,
+            tarjeton_pago: user == null ? "" : user.tarjeton_pago,
             created_at: user == null ? "" : parseFecha(user.created_at),
-            foto: "",
+            foto: user == null ? "" : user.foto,
         })
     }
 
@@ -130,6 +132,8 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
     function cancelEditUser(){
         setUserValues()
         onEditChange(false)
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
     }
 
 
@@ -148,7 +152,15 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
     useEffect(() => {
         //actualiza los textfields para que no se amontonen los labels
         M.updateTextFields();
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
     }, [values])
+
+    useEffect(() => {
+        //actualiza los textfields para que no se amontonen los labels
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+    }, [bEdit])
 
     return(
         <form onSubmit={user ? handleEdit : handleCreate}>
@@ -206,9 +218,11 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <select disabled={bEdit ? false : user ? true : false} id="sexo" name="sexo" required autoComplete="sexo" defaultValue={bEdit ? values.sexo : user != null && user.sexo} onChange={handleChange}>
-                            <option value="Femenino">Femenino</option>
-                            <option value="Masculino">Masculino</option>
+                        <select disabled={bEdit ? false : user ? true : false} id="sexo" name="sexo" required autoComplete="sexo" value={values.sexo} onChange={handleChange} className="input-field">
+                            <option value="" disabled>Selecciona una opción</option>
+                            <option value="m">Femenino</option>
+                            <option value="h">Masculino</option>
+                            <option value="o">Otro</option>
                         </select>
                         <label>Sexo</label>
                         {
@@ -343,7 +357,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input disabled={bEdit ? false : user ? true : false} id="created_at" max="2004-01-01" type="date" name="created_at" required autoComplete="created_at" value={values.created_at} onChange={handleChange}/>
+                        <input disabled={true} id="created_at" max="2004-01-01" type="date" name="created_at" required autoComplete="created_at" value={values.created_at} onChange={handleChange}/>
                         <label htmlFor="created_at">Fecha de Registro</label>
                         {
                             errors.created_at && 
