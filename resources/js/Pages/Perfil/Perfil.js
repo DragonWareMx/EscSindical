@@ -13,6 +13,12 @@ function initializeMat() {
 }
 
 const Perfil = ({ user }) => {
+    const [edit, setEdit] = useState(false)
+    
+    function handleEditChange(newValue) {
+        setEdit(newValue)
+    }
+    
     useEffect(() => {
         initializeMat();
     }, [])
@@ -135,8 +141,9 @@ const Perfil = ({ user }) => {
                                                         <i className="material-icons">close</i>
                                                     </div>
                                                     <div className="col s12">
-                                                        
-                                                        <UserForm />
+                                                        {/* {!state.newUser && <InfoAlumno user={user}/>} */}
+                                                        {/* <UserForm /> */}
+                                                        <UserForm user={user} bEdit={edit} onEditChange={handleEditChange} />
 
                                                     </div>
                                                 </div>

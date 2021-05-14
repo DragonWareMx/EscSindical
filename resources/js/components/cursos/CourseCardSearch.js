@@ -1,0 +1,57 @@
+import React, { useEffect, useState } from 'react'
+import { usePage } from '@inertiajs/inertia-react'
+import { Inertia } from '@inertiajs/inertia'
+
+import '../../styles/cursos.css'
+import '/css/courseCardSearch.css'
+
+export default function InfoAlumno({  }) {
+
+    function transformaFecha(fecha) {
+        const dob = new Date(fecha);
+        const monthNames = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+            'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        const day = dob.getDate();
+        const monthIndex = dob.getMonth();
+        const year = dob.getFullYear();
+        return `${day} ${monthNames[monthIndex]} ${year}`;
+    }
+
+    return (
+        <div className="col s12">
+            <div className="card">
+                {/* Imagen del curso */}
+                <div className="col s12 course-image-container center-align blue">
+                    <img src="/images/monita.jpg" alt="imagen del curso" className="course-image" />
+                </div>
+                {/* Informacion sobre el curso */}
+                <div className="card-content">
+                    <div className="row">
+                        {/* Nombre del curso */}
+                        <div className="col s12 valign-wrapper" style={{"marginTop":"7px"}}>
+                            <i class="material-icons verified-icon">verified</i>
+                            <span className="course-name truncate">Nombre del curso mucho muy largo super super largo y extenso un poco mas</span>
+                        </div>
+                        {/* Nombre del ponente */}
+                        <div className="col s12" style={{"marginTop":"5px"}}>
+                            <span className="course-teacher truncate">Nombre del ponenete que da el curso</span>
+                        </div>
+                        {/* Tags del curso */}
+                        <div className="col s12 courseCard_tags purple" style={{"marginTop":"5px"}}>
+                            <div className="container-tags">
+                                {/* {curso.tags.map(tag=>
+                                    <a className="div-tag" href="#!">
+                                        {tag.nombre} <i class="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
+                                    </a>
+                                )} */}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+
+}

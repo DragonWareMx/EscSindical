@@ -9,6 +9,8 @@ import '/js/jquery-3.6.0.min.js';
 import route from 'ziggy-js';
 import '../../styles/buscarCursos.css';
 
+import CourseCardSearch from '../../components/cursos/CourseCardSearch'
+
 function initializeMat() {
 }
 
@@ -46,6 +48,21 @@ const BuscarCursos = () => {
                     <div className="card darken-1 card-buscar-cursos">
                         <div className="card-content">
                             <h1>MÁS CURSOS</h1>
+                            <div className="row">
+                                <div className="col s12 m6 l3 orange">
+                                    {/* Aqui va el componente */}
+                                    <CourseCardSearch />
+                                </div>
+                                <div className="col s12 m6 l3 grey">
+                                    <CourseCardSearch />
+                                </div>
+                                <div className="col s12 m6 l3 blue">
+                                    curso 3
+                                </div>
+                                <div className="col s12 m6 l3 green">
+                                    curso 4
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
