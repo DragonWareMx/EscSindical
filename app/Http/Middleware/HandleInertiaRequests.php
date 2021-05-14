@@ -56,6 +56,18 @@ class HandleInertiaRequests extends Middleware
             'auth.roles' => fn () => $request->user()->roles()->get()
                 ? $request->user()->roles()->get()
                 : null,
+            // 'flash' => [
+            //     'message' => $request->session()->get('message'),
+            //     'error' => $request->session()->get('error'),
+            //     'success'=> $request->session()->get('success')
+            // ],
+            'flash' => function () use ($request) {
+                return [
+                    'success' => $request->session()->get('success'),
+                    'error' => $request->session()->get('error'),
+                    'message'=>$request->session()->get('message')
+                ];
+            },
         ]);
     }
 }
