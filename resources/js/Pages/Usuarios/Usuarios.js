@@ -650,6 +650,7 @@ const Usuarios = ({ users, user, request }) => {
             </div>
             <FlotanteAyuda />
             {!state.newUser && <InfoAlumno user={user}/>}
+            <ModalEliminarUsuario user={user}/>
         </>
     )
 }

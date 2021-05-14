@@ -8,3 +8,25 @@
     color: #134E39;
     margin-top: 0px;
 }
+
+.owl-nav{
+    position: absolute !important;
+    top: 35%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 0px;
+}
+
+.owl-nav button{
+    background: #FFFFFF !important;
+    box-shadow: 0px 4px 4px rgba(133, 133, 133, 0.25) !important;
+    border-radius: 50% !important;
+    width: 30px !important;
+    height: 30px !important;
+    color: #134E39 !important;
+}
+
+.owl-nav:hover{
+    color: #1c1c1c !important;
+}
