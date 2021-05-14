@@ -162,6 +162,64 @@
     line-height: 15px;
     color: #108058;
 }
+/* HISTORIAL DE CURSOS */
+.txt-title-course-history{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: #585858;
+}
+
+.txt-grade-course{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #585858;
+}
+
+.date-course-history{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 13px;
+    color: #585858;
+}
+.course-status{
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 12px;
+    color: #AAAAAA;
+    width: max-content;
+    margin-top:3px;
+}
+.options-course-dropdown, .dropdown-content li>a, .dropdown-content li>span{
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #8A8A8A;
+    display: flex;
+    justify-content: left;
+    align-items:center;
+    min-height: 35px !important;
+    padding:8px;
+}
+.a-mini-course-hover{
+    color: #585858 !important;
+    transition: all ease-in-out 0.25s;
+}
+.a-mini-course-hover:hover{
+    color: #108058 !important;
+    transition: all ease-in-out 0.25s;
+}
+
+.btn-login{
+    background-color: #108058;
+    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    margin-top: 20px;
+  }
 
 @media(max-width:600px){
     .img-course{

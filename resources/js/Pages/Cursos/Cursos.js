@@ -4,13 +4,17 @@ import Layout from '../../layouts/Layout';
 import FormCurso from '../../components/cursos/FormCurso';
 import CursoActual from '../../components/cursos/CursoActual';
 import CursoActualPonente from '../../components/cursos/CursoActualPonente';
+import HistorialCursos from '../../components/cursos/HistorialCursos';
 import HistorialCursosPonente from '../../components/cursos/HistorialCursosPonente';
 
 const Cursos = ({user, cursos, profesor, tags}) => {
   console.log(user.courses)
   return (
     <>
-    {/* Componente para cursos actuales de estudiantes */}
+    
+    {/* Componente para el historial de cursos de estudiantes y solicitudes............. */}
+    {/* <HistorialCursos /> */}
+
     {user.roles['0'].name == 'Ponente' ? <CursoActualPonente cursos = {cursos}/> 
     : <CursoActual 
     cursos = {user.courses}
@@ -22,7 +26,7 @@ const Cursos = ({user, cursos, profesor, tags}) => {
     {/* Componente modal para crear curso */}
     <FormCurso />
 
-    {/* Componente para el historial de cursos de ponentes */}
+    {/* Componente para el historial de cursos de ponentes .......................*/}
     {/* <HistorialCursosPonente /> */}
     
     </>
