@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Log;
@@ -24,36 +24,36 @@ class CourseController extends Controller
     public function index()
     {
         $user = User::find(Auth::id());
-        
-        if($user->roles[0]->name == 'Ponente'){
+
+        if ($user->roles[0]->name == 'Ponente') {
             $cursos = Course::where('teacher_id', Auth::id())->with('users')->get();
-           
+
             return Inertia::render('Cursos/Cursos', [
-                'user'=> fn () => User::with(['roles', 'courses'=>function($query){$query->join('users','users.id','=','courses.teacher_id');}
-                ])->where('id',Auth::id())->first(), 
+                'user' => fn () => User::with([
+                    'roles', 'courses' => function ($query) {
+                        $query->join('users', 'users.id', '=', 'courses.teacher_id');
+                    }
+                ])->where('id', Auth::id())->first(),
                 'cursos' => fn () => $cursos,
             ]);
-        }
-        else {
+        } else {
             $curso_actual = $user->courses[0];
             $profesor = $curso_actual->teacher;
             $tags = $curso_actual->tags;
             return Inertia::render('Cursos/Cursos', [
-                'user'=> fn () => User::with(['roles', 'courses'=>function($query){$query->join('users','users.id','=','courses.teacher_id');}
-                ])->where('id',Auth::id())->first(), 
+                'user' => fn () => User::with([
+                    'roles', 'courses' => function ($query) {
+                        $query->join('users', 'users.id', '=', 'courses.teacher_id');
+                    }
+                ])->where('id', Auth::id())->first(),
                 'profesor' => $profesor,
                 'tags' => $tags,
-                ]); 
+            ]);
         }
-        
-
-        
-        
-        
     }
-    
+
     public function store(Request $request)
-    {   
+    {
 
         dd($request);
 
@@ -70,7 +70,7 @@ class CourseController extends Controller
             'descripcion' => 'required',
             'imgs' => 'required',
         ]);
-        
+
         //COMIENZA TRANSACCIÓN
         DB::beginTransaction();
 
@@ -104,7 +104,7 @@ class CourseController extends Controller
             $newLog->categoria = 'create';
             $newLog->user_id = Auth::id();
             $newLog->accion =
-                ''; 
+                '';
             //falta agregar el accion del log, es un json
 
             //GUARDAMOS EL LOG
@@ -117,8 +117,10 @@ class CourseController extends Controller
         if ($newCourse) {
             return response()->json(["status" => 200]);
         }
-        
     }
 
-
+    public function searchIndex()
+    {
+        return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => Course::with(['teacher', 'tags'])->get()]);
+    }
 }

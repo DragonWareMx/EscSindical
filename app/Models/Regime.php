@@ -10,15 +10,10 @@ class Regime extends Model
 {
     use HasFactory;
 
-    public function users()
+    public function units()
     {
-        return $this->hasMany('App\Models\User');
+        return $this->hasMany('App\Models\Unit');
     }
 
-    public function unit()
-    {
-        return $this->belongsTo('App\Models\Unit');
-    }
-    
     use SoftDeletes;
 }

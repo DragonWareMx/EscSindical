@@ -326,7 +326,7 @@
         var dataCT = {};
         for(var i in ct){
                 eval("dataCT." + ct[i]["nombre"] + " = null;");
-                alert(eval("dataCT." + ct[i]["nombre"] + " = null;"));
+                // alert(eval("dataCT." + ct[i]["nombre"] + " = null;"));
             }
         
         $('input.autocomplete').autocomplete({

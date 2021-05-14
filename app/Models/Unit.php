@@ -10,10 +10,15 @@ class Unit extends Model
 {
     use HasFactory;
 
-    public function regimes()
+    public function regime()
     {
-        return $this->hasMany('App\Models\Regime');
+        return $this->belongsTo('App\Models\Regime');
     }
-    
+
+    public function users()
+    {
+        return $this->hasMany('App\Models\User');
+    }
+
     use SoftDeletes;
 }

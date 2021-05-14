@@ -5,7 +5,7 @@ import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 
 import '../../styles/profileStyle.css'
-import InfoAlumno from '../../components/common/InfoAlumno';
+import UserForm from '../../components/common/UserForm';
 
 function initializeMat() {
     var elems = document.querySelectorAll('.modal');
@@ -28,7 +28,7 @@ const Perfil = ({ user }) => {
                                     <div className="row">
                                         <div className="col s12 center-align">
                                             <div className="center-align">
-                                                <img src={"/storage/fotos_perfil/" + user.foto} alt="foto de perfil" className="img-profile" />
+                                                <img src={"/storage/fotos_perfil/" + user.foto} alt="foto de perfil" className="img-profile red" />
                                             </div>
                                         </div>
                                         <div className="col s12 center-align">
@@ -131,17 +131,17 @@ const Perfil = ({ user }) => {
                                                     <div className="col s11">
                                                         <div className="title-configuracion valign-wrapper"><i className="material-icons" style={{ "marginRight": "10px" }}>settings</i>CONFIGURACIÓN</div>
                                                     </div>
-                                                    <div className="col s1">
+                                                    <div className="col s1 modal-close">
                                                         <i className="material-icons">close</i>
                                                     </div>
                                                     <div className="col s12">
-                                                        <InfoAlumno />
+                                                        
+                                                        <UserForm />
 
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        {/* <InfoAlumno/> */}
                                     </div>
                                 </div>
                             </div>
