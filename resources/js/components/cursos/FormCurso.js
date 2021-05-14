@@ -28,7 +28,7 @@ const FormCurso = () => {
         link : "",
         vc:0,
         categorias:"",
-        active: false,
+        active: true,
         inscIni:"",
         inscFin: "",
         tipo: "",
@@ -44,6 +44,12 @@ const FormCurso = () => {
             [key]: value,
         }))
     }
+
+    function onValueChange(e) {
+        values.tipo = e.target.value
+    }
+
+    
 
     function handleSubmit(e) {
         e.preventDefault()
@@ -71,8 +77,8 @@ const FormCurso = () => {
                                 <li class="tab col s4"><a href="#test-swipe-3">3. Presentación</a></li>
                             </ul>
 
-                            <div id="test-swipe-1" class="col s12"><Create2 change = {handleChange} values = {useState}/></div>
-                            <div id="test-swipe-2" class="col s12"><Create1 change = {handleChange} values = {useState}/></div>
+                            <div id="test-swipe-1" class="col s12"><Create2 change = {handleChange} values = {useState} onValueChange ={onValueChange}/></div>
+                            <div id="test-swipe-2" class="col s12"><Create1 change = {handleChange} values = {useState} onChangeTags = {oncha}/></div>
                             <div id="test-swipe-3" class="col s12"><Create3 change = {handleChange} values = {useState}/></div>
 
                         </div>
