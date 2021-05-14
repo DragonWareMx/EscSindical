@@ -377,7 +377,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                             : 
                             <div className="row">
                                 <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={editUser}><i className="material-icons">edit</i></button>
-                                <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}><i className="material-icons">delete</i></button>
+                                <button data-target="modalEliminarUsuario" type="button" className="col s3 m2 center-align modal-trigger" style={{"border":"none","backgroundColor":"transparent","color":"#515B60","cursor":"pointer"}}><i className="material-icons">delete</i></button>
                             </div>
                         :
                         <div className="row">
@@ -390,7 +390,6 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                 <button type="submit">Submit</button>
             </div>
         </form> 
-        </div>
     ) 
 
 }
