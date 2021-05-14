@@ -46,7 +46,7 @@ export default function InfoAlumno({ curso, actuales }) {
                             <div className="col s2 center-align">
                                 <img className="courseCard_pp" style={{ "color": "#585858", "fontSize": "12px" }} src={curso.teacher.foto ? '/storage/fotos_perfil/' + curso.teacher.foto : '/storage/fotos_perfil/avatar1.png'} alt="img" />
                             </div>
-                            <div className="col s10 truncate" style={{ "height": "30px", "display": "flex", "alignItems": "center" }}>Jose adolfo lemus magana</div>
+                            <div className="col s10 truncate" style={{ "height": "30px", "display": "flex", "alignItems": "center" }}>{curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}</div>
                             <div className="col s12 courseCard_tags" >
                                 <div className="container-tags">
                                     {curso.tags.map(tag=>
