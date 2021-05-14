@@ -4,7 +4,9 @@ import { Inertia } from '@inertiajs/inertia'
 import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 
-import '/js/jquery-3.6.0.min.js';
+import OwlCarousel from 'react-owl-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 import route from 'ziggy-js';
 import '../../styles/buscarCursos.css';
@@ -12,22 +14,31 @@ import '../../styles/buscarCursos.css';
 function initializeMat() {
 }
 
-const BuscarCursos = () => {
+const BuscarCursos = ({ cursos }) => {
 
     useEffect(() => {
         //initializeMat();
     }, [])
 
-    const options = {
-        items: 1,
-        nav: true,
-        rewind: true,
-        autoplay: true
-    };
+    const responsive = {
+        0: {
+            items: 1,
+        },
+        400: {
+            items: 1,
+        },
+        600: {
+            items: 2,
+        },
+        700: {
+            items: 3,
+        },
+        1000: {
+            items: 4,
+        }
+    }
 
-    const events = {
-
-    };
+    console.log(cursos)
 
     return (
         <>
@@ -37,7 +48,44 @@ const BuscarCursos = () => {
                     <div className="card darken-1 card-buscar-cursos">
                         <div className="card-content">
                             <h1>CURSOS PARA TI</h1>
-
+                            <OwlCarousel className='owl-theme' loop margin={36} nav autoplay responsive={responsive}>
+                                <div className='item'>
+                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                </div>
+                                <div className='item'>
+                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                </div>
+                                <div className='item'>
+                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                </div>
+                                <div className='item'>
+                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                </div>
+                                <div className='item'>
+                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                </div>
+                                <div className='item'>
+                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                </div>
+                                <div className='item'>
+                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                </div>
+                                <div className='item'>
+                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                </div>
+                                <div className='item'>
+                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                </div>
+                                <div className='item'>
+                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                </div>
+                                <div className='item'>
+                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                </div>
+                                <div className='item'>
+                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                </div>
+                            </OwlCarousel>
                         </div>
                     </div>
                 </div>
