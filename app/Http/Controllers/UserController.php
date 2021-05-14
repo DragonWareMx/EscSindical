@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\User;
+use App\Models\Category;
 use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -116,7 +117,10 @@ class UserController extends Controller
                     })
                     ->first()
             ),
-            'request' => $request
+            'request' => $request,
+            'categories'=> Inertia::lazy(
+                fn () => Category::select('id','nombre')->get()
+            )
         ]);
     }
 

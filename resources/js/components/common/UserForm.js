@@ -10,7 +10,7 @@ import ModalEliminarUsuario from '../../components/common/ModalEliminarUsuario';
 //user es el usuario recibido, si no tiene usuario entonces se muestra el formulario para agregar usuario
 //onEditChange sirve para poder modificar el state de edit en el componente padre
 //bEdit recibe el state de edit del componente padre
-export default function InfoAlumno({user, onEditChange, bEdit}) {
+export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
     //errores de la validacion de laravel
     const { errors } = usePage().props
 
@@ -118,7 +118,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
             sexo: user == null ? "" : user.sexo,
             matricula: user == null ? "" : user.matricula,
             unit_id: user == null ? "" : user.unit_id,
-            categorie_id: user == null ? "" : user.categorie_id,
+            categorie: user == null ? "" : user.categorie != null ? user.categorie.nombre : "Selecciona una categoría",
             estado: user == null ? "" : user.estado,
             ciudad: user == null ? "" : user.ciudad,
             colonia: user == null ? "" : user.colonia,
@@ -149,7 +149,7 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
     //se ejecuta cada vez que el valor del user cambia
     useEffect(() => {
         setUserValues()
-        console.log("cambio el usuario");
+        
     }, [user])
 
     //se ejecuta cada vez que el valor del values cambia
@@ -273,8 +273,21 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                     </div>
 
                     <div className="input-field col s12">
-                        <input disabled={bEdit ? false : user ? true : false} type="text" id="categoria" name="categoria" required autoComplete="categoria" className="autocomplete" value={values.categoria} onChange={handleChange}/>
+                        <div className="select-wrapper">
+                            <input name="categoria" list="categorias" disabled={bEdit ? false : user ? true : false} value={values.categorie} onChange={handleChange}/>
+                            <svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                        </div>
                         <label htmlFor="autocomplete-input">Categoría</label>
+                        <datalist id="categorias">
+                            {
+                                categories && categories.length > 0 &&
+                                categories.map(category => (
+                                    <option value={category.nombre}/>
+                                ))
+                            }
+                        </datalist>
+                        {/* <input disabled={bEdit ? false : user ? true : false} type="text" id="categoria" name="categoria" required autoComplete="categoria" className="autocomplete" value={values.categoria} onChange={handleChange}/>
+                        <label htmlFor="autocomplete-input">Categoría</label> */}
                         {
                             errors.categoria && 
                             <span className="helper-text" data-error={errors.categoria} style={{"marginBottom":"10px"}}>{errors.categoria}</span>
@@ -368,22 +381,22 @@ export default function InfoAlumno({user, onEditChange, bEdit}) {
                             <span className="helper-text" data-error={errors.created_at} style={{"marginBottom":"10px"}}>{errors.created_at}</span>
                         }
                     </div>
-                        {user ?
-                            bEdit ?
-                            <div className="row">
-                                <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={cancelEditUser}>Cancelar</button>
-                                <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}>Guardar</button>
-                            </div> 
-                            : 
-                            <div className="row">
-                                <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={editUser}><i className="material-icons">edit</i></button>
-                                <button data-target="modalEliminarUsuario" type="button" className="col s3 m2 center-align modal-trigger" style={{"border":"none","backgroundColor":"transparent","color":"#515B60","cursor":"pointer"}}><i className="material-icons">delete</i></button>
-                            </div>
-                        :
+                    {user ?
+                        bEdit ?
                         <div className="row">
+                            <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={cancelEditUser}>Cancelar</button>
                             <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}>Guardar</button>
                         </div> 
-                        }
+                        : 
+                        <div className="row">
+                            <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={editUser}><i className="material-icons">edit</i></button>
+                            <button data-target="modalEliminarUsuario" type="button" className="col s3 m2 center-align modal-trigger" style={{"border":"none","backgroundColor":"transparent","color":"#515B60","cursor":"pointer"}}><i className="material-icons">delete</i></button>
+                        </div>
+                    :
+                    <div className="row">
+                        <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}>Guardar</button>
+                    </div> 
+                    }
                 </div>
             </div>
             <div className="row">

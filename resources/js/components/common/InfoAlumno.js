@@ -13,7 +13,7 @@ function initializeCollaps() {
 }
 
 
-export default function InfoAlumno({user}) {
+export default function InfoAlumno({user, categories}) {
     const [edit, setEdit] = useState(false)
 
     function handleEditChange(newValue) {
@@ -40,7 +40,7 @@ export default function InfoAlumno({user}) {
                             <div className="collapsible-header" style={{"color":"#108058"}}><i className="material-icons">person</i>Información personal</div>
                             <div className="collapsible-body collapsible-padding">
 
-                                <UserForm user={user} bEdit={edit} onEditChange={handleEditChange}/>
+                                <UserForm user={user} bEdit={edit} categories={categories} onEditChange={handleEditChange}/>
                             </div>
                         </li>
                         <li>
