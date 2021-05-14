@@ -97,19 +97,12 @@ const BuscarCursos = ({ cursos }) => {
                         <div className="card-content">
                             <h1>MÁS CURSOS</h1>
                             <div className="row">
-                                <div className="col s12 m6 l3 orange">
-                                    {/* Aqui va el componente */}
-                                    <CourseCardSearch curso={null} />
-                                </div>
-                                <div className="col s12 m6 l3 grey">
-                                    {/* <CourseCardSearch curso={null} /> */}
-                                </div>
-                                <div className="col s12 m6 l3 blue">
-                                    curso 3
-                                </div>
-                                <div className="col s12 m6 l3 green">
-                                    curso 4
-                                </div>
+                                {cursos.map(curso=>
+                                    <div className="col s12 m6 l3">
+                                        {/* Aqui va el componente */}
+                                        <CourseCardSearch curso={curso} />
+                                    </div>  
+                                )}
                             </div>
                         </div>
                     </div>

@@ -113,6 +113,6 @@ class CourseController extends Controller
 
     public function searchIndex()
     {
-        return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => Course::with(['teacher', 'tags'])->get()]);
+        return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => Course::with(['teacher', 'tags','firstImage'])->get()]);
     }
 }
