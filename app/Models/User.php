@@ -38,6 +38,7 @@ class User extends Authenticatable
         'tarjeton_pago',
         'matricula',
         'categorie_id',
+        'unit_id',
     ];
 
     /**
