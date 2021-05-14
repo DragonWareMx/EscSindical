@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -23,100 +24,100 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    { 
+    {
         return Inertia::render('Usuarios/Usuarios', [
             'users' => fn () => User::with('roles', 'categorie')
-                                    ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
-                                    ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
-                                    ->leftJoin('categories', 'categories.id', '=', 'users.categorie_id')
-                                    ->when($request->user_search, function($query, $search) use ($request){
-                                        if($request->filter){
-                                            switch ($request->filter) {
-                                                case 'matricula':
-                                                    return $query->where('users.matricula','LIKE','%'.$search.'%');
-                                                    break;
-                                                case 'rol':
-                                                    if($search == "Sin Rol")
-                                                        return $query->whereNull('role_user.role_id');
-                                                    else
-                                                        return $query->where('roles.name','LIKE','%'.$search.'%');
-                                                    break;
-                                                case 'nombre':
-                                                    return $query->where('users.nombre','LIKE','%'.$search.'%');
-                                                    break;
-                                                case 'categoria':
-                                                    return $query->where('categories.nombre','LIKE','%'.$search.'%');
-                                                    break;
-                                                case 'eliminado':
-                                                    return $query->onlyTrashed()->where('users.matricula','LIKE','%'.$search.'%');
-                                                    break;
-                                                
-                                                default:
-                                                    return $query->where('users.nombre','LIKE','%'.$search.'%');
-                                                    break;
-                                            }
-                                        }
-                                        else
-                                            return $query->where('users.nombre','LIKE','%'.$search.'%');
-                                    })
-                                    ->when($request->sort, function ($query, $sort) use ($request) {
-                                        switch ($sort) {
-                                            case 'matricula':
-                                                if($request->order == 'asc')
-                                                    return $query->orderBy('matricula', 'ASC');
-                                                else if($request->order == 'desc')
-                                                    return $query->orderBy('matricula', 'DESC');
-                                                else
-                                                    return $query;
-                                                break;
-                                            case 'rol':
-                                                if($request->order == 'asc')
-                                                    return $query->orderBy('roles.name', 'ASC');
-                                                else if($request->order == 'desc')
-                                                    return $query->orderBy('roles.name', 'DESC');
-                                                else
-                                                    return $query;
-                                                break;
-                                            case 'nombre':
-                                                if($request->order == 'asc')
-                                                    return $query->orderBy('nombre', 'ASC');
-                                                else if($request->order == 'desc')
-                                                    return $query->orderBy('nombre', 'DESC');
-                                                else
-                                                    return $query;
-                                                break;
-                                            // case 'unidad':
-                                            //     if($request->order == 'asc')
-                                            //         return $query->orderBy('matricula', 'ASC');
-                                            //     else if($request->order == 'desc')
-                                            //         return $query->orderBy('matricula', 'DESC');
-                                            //     else
-                                            //         return $query;
-                                            //     break;
-                                            case 'categoria':
-                                                if($request->order == 'asc')
-                                                    return $query->orderBy('categories.nombre', 'ASC');
-                                                else if($request->order == 'desc')
-                                                    return $query->orderBy('categories.nombre', 'DESC');
-                                                else
-                                                    return $query;
-                                                break;
-                                            default:
-                                                # code...
-                                                break;
-                                        }
-                                    })
-                                    ->select('users.id','matricula','users.nombre','apellido_p','apellido_m','categorie_id')
-                                    ->paginate(20)
-                                    ->withQueryString(),
-            'user' => Inertia::lazy(fn () => User::with('categorie')
-                                                    ->when($request->user, function($query, $user){
-                                                        $query->find($user);
-                                                    })
-                                                    ->first()
-                                                ),
+                ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
+                ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
+                ->leftJoin('categories', 'categories.id', '=', 'users.categorie_id')
+                ->when($request->user_search, function ($query, $search) use ($request) {
+                    if ($request->filter) {
+                        switch ($request->filter) {
+                            case 'matricula':
+                                return $query->where('users.matricula', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'rol':
+                                if ($search == "Sin Rol")
+                                    return $query->whereNull('role_user.role_id');
+                                else
+                                    return $query->where('roles.name', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'nombre':
+                                return $query->where('users.nombre', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'categoria':
+                                return $query->where('categories.nombre', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'eliminado':
+                                return $query->onlyTrashed()->where('users.matricula', 'LIKE', '%' . $search . '%');
+                                break;
+
+                            default:
+                                return $query->where('users.nombre', 'LIKE', '%' . $search . '%');
+                                break;
+                        }
+                    } else
+                        return $query->where('users.nombre', 'LIKE', '%' . $search . '%');
+                })
+                ->when($request->sort, function ($query, $sort) use ($request) {
+                    switch ($sort) {
+                        case 'matricula':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('matricula', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('matricula', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'rol':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('roles.name', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('roles.name', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'nombre':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('nombre', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('nombre', 'DESC');
+                            else
+                                return $query;
+                            break;
+                            // case 'unidad':
+                            //     if($request->order == 'asc')
+                            //         return $query->orderBy('matricula', 'ASC');
+                            //     else if($request->order == 'desc')
+                            //         return $query->orderBy('matricula', 'DESC');
+                            //     else
+                            //         return $query;
+                            //     break;
+                        case 'categoria':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('categories.nombre', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('categories.nombre', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                })
+                ->select('users.id', 'matricula', 'users.nombre', 'apellido_p', 'apellido_m', 'categorie_id')
+                ->paginate(20)
+                ->withQueryString(),
+            'user' => Inertia::lazy(
+                fn () => User::with(['categorie', 'activeCourses', 'finishedCourses', 'activeCourses.firstImage', 'finishedCourses.firstImage', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre'])
+                    ->when($request->user, function ($query, $user) {
+                        $query->find($user);
+                    })
+                    ->first()
+            ),
             'request' => $request
-            ]);
+        ]);
     }
 
     public function ejemplo()
@@ -293,7 +294,7 @@ class UserController extends Controller
             'categorie_id' => 'required',
         ]);
 
-        $user = Post::find($id);
+        $user = User::find($id);
         $user->nombre = $request->nombre;
         $user->apellido_p = $request->apellido_p;
         $user->apellido_m = $request->apellido_m;
@@ -324,9 +325,30 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = Post::find($id);
-        if ($user->delete()) {
-            return response()->json(["status" => 200]);
+        DB::beginTransaction();
+        try{
+            $user = User::find($id);
+            if(!$user || $user->id == Auth::id()){
+                DB::rollBack();
+                return;
+            }
+            $user->delete();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'delete';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                users: {
+                    id: ' . $id .
+                '}
+            }';
+            $newLog->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
         }
     }
 }

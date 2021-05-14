@@ -25,7 +25,7 @@ class CreateCoursesTable extends Migration
             $table->unsignedInteger('max');
             $table->unsignedInteger('valor_curricular');
             $table->enum('tipo_acceso', ['Automática','Solicitud','Sólo yo']);
-            $table->tinyInteger('estatus');
+            $table->enum('estatus',['Activo','Terminado','Cancelado']);
             $table->text('descripcion');   
             $table->unsignedBigInteger('teacher_id');
             

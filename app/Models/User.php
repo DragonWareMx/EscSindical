@@ -70,9 +70,24 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($token));
     }
 
-    public function course()
+    public function courses()
     {
         return $this->belongsToMany('App\Models\Course');
+    }
+
+    public function activeCourses()
+    {
+        return $this->courses()->where('estatus', 'Activo');
+    }
+
+    public function finishedCourses()
+    {
+        return $this->courses()->where('estatus', 'Terminado');
+    }
+
+    public function canceledCourses()
+    {
+        return $this->courses()->where('estatus', 'Cancelado');
     }
 
     public function logs()
@@ -110,11 +125,6 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Grade');
     }
 
-    public function courses()
-    {
-        return $this->belongsToMany('App\Models\Course');
-    }
-
     public function drop_requests()
     {
         return $this->belongsToMany('App\Models\Course', 'drop_requests');
@@ -140,10 +150,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Report');
     }
 
-    public function regime()
+    public function unit()
     {
-        return $this->belongsTo('App\Models\Regime');
+        return $this->belongsTo('App\Models\Unit');
     }
-    
+
     use SoftDeletes;
 }
