@@ -10,7 +10,7 @@ function initializeChips() {
     var instances = M.Tooltip.init(elems2);
 }
 
-const Create1 = ({ change, values }) => {
+const Create1 = ({ change, values, onChangeTags }) => {
     useEffect(() => {
         initializeChips();
     }, [])
@@ -24,7 +24,7 @@ const Create1 = ({ change, values }) => {
             <div className="input-field col s12" >
             <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Tags de búsqueda<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Los tags ayudarán con el filtrado y búsqueda de los cursos (Enter para agregar)" style={{"color":"rgb(159, 157, 157)", "cursor":"pointer"}}>help_outline</i></p>
                 <div className="chips">
-                    <input className="custom-class" id="tags" value={values.tags} onChange={change}  className="validate"/>
+                    <input className="custom-class" id="tags" value={values.tags} onChange={onChangeTags}  className="validate"/>
                 </div>
             </div>
 
