@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Auth;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Log;
 use Illuminate\Support\Facades\DB;
+
 
 class CourseController extends Controller
 {
@@ -21,7 +23,21 @@ class CourseController extends Controller
 
     public function index()
     {
-        return Inertia::render('Cursos/Cursos'); 
+        $cursos = Course::where('teacher_id', Auth::id())->with('users')->get();
+        $user = User::find(Auth::id());
+
+        $curso_actual = $user->courses[0];
+        $profesor = $curso_actual->teacher;
+        $tags = $curso_actual->tags;
+
+        
+        return Inertia::render('Cursos/Cursos', [
+            'user'=> fn () => User::with(['roles', 'courses'=>function($query){$query->join('users','users.id','=','courses.teacher_id');}
+            ])->where('id',Auth::id())->first(), 
+            'cursos' => fn () => $cursos,
+            'profesor' => $profesor,
+            'tags' => $tags,
+            ]); 
     }
     
     public function store(Request $request)
@@ -36,9 +52,6 @@ class CourseController extends Controller
             'link' => 'required',
             'vc' => 'required',
             'categorias' => 'required',
-            'active' => 'required',
-            'inscIni' => 'required',
-            'inscFin' => 'required',
             'tipo' => 'required',
             'descripcion' => 'required',
             'imgs' => 'required',

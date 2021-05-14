@@ -34,10 +34,28 @@ class HandleInertiaRequests extends Middleware
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+    // public function share(Request $request)
+    // {
+    //     return array_merge(parent::share($request), [
+    //         //
+    //     ]);
+    // }
     public function share(Request $request)
     {
         return array_merge(parent::share($request), [
-            //
+
+            // Synchronously
+            'appName' => config('app.name'),
+
+            // Lazily
+            'auth.user' => fn () => $request->user()
+                ? $request->user()
+                : null,
+
+            // Lazily
+            'auth.roles' => fn () => $request->user()->roles()->get()
+                ? $request->user()->roles()->get()
+                : null,
         ]);
     }
 }

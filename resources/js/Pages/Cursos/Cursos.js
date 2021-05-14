@@ -7,20 +7,26 @@ import CursoActualPonente from '../../components/cursos/CursoActualPonente';
 import HistorialCursos from '../../components/cursos/HistorialCursos';
 import HistorialCursosPonente from '../../components/cursos/HistorialCursosPonente';
 
-const Cursos = () => {
+const Cursos = ({user, cursos, profesor, tags}) => {
+  console.log(user.courses)
   return (
     <>
-    {/* Componente para cursos actuales de estudiantes */}
-    <CursoActual />
-    {/* Componente para el historial de cursos de estudiantes y solicitudes */}
-    <HistorialCursos />
+    
+    {/* Componente para el historial de cursos de estudiantes y solicitudes............. */}
+    {/* <HistorialCursos /> */}
 
+    {user.roles['0'].name == 'Ponente' ? <CursoActualPonente cursos = {cursos}/> 
+    : <CursoActual 
+    cursos = {user.courses}
+    profesor = {profesor}
+    tags = {tags}
+    />}
     {/* Componente para cursos actuales de ponentes */}
     {/* <CursoActualPonente /> */}
     {/* Componente modal para crear curso */}
     <FormCurso />
 
-    {/* Componente para el historial de cursos de ponentes */}
+    {/* Componente para el historial de cursos de ponentes .......................*/}
     {/* <HistorialCursosPonente /> */}
     
     </>

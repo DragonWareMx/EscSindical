@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
@@ -16,4 +17,6 @@ class Category extends Model
     public function training_types(){
         return $this->belongsToMany('App\Models\Training_type');
     }
+    
+    use SoftDeletes;
 }
