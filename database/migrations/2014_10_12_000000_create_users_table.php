@@ -30,7 +30,7 @@ class CreateUsersTable extends Migration
             $table->string('calle', 100);
             $table->string('num_ext', 10);
             $table->string('num_int', 10);
-            $table->integer('cp', 9);
+            $table->string('cp', 9);
             $table->text('tarjeton_pago');
             $table->string('matricula');
             $table->rememberToken();
@@ -40,6 +40,9 @@ class CreateUsersTable extends Migration
 
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->foreign('unit_id')->references('id')->on('units');
+
+            $table->unsignedBigInteger('regime_id')->nullable();
+            $table->foreign('unit_id')->references('id')->on('regimes');
 
             $table->softDeletes();
             $table->timestamps();
