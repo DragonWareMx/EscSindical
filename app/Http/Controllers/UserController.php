@@ -346,9 +346,14 @@ class UserController extends Controller
                 '}
             }';
             $newLog->save();
+            throw new \Exception;
             DB::commit();
+
+            return redirect('usuarios');
+
         } catch (\Exception $e) {
             DB::rollBack();
+            return \Redirect::back()->with('message','no se pudo master :C');
         }
     }
 }

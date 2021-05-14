@@ -3,7 +3,7 @@ import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import '/css/infoAlumno.css'
 import { divide } from 'lodash'
-import ModalEliminarUsuario from '../../components/common/ModalEliminarUsuario';
+import Alertas from '../../components/common/Alertas';
 
 export default function UserForm({user}) {
     const { errors } = usePage().props
@@ -93,6 +93,7 @@ export default function UserForm({user}) {
     }, [])
     return(
         <div>
+            <Alertas />
             <form onSubmit={handleSubmit}>
             <div className="row div-form-register" style={{"padding":"3%"}}>
                 <div className="col s12 m6 div-division user-form-border">
