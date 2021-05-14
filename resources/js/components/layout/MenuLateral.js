@@ -4,23 +4,32 @@ import route from 'ziggy-js';
 
 function openNav() {
   var menu = document.getElementById("slide-out");
+  var amburger = document.getElementById("amburger");
+
   menu.classList.remove("menu-cerrado");
   menu.classList.add("menu-abierto");
   document.body.style.transition = "ease-in-out";
   document.body.style.transitionDuration = "500ms";
-  if (window.innerWidth > 992)
+  if (window.innerWidth > 992){
     document.body.style.paddingLeft = "300px";
-  else
-    document.body.style.paddingLeft = "60px"
+    amburger.style.display="none";
+  }
 }
 
 function closeNav() {
   var menu = document.getElementById("slide-out");
+  var amburger = document.getElementById("amburger");
+
   menu.classList.add("menu-cerrado");
   menu.classList.remove("menu-abierto");
   document.body.style.transition = "ease-in-out";
   document.body.style.transitionDuration = "500ms";
-  document.body.style.paddingLeft = "60px";
+  if(window.innerWidth>992)
+    document.body.style.paddingLeft = "60px";
+  else{
+    document.body.style.paddingLeft = "0px";
+    amburger.style.display="block";
+  }
 }
 
 function closeNav2() {
@@ -65,17 +74,17 @@ export default function MenuLateral() {
               </InertiaLink>
             </div>
           </li>
-          <li onClick={closeNav}>
+          <li>
             <InertiaLink href={route('ejemplo1').url()} className="icono-menu">
               <i className="material-icons current-menu">home</i>
-                    Inicio
-                </InertiaLink>
+                  Inicio
+            </InertiaLink>
           </li>
-          <li onClick={closeNav}>
+          <li>
             <InertiaLink href={route('usuarios').url()} className="icono-menu">
               <i className="material-icons icono-menu">people</i>
-                    Usuarios
-                </InertiaLink>
+                  Usuarios
+              </InertiaLink>
           </li>
           <li><a className="subheader division-menu">CURSOS</a></li>
           <li><a href={route('cursos').url()} className="icono-menu"><i className="material-icons icono-menu">school</i>Mis cursos</a></li>
