@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Log;

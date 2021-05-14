@@ -26,14 +26,16 @@ export default function CursoActual({cursos, profesor, tags}) {
                             <div className="row" style={{"marginBottom":"0px"}}>
                                 <div className="col s12" style={{ "marginBottom": "10px"}}>
                                     <span className="txt-title-card">CURSOS ACTUALES
-                                        <a className="dropdown-trigger"  data-target='dropdown1'>
+                                        <a className="dropdown-trigger"  data-target='dropdown-option-student'>
                                         <i className="material-icons right">more_vert</i>
                                         </a>
                                     </span>
                                 </div>
-                                <div id='dropdown1' class='dropdown-content' style={{"width":"max-content !important"}}>
-                                    <a href="#!">Solicitar baja del curso<i className="material-icons">report_proble</i></a>
-                                </div>
+
+                                {/* DROPDOWN CON OPCIONES */}
+                                <ul id='dropdown-option-student' className='dropdown-content'>
+                                    <li className="options-course-dropdown"><a href="#!"><i className="material-icons tiny" style={{"marginRight":"0px"}}>report_proble</i>Solicitar baja del curso</a></li>
+                                </ul>
 
                                 {/* CONTENIDO DEL CARD */}
                                     {/* Imagen del curso */}

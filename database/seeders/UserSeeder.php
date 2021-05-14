@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         //
         DB::table('users')->insert([
             'nombre' => 'Leonardo',
-            'sexo' => 'h',
+            'sexo' => 'Masculino',
             'apellido_p' => 'López',
             'apellido_m' => 'López',
             'email' =>  'test@dragonware.com.mx',
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             'nombre' => 'Oscar',
-            'sexo' => 'h',
+            'sexo' => 'Masculino',
             'apellido_p' => 'Huerta',
             'apellido_m' => 'Garcia',
             'email' =>  'admin@dragonware.com.mx',
@@ -60,7 +60,7 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             'nombre' => 'Fernando Adrián',
-            'sexo' => 'h',
+            'sexo' => 'Masculino',
             'apellido_p' => 'García',
             'apellido_m' => 'Sánchez',
             'email' =>  'ponente@dragonware.com.mx',
@@ -81,7 +81,7 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             'nombre' => 'Joca Guadalupe',
-            'sexo' => 'm',
+            'sexo' => 'Masculino',
             'apellido_p' => 'Marín',
             'apellido_m' => 'Piñón',
             'email' =>  'estudiante@dragonware.com.mx',

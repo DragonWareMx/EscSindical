@@ -49,12 +49,11 @@ export default function InfoAlumno({ curso, actuales }) {
                             <div className="col s10 truncate" style={{ "height": "30px", "display": "flex", "alignItems": "center" }}>Jose adolfo lemus magana</div>
                             <div className="col s12 courseCard_tags" >
                                 <div className="container-tags">
-
-                                    <a className="div-tag" href="#!">
-                                        Viletag <i class="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
-                                    </a>
-
-
+                                    {curso.tags.map(tag=>
+                                        <a className="div-tag" href="#!">
+                                            {tag.nombre} <i class="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
+                                        </a>
+                                    )}
                                 </div>
 
                             </div>

@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
             ImageSeeder::class,
             UserSeeder::class,
             PermissionSeeder::class,
-            CourseSeeder::class,
             TagSeeder::class,
+            CourseSeeder::class,
         ]);
     }
 }
