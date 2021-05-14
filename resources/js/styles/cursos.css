@@ -186,11 +186,32 @@
     line-height: 13px;
     color: #585858;
 }
-.course-status-rejectec{
+.course-status{
     font-weight: 600;
     font-size: 10px;
     line-height: 12px;
-    color: #D14747;
+    color: #AAAAAA;
+    width: max-content;
+    margin-top:3px;
+}
+.options-course-dropdown, .dropdown-content li>a, .dropdown-content li>span{
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #8A8A8A;
+    display: flex;
+    justify-content: left;
+    align-items:center;
+    min-height: 35px !important;
+    padding:8px;
+}
+.a-mini-course-hover{
+    color: #585858 !important;
+    transition: all ease-in-out 0.25s;
+}
+.a-mini-course-hover:hover{
+    color: #108058 !important;
+    transition: all ease-in-out 0.25s;
 }
 
 .btn-login{

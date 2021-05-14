@@ -5,6 +5,7 @@ import FormCurso from '../../components/cursos/FormCurso';
 import CursoActual from '../../components/cursos/CursoActual';
 import CursoActualPonente from '../../components/cursos/CursoActualPonente';
 import HistorialCursos from '../../components/cursos/HistorialCursos';
+import HistorialCursosPonente from '../../components/cursos/HistorialCursosPonente';
 
 const Cursos = () => {
   return (
@@ -20,7 +21,7 @@ const Cursos = () => {
     <FormCurso />
 
     {/* Componente para el historial de cursos de ponentes */}
-    {/* <HistorialCursos /> */}
+    {/* <HistorialCursosPonente /> */}
     
     </>
   )
