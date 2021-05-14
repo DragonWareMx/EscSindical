@@ -32,7 +32,6 @@ const Usuarios = ({ users, user, request }) => {
         sortUnidad: true,
         sortCategoria: true,
         filter: "nombre",
-        newUser: true
     })
 
     //realiza la búsqueda cada vez que se escribe en el input
@@ -442,11 +441,6 @@ const Usuarios = ({ users, user, request }) => {
 
     //obtiene el usuario y abre el modal
     function getUser(id) {
-        setState(state => ({
-            ...state,
-            newUser: false,
-        }))
-
         Inertia.reload(
             {
                 only: ['user'],
@@ -466,13 +460,6 @@ const Usuarios = ({ users, user, request }) => {
         )
     }
 
-    function openNewUserForm(){
-        setState(state => ({
-            ...state,
-            newUser: true,
-        }))
-    }
-
     useEffect(() => {
         initializeMat();
 
@@ -489,7 +476,7 @@ const Usuarios = ({ users, user, request }) => {
             <div className="row contenedor">
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
-                        <a className="btn-floating btn-large waves-effect waves-light green-sind button-addUser modal-trigger" href="#modalAgregarUsuario" onClick={() => openNewUserForm()}><i className="material-icons">add</i></a>
+                        <a className="btn-floating btn-large waves-effect waves-light green-sind button-addUser" href="#modalAgregarUsuario"><i className="material-icons">add</i></a>
                         <div className="card-content">
                             <span className="card-title">Usuarios</span>
                             <nav className="searchUsers">
@@ -645,11 +632,28 @@ const Usuarios = ({ users, user, request }) => {
                 <div className="modal-content">
                     <div className="modal-close right"><i className="material-icons">close</i></div>
                     <div style={{"color":"#134E39","fontSize":"16px","fontStyle": "normal"}}>VER USUARIO</div>
-                    <UserForm user={null}/>
+                    <ul className="collapsible">
+                        <li className="active">
+                            <div className="collapsible-header" style={{"color":"#108058"}}><i className="material-icons">person</i>Información personal</div>
+                            <div className="collapsible-body collapsible-padding">
+
+                                <UserForm user={user}/>
+                            </div>
+                        </li>
+                        <li>
+                            <div className="collapsible-header"><i className="material-icons">person</i>Second</div>
+                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                        </li>
+                        <li>
+                            <div className="collapsible-header"><i className="material-icons">whatshot</i>Third</div>
+                            <div className="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <FlotanteAyuda />
-            {!state.newUser && <InfoAlumno user={user}/>}
+            <InfoAlumno user={user} />
+            <ModalEliminarUsuario user={user}/>
         </>
     )
 }

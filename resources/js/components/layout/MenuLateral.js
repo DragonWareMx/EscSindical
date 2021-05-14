@@ -10,9 +10,9 @@ function openNav() {
   menu.classList.add("menu-abierto");
   document.body.style.transition = "ease-in-out";
   document.body.style.transitionDuration = "500ms";
-  if (window.innerWidth > 992) {
+  if (window.innerWidth > 992){
     document.body.style.paddingLeft = "300px";
-    amburger.style.display = "none";
+    amburger.style.display="none";
   }
 }
 
@@ -24,11 +24,11 @@ function closeNav() {
   menu.classList.remove("menu-abierto");
   document.body.style.transition = "ease-in-out";
   document.body.style.transitionDuration = "500ms";
-  if (window.innerWidth > 992)
+  if(window.innerWidth>992)
     document.body.style.paddingLeft = "60px";
-  else {
+  else{
     document.body.style.paddingLeft = "0px";
-    amburger.style.display = "block";
+    amburger.style.display="block";
   }
 }
 
@@ -88,7 +88,7 @@ export default function MenuLateral() {
           </li>
           <li><a className="subheader division-menu">CURSOS</a></li>
           <li><a href={route('cursos').url()} className="icono-menu"><i className="material-icons icono-menu">school</i>Mis cursos</a></li>
-          <li><InertiaLink href={route('cursosBuscar').url()} className="icono-menu"><i className="material-icons icono-menu">search</i>Buscar cursos</InertiaLink></li>
+          <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">search</i>Buscar cursos</a></li>
           <li><a className="subheader division-menu">SISTEMA</a></li>
           <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">assignment_late</i>Reportes</a></li>
           <li>
@@ -103,7 +103,7 @@ export default function MenuLateral() {
           </li>
           <li><InertiaLink href="/logout" method="post" className="icono-menu"><i className="material-icons icono-menu">logout</i>Cerrar sesión</InertiaLink></li>
           <div className="center-align" style={{ marginTop: '25px' }}>
-            <a onClick={closeNav} className="btn-floating btn-large waves-effect waves-light sidenav-close" style={{ backgroundColor: '#108058' }}><i className="material-icons">arrow_back</i></a>
+            <a onClick={closeNav} href="#!" className="btn-floating btn-large waves-effect waves-light sidenav-close" style={{ backgroundColor: '#108058' }}><i className="material-icons">arrow_back</i></a>
           </div>
           <div className="row" style={{ marginTop: '50px' }}>
             <div className="col s5 center-align">
