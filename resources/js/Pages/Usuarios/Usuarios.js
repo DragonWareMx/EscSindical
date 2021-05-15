@@ -647,11 +647,11 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                 <div className="modal-content">
                     <div className="modal-close right"><i className="material-icons">close</i></div>
                     <div style={{"color":"#134E39","fontSize":"16px","fontStyle": "normal"}}>VER USUARIO</div>
-                    <UserForm user={null} categories={categories}/>
+                    <UserForm user={null} categories={categories} regimes={regimes} units={units}/>
                 </div>
             </div>
             <FlotanteAyuda />
-            {!state.newUser && <InfoAlumno user={user}  categories={categories}/>}
+            {!state.newUser && <InfoAlumno user={user}  categories={categories} regimes={regimes} units={units}/>}
             <ModalEliminarUsuario user={user}/>
         </>
     )

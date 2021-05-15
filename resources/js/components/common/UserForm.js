@@ -10,7 +10,7 @@ import ModalEliminarUsuario from '../../components/common/ModalEliminarUsuario';
 //user es el usuario recibido, si no tiene usuario entonces se muestra el formulario para agregar usuario
 //onEditChange sirve para poder modificar el state de edit en el componente padre
 //bEdit recibe el state de edit del componente padre
-export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
+export default function InfoAlumno({user, onEditChange, bEdit, categories, regimes, units}) {
     //errores de la validacion de laravel
     const { errors } = usePage().props
 
@@ -49,7 +49,6 @@ export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
         fecha_nac: "",
         sexo: "",
         matricula: "",
-        unit_id: "",
         categorie: "Selecciona una categoría",
         unit: "Selecciona una unidad",
         regime: "Selecciona un régimen",
@@ -118,10 +117,9 @@ export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
             fecha_nac: user == null ? "" : user.fecha_nac,
             sexo: user == null ? "" : user.sexo,
             matricula: user == null ? "" : user.matricula,
-            unit_id: user == null ? "" : user.unit_id,
             categorie: user == null ? "Selecciona una categoría" : user.categorie != null ? user.categorie.nombre : "Selecciona una categoría",
             unit: user == null ? "Selecciona una unidad" : user.unit != null ? user.unit.nombre : "Selecciona una unidad",
-            regime: user == null ? "Selecciona un régimen" : user.unit != null ? user.unit.regime != null ? user.unit.regime.nombre : "Selecciona un régimen" : "Selecciona un régimen",
+            regime: user == null ? "" : user.unit != null ? user.unit.regime != null ? user.unit.regime.nombre : "" : "",
             estado: user == null ? "" : user.estado,
             ciudad: user == null ? "" : user.ciudad,
             colonia: user == null ? "" : user.colonia,
@@ -250,25 +248,35 @@ export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
                     </div>
 
                     <div className="input-field col s12">
-                        <select disabled={bEdit ? false : user ? true : false} id="regime_id" name="regime_id" required autoComplete="regime_id" value={values.regime_id} onChange={handleChange}>
-                            <option value="" disabled={bEdit ? false : user ? true : false} >Selecciona una opción</option>
-                            <option value="1">Ordinario</option>
-                            <option value="2">Bienestar</option>
+                        <select disabled={bEdit ? false : user ? true : false} id="regime_id" name="regime_id" required autoComplete="regime_id" value={values.regime} onChange={handleChange}>
+                            <option value="" disabled>Selecciona una opción</option>
+                            {regimes && regimes.length > 0 && 
+                                regimes.map(regime => (
+                                    <option value={regime.nombre}>{regime.nombre}</option>
+                                ))
+                            }
                         </select>
                         <label>Regimen</label>
                         {
-                            errors.regime_id && 
-                            <span className="helper-text" data-error={errors.regime_id} style={{"marginBottom":"10px"}}>{errors.regime_id}</span>
+                            errors.regime && 
+                            <span className="helper-text" data-error={errors.regime} style={{"marginBottom":"10px"}}>{errors.regime}</span>
                         }
                     </div>
 
                     <div className="input-field col s12" style={{"marginTop":"5px"}}>
-                        <select disabled={bEdit ? false : user ? true : false} id="unity_id" name="unity_id" required autoComplete="unity_id" value={bEdit ? values.unity_id : user != null && user.unity_id} onChange={handleChange}>
-                            <option value="" disabled={bEdit ? false : user ? true : false}>Selecciona una opción</option>
-                            <option value="1">UMF 75 - Morelia c/UMAA</option>
-                            <option value="2">UMF 80 - Morelia</option>
-                        </select>
-                        <label>Unidad</label>
+                        <div className="select-wrapper">
+                            <input id="unit" list="unidades" disabled={bEdit ? false : user ? true : false} value={values.unit} onChange={handleChange}/>
+                            <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                        </div>
+                        <label htmlFor="autocomplete-input">Unidad</label>
+                        <datalist id="unidades">
+                            {
+                                units && units.length > 0 &&
+                                 units.map(units => (
+                                    <option value={units.nombre}/>
+                                ))
+                            }
+                        </datalist>
                         {
                             errors.unity_id && 
                             <span className="helper-text" data-error={errors.unity_id} style={{"marginBottom":"10px"}}>{errors.unity_id}</span>
@@ -277,8 +285,8 @@ export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
 
                     <div className="input-field col s12">
                         <div className="select-wrapper">
-                            <input name="categoria" list="categorias" disabled={bEdit ? false : user ? true : false} value={values.categorie} onChange={handleChange}/>
-                            <svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                            <input id="categoria" list="categorias" disabled={bEdit ? false : user ? true : false} value={values.categorie} onChange={handleChange}/>
+                            <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
                         </div>
                         <label htmlFor="autocomplete-input">Categoría</label>
                         <datalist id="categorias">
