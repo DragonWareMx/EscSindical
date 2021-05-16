@@ -12,6 +12,7 @@ import route from 'ziggy-js';
 import '../../styles/buscarCursos.css';
 
 import CourseCardSearch from '../../components/cursos/CourseCardSearch'
+import CourseCardSearchHover from '../../components/cursos/CourseCardSearchHover'
 
 function initializeMat() {
 }
@@ -101,8 +102,21 @@ const BuscarCursos = ({ cursos }) => {
                                     <div className="col s12 m6 l3">
                                         {/* Aqui va el componente */}
                                         <CourseCardSearch curso={curso} />
-                                    </div>  
+                                    </div>
                                 )}
+                                <div className="col s12 m6 l3 red" style={{"position" : "relative"}}>
+                                    {/* Aqui va el componente */}
+                                    <CourseCardSearchHover />
+                                </div>
+                                <div className="col s12 m6 l3 green" style={{"position" : "relative"}}>
+                                    {/* Aqui va el componente */}
+                                    <CourseCardSearchHover />
+                                </div>
+                                <div className="col s12 m6 l3 yellow" style={{"position" : "relative"}}>
+                                    {/* Aqui va el componente */}
+                                    <CourseCardSearchHover />
+                                </div>
+                                
                             </div>
                         </div>
                     </div>

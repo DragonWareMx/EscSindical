@@ -73,6 +73,14 @@
     color: #797979;
 }
 
+.hover-container
+{
+    background-color: purple;
+    color: white;
+    position: absolute;
+    left: 100px;
+}
+
 
 @media(max-width:1600px){
     .courseCard_image{
