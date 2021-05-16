@@ -11,6 +11,8 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 import route from 'ziggy-js';
 import '../../styles/buscarCursos.css';
 
+import CourseCardSearch from '../../components/cursos/CourseCardSearch'
+
 function initializeMat() {
 }
 
@@ -94,6 +96,14 @@ const BuscarCursos = ({ cursos }) => {
                     <div className="card darken-1 card-buscar-cursos">
                         <div className="card-content">
                             <h1>MÁS CURSOS</h1>
+                            <div className="row">
+                                {cursos.map(curso=>
+                                    <div className="col s12 m6 l3">
+                                        {/* Aqui va el componente */}
+                                        <CourseCardSearch curso={curso} />
+                                    </div>  
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
