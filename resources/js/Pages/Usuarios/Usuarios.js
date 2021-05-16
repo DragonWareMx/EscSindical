@@ -442,40 +442,41 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
 
     //onClick de cada elemento de la tabla, obtiene el usuario y abre el modal para editar usuario
     function getUser(id) {
-        setState(state => ({
-            ...state,
-            newUser: false,
-        }))
+        Inertia.get(route('usuarios.edit', id))
+        // setState(state => ({
+        //     ...state,
+        //     newUser: false,
+        // }))
 
-        Inertia.reload(
-            {
-                only: ['user','categories','regimes','units'],
-                data: { user: id },
-                onSuccess: ({ props }) => {
-                    console.log("success")
-                    //busca el modal infoAlumno
-                    const elem = document.getElementById('modalInfoAlumno');
-                    const instance = M.Modal.init(elem, { dismissible: false });
+        // Inertia.reload(
+        //     {
+        //         only: ['user','categories','regimes','units'],
+        //         data: { user: id },
+        //         onSuccess: ({ props }) => {
+        //             console.log("success")
+        //             //busca el modal infoAlumno
+        //             const elem = document.getElementById('modalInfoAlumno');
+        //             const instance = M.Modal.init(elem, { dismissible: false });
 
-                    //actualiza los textfields para que no se amontonen los labels
-                    M.updateTextFields();
+        //             //actualiza los textfields para que no se amontonen los labels
+        //             M.updateTextFields();
 
-                    //abre el modal
-                    instance.open();
-                },
-                onError: error => {
-                    //busca el modal infoAlumno
-                    const elem = document.getElementById('modalInfoAlumno');
-                    const instance = M.Modal.init(elem, { dismissible: false });
+        //             //abre el modal
+        //             instance.open();
+        //         },
+        //         onError: error => {
+        //             //busca el modal infoAlumno
+        //             const elem = document.getElementById('modalInfoAlumno');
+        //             const instance = M.Modal.init(elem, { dismissible: false });
 
-                    //actualiza los textfields para que no se amontonen los labels
-                    M.updateTextFields();
+        //             //actualiza los textfields para que no se amontonen los labels
+        //             M.updateTextFields();
 
-                    //abre el modal
-                    instance.open();},
-                onCancel: error => {console.log("cancel")},
-            }
-        )
+        //             //abre el modal
+        //             instance.open();},
+        //         onCancel: error => {console.log("cancel")},
+        //     }
+        // )
     }
 
     //onClick del botón Agregar Usuario
