@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 
 function initializeChips() {
@@ -10,7 +10,9 @@ function initializeChips() {
     var instances = M.Tooltip.init(elems2);
 }
 
-const Create2 = ({ change, values }) => {
+const Create2 = ({ change, values, onValueChange }) => {
+    
+    
     useEffect(() => {
         initializeChips();
     }, [])
@@ -47,19 +49,19 @@ const Create2 = ({ change, values }) => {
                 <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Activar fechas de inscripción</p>
                 <p>
                     <label>
-                    <input tipo="group1" id="auto" type="radio" value={values.tipo} onChange={change} />
+                    <input tipo="group1" type="radio" value="Automática"  onChange={onValueChange} />
                         <span style={{"width":"100%"}}>Automática</span>
                     </label>
                 </p>
                 <p>
                     <label>
-                        <input tipo="group1" id="solicitud" type="radio" value={values.tipo} onChange={change} />
+                        <input tipo="group1"  type="radio" value="Solicitud" onChange={onValueChange} />
                         <span>Solicitud</span>
                     </label>
                 </p>
                 <p>
                     <label>
-                        <input tipo="group1" id="onlyMe" type="radio" value={values.tipo} onChange={change} />
+                        <input tipo="group1" type="radio" value="Sólo yo" onChange={onValueChange} />
                         <span>Sólo yo puedo inscribir participantes</span>
                     </label>
                 </p>

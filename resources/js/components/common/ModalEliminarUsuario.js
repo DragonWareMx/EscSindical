@@ -16,7 +16,7 @@ export default function ModalEliminarUsuario({user}) {
     }, [])
 
     function sendRequest(id) {
-        Inertia.delete( route('usuarios.delete',id))
+        Inertia.delete( route('usuarios.delete',id),{preserveState:true})
       }
 
     return (

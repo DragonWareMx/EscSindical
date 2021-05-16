@@ -55,6 +55,8 @@ class CourseController extends Controller
     public function store(Request $request)
     {
 
+        dd($request);
+
         //VALIDAMOS DATOS
         $validated = $request->validate([
             'nombre' => 'required|max:255',
@@ -76,20 +78,26 @@ class CourseController extends Controller
             //SE CREA EL NUEVO CURSO
             $newCourse = new Course;
 
-            $newCourse->nombre = $request->foto;
-            $newCourse->fecha_inicio = $request->nombre;
-            $newCourse->fecha_limite = $request->apellido_p;
-            //falta max no sé que sea
-            $newCourse->valor_curricular = $request->apellido_m;
-            $newCourse->acceso = $request->fecha_nac;
-            $newCourse->estatus = $request->fecha_nac;
-            $newCourse->tipo = $request->fecha_nac;
-            $newCourse->descripcion = $request->fecha_nac;
-            $newCourse->tipo_acceso = $request->fecha_nac;
+            $newCourse->nombre = $request->nombre;
+            $newCourse->fecha_inicio = $request->dateIni;
+            $newCourse->fecha_final = $request->dateFin;
+            //$newCourse->max = $request->
+            $newCourse->valor_curricular = $request->vc;
+            $newCourse->tipo_acceso = $request->tipo;
+            //$newCourse->estatus = $request->;
+            $newCourse->descripcion = $request->descripcion;
             $newCourse->teacher_id = Auth::id();
+            $newCourse->link = $request->link; 
+            
+            //SE AGREGAN REGISTROS A SUS RELACIONES
+            //TAGS
+            
+            
 
+            //CATEGORIAS
+
+            //IMÁGENES
             $newCourse->save();
-
             //SE CREA EL LOG
             $newLog = new Log;
 
@@ -113,6 +121,6 @@ class CourseController extends Controller
 
     public function searchIndex()
     {
-        return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => Course::with(['teacher', 'tags'])->get()]);
+        return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => Course::with(['teacher', 'tags','firstImage'])->get()]);
     }
 }
