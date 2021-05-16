@@ -15,7 +15,7 @@ class CreateRegimesTable extends Migration
     {
         Schema::create('regimes', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->string('nombre')->unique();
 
             $table->softDeletes();
             $table->timestamps();

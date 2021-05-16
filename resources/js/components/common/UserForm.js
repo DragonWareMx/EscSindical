@@ -10,7 +10,7 @@ import ModalEliminarUsuario from '../../components/common/ModalEliminarUsuario';
 //user es el usuario recibido, si no tiene usuario entonces se muestra el formulario para agregar usuario
 //onEditChange sirve para poder modificar el state de edit en el componente padre
 //bEdit recibe el state de edit del componente padre
-export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
+export default function InfoAlumno({user, onEditChange, bEdit, categories, regimes, units}) {
     //errores de la validacion de laravel
     const { errors } = usePage().props
 
@@ -22,36 +22,52 @@ export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
             ...values,
             [key]: value,
         }))
+
+        if(key == "regime")
+        {
+            Inertia.reload({only: ['units'], data: {regime: value}})
+        }
     }
 
     //este metodo se ejecuta cuando se manda el formulario de crear nuevo usuario
     function handleCreate(e) {
-        if(user){
-            e.preventDefault()
-            Inertia.post(route('usuarios.edit', user.id), values)
-        }
+        e.preventDefault()
+        Inertia.post(route('usuarios.create'), values, { 
+            onSuccess: errors=>{console.log("errors")},
+            onError: errors=>{console.log(errors)}
+        })
     }
 
     //este metodo se ejecuta cuando se manda el formulario de editar usuario
     function handleEdit(e) {
         if(user){
+            let user_id = user.id
             e.preventDefault()
-            Inertia.post(route('usuarios.edit', user.id), values)
+            Inertia.visit(route('usuarios.edit', user.id), 
+            { 
+                preserveState: true,
+                method: 'post', 
+                data: values, 
+                onError: error => {
+                    Inertia.reload({only: ['user','categories','regimes','units'], data: { user: user.id }})
+                    setValues(...values)
+                } 
+            })
         }
     }
 
     //valores para formulario
     const [values, setValues] = useState({
-        nombre: "",
-        apellido_p: "",
+    nombre: "",
+    apellido_paterno: "",
         apellido_m: "",
         email: "",
         fecha_nac: "",
         sexo: "",
         matricula: "",
-        regime_id: "",
-        unity_id: "",
         categorie: "",
+        unit: "",
+        regime: "",
         estado: "",
         ciudad: "",
         colonia: "",
@@ -59,7 +75,7 @@ export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
         cp: "",
         num_ext: "",
         num_int: "",
-        tarjeton_pago: "",        
+        tarjeton_pago: "",
         created_at: "",
         foto: "",
     })
@@ -111,14 +127,15 @@ export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
     function setUserValues(){
         setValues({
             nombre: user == null ? "" : user.nombre,
-            apellido_p: user == null ? "" : user.apellido_p,
+            apellido_paterno: user == null ? "" : user.apellido_p,
             apellido_m: user == null ? "" : user.apellido_m,
             email: user == null ? "" : user.email,
             fecha_nac: user == null ? "" : user.fecha_nac,
             sexo: user == null ? "" : user.sexo,
             matricula: user == null ? "" : user.matricula,
-            unit_id: user == null ? "" : user.unit_id,
-            categorie: user == null ? "" : user.categorie != null ? user.categorie.nombre : "Selecciona una categoría",
+            categorie: user == null ? "" : user.categorie != null ? user.categorie.nombre : "",
+            unit: user == null ? "" : user.unit != null ? user.unit.nombre : "",
+            regime: user == null ? "" : user.unit != null ? user.unit.regime != null ? user.unit.regime.nombre : "" : "",
             estado: user == null ? "" : user.estado,
             ciudad: user == null ? "" : user.ciudad,
             colonia: user == null ? "" : user.colonia,
@@ -149,8 +166,14 @@ export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
     //se ejecuta cada vez que el valor del user cambia
     useEffect(() => {
         setUserValues()
-        
     }, [user])
+
+    //se ejecuta cada vez que el valor de regimes cambia
+    //sirve para inicializar los selects
+    useEffect(() => {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+    }, [regimes])
 
     //se ejecuta cada vez que el valor del values cambia
     useEffect(() => {
@@ -194,11 +217,11 @@ export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
                     </div>
 
                     <div className="input-field col s12 input-50-re">
-                        <input disabled={bEdit ? false : user ? true : false} id="apellido_p" type="text" className={errors.apellido_p ? "validate form-control invalid" : "validate form-control"}  name="apellido_p" value={values.apellido_p} onChange={handleChange} required autoComplete="apellido_paterno"/>
+                        <input disabled={bEdit ? false : user ? true : false} id="apellido_paterno" type="text" className={errors.apellido_paterno ? "validate form-control invalid" : "validate form-control"}  name="apellido_paterno" value={values.apellido_paterno} onChange={handleChange} required autoComplete="apellido_paterno"/>
                         <label htmlFor="apellido_paterno">Apellido Paterno</label>
                         {
-                            errors.apellido_p && 
-                            <span className="helper-text" data-error={errors.apellido_p} style={{"marginBottom":"10px"}}>{errors.apellido_p}</span>
+                            errors.apellido_paterno && 
+                            <span className="helper-text" data-error={errors.apellido_paterno} style={{"marginBottom":"10px"}}>{errors.apellido_paterno}</span>
                         }
                         
                     </div>
@@ -247,42 +270,52 @@ export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
                     </div>
 
                     <div className="input-field col s12">
-                        <select disabled={bEdit ? false : user ? true : false} id="regime_id" name="regime_id" required autoComplete="regime_id" value={values.regime_id} onChange={handleChange}>
-                            <option value="" disabled={bEdit ? false : user ? true : false} >Selecciona una opción</option>
-                            <option value="1">Ordinario</option>
-                            <option value="2">Bienestar</option>
+                        <select disabled={bEdit ? false : user ? true : false} id="regime" name="regime" value={values.regime} onChange={handleChange}>
+                            <option value="" disabled>Selecciona una opción</option>
+                            {regimes && regimes.length > 0 && 
+                                regimes.map(regime => (
+                                    <option key={regime.nombre} value={regime.nombre}>{regime.nombre}</option>
+                                ))
+                            }
                         </select>
                         <label>Regimen</label>
                         {
-                            errors.regime_id && 
-                            <span className="helper-text" data-error={errors.regime_id} style={{"marginBottom":"10px"}}>{errors.regime_id}</span>
+                            errors.regime && 
+                            <span className="helper-text" data-error={errors.regime} style={{"marginBottom":"10px"}}>{errors.regime}</span>
                         }
                     </div>
 
-                    <div className="input-field col s12" style={{"marginTop":"5px"}}>
-                        <select disabled={bEdit ? false : user ? true : false} id="unity_id" name="unity_id" required autoComplete="unity_id" value={bEdit ? values.unity_id : user != null && user.unity_id} onChange={handleChange}>
-                            <option value="" disabled={bEdit ? false : user ? true : false}>Selecciona una opción</option>
-                            <option value="1">UMF 75 - Morelia c/UMAA</option>
-                            <option value="2">UMF 80 - Morelia</option>
-                        </select>
-                        <label>Unidad</label>
-                        {
-                            errors.unity_id && 
-                            <span className="helper-text" data-error={errors.unity_id} style={{"marginBottom":"10px"}}>{errors.unity_id}</span>
-                        }
-                    </div>
-
-                    <div className="input-field col s12">
-                        <div className="select-wrapper">
-                            <input name="categoria" list="categorias" disabled={bEdit ? false : user ? true : false} value={values.categorie} onChange={handleChange}/>
-                            <svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                    <div className="col s12" style={{"marginTop":"5px"}}>
+                        <div className="input-field select-wrapper">
+                            <input placeholder="Selecciona una unidad" disabled={bEdit ? false : user ? true : false} id="unit" list="unidades" type="text" className="validate" value={values.unit} onChange={handleChange}/>
+                            <label htmlFor="unit">Unidad</label>
+                            <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
                         </div>
-                        <label htmlFor="autocomplete-input">Categoría</label>
+                        <datalist id="unidades">
+                            {
+                                units && units.length > 0 &&
+                                 units.map(units => (
+                                    <option key={units.nombre} value={units.nombre}/>
+                                ))
+                            }
+                        </datalist>
+                        {
+                            errors.unit && 
+                            <span className="helper-text" data-error={errors.unit} style={{"marginBottom":"10px"}}>{errors.unit}</span>
+                        }
+                    </div>
+
+                    <div className="col s12">
+                        <div className="input-field select-wrapper">
+                            <input placeholder="Selecciona una categoría" disabled={bEdit ? false : user ? true : false} id="categorie" list="categorias" type="text" className="validate" value={values.categorie} onChange={handleChange}/>
+                            <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                            <label htmlFor="categorie">Categoría</label>
+                        </div>
                         <datalist id="categorias">
                             {
                                 categories && categories.length > 0 &&
                                 categories.map(category => (
-                                    <option value={category.nombre}/>
+                                    <option key={category.nombre} value={category.nombre}/>
                                 ))
                             }
                         </datalist>
@@ -381,27 +414,30 @@ export default function InfoAlumno({user, onEditChange, bEdit, categories}) {
                             <span className="helper-text" data-error={errors.created_at} style={{"marginBottom":"10px"}}>{errors.created_at}</span>
                         }
                     </div>
-                    {user ?
-                        bEdit ?
-                        <div className="row">
-                            <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={cancelEditUser}>Cancelar</button>
-                            <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}>Guardar</button>
-                        </div> 
-                        : 
-                        <div className="row">
-                            <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={editUser}><i className="material-icons">edit</i></button>
-                            <button data-target="modalEliminarUsuario" type="button" className="col s3 m2 center-align modal-trigger" style={{"border":"none","backgroundColor":"transparent","color":"#515B60","cursor":"pointer"}}><i className="material-icons">delete</i></button>
-                        </div>
-                    :
-                    <div className="row">
-                        <button type="button" className="col s3 m2 center-align" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}}>Guardar</button>
-                    </div> 
-                    }
                 </div>
             </div>
-            <div className="row">
-                <button type="submit">Submit</button>
-            </div>
+                {user ?
+                    bEdit ?
+                    <div className="row">
+                        <button type="button" className="col s3 m2 center-align offset-s6 offset-m8 btn waves-effect waves-light" onClick={cancelEditUser}>Cancelar</button>
+                        <button type="submit" className="col s3 m2 center-align btn waves-effect waves-light">
+                            Guardar
+                            <i className="material-icons right">send</i>
+                        </button>
+                    </div> 
+                    : 
+                    <div className="row">
+                        <button type="button" className="col s3 m2 center-align offset-s6 offset-m8" style={{"border":"none","backgroundColor":"transparent","color":"#515B60"}} onClick={editUser}><i className="material-icons">edit</i></button>
+                        <button data-target="modalEliminarUsuario" type="button" className="col s3 m2 center-align modal-trigger" style={{"border":"none","backgroundColor":"transparent","color":"#515B60","cursor":"pointer"}}><i className="material-icons">delete</i></button>
+                    </div>
+                :
+                <div className="row">
+                    <button type="submit" className="col s3 m2 center-align btn waves-effect waves-light">
+                        Guardar
+                        <i className="material-icons right">send</i>
+                    </button>
+                </div> 
+                }
         </form> 
     ) 
 

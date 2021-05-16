@@ -35,6 +35,7 @@ class UserSeeder extends Seeder
             'tarjeton_pago' => 'tarjeton.pdf',
             'matricula' => '17121035',
             'categorie_id' => '1',
+            'unit_id' => 1
         ]);
 
         DB::table('users')->insert([
@@ -56,6 +57,7 @@ class UserSeeder extends Seeder
             'tarjeton_pago' => 'tarjeton.pdf',
             'matricula' => '17121031',
             'categorie_id' => '1',
+            'unit_id' => 2
         ]);
 
         DB::table('users')->insert([
@@ -77,6 +79,7 @@ class UserSeeder extends Seeder
             'tarjeton_pago' => 'tarjeton.pdf',
             'matricula' => '17121030',
             'categorie_id' => '1',
+            'unit_id' => 2
         ]);
 
         DB::table('users')->insert([
@@ -98,6 +101,7 @@ class UserSeeder extends Seeder
             'tarjeton_pago' => 'tarjeton.pdf',
             'matricula' => '17121037',
             'categorie_id' => '1',
+            'unit_id' => 4
         ]);
     }
 }

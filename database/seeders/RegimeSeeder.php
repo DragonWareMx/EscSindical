@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class RegimeSeeder extends Seeder
 {
@@ -14,5 +15,14 @@ class RegimeSeeder extends Seeder
     public function run()
     {
         //
+        DB::table('regimes')->insert([
+            'nombre' => 'Regimen 1',
+        ]);
+        DB::table('regimes')->insert([
+            'nombre' => 'Regimen 2',
+        ]);
+        DB::table('regimes')->insert([
+            'nombre' => 'Regimen 3',
+        ]);
     }
 }
