@@ -41,9 +41,6 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->foreign('unit_id')->references('id')->on('units');
 
-            $table->unsignedBigInteger('regime_id')->nullable();
-            $table->foreign('unit_id')->references('id')->on('regimes');
-
             $table->softDeletes();
             $table->timestamps();
         });
