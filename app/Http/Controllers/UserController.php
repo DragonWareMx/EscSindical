@@ -148,9 +148,20 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return Inertia::render('Usuarios/Registrar', [
+            'categories'=> fn () => Category::select('id','nombre')->get(),
+            'regimes'=> fn () => Regime::select('id','nombre')->get(),
+            'units'=>  Inertia::lazy(
+                fn () => Unit::select('units.id','units.nombre')
+                            ->leftJoin('regimes', 'regimes.id', '=', 'units.regime_id')
+                            ->when($request->regime, function ($query, $regime) {
+                                $query->where('regimes.nombre',$regime);
+                            })
+                            ->get()
+            )
+        ]);
     }
 
     /**
@@ -303,7 +314,6 @@ class UserController extends Controller
      */
     public function edit($id, Request $request)
     {
-        //
         return Inertia::render('Usuarios/Editar', [
             'user' => User::with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.firstImage:imagen', 'finishedCourses.firstImage:imagen', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre'])
                             ->findOrFail($id),
@@ -332,7 +342,7 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             //---falta el de la foto
-            'foto' => 'required',
+            'foto' => 'nullable',
 
             //---informacion personal---
             'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
@@ -392,6 +402,8 @@ class UserController extends Controller
 
         //SE GUARDA EL NUEVO USUARIO
         $user->save();
+
+        return \Redirect::route('usuarios')->with('success','¡Usuario editado de manera exitosa!');
     }
 
     /**

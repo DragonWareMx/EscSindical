@@ -60,7 +60,7 @@ const Usuarios = ({user, categories, regimes, units}) => {
     //manda el forumulario
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.post(route('usuarios.edit', user.id), values, 
+        Inertia.patch(route('usuarios.update', user.id), values, 
             {
                 onError: () => {
                     Inertia.reload({only: ['units'], data: {regime: values.regimen}})
@@ -308,7 +308,7 @@ const Usuarios = ({user, categories, regimes, units}) => {
 
                                     <div className="input-field col s6 input-50-re">
                                         <input disabled={false} maxLength="10" id="numero_interior" type="text" className={errors.numero_interior ? "validate form-control invalid" : "validate"} name="numero_interior" value={values.numero_interior}  autoComplete="numero_interior" onChange={handleChange}/>
-                                        <label htmlFor="numero_interior">No. Interior</label>
+                                        <label htmlFor="numero_interior">No. Interior (opcional)</label>
                                         {
                                             errors.numero_interior && 
                                             <span className="helper-text" data-error={errors.numero_interior} style={{"marginBottom":"10px"}}>{errors.numero_interior}</span>

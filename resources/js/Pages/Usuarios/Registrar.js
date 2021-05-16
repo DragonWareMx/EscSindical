@@ -9,33 +9,31 @@ import route from 'ziggy-js';
 import { Inertia } from '@inertiajs/inertia';
 
 
-const Usuarios = ({user, categories, regimes, units}) => {
+const Usuarios = ({categories, regimes, units}) => {
     //errores de la validacion de laravel
     const { errors } = usePage().props
 
     //valores para formulario
     const [values, setValues] = useState({
-        nombre: user.nombre || "",
-        apellido_paterno: user.apellido_p || "",
-        apellido_materno: user.apellido_m || "",
-        email: user.email || "",
-        fecha_de_nacimiento: user.fecha_nac || "",
-        sexo: user.sexo || "",
-        matricula: user.matricula || "",
-        categoria: user.categorie && user.categorie.nombre || "",
-        unidad: user.unit && user.unit.nombre || "",
-        regimen: user.unit && user.unit.regime.nombre || "",
-        estado: user.estado || "",
-        ciudad: user.ciudad || "",
-        colonia: user.colonia || "",
-        calle: user.calle || "",
-        codigo_postal: user.cp || "",
-        numero_exterior: user.num_ext || "",
-        numero_interior: user.num_int || "",
-        tarjeton_de_pago: user.tarjeton_pago || "",
-        created_at: user.created_at,
-        foto: user.foto ? "/storage/fotos_perfil/"+user.foto : null,
-        deleted_at: user.deleted_at
+        nombre: "",
+        apellido_paterno: "",
+        apellido_materno: "",
+        email: "",
+        fecha_de_nacimiento: "",
+        sexo: "",
+        matricula: "",
+        categoria: "",
+        unidad: "",
+        regimen: "",
+        estado: "",
+        ciudad: "",
+        colonia: "",
+        calle: "",
+        codigo_postal: "",
+        numero_exterior: "",
+        numero_interior: "",
+        tarjeton_de_pago: "",
+        foto: null,
     })
 
     //actualiza los hooks cada vez que se modifica un input 
@@ -60,7 +58,7 @@ const Usuarios = ({user, categories, regimes, units}) => {
     //manda el forumulario
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.post(route('usuarios.edit', user.id), values, 
+        Inertia.post(route('usuarios.store'), values, 
             {
                 onError: () => {
                     Inertia.reload({only: ['units'], data: {regime: values.regimen}})
@@ -109,7 +107,7 @@ const Usuarios = ({user, categories, regimes, units}) => {
             <div className="col contenedor s12">
                 <div className="card darken-1 cardUsers">
                     <div className="card-content">
-                        <span className="card-title">Usuarios / Editar Usuario</span>
+                        <span className="card-title">Usuarios / Crear Usuario</span>
 
                         {/* ----Formulario---- */}
                         <form onSubmit={handleSubmit}>
@@ -247,7 +245,7 @@ const Usuarios = ({user, categories, regimes, units}) => {
                                         </datalist>
                                     </div>
 
-                                    <p style={{"marginTop":"0px", "fontFamily":"Montserrat" ,"fontSize":"13px"}}>Tarjetón de pago <a target="_blank" href={user == null || user.tarjeton_pago == null ? null : "/storage/tarjetones_pago/"+user.tarjeton_pago}>{user != null && user.tarjeton_pago}</a><i style={{"color":"#7E7E7E"}} className="material-icons tiny">description</i></p>
+                                    <p style={{"marginTop":"0px", "fontFamily":"Montserrat" ,"fontSize":"13px"}}>Tarjetón de pago <a target="_blank">tarjeton</a><i style={{"color":"#7E7E7E"}} className="material-icons tiny">description</i></p>
                                 </div>
                                 <div className="col s12 m6 div-division">
                                     <p className="titles-sub" style={{"marginLeft":"3%"}}>DIRECCIÓN</p>
@@ -308,7 +306,7 @@ const Usuarios = ({user, categories, regimes, units}) => {
 
                                     <div className="input-field col s6 input-50-re">
                                         <input disabled={false} maxLength="10" id="numero_interior" type="text" className={errors.numero_interior ? "validate form-control invalid" : "validate"} name="numero_interior" value={values.numero_interior}  autoComplete="numero_interior" onChange={handleChange}/>
-                                        <label htmlFor="numero_interior">No. Interior</label>
+                                        <label htmlFor="numero_interior">No. Interior (opcional)</label>
                                         {
                                             errors.numero_interior && 
                                             <span className="helper-text" data-error={errors.numero_interior} style={{"marginBottom":"10px"}}>{errors.numero_interior}</span>
