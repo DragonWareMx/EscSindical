@@ -5,7 +5,7 @@ import { Inertia } from '@inertiajs/inertia'
 import '../../styles/cursos.css'
 import '/css/courseCardSearch.css'
 
-export default function InfoAlumno({ curso }) {
+export default function CourseCardSearch({ curso }) {
 
     return (
         <div className="col s12">
