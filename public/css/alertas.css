@@ -1,0 +1,31 @@
+.alert_error{
+    border-radius: 5px;
+    background-color: #F2DEDE;
+    color: #A94442;
+    width: 90%;
+    min-height: 35px;
+    margin-top: 15px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.alert_success{
+    border-radius: 5px;
+    background-color: #DFF0D8;
+    color: #3C763D;
+    width: 90%;
+    min-height: 35px;
+    margin-top: 15px;
+    padding: 5px;
+}
+
+.alert_message{
+    border-radius: 5px;
+    background-color: #f8f8d7;
+    color: #664D03;
+    width: 90%;
+    min-height: 35px;
+    margin-top: 15px;
+    padding: 5px;
+}
