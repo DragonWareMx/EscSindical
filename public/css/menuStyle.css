@@ -357,3 +357,31 @@ body
 .col.contenedor{
     padding: 0px !important;
 }
+
+.logout-grande{
+    padding: 0px 32px !important;
+    background-color: transparent;
+    width: 100%;
+    border: none;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 48px;
+    font-family: Montserrat !important;
+    cursor: pointer;
+}
+
+.logout-grande:hover{
+    background-color: rgba(0,0,0,0.05);
+}
+
+.logout-grande i{
+    margin-right: 32px;
+}
+
+.logout-chico{
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
