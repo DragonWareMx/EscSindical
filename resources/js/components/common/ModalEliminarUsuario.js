@@ -20,14 +20,14 @@ export default function ModalEliminarUsuario({user}) {
       }
 
     return (
-        <div id="modalEliminarUsuario" class="modal">
-            <div class="modal-content">
+        <div id="modalEliminarUsuario" className="modal">
+            <div className="modal-content">
                 <h4 style={{"color":"red"}}>Eliminar usuario {user && user.nombre}</h4>
                 <p>¿Estás seguro de que deseas eliminar este usuario?</p>
                 </div>
-                <div class="modal-footer">
-                <a class="modal-close waves-effect waves-green btn-flat">Cancelar</a>
-                <a style={{"color":"red"}} onClick={()=>{sendRequest(user.id)}} class="modal-close waves-effect waves-green btn-flat">Eliminar</a>
+                <div className="modal-footer">
+                <a className="modal-close waves-effect waves-green btn-flat">Cancelar</a>
+                <a style={{"color":"red"}} onClick={()=>{sendRequest(user.id)}} className="modal-close waves-effect waves-green btn-flat">Eliminar</a>
             </div>
         </div>
     )

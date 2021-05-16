@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Regime;
+use App\Models\Unit;
 use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -111,7 +113,7 @@ class UserController extends Controller
                 ->paginate(20)
                 ->withQueryString(),
             'user' => Inertia::lazy(
-                fn () => User::with(['categorie', 'activeCourses', 'finishedCourses', 'activeCourses.firstImage', 'finishedCourses.firstImage', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre'])
+                fn () => User::with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.firstImage:imagen', 'finishedCourses.firstImage:imagen', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre'])
                     ->when($request->user, function ($query, $user) {
                         $query->find($user);
                     })
@@ -119,7 +121,18 @@ class UserController extends Controller
             ),
             'request' => $request,
             'categories'=> Inertia::lazy(
-                fn () => Category::select('id','nombre')->get()
+                fn () => Category::select('id','nombre')->get(),
+            ),
+            'regimes'=> Inertia::lazy(
+                fn () => Regime::select('id','nombre')->get(),
+            ),
+            'units'=> Inertia::lazy(
+                fn () => Unit::select('units.id','units.nombre')
+                            ->leftJoin('regimes', 'regimes.id', '=', 'units.regime_id')
+                            ->when($request->regime, function ($query, $regime) {
+                                $query->where('regimes.nombre',$regime);
+                            })
+                            ->get(),
             )
         ]);
     }
@@ -148,10 +161,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        //---Validar el rol del usuario---
+
         $validated = $request->validate([
-            'nombre' => 'required|unique:posts|max:255',
+            'nombre' => 'required|unique:users|max:255',
             'apellido_p' => 'required',
-            'apellido_m' => 'required|unique:posts|max:255',
+            'apellido_m' => 'required|unique:users|max:255',
             'email' => 'required',
             'foto' => 'required',
             'fecha_nac' => 'required',
@@ -166,12 +181,14 @@ class UserController extends Controller
             'matricula' => 'required',
             'categorie_id' => 'required',
         ]);
-        // El usuario es valido...
+        // El nuevo usuario es valido...
 
         //COMIENZA LA TRANSACCION
         DB::beginTransaction();
 
         try {
+            //---verificar que el regimen y la unidad esten relacionados---
+
             //SE CREA EL NUEVO USUARIO
             $newUser = new User;
 
@@ -237,7 +254,11 @@ class UserController extends Controller
 
             //SE GUARDA EL LOG
 
+            //SE HACE COMMIT
             DB::commit();
+
+            //REDIRECCIONA A LA VISTA DE USUARIOS
+            return Redirect::route('usuarios');
         } catch (\Exception $e) {
             DB::rollBack();
         }

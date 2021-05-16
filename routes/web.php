@@ -38,6 +38,7 @@ Route::get('/ejemplo', [App\Http\Controllers\UserController::class, 'ejemplo'])-
 
 //--------USUARIOS--------
 Route::get('/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios');
+Route::post('/usuarios', [App\Http\Controllers\UserController::class, 'store'])->name('usuarios.create');
 Route::post('/usuarios/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('usuarios.edit');
 Route::delete('usuarios/{id}',  [App\Http\Controllers\UserController::class, 'destroy'])->name('usuarios.delete');
 

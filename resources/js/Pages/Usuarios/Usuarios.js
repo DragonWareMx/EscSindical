@@ -20,7 +20,7 @@ function initializeMat() {
     var instances = M.Modal.init(elems);
 }
 
-const Usuarios = ({ users, user, request, categories }) => {
+const Usuarios = ({ users, user, request, categories, regimes, units }) => {
     const iconASC = "M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z"
     const iconDESC = "M6 2l-6 8h4v12h4v-12h4l-6-8zm11.694.003h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z"
 
@@ -449,9 +449,10 @@ const Usuarios = ({ users, user, request, categories }) => {
 
         Inertia.reload(
             {
-                only: ['user','categories'],
+                only: ['user','categories','regimes','units'],
                 data: { user: id },
                 onSuccess: ({ props }) => {
+                    console.log("success")
                     //busca el modal infoAlumno
                     const elem = document.getElementById('modalInfoAlumno');
                     const instance = M.Modal.init(elem, { dismissible: false });
@@ -461,7 +462,18 @@ const Usuarios = ({ users, user, request, categories }) => {
 
                     //abre el modal
                     instance.open();
-                }
+                },
+                onError: error => {
+                    //busca el modal infoAlumno
+                    const elem = document.getElementById('modalInfoAlumno');
+                    const instance = M.Modal.init(elem, { dismissible: false });
+
+                    //actualiza los textfields para que no se amontonen los labels
+                    M.updateTextFields();
+
+                    //abre el modal
+                    instance.open();},
+                onCancel: error => {console.log("cancel")},
             }
         )
     }
@@ -472,7 +484,22 @@ const Usuarios = ({ users, user, request, categories }) => {
             ...state,
             newUser: true,
         }))
-        Inertia.reload({only: ['categories']})
+
+        Inertia.reload(
+        {
+            only: ['categories','regimes'],
+            onSuccess: ({ props }) => {
+                //busca el modal infoAlumno
+                const elem = document.getElementById('modalAgregarUsuario');
+                const instance = M.Modal.init(elem, { dismissible: false });
+
+                //actualiza los textfields para que no se amontonen los labels
+                M.updateTextFields();
+
+                //abre el modal
+                instance.open();
+            }
+        })
     }
 
     //se ejecuta cuando se monta el componente, inicializa materialize y el buscador
@@ -491,7 +518,7 @@ const Usuarios = ({ users, user, request, categories }) => {
             <div className="row contenedor">
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
-                        <a className="btn-floating btn-large waves-effect waves-light green-sind button-addUser modal-trigger" href="#modalAgregarUsuario" onClick={() => openNewUserForm()}><i className="material-icons">add</i></a>
+                        <a className="btn-floating btn-large waves-effect waves-light green-sind button-addUser" onClick={() => openNewUserForm()}><i className="material-icons">add</i></a>
                         <div className="card-content">
                             <span className="card-title">Usuarios</span>
                             <nav className="searchUsers">
@@ -643,15 +670,17 @@ const Usuarios = ({ users, user, request, categories }) => {
                     </div>
                 </div>
             </div>
+            {state.newUser &&
             <div id="modalAgregarUsuario" className="modal">
                 <div className="modal-content">
                     <div className="modal-close right"><i className="material-icons">close</i></div>
                     <div style={{"color":"#134E39","fontSize":"16px","fontStyle": "normal"}}>VER USUARIO</div>
-                    <UserForm user={null} categories={categories}/>
+                    <UserForm user={null} categories={categories} regimes={regimes} units={units}/>
                 </div>
             </div>
+            }
             <FlotanteAyuda />
-            {!state.newUser && <InfoAlumno user={user}  categories={categories}/>}
+            {!state.newUser && <InfoAlumno user={user}  categories={categories} regimes={regimes} units={units}/>}
             <ModalEliminarUsuario user={user}/>
         </>
     )
