@@ -452,6 +452,7 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                 only: ['user','categories','regimes','units'],
                 data: { user: id },
                 onSuccess: ({ props }) => {
+                    console.log("success")
                     //busca el modal infoAlumno
                     const elem = document.getElementById('modalInfoAlumno');
                     const instance = M.Modal.init(elem, { dismissible: false });
@@ -461,7 +462,18 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
 
                     //abre el modal
                     instance.open();
-                }
+                },
+                onError: error => {
+                    //busca el modal infoAlumno
+                    const elem = document.getElementById('modalInfoAlumno');
+                    const instance = M.Modal.init(elem, { dismissible: false });
+
+                    //actualiza los textfields para que no se amontonen los labels
+                    M.updateTextFields();
+
+                    //abre el modal
+                    instance.open();},
+                onCancel: error => {console.log("cancel")},
             }
         )
     }
@@ -472,7 +484,22 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
             ...state,
             newUser: true,
         }))
-        Inertia.reload({only: ['categories']})
+
+        Inertia.reload(
+        {
+            only: ['categories','regimes'],
+            onSuccess: ({ props }) => {
+                //busca el modal infoAlumno
+                const elem = document.getElementById('modalAgregarUsuario');
+                const instance = M.Modal.init(elem, { dismissible: false });
+
+                //actualiza los textfields para que no se amontonen los labels
+                M.updateTextFields();
+
+                //abre el modal
+                instance.open();
+            }
+        })
     }
 
     //se ejecuta cuando se monta el componente, inicializa materialize y el buscador
@@ -491,7 +518,7 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
             <div className="row contenedor">
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
-                        <a className="btn-floating btn-large waves-effect waves-light green-sind button-addUser modal-trigger" href="#modalAgregarUsuario" onClick={() => openNewUserForm()}><i className="material-icons">add</i></a>
+                        <a className="btn-floating btn-large waves-effect waves-light green-sind button-addUser" onClick={() => openNewUserForm()}><i className="material-icons">add</i></a>
                         <div className="card-content">
                             <span className="card-title">Usuarios</span>
                             <nav className="searchUsers">
@@ -643,6 +670,7 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                     </div>
                 </div>
             </div>
+            {state.newUser &&
             <div id="modalAgregarUsuario" className="modal">
                 <div className="modal-content">
                     <div className="modal-close right"><i className="material-icons">close</i></div>
@@ -650,6 +678,7 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                     <UserForm user={null} categories={categories} regimes={regimes} units={units}/>
                 </div>
             </div>
+            }
             <FlotanteAyuda />
             {!state.newUser && <InfoAlumno user={user}  categories={categories} regimes={regimes} units={units}/>}
             <ModalEliminarUsuario user={user}/>

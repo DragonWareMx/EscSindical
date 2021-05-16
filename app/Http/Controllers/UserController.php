@@ -127,7 +127,12 @@ class UserController extends Controller
                 fn () => Regime::select('id','nombre')->get(),
             ),
             'units'=> Inertia::lazy(
-                fn () => Unit::select('id','nombre')->get(),
+                fn () => Unit::select('units.id','units.nombre')
+                            ->leftJoin('regimes', 'regimes.id', '=', 'units.regime_id')
+                            ->when($request->regime, function ($query, $regime) {
+                                $query->where('regimes.nombre',$regime);
+                            })
+                            ->get(),
             )
         ]);
     }
@@ -156,10 +161,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        //---Validar el rol del usuario---
+
         $validated = $request->validate([
-            'nombre' => 'required|unique:posts|max:255',
+            'nombre' => 'required|unique:users|max:255',
             'apellido_p' => 'required',
-            'apellido_m' => 'required|unique:posts|max:255',
+            'apellido_m' => 'required|unique:users|max:255',
             'email' => 'required',
             'foto' => 'required',
             'fecha_nac' => 'required',
@@ -174,12 +181,14 @@ class UserController extends Controller
             'matricula' => 'required',
             'categorie_id' => 'required',
         ]);
-        // El usuario es valido...
+        // El nuevo usuario es valido...
 
         //COMIENZA LA TRANSACCION
         DB::beginTransaction();
 
         try {
+            //---verificar que el regimen y la unidad esten relacionados---
+
             //SE CREA EL NUEVO USUARIO
             $newUser = new User;
 
@@ -245,7 +254,11 @@ class UserController extends Controller
 
             //SE GUARDA EL LOG
 
+            //SE HACE COMMIT
             DB::commit();
+
+            //REDIRECCIONA A LA VISTA DE USUARIOS
+            return Redirect::route('usuarios');
         } catch (\Exception $e) {
             DB::rollBack();
         }
