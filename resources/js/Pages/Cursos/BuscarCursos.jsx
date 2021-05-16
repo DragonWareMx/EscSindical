@@ -104,7 +104,19 @@ const BuscarCursos = ({ cursos }) => {
                                         <CourseCardSearch curso={curso} />
                                     </div>
                                 )}
-                                <CourseCardSearchHover />
+                                <div className="col s12 m6 l3 red" style={{"position" : "relative"}}>
+                                    {/* Aqui va el componente */}
+                                    <CourseCardSearchHover />
+                                </div>
+                                <div className="col s12 m6 l3 green" style={{"position" : "relative"}}>
+                                    {/* Aqui va el componente */}
+                                    <CourseCardSearchHover />
+                                </div>
+                                <div className="col s12 m6 l3 yellow" style={{"position" : "relative"}}>
+                                    {/* Aqui va el componente */}
+                                    <CourseCardSearchHover />
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
