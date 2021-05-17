@@ -18,7 +18,7 @@ class CreateUnitsTable extends Migration
             $table->string('nombre')->unique();
 
             $table->unsignedBigInteger('regime_id')->nullable();
-            $table->foreign('regime_id')->references('id')->on('regimes');
+            $table->foreign('regime_id')->references('id')->on('regimes')->onDelete('cascade');
 
             $table->softDeletes();
             $table->timestamps();

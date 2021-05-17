@@ -191,7 +191,7 @@ class UserController extends Controller
             //---informacion institucional---
             
             //-de momento las matriculas son numeros solamente de tamaño maximo de 255-
-            'matricula' => 'required|digits_between:0,255|numeric|unique:users,matricula',
+            'matricula' => 'required|digits_between:7,10|numeric|unique:users,matricula',
             'regimen' => 'required|exists:regimes,nombre',
             'unidad' => 'required|exists:units,nombre',
             'categoria' => 'required|exists:categories,nombre',
@@ -201,8 +201,8 @@ class UserController extends Controller
             'ciudad' => ['required','max:60','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'colonia' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'calle' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
-            'numero_exterior' => ['required','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
-            'numero_interior' => ['nullable','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'numero_exterior' => ['required','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]*\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'numero_interior' => ['nullable','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]*\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
             'codigo_postal' => ['required','max:9','regex:/^\d{5}$/i'],
 
             //---cuenta---
@@ -217,8 +217,7 @@ class UserController extends Controller
                     ->numbers()
                     ->uncompromised(),
             ],
-            'confirmar_contrasena' => 'required|min:8|same:contrasena',
-
+            'confirmar_contrasena' => 'required|same:contrasena',
             'rol' => 'required|exists:roles,name'
         ]);
         // El nuevo usuario es valido...
@@ -273,6 +272,7 @@ class UserController extends Controller
             //SE CREA EL NUEVO USUARIO
             $newUser = new User;
 
+            //guarda la foto
             $foto = $request->file('foto')->store('public/fotos_perfil');
             $newUser->foto = $request->file('foto')->hashName();
             
@@ -288,7 +288,7 @@ class UserController extends Controller
             $newUser->unit_id = $unidad[0]->id;
             $newUser->categorie_id = $categoria[0]->id;
 
-
+            //guarda el tarjeton de pago
             $tarjeton_pago = $request->file('tarjeton_de_pago')->store('public/tarjetones_pago');
             $newUser->tarjeton_pago = $request->file('tarjeton_de_pago')->hashName();
             
@@ -305,7 +305,6 @@ class UserController extends Controller
             $newUser->email = $request->email;
             $newUser->password = \Hash::make($request->contrasena);
 
-            
             //SE GUARDA EL NUEVO USUARIO
             $newUser->save();
             
@@ -324,41 +323,66 @@ class UserController extends Controller
                     'apellido_p: ' . $request->apellido_paterno .
                     'apellido_m: ' . $request->apellido_materno .
                     'fecha_nac: ' . $request->fecha_de_nacimiento .
+                    'sexo: '. $request->sexo.
                     
                     'matricula: ' . $request->matricula .
-                    '//regimen...
-                    //unidad...
-                    categorie_id: ' . $request->categorie_id .
-                    'tarjeton_pago: ' . $request->tarjeton_pago .
+                    'unit_id: '.$unidad[0]->id.
+                    'categorie_id: ' . $categoria[0]->id .
                     
                     'estado: ' . $request->estado .
                     'ciudad: ' . $request->ciudad .
                     'colonia: ' . $request->colonia .
                     'calle: ' . $request->calle .
-                    'num_ext: ' . $request->num_ext .
-                    'num_int: ' . $request->num_int .
-                    'cp: ' . $request->cp .
+                    'num_ext: ' . $request->numero_exterior .
+                    'num_int: ' . $request->numero_interior .
+                    'cp: ' . $request->codigo_postal .
                     
                     'email: ' . $request->email .
                 '}
             }';
 
-            //$newLog->descripcion = 'El usuario '.Auth::user()->email.' ha registrado un nuevo usuario.';
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha registrado un nuevo usuario: '. $newUser->email;
                 
             //SE GUARDA EL LOG
             $newLog->save();
             
-            //SE HACE COMMIT
-            DB::commit();
             
             if(!$newUser)
             {
                 DB::rollBack();
+                //si hay foto se elimina del servidor
+                if($foto)
+                {
+                    \Storage::delete($foto);
+                }
+                //si hay tarjeton se elimina del servidor
+                if($tarjeton_pago)
+                {
+                    \Storage::delete($tarjeton_pago);
+                }
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
+            if(!$newLog)
+            {
+                DB::rollBack();
+                //si hay foto se elimina del servidor
+                if($foto)
+                {
+                    \Storage::delete($foto);
+                }
+                //si hay tarjeton se elimina del servidor
+                if($tarjeton_pago)
+                {
+                    \Storage::delete($tarjeton_pago);
+                }
                 return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
             }
 
+            //SE HACE COMMIT
+            DB::commit();
+            
             //REDIRECCIONA A LA VISTA DE USUARIOS
-            return \Redirect::route('usuarios')->with('success','El usuario ha sido registrado exitosamente!');
+            return \Redirect::route('usuarios')->with('success','El usuario ha sido registrado con éxito!');
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -366,6 +390,11 @@ class UserController extends Controller
             if($foto)
             {
                 \Storage::delete($foto);
+            }
+            //si hay tarjeton se elimina del servidor
+            if($tarjeton_pago)
+            {
+                \Storage::delete($tarjeton_pago);
             }
             return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
         }
@@ -379,8 +408,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
-        return response()->json(['status' => 200, 'user' => $user]);
+        // $user = User::find($id);
+        // return response()->json(['status' => 200, 'user' => $user]);
     }
 
     /**
@@ -392,7 +421,7 @@ class UserController extends Controller
     public function edit($id, Request $request)
     {
         return Inertia::render('Usuarios/Editar', [
-            'user' => User::with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.firstImage:imagen', 'finishedCourses.firstImage:imagen', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre'])
+            'user' => User::with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.images:course_id,imagen', 'finishedCourses.images:course_id,imagen', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre', 'roles:name'])
                             ->findOrFail($id),
             'categories'=> fn () => Category::select('id','nombre')->get(),
             'regimes'=> fn () => Regime::select('id','nombre')->get(),

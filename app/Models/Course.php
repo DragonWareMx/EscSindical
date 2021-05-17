@@ -12,14 +12,8 @@ class Course extends Model
 
     public function images()
     {
-        return $this->belongsToMany('App\Models\Image');
+        return $this->hasMany('App\Models\Image');
     }
-
-    public function firstImage()
-    {
-        return $this->images()->take(1);
-    }
-
 
     public function tags()
     {

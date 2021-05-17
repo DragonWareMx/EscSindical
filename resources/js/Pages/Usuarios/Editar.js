@@ -10,7 +10,7 @@ import { Inertia } from '@inertiajs/inertia';
 import Alertas from '../../components/common/Alertas';
 
 
-const Usuarios = ({ user, categories, regimes, units }) => {
+const Usuarios = ({ user, categories, regimes, units, roles }) => {
     //errores de la validacion de laravel
     const { errors } = usePage().props
 
@@ -20,6 +20,8 @@ const Usuarios = ({ user, categories, regimes, units }) => {
         apellido_paterno: user.apellido_p || "",
         apellido_materno: user.apellido_m || "",
         email: user.email || "",
+        contrasena: "",
+        confirmar_contrasena: "",
         fecha_de_nacimiento: user.fecha_nac || "",
         sexo: user.sexo || "",
         matricula: user.matricula || "",
@@ -33,10 +35,11 @@ const Usuarios = ({ user, categories, regimes, units }) => {
         codigo_postal: user.cp || "",
         numero_exterior: user.num_ext || "",
         numero_interior: user.num_int || "",
-        tarjeton_de_pago: user.tarjeton_pago || "",
+        tarjeton_de_pago: "",
         created_at: user.created_at,
-        foto: user.foto ? "/storage/fotos_perfil/" + user.foto : null,
-        deleted_at: user.deleted_at
+        foto: null,
+        deleted_at: user.deleted_at,
+        rol: user.roles[0].name || ""
     })
 
     //actualiza los hooks cada vez que se modifica un input
@@ -57,6 +60,7 @@ const Usuarios = ({ user, categories, regimes, units }) => {
         }
     }
 
+    //-----------------FALTA REVISAR-----------------
     //manda el forumulario
     function handleSubmit(e) {
         e.preventDefault()
@@ -68,6 +72,7 @@ const Usuarios = ({ user, categories, regimes, units }) => {
             }
         )
     }
+    //-----------------FALTA REVISAR-----------------
 
     //boton de cancelar
     function cancelEditUser() {
@@ -81,13 +86,15 @@ const Usuarios = ({ user, categories, regimes, units }) => {
     function changeFoto() {
         var inputFotos = document.getElementById('foto');
         if (inputFotos.files && inputFotos.files[0]) {
+            setValues(values => ({
+                ...values,
+                foto: inputFotos.files[0],
+            }))
             document.getElementById("profileImage").src = window.URL.createObjectURL(inputFotos.files[0]);
         }
-
     }
 
     function changeTarjeton(e){
-        
         var inputFotos = document.getElementById('tarjeton_de_pago');
         if (inputFotos.files && inputFotos.files[0]) {
             setValues(values => ({
@@ -130,16 +137,18 @@ const Usuarios = ({ user, categories, regimes, units }) => {
                                     <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>INFORMACIÓN PERSONAL</p>
 
                                     <div className="col s12" style={{ "display": "flex", "justifyContent": "center", "flexDirection": "column", "marginTop": "5px", "marginBottom": "5px" }}>
-                                        <img id="profileImage" onClick={clickFoto} src={values.foto ? values.foto : "/storage/fotos_perfil/avatar1.jpg"}></img>
+                                        <img id="profileImage" onClick={clickFoto} src={user.foto ? "/storage/fotos_perfil/"+user.foto : "/storage/fotos_perfil/avatar1.jpg"}></img>
                                         <p id="txt-profile" style={{ "cursor": "pointer" }} onClick={clickFoto}>Foto de perfil</p>
                                     </div>
 
-                                    <input id="foto" type="file" className={errors.foto ? "imageUpload validate form-control invalid" : "imageUpload validate form-control"}
-                                        name="foto" placeholder="Photo" accept="image/png, image/jpeg, image/jpg, image/gif" onChange={changeFoto}></input>
-                                    {
-                                        errors.foto &&
-                                        <span className="helper-text" data-error={errors.foto} style={{ "marginBottom": "125px", color: "#F44336", maxHeight: "18px" }}>{errors.foto}</span>
-                                    }
+                                    <div className="input-field">
+                                        <input id="foto" type="file" className={errors.foto ? "imageUpload validate form-control invalid" : "imageUpload validate form-control"}
+                                            name="foto" placeholder="Photo" accept="image/png, image/jpeg, image/jpg, image/gif" onChange={changeFoto}></input>
+                                        {
+                                            errors.foto &&
+                                            <span className="helper-text" data-error={errors.foto} style={{ "marginBottom": "125px", color: "#F44336", maxHeight: "18px" }}>{errors.foto}</span>
+                                        }
+                                    </div>
 
                                     <div className="input-field col s12">
                                         <input disabled={false} id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={values.nombre} onChange={handleChange} autoFocus maxLength="255" />
@@ -194,6 +203,23 @@ const Usuarios = ({ user, categories, regimes, units }) => {
 
                                     <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>INFORMACIÓN INSTITUCIONAL</p>
 
+                                    <div className="area col s12" style={{marginBottom:"4%"}}>
+                                        <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo">help_outline</i></p>
+                                        <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px"}}>
+                                            <div className="col s12">
+                                            <span style={{fontSize:"12px", textAlign: "center", paddingTop:"10px"}} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
+                                            <input type="file" accept="image/png, image/jpeg, image/jpg, application/pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" required autoComplete="tarjeton" onChange={changeTarjeton} />
+                                            {
+                                                errors.tarjeton_de_pago && 
+                                                <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px", color: "#F44336"}}>{errors.tarjeton_de_pago}</span>
+                                            }
+                                            </div>
+                                            <div className="file-path-wrapper">
+                                                <input className="file-path validate" type="text" />
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div className="input-field col s12">
                                         <input disabled={false} id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="255" />
                                         <label htmlFor="matricula">Matrícula</label>
@@ -221,7 +247,7 @@ const Usuarios = ({ user, categories, regimes, units }) => {
 
                                     <div className="col s12" style={{ "marginTop": "5px" }}>
                                         <div className="input-field select-wrapper">
-                                            <input placeholder={values.regimen ? "Selecciona una unidad" : "Selecciona primerio un régimen"} disabled={false} id="unidad" list="unidades" type="text" className={errors.unidad ? "validate form-control invalid" : "validate"} value={values.unidad} onChange={handleChange} required />
+                                            <input placeholder={values.regimen ? "Selecciona una unidad" : "Selecciona primerio un régimen"} disabled={false} id="unidad" list="unidades" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.unidad} onChange={handleChange} required />
                                             <label htmlFor="unidad">Unidad</label>
                                             <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
                                             {
@@ -241,7 +267,7 @@ const Usuarios = ({ user, categories, regimes, units }) => {
 
                                     <div className="col s12">
                                         <div className="input-field select-wrapper">
-                                            <input placeholder="Selecciona una categoría" disabled={false} id="categoria" list="categorias" type="text" className={errors.unidad ? "validate form-control invalid" : "validate"} value={values.categoria} onChange={handleChange} required />
+                                            <input placeholder="Selecciona una categoría" disabled={false} id="categoria" list="categorias" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.categoria} onChange={handleChange} required />
                                             <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
                                             <label htmlFor="categoria">Categoría</label>
                                             {
@@ -261,6 +287,7 @@ const Usuarios = ({ user, categories, regimes, units }) => {
 
                                     <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px" }}>Tarjetón de pago <a target="_blank" href={user == null || user.tarjeton_pago == null ? null : "/storage/tarjetones_pago/" + user.tarjeton_pago}>{user != null && user.tarjeton_pago}</a><i style={{ "color": "#7E7E7E" }} className="material-icons tiny">description</i></p>
                                 </div>
+
                                 <div className="col s12 m6 div-division">
                                     <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>DIRECCIÓN</p>
 
@@ -330,6 +357,7 @@ const Usuarios = ({ user, categories, regimes, units }) => {
                                     <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>CUENTA</p>
 
                                     <div className="input-field col s12">
+                                        <i className="material-icons prefix">account_circle</i>
                                         <input disabled={false} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required autoComplete="email" onChange={handleChange} />
                                         <label htmlFor="email">Correo electrónico</label>
                                         {
@@ -338,10 +366,50 @@ const Usuarios = ({ user, categories, regimes, units }) => {
                                         }
                                     </div>
 
+                                    <div className="input-field col s12">
+                                        <i className="material-icons prefix">lock</i>
+                                        <input disabled={false} id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"} name="contrasena" value={values.contrasena} required onChange={handleChange} />
+                                        <label htmlFor="contrasena">Contraseña</label>
+                                        {
+                                            errors.contrasena &&
+                                            <span className="helper-text" data-error={errors.contrasena} style={{ "marginBottom": "10px" }}>{errors.contrasena}</span>
+                                        }
+                                    </div>
+
+                                    <div className="input-field col s12">
+                                        <i className="material-icons prefix">lock</i>
+                                        <input disabled={false} id="confirmar_contrasena" type="password" className={errors.confirmar_contrasena ? "validate form-control invalid" : "validate form-control"} name="confirmar_contrasena" value={values.confirmar_contrasena} required onChange={handleChange} />
+                                        <label htmlFor="confirmar_contrasena">Confirmar contraseña</label>
+                                        {
+                                            errors.confirmar_contrasena &&
+                                            <span className="helper-text" data-error={errors.confirmar_contrasena} style={{ "marginBottom": "10px" }}>{errors.confirmar_contrasena}</span>
+                                        }
+                                    </div>
+
+                                    <div className="col s12">
+                                        <div className="input-field select-wrapper">
+                                            <input placeholder="Selecciona un rol" disabled={false} id="rol" list="roles" type="text" className={errors.rol ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.rol} onChange={handleChange} required />
+                                            <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                                            <label htmlFor="rol">Rol</label>
+                                            {
+                                                errors.rol &&
+                                                <span className="helper-text" data-error={errors.rol} style={{ "marginBottom": "10px" }}>{errors.rol}</span>
+                                            }
+                                        </div>
+                                        <datalist id="roles">
+                                            {
+                                                roles && roles.length > 0 &&
+                                                roles.map(rol => (
+                                                    <option key={rol.name} value={rol.name} />
+                                                ))
+                                            }
+                                        </datalist>
+                                    </div>
+
                                     <div className="input-field col s12 input-50-re">
                                         {values.created_at ?
                                             <>
-                                                <input disabled={true} id="created_at" max="2004-01-01" type="date" name="created_at" required autoComplete="created_at" value={values.created_at} onChange={handleChange} />
+                                                <input disabled={true} id="created_at" max="2004-01-01" type="date" name="created_at" required autoComplete="created_at" value={values.created_at} />
                                                 <label htmlFor="created_at">Fecha de Registro</label>
                                             </>
                                             :
