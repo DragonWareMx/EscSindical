@@ -105,10 +105,6 @@ class RegisterController extends Controller
             $extension2 = request('tarjeton')->getClientOriginalExtension();
             $newFileName2=$fileName2.'_'.time().'.'.$extension2;
             $path2 = request('tarjeton')->storeAs('/public/tarjetones_pago/',$newFileName2);
-
-            if($data['numero_interior']==null){
-                $data['numero_interior']=0;
-            }
         
         $newUser = User::create([
             'nombre' => $data['nombre'],
