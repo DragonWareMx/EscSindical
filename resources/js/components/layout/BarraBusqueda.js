@@ -49,7 +49,7 @@ export default function BarraBusqueda() {
                     <div className="nav-wrapper">
                         <form>
                             <div className="input-field">
-                                <input id="search" type="search" required style={{ "borderRadius": "4px" }} />
+                                <input  className="main-bar-search-2" id="search" type="search" required style={{ "borderRadius": "4px" }} />
                                 <label className="label-icon margin-search-icons" htmlFor="search"><i className="material-icons">search</i></label>
                                 <i className="material-icons margin-search-icons">close</i>
                             </div>
