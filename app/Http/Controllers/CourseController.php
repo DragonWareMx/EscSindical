@@ -87,12 +87,12 @@ class CourseController extends Controller
             //$newCourse->estatus = $request->;
             $newCourse->descripcion = $request->descripcion;
             $newCourse->teacher_id = Auth::id();
-            $newCourse->link = $request->link; 
-            
+            $newCourse->link = $request->link;
+
             //SE AGREGAN REGISTROS A SUS RELACIONES
             //TAGS
-            
-            
+
+
 
             //CATEGORIAS
 
@@ -119,8 +119,14 @@ class CourseController extends Controller
         }
     }
 
-    public function searchIndex()
+    public function searchIndex(Request $request)
     {
-        return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => Course::with(['teacher', 'tags','firstImage'])->get()]);
+        $cursos = Course::with(['teacher', 'tags', 'firstImage'])->paginate(12);
+
+        if ($request->wantsJson()) {
+            return $cursos;
+        }
+
+        return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => $cursos]);
     }
 }

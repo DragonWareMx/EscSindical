@@ -32,7 +32,7 @@ export default function CourseCardSearch({ curso }) {
                     <div className="row" style={{ "marginBottom": "0px" }}>
                         {/* Nombre del curso */}
                         <div className="col s12 valign-wrapper transicion course-name" style={{ "marginTop": "7px" }}>
-                            <i class="material-icons verified-icon">verified</i>
+                            <i className="material-icons verified-icon">verified</i>
                             {curso.nombre}
                         </div>
                         {/* Nombre del ponente */}
@@ -42,9 +42,9 @@ export default function CourseCardSearch({ curso }) {
                         {/* Tags del curso */}
                         <div className="col s12 courseCard_tags" style={{ "marginTop": "5px" }, { "marginBottom": "5px" }}>
                             <div className="container-tags">
-                                {curso.tags.map(tag =>
-                                    <a className="div-tag" href="#!">
-                                        {tag.nombre} <i class="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
+                                {curso.tags.map((tag, index) =>
+                                    <a className="div-tag" href="#!" key={index}>
+                                        {tag.nombre} <i className="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
                                     </a>
                                 )}
                             </div>
@@ -56,8 +56,8 @@ export default function CourseCardSearch({ curso }) {
                             <div>{transformaFecha(curso.fecha_inicio)}-{transformaFecha(curso.fecha_final)} </div>
                         </div>
                         <div className="button-course col s12 transicion" >
-                            <button class="btn waves-effect waves-light" name="action">Inscribirme
-                                <i class="material-icons right">add_circle</i>
+                            <button className="btn waves-effect waves-light" name="action">Inscribirme
+                                <i className="material-icons right">add_circle</i>
                             </button>
                         </div>
 

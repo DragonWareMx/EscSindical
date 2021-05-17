@@ -163,7 +163,7 @@
 .transicion { transition: .5s cubic-bezier(.3, 0, 0, 1.3) }
 
 .course-card:hover{
-    height: auto;
+    height: auto !important;
 }
 
 .course-card:hover .button-course{
@@ -182,4 +182,8 @@
     position: absolute;
     top: 90px;
     display: flex !important;
+}
+
+.course-card{
+    height: 280px !important;
 }
