@@ -29,12 +29,8 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
+   
+    
 
     /**
      * Create a new controller instance.
@@ -110,7 +106,7 @@ class RegisterController extends Controller
             $path2 = request('tarjeton')->storeAs('/public/tarjetones_pago/',$newFileName2);
 
         
-        return User::create([
+        $newUser = User::create([
             'nombre' => $data['nombre'],
             'foto' => $newFileName,
             'apellido_p' => $data['apellido_paterno'],
@@ -132,7 +128,9 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
 
         ]);
-        // $newUser->roles()->sync(3);
+        $newUser->roles()->sync(3);
+        return $newUser;
+        
         
     }
 }
