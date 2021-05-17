@@ -59,7 +59,7 @@
 {
     margin: 0px !important;
     width: 100%;
-    height: 130px;
+    height: 180px;
     object-fit: cover;
 }
 
@@ -160,10 +160,9 @@
     display: none;
 }
 
-.transicion { transition: .5s cubic-bezier(.3, 0, 0, 1.3) }
 
 .course-card:hover{
-    height: auto !important;
+    height: 320px !important;
 }
 
 .course-card:hover .button-course{
@@ -175,15 +174,15 @@
 }
 
 .course-card:hover .course-image{
-    height: 200px;
+    height: 50px;
 }
 
 .course-card:hover .course-name{
     position: absolute;
-    top: 90px;
+    top: 15px;
     display: flex !important;
 }
 
 .course-card{
-    height: 280px !important;
+    height: 320px !important;
 }
