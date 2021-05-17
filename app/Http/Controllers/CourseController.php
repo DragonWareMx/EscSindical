@@ -129,4 +129,8 @@ class CourseController extends Controller
 
         return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => $cursos]);
     }
+
+    public function layout(){
+        return Inertia::render('Cursos/layoutCursos');
+    }
 }

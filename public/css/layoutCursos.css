@@ -1,0 +1,15 @@
+.LC_title{
+    color:#134E39;
+    font-weight: 500;
+    font-size: 17px;
+    min-height: 36px !important;
+}
+
+.LC_more{
+    display: flex;
+    justify-content: flex-end;
+}
+
+#dropdown_LC{
+    width: 242px;
+}
