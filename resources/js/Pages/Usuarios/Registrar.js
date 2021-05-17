@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../layouts/Layout';
-import { usePage } from '@inertiajs/inertia-react'
+import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 
 import '../../styles/usersStyle.css'
 import '/css/infoAlumno.css'
@@ -10,7 +10,7 @@ import { Inertia } from '@inertiajs/inertia';
 import Alertas from '../../components/common/Alertas';
 
 
-const Usuarios = ({ categories, regimes, units }) => {
+const Usuarios = ({ categories, regimes, units, roles }) => {
     //errores de la validacion de laravel
     const { errors } = usePage().props
 
@@ -37,6 +37,7 @@ const Usuarios = ({ categories, regimes, units }) => {
         numero_interior: "",
         tarjeton_de_pago: "",
         foto: null,
+        rol: ""
     })
 
     //actualiza los hooks cada vez que se modifica un input
@@ -126,7 +127,7 @@ const Usuarios = ({ categories, regimes, units }) => {
             <div className="col contenedor s12">
                 <div className="card darken-1 cardUsers">
                     <div className="card-content">
-                        <span className="card-title">Usuarios / Crear Usuario</span>
+                        <span className="card-title"><InertiaLink href={route('usuarios')} style={{color: "#134E39"}}>Usuarios</InertiaLink> / Crear Usuario</span>
                         <Alertas />
                         {/* ----Formulario---- */}
                         <form onSubmit={handleSubmit}>
@@ -364,7 +365,7 @@ const Usuarios = ({ categories, regimes, units }) => {
                                     <div className="input-field col s12">
                                         <i className="material-icons prefix">lock</i>
                                         <input disabled={false} id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"} name="contrasena" value={values.contrasena} required onChange={handleChange} />
-                                        <label htmlFor="email">Contraseña</label>
+                                        <label htmlFor="contrasena">Contraseña</label>
                                         {
                                             errors.contrasena &&
                                             <span className="helper-text" data-error={errors.contrasena} style={{ "marginBottom": "10px" }}>{errors.contrasena}</span>
@@ -374,11 +375,31 @@ const Usuarios = ({ categories, regimes, units }) => {
                                     <div className="input-field col s12">
                                         <i className="material-icons prefix">lock</i>
                                         <input disabled={false} id="confirmar_contrasena" type="password" className={errors.confirmar_contrasena ? "validate form-control invalid" : "validate form-control"} name="confirmar_contrasena" value={values.confirmar_contrasena} required onChange={handleChange} />
-                                        <label htmlFor="email">Confirmar contraseña</label>
+                                        <label htmlFor="confirmar_contrasena">Confirmar contraseña</label>
                                         {
                                             errors.confirmar_contrasena &&
                                             <span className="helper-text" data-error={errors.confirmar_contrasena} style={{ "marginBottom": "10px" }}>{errors.confirmar_contrasena}</span>
                                         }
+                                    </div>
+
+                                    <div className="col s12">
+                                        <div className="input-field select-wrapper">
+                                            <input placeholder="Selecciona una categoría" disabled={false} id="rol" list="roles" type="text" className={errors.rol ? "validate form-control invalid" : "validate"} value={values.rol} onChange={handleChange} required />
+                                            <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                                            <label htmlFor="rol">Rol</label>
+                                            {
+                                                errors.rol &&
+                                                <span className="helper-text" data-error={errors.rol} style={{ "marginBottom": "10px" }}>{errors.rol}</span>
+                                            }
+                                        </div>
+                                        <datalist id="roles">
+                                            {
+                                                roles && roles.length > 0 &&
+                                                roles.map(rol => (
+                                                    <option key={rol.name} value={rol.name} />
+                                                ))
+                                            }
+                                        </datalist>
                                     </div>
                                 </div>
                             </div>

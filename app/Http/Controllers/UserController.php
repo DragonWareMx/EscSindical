@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Regime;
 use App\Models\Unit;
 use App\Models\Log;
+use App\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -152,8 +153,9 @@ class UserController extends Controller
     public function create(Request $request)
     {
         return Inertia::render('Usuarios/Registrar', [
-            'categories'=> fn () => Category::select('id','nombre')->get(),
-            'regimes'=> fn () => Regime::select('id','nombre')->get(),
+            'categories'=> fn () => Category::select('nombre')->get(),
+            'regimes'=> fn () => Regime::select('nombre')->get(),
+            'roles'=> fn () => Role::select('name')->get(),
             'units'=>  Inertia::lazy(
                 fn () => Unit::select('units.id','units.nombre')
                             ->leftJoin('regimes', 'regimes.id', '=', 'units.regime_id')
@@ -177,7 +179,6 @@ class UserController extends Controller
         //\Gate::authorize('haveaccess', 'admin.perm');
 
         $validated = $request->validate([
-            //---falta el de la foto
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
 
             //---informacion personal---
@@ -205,7 +206,6 @@ class UserController extends Controller
             'codigo_postal' => ['required','max:9','regex:/^\d{5}$/i'],
 
             //---cuenta---
-            //--FALTA TARJETON DE PAGO
             'tarjeton_de_pago' => 'required|file|mimes:jpeg,png,jpg,pdf|max:51200',
             'email' => 'required|email:rfc|max:255|unique:users',
             //'contrasena' => 'required|min:8',
@@ -218,6 +218,8 @@ class UserController extends Controller
                     ->uncompromised(),
             ],
             'confirmar_contrasena' => 'required|min:8|same:contrasena',
+
+            'rol' => 'required|exists:roles,name'
         ]);
         // El nuevo usuario es valido...
 
@@ -260,10 +262,18 @@ class UserController extends Controller
                 return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
             }
 
+            $rol = Role::where("name", $request->rol)->get();
+
+            if($rol->isEmpty())
+            {
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
+
             //SE CREA EL NUEVO USUARIO
             $newUser = new User;
 
-            $foto = $request->file('foto')->store('public/tarjetones_pago');
+            $foto = $request->file('foto')->store('public/fotos_perfil');
             $newUser->foto = $request->file('foto')->hashName();
             
             //---informacion personal---
@@ -279,7 +289,7 @@ class UserController extends Controller
             $newUser->categorie_id = $categoria[0]->id;
 
 
-            $tarjeton_pago = $request->file('tarjeton_de_pago')->store('public/fotos_perfil');
+            $tarjeton_pago = $request->file('tarjeton_de_pago')->store('public/tarjetones_pago');
             $newUser->tarjeton_pago = $request->file('tarjeton_de_pago')->hashName();
             
             //---direccion---
@@ -294,10 +304,14 @@ class UserController extends Controller
             //---cuenta---
             $newUser->email = $request->email;
             $newUser->password = \Hash::make($request->contrasena);
+
             
             //SE GUARDA EL NUEVO USUARIO
             $newUser->save();
             
+            //se asigna el rol
+            $newUser->roles()->sync([$rol[0]->id]);
+
             //SE CREA EL LOG
             $newLog = new Log;
             
@@ -344,7 +358,7 @@ class UserController extends Controller
             }
 
             //REDIRECCIONA A LA VISTA DE USUARIOS
-            return \Redirect::route('usuarios');
+            return \Redirect::route('usuarios')->with('success','El usuario ha sido registrado exitosamente!');
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -382,6 +396,7 @@ class UserController extends Controller
                             ->findOrFail($id),
             'categories'=> fn () => Category::select('id','nombre')->get(),
             'regimes'=> fn () => Regime::select('id','nombre')->get(),
+            'roles'=> fn () => Role::select('name')->get(),
             'units'=>  Inertia::lazy(
                 fn () => Unit::select('units.id','units.nombre')
                             ->leftJoin('regimes', 'regimes.id', '=', 'units.regime_id')

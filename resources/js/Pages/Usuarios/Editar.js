@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../layouts/Layout';
-import { usePage } from '@inertiajs/inertia-react'
+import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 
 import '../../styles/usersStyle.css'
 import '/css/infoAlumno.css'
@@ -121,7 +121,7 @@ const Usuarios = ({ user, categories, regimes, units }) => {
             <div className="col contenedor s12">
                 <div className="card darken-1 cardUsers">
                     <div className="card-content">
-                        <span className="card-title">Usuarios / Editar Usuario</span>
+                        <span className="card-title"><InertiaLink href={route('usuarios')} style={{color: "#134E39"}}>Usuarios</InertiaLink> / Editar Usuario</span>
                         <Alertas />
                         {/* ----Formulario---- */}
                         <form onSubmit={handleSubmit}>
