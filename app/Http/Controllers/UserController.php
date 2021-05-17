@@ -30,6 +30,9 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        //valida el rol del usuario
+        \Gate::authorize('haveaccess', 'admin.perm');
+
         return Inertia::render('Usuarios/Usuarios', [
             'users' => fn () => User::with('roles', 'categorie')
                 ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
@@ -152,6 +155,9 @@ class UserController extends Controller
      */
     public function create(Request $request)
     {
+        //valida el rol del usuario
+        \Gate::authorize('haveaccess', 'admin.perm');
+
         return Inertia::render('Usuarios/Registrar', [
             'categories'=> fn () => Category::select('nombre')->get(),
             'regimes'=> fn () => Regime::select('nombre')->get(),
@@ -175,7 +181,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //---Validar el rol del usuario---
+        //valida el rol del usuario
         \Gate::authorize('haveaccess', 'admin.perm');
 
         $validated = $request->validate([
@@ -420,6 +426,9 @@ class UserController extends Controller
      */
     public function edit($id, Request $request)
     {
+        //valida el rol del usuario
+        \Gate::authorize('haveaccess', 'admin.perm');
+
         return Inertia::render('Usuarios/Editar', [
             'user' => User::with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.images:course_id,imagen', 'finishedCourses.images:course_id,imagen', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre', 'roles:name'])
                             ->findOrFail($id),
@@ -447,6 +456,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //valida el rol del usuario
+        \Gate::authorize('haveaccess', 'admin.perm');
+
         $validated = $request->validate([
             //---falta el de la foto
             'foto' => 'nullable',
@@ -524,6 +536,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        //valida el rol del usuario
+        \Gate::authorize('haveaccess', 'admin.perm');
+
         DB::beginTransaction();
         try{
             $user = User::find($id);
@@ -544,15 +559,17 @@ class UserController extends Controller
                     id: ' . $id .
                 '}
             }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha eliminado al usuario: '. $user->email;
+
             $newLog->save();
-            throw new \Exception;
+
             DB::commit();
-
-            return redirect('usuarios');
-
+            return \Redirect::route('usuarios')->with('success','¡Usuario eliminado con éxito!');
+            
         } catch (\Exception $e) {
             DB::rollBack();
-            return \Redirect::back()->with('message','no se pudo master :C');
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar eliminar el usuario, inténtelo más tarde.');
         }
     }
 }
