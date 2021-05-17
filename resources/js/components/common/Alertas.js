@@ -19,7 +19,7 @@ export default function Alertas() {
             }
             {flash.success &&  
                
-               <li className="alert_sucess row">
+               <li className="alert_success row">
                    <div className="col s11">{flash.success}</div>
                    <div><i className="col s1 tiny material-icons">clear</i></div>
                </li>

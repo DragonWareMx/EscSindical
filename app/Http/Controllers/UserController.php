@@ -206,7 +206,7 @@ class UserController extends Controller
 
             //---cuenta---
             //--FALTA TARJETON DE PAGO
-            'tarjeton_de_pago' => 'required|image|mimes:jpeg,png,jpg,pdf|max:51200',
+            'tarjeton_de_pago' => 'required|file|mimes:jpeg,png,jpg,pdf|max:51200',
             'email' => 'required|email:rfc|max:255|unique:users',
             //'contrasena' => 'required|min:8',
             'contrasena' => [
@@ -229,13 +229,41 @@ class UserController extends Controller
         DB::beginTransaction();
 
         try {
-            //---verificar que el regimen y la unidad esten relacionados---
+            $regimen = Regime::where("nombre", $request->regimen)->get();
 
+            if($regimen->isEmpty())
+            {
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
+
+            $unidad = Unit::where("nombre", $request->unidad)->get();
+
+            if($unidad->isEmpty())
+            {
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
+
+            $categoria = Category::where("nombre", $request->categoria)->get();
+
+            if($categoria->isEmpty())
+            {
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
+
+            //verifica que la unidad y el regimen esten relacionados
+            if($unidad[0]->regime->id != $regimen[0]->id)
+            {
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
 
             //SE CREA EL NUEVO USUARIO
             $newUser = new User;
 
-            $foto = $request->file('foto')->store('public/fotos_perfil');
+            $foto = $request->file('foto')->store('public/tarjetones_pago');
             $newUser->foto = $request->file('foto')->hashName();
             
             //---informacion personal---
@@ -247,10 +275,12 @@ class UserController extends Controller
             
             //---informacion institucional---
             $newUser->matricula = $request->matricula;
-            //regimen...
-            //unidad...
-            //categoria
-            //tarjeton de pago
+            $newUser->unit_id = $unidad[0]->id;
+            $newUser->categorie_id = $categoria[0]->id;
+
+
+            $tarjeton_pago = $request->file('tarjeton_de_pago')->store('public/fotos_perfil');
+            $newUser->tarjeton_pago = $request->file('tarjeton_de_pago')->hashName();
             
             //---direccion---
             $newUser->estado = $request->estado;
@@ -277,9 +307,9 @@ class UserController extends Controller
             '{
                 users: {
                     nombre: ' . $request->nombre .
-                    'apellido_p: ' . $request->apellido_p .
-                    'apellido_m: ' . $request->apellido_m .
-                    'fecha_nac: ' . $request->fecha_nac .
+                    'apellido_p: ' . $request->apellido_paterno .
+                    'apellido_m: ' . $request->apellido_materno .
+                    'fecha_nac: ' . $request->fecha_de_nacimiento .
                     
                     'matricula: ' . $request->matricula .
                     '//regimen...
@@ -298,6 +328,8 @@ class UserController extends Controller
                     'email: ' . $request->email .
                 '}
             }';
+
+            //$newLog->descripcion = 'El usuario '.Auth::user()->email.' ha registrado un nuevo usuario.';
                 
             //SE GUARDA EL LOG
             $newLog->save();

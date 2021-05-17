@@ -92,7 +92,6 @@ const Usuarios = ({ categories, regimes, units }) => {
     }
 
     function changeTarjeton(e){
-        console.log(e)
         
         var inputFotos = document.getElementById('tarjeton_de_pago');
         if (inputFotos.files && inputFotos.files[0]) {
@@ -209,7 +208,7 @@ const Usuarios = ({ categories, regimes, units }) => {
                                             <input type="file" accept="image/png, image/jpeg, image/jpg, application/pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" required autoComplete="tarjeton" onChange={changeTarjeton} />
                                             {
                                                 errors.tarjeton_de_pago && 
-                                                <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px"}}>{errors.tarjeton_de_pago}</span>
+                                                <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px", color: "#F44336"}}>{errors.tarjeton_de_pago}</span>
                                             }
                                             </div>
                                             <div className="file-path-wrapper">

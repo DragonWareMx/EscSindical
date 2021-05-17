@@ -86,6 +86,18 @@ const Usuarios = ({ user, categories, regimes, units }) => {
 
     }
 
+    function changeTarjeton(e){
+        
+        var inputFotos = document.getElementById('tarjeton_de_pago');
+        if (inputFotos.files && inputFotos.files[0]) {
+            setValues(values => ({
+                ...values,
+                tarjeton_de_pago: inputFotos.files[0],
+            }))
+        }
+
+    }
+
     function initializeSelects() {
         var elems = document.querySelectorAll('select');
         var instances = M.FormSelect.init(elems);
