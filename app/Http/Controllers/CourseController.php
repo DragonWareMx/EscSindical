@@ -123,4 +123,8 @@ class CourseController extends Controller
     {
         return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => Course::with(['teacher', 'tags','firstImage'])->get()]);
     }
+
+    public function prueba(){
+        return Inertia::render('Cursos/Prueba');
+    }
 }
