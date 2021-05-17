@@ -17,10 +17,10 @@ export default function Alertas() {
                     <div><i className="col s1 tiny material-icons">clear</i></div>
                 </li>
             }
-            {flash.sucess &&  
+            {flash.success &&  
                
                <li className="alert_sucess row">
-                   <div className="col s11">{flash.sucess}</div>
+                   <div className="col s11">{flash.success}</div>
                    <div><i className="col s1 tiny material-icons">clear</i></div>
                </li>
            }

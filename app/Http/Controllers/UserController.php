@@ -148,9 +148,20 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return Inertia::render('Usuarios/Registrar', [
+            'categories'=> fn () => Category::select('id','nombre')->get(),
+            'regimes'=> fn () => Regime::select('id','nombre')->get(),
+            'units'=>  Inertia::lazy(
+                fn () => Unit::select('units.id','units.nombre')
+                            ->leftJoin('regimes', 'regimes.id', '=', 'units.regime_id')
+                            ->when($request->regime, function ($query, $regime) {
+                                $query->where('regimes.nombre',$regime);
+                            })
+                            ->get()
+            )
+        ]);
     }
 
     /**
@@ -164,22 +175,37 @@ class UserController extends Controller
         //---Validar el rol del usuario---
 
         $validated = $request->validate([
-            'nombre' => 'required|unique:users|max:255',
-            'apellido_p' => 'required',
-            'apellido_m' => 'required|unique:users|max:255',
-            'email' => 'required',
+            //---falta el de la foto
             'foto' => 'required',
-            'fecha_nac' => 'required',
-            'estado' => 'required',
-            'ciudad' => 'required',
-            'colonia' => 'required',
-            'calle' => 'required',
-            'num_ext' => 'required',
-            'num_int' => 'required',
-            'cp' => 'required',
-            'tarjeton_pago' => 'required',
-            'matricula' => 'required',
-            'categorie_id' => 'required',
+
+            //---informacion personal---
+            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'apellido_paterno' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'apellido_materno' => ['nullable','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'fecha_de_nacimiento' => 'required|date|before:17 years ago',
+            'sexo' => 'required|in:h,m,o',
+
+            //---informacion institucional---
+            
+            //-de momento las matriculas son numeros solamente de tamaño maximo de 255-
+            'matricula' => 'required|digits_between:0,255|numeric|unique:users,matricula,'.$id,
+            'regimen' => 'required|exists:regimes,nombre',
+            'unidad' => 'required|exists:units,nombre',
+            'categoria' => 'required|exists:categories,nombre',
+
+            //direccion
+            'estado' => ['required','max:50','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'ciudad' => ['required','max:60','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'colonia' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'calle' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'numero_exterior' => ['required','max:10','regex:/^(((#|[nN][oO]\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'numero_interior' => ['nullable','max:10','regex:/^(((#|[nN][oO]\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'codigo_postal' => ['required','max:9','regex:/^\d{5}$/i'],
+
+            //---cuenta---
+            //--FALTA TARJETON DE PAGO
+            'tarjeton_de_pago' => 'nullable',
+            'email' => 'required|email:rfc|max:255',
         ]);
         // El nuevo usuario es valido...
 
@@ -286,9 +312,23 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
-        //
+        return Inertia::render('Usuarios/Editar', [
+            'user' => User::with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.firstImage:imagen', 'finishedCourses.firstImage:imagen', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre'])
+                            ->findOrFail($id),
+            'categories'=> fn () => Category::select('id','nombre')->get(),
+            'regimes'=> fn () => Regime::select('id','nombre')->get(),
+            'units'=>  Inertia::lazy(
+                fn () => Unit::select('units.id','units.nombre')
+                            ->leftJoin('regimes', 'regimes.id', '=', 'units.regime_id')
+                            ->when($request->regime, function ($query, $regime) {
+                                $query->where('regimes.nombre',$regime);
+                            })
+                            ->get()
+            )
+        ]);
+        
     }
 
     /**
@@ -301,45 +341,69 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'nombre' => 'required|unique:users|max:1',
-            'apellido_p' => 'required',
-            'apellido_m' => 'required|unique:users|max:255',
-            'email' => 'required',
-            'foto' => 'required',
-            'fecha_nac' => 'required',
-            'estado' => 'required',
-            'ciudad' => 'required',
-            'colonia' => 'required',
-            'calle' => 'required',
-            'num_ext' => 'required',
-            'num_int' => 'required',
-            'cp' => 'required',
-            'tarjeton_pago' => 'required',
-            'matricula' => 'required',
-            'categorie_id' => 'required',
+            //---falta el de la foto
+            'foto' => 'nullable',
+
+            //---informacion personal---
+            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'apellido_paterno' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'apellido_materno' => ['nullable','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'fecha_de_nacimiento' => 'required|date|before:17 years ago',
+            'sexo' => 'required|in:h,m,o',
+
+            //---informacion institucional---
+            
+            //-de momento las matriculas son numeros solamente de tamaño maximo de 255-
+            'matricula' => 'required|digits_between:0,255|numeric|unique:users,matricula,'.$id,
+            'regimen' => 'required|exists:regimes,nombre',
+            'unidad' => 'required|exists:units,nombre',
+            'categoria' => 'required|exists:categories,nombre',
+
+            //direccion
+            'estado' => ['required','max:50','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'ciudad' => ['required','max:60','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'colonia' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'calle' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'numero_exterior' => ['required','max:10','regex:/^(((#|[nN][oO]\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'numero_interior' => ['nullable','max:10','regex:/^(((#|[nN][oO]\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'codigo_postal' => ['required','max:9','regex:/^\d{5}$/i'],
+
+            //---cuenta---
+            //--FALTA TARJETON DE PAGO
+            'tarjeton_de_pago' => 'nullable',
         ]);
 
         $user = User::find($id);
-        $user->nombre = $request->nombre;
-        $user->apellido_p = $request->apellido_p;
-        $user->apellido_m = $request->apellido_m;
-        $user->email = $request->email;
-        $user->password = $request->password;
+        //---informacion personal---
         $user->foto = $request->foto;
-        $user->fecha_nac = $request->fecha_nac;
+        $user->nombre = $request->nombre;
+        $user->apellido_p = $request->apellido_paterno;
+        $user->apellido_m = $request->apellido_materno;
+        $user->fecha_nac = $request->fecha_de_nacimiento;
+
+        //---informacion institucional---
+        $user->matricula = $request->matricula;
+        //regimen...
+        //unidad...
+        //categoria
+        $user->tarjeton_pago = $request->tarjeton_de_pago;
+
+        //---direccion---
         $user->estado = $request->estado;
         $user->ciudad = $request->ciudad;
         $user->colonia = $request->colonia;
         $user->calle = $request->calle;
-        $user->num_ext = $request->num_ext;
-        $user->num_int = $request->num_int;
-        $user->cp = $request->cp;
-        $user->tarjeton_pago = $request->tarjeton_pago;
-        $user->matricula = $request->matricula;
-        $user->categorie_id = $request->categorie_id;
-        if ($user->save()) {
-            return response()->json(["status" => 200]);
-        }
+        $user->num_ext = $request->numero_exterior;
+        $user->num_int = $request->numero_interior;
+        $user->cp = $request->codigo_postal;
+
+        //---cuenta---
+        $user->email = $request->email;
+
+        //SE GUARDA EL NUEVO USUARIO
+        $user->save();
+
+        return \Redirect::route('usuarios')->with('success','¡Usuario editado de manera exitosa!');
     }
 
     /**
