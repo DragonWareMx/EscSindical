@@ -382,9 +382,9 @@ const Usuarios = ({ categories, regimes, units }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row">
-                                <button type="button" className="col s3 m2 center-align offset-s6 offset-m8 btn waves-effect waves-light" onClick={cancelEditUser}>Cancelar</button>
-                                <button type="submit" className="col s3 m2 center-align btn waves-effect waves-light">
+                            <div className="row container-buttons">
+                                <button type="button" className=" center-align  btn waves-effect waves-light cancelar" style={{ marginRight: "15px" }} onClick={cancelEditUser}>Cancelar</button>
+                                < button type="submit" className=" center-align btn waves-effect waves-light guardar" style={{ marginRight: "3%", marginLeft: "0" }}>
                                     Guardar
                                     <i className="material-icons right">save</i>
                                 </button>
