@@ -12,15 +12,42 @@ import route from 'ziggy-js';
 import '../../styles/buscarCursos.css';
 
 import CourseCardSearch from '../../components/cursos/CourseCardSearch'
+import CourseCardSearchHover from '../../components/cursos/CourseCardSearchHover'
+import axios from 'axios';
+import { debounce } from 'lodash';
 
 function initializeMat() {
 }
 
 const BuscarCursos = ({ cursos }) => {
 
+    const [state, setState] = useState({
+        cursos: cursos
+    })
+
     useEffect(() => {
         //initializeMat();
+        window.addEventListener('scroll', debounce((e) => {
+            let pixelsFromBottom = document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight;
+            if (pixelsFromBottom < 200) {
+                axios.get(cursos.next_page_url).then(response => {
+                    console.log(response)
+                    setState(state => ({
+                        ...state,
+                        cursos: {
+                            ...response.data,
+                            data: [...state.cursos.data, ...response.data.data]
+                        }
+                    }))
+                    console.log(state.cursos)
+                });
+            }
+        }, 100));
     }, [])
+
+    useEffect(() => {
+        console.log('hola', cursos)
+    }, [cursos]);
 
     const responsive = {
         0: {
@@ -52,40 +79,40 @@ const BuscarCursos = ({ cursos }) => {
                             <h1>CURSOS PARA TI</h1>
                             <OwlCarousel className='owl-theme' loop margin={36} nav autoplay responsive={responsive}>
                                 <div className='item'>
-                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                    <CourseCardSearch curso={cursos.data['0']} />
                                 </div>
                                 <div className='item'>
-                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                    <CourseCardSearch curso={cursos.data['1']} />
                                 </div>
                                 <div className='item'>
-                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                    <CourseCardSearch curso={cursos.data['0']} />
                                 </div>
                                 <div className='item'>
-                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                    <CourseCardSearch curso={cursos.data['1']} />
                                 </div>
                                 <div className='item'>
-                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                    <CourseCardSearch curso={cursos.data['0']} />
                                 </div>
                                 <div className='item'>
-                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                    <CourseCardSearch curso={cursos.data['1']} />
                                 </div>
                                 <div className='item'>
-                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                    <CourseCardSearch curso={cursos.data['0']} />
                                 </div>
                                 <div className='item'>
-                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                    <CourseCardSearch curso={cursos.data['1']} />
                                 </div>
                                 <div className='item'>
-                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                    <CourseCardSearch curso={cursos.data['0']} />
                                 </div>
                                 <div className='item'>
-                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                    <CourseCardSearch curso={cursos.data['1']} />
                                 </div>
                                 <div className='item'>
-                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                    <CourseCardSearch curso={cursos.data['0']} />
                                 </div>
                                 <div className='item'>
-                                    <img src="/storage/fotos_perfil/avatar1.jpg" />
+                                    <CourseCardSearch curso={cursos.data['1']} />
                                 </div>
                             </OwlCarousel>
                         </div>
@@ -97,12 +124,25 @@ const BuscarCursos = ({ cursos }) => {
                         <div className="card-content">
                             <h1>MÁS CURSOS</h1>
                             <div className="row">
-                                {cursos.map(curso=>
-                                    <div className="col s12 m6 l3">
+                                {state.cursos.data.map(curso =>
+                                    <div className="col s12 m6 l3" key={curso.id}>
                                         {/* Aqui va el componente */}
                                         <CourseCardSearch curso={curso} />
-                                    </div>  
+                                    </div>
                                 )}
+                                <div className="col s12 m6 l3 red" style={{ "position": "relative" }}>
+                                    {/* Aqui va el componente */}
+                                    <CourseCardSearchHover />
+                                </div>
+                                <div className="col s12 m6 l3 green" style={{ "position": "relative" }}>
+                                    {/* Aqui va el componente */}
+                                    <CourseCardSearchHover />
+                                </div>
+                                <div className="col s12 m6 l3 yellow" style={{ "position": "relative" }}>
+                                    {/* Aqui va el componente */}
+                                    <CourseCardSearchHover />
+                                </div>
+
                             </div>
                         </div>
                     </div>
