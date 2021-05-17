@@ -7,6 +7,7 @@ import '/css/infoAlumno.css'
 import '/css/register.css'
 import route from 'ziggy-js';
 import { Inertia } from '@inertiajs/inertia';
+import Alertas from '../../components/common/Alertas';
 
 
 const Usuarios = ({user, categories, regimes, units}) => {
@@ -75,11 +76,11 @@ const Usuarios = ({user, categories, regimes, units}) => {
     }
 
     function clickFoto(){
-        document.getElementById("imageUpload").click();
+        document.getElementById("foto").click();
     }
 
     function changeFoto(){
-        var inputFotos = document.getElementById('imageUpload');
+        var inputFotos = document.getElementById('foto');
         if ( inputFotos.files && inputFotos.files[0] ){
             document.getElementById("profileImage").src = window.URL.createObjectURL(inputFotos.files[0]);
         }
@@ -110,7 +111,7 @@ const Usuarios = ({user, categories, regimes, units}) => {
                 <div className="card darken-1 cardUsers">
                     <div className="card-content">
                         <span className="card-title">Usuarios / Editar Usuario</span>
-
+                        <Alertas />
                         {/* ----Formulario---- */}
                         <form onSubmit={handleSubmit}>
                             <div className="row div-form-register" style={{"padding":"3%"}}>
@@ -122,11 +123,11 @@ const Usuarios = ({user, categories, regimes, units}) => {
                                         <p id="txt-profile" style={{"cursor":"pointer"}} onClick={clickFoto}>Foto de perfil</p>
                                     </div>
 
-                                    <input id="imageUpload" type="file" className={errors.foto ? "validate form-control invalid" : "validate form-control"}
+                                    <input id="foto" type="file" className={errors.foto ? "imageUpload validate form-control invalid" : "imageUpload validate form-control"}
                                         name="foto" placeholder="Photo" accept="image/png, image/jpeg, image/jpg, image/gif" onChange={changeFoto}></input>
                                         {
                                             errors.foto && 
-                                            <span className="helper-text" data-error={errors.foto} style={{"marginBottom":"10px"}}>{errors.foto}</span>
+                                            <span className="helper-text" data-error={errors.foto} style={{"marginBottom":"125px", color: "#F44336",maxHeight: "18px"}}>{errors.foto}</span>
                                         }
 
                                     <div className="input-field col s12">

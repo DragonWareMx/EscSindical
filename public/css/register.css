@@ -18,6 +18,10 @@
     display: none;
 }
 
+.imageUpload{
+    display: none;
+}
+
 #profileImage{
     cursor: pointer;
     width: 80px;

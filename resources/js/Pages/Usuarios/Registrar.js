@@ -7,6 +7,7 @@ import '/css/infoAlumno.css'
 import '/css/register.css'
 import route from 'ziggy-js';
 import { Inertia } from '@inertiajs/inertia';
+import Alertas from '../../components/common/Alertas';
 
 
 const Usuarios = ({categories, regimes, units}) => {
@@ -19,6 +20,8 @@ const Usuarios = ({categories, regimes, units}) => {
         apellido_paterno: "",
         apellido_materno: "",
         email: "",
+        contrasena: "",
+        confirmar_contrasena: "",
         fecha_de_nacimiento: "",
         sexo: "",
         matricula: "",
@@ -73,12 +76,17 @@ const Usuarios = ({categories, regimes, units}) => {
     }
 
     function clickFoto(){
-        document.getElementById("imageUpload").click();
+        document.getElementById("foto").click();
     }
 
     function changeFoto(){
-        var inputFotos = document.getElementById('imageUpload');
+        
+        var inputFotos = document.getElementById('foto');
         if ( inputFotos.files && inputFotos.files[0] ){
+            setValues(values => ({
+                ...values,
+                foto: inputFotos.files[0],
+            }))
             document.getElementById("profileImage").src = window.URL.createObjectURL(inputFotos.files[0]);
         }
         
@@ -108,7 +116,7 @@ const Usuarios = ({categories, regimes, units}) => {
                 <div className="card darken-1 cardUsers">
                     <div className="card-content">
                         <span className="card-title">Usuarios / Crear Usuario</span>
-
+                        <Alertas/>
                         {/* ----Formulario---- */}
                         <form onSubmit={handleSubmit}>
                             <div className="row div-form-register" style={{"padding":"3%"}}>
@@ -116,16 +124,18 @@ const Usuarios = ({categories, regimes, units}) => {
                                     <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN PERSONAL</p>
 
                                     <div className="col s12" style={{"display": "flex","justifyContent":"center", "flexDirection":"column","marginTop":"5px","marginBottom":"5px"}}>
-                                        <img id="profileImage" onClick={clickFoto} src={values.foto ? values.foto : "/storage/fotos_perfil/avatar1.jpg"}></img>
+                                        <img id="profileImage" onClick={clickFoto} src={"/storage/fotos_perfil/avatar1.jpg"}></img>
                                         <p id="txt-profile" style={{"cursor":"pointer"}} onClick={clickFoto}>Foto de perfil</p>
                                     </div>
 
-                                    <input id="imageUpload" type="file" className={errors.foto ? "validate form-control invalid" : "validate form-control"}
+                                    <div className="input-field">
+                                        <input id="foto" type="file" className={errors.foto ? "imageUpload validate form-control invalid" : "imageUpload validate form-control"}
                                         name="foto" placeholder="Photo" accept="image/png, image/jpeg, image/jpg, image/gif" onChange={changeFoto}></input>
                                         {
                                             errors.foto && 
-                                            <span className="helper-text" data-error={errors.foto} style={{"marginBottom":"10px"}}>{errors.foto}</span>
+                                            <span className="helper-text" data-error={errors.foto} style={{"marginBottom":"125px", color: "#F44336",maxHeight: "18px"}}>{errors.foto}</span>
                                         }
+                                    </div>
 
                                     <div className="input-field col s12">
                                         <input  disabled={false} id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={values.nombre} onChange={handleChange} autoFocus maxLength="255"/>
@@ -316,7 +326,8 @@ const Usuarios = ({categories, regimes, units}) => {
                                     <p className="titles-sub" style={{"marginLeft":"3%"}}>CUENTA</p>
 
                                     <div className="input-field col s12">
-                                        <input disabled={false} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"}  name="email" value={values.email} required autoComplete="email" onChange={handleChange}/>
+                                        <i class="material-icons prefix">account_circle</i>
+                                        <input disabled={false} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"}  name="email" value={values.email} required onChange={handleChange}/>
                                         <label htmlFor="email">Correo electrónico</label>
                                         {
                                             errors.email && 
@@ -324,16 +335,23 @@ const Usuarios = ({categories, regimes, units}) => {
                                         }
                                     </div>
 
-                                    <div className="input-field col s12 input-50-re">
-                                        {values.created_at ? 
-                                        <>
-                                            <input disabled={true} id="created_at" max="2004-01-01" type="date" name="created_at" required autoComplete="created_at" value={values.created_at} onChange={handleChange}/>
-                                            <label htmlFor="created_at">Fecha de Registro</label>
-                                        </>
-                                        :
-                                        <>
-                                            <label htmlFor="created_at">Sin fecha de registro</label>
-                                        </>
+                                    <div className="input-field col s12">
+                                        <i class="material-icons prefix">lock</i>
+                                        <input disabled={false} id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"}  name="contrasena" value={values.contrasena} required onChange={handleChange}/>
+                                        <label htmlFor="email">Contraseña</label>
+                                        {
+                                            errors.contrasena && 
+                                            <span className="helper-text" data-error={errors.contrasena} style={{"marginBottom":"10px"}}>{errors.contrasena}</span>
+                                        }
+                                    </div>
+
+                                    <div className="input-field col s12">
+                                        <i class="material-icons prefix">lock</i>
+                                        <input disabled={false} id="confirmar_contrasena" type="password" className={errors.confirmar_contrasena ? "validate form-control invalid" : "validate form-control"}  name="confirmar_contrasena" value={values.confirmar_contrasena} required onChange={handleChange}/>
+                                        <label htmlFor="email">Confirmar contraseña</label>
+                                        {
+                                            errors.confirmar_contrasena && 
+                                            <span className="helper-text" data-error={errors.confirmar_contrasena} style={{"marginBottom":"10px"}}>{errors.confirmar_contrasena}</span>
                                         }
                                     </div>
                                 </div>
