@@ -40,7 +40,7 @@ export default function CourseCardSearch({ curso }) {
                             <span className="course-teacher truncate">{curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}</span>
                         </div>
                         {/* Tags del curso */}
-                        <div className="col s12 courseCard_tags" style={{ "marginTop": "5px" }, { "marginBottom": "5px" }}>
+                        <div className="col s12 courseCard_tags" style={{ marginTop: "5px", marginBottom: "5px" }}>
                             <div className="container-tags">
                                 {curso.tags.map((tag, index) =>
                                     <a className="div-tag" href="#!" key={index}>
