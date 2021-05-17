@@ -176,7 +176,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //---Validar el rol del usuario---
-        //\Gate::authorize('haveaccess', 'admin.perm');
+        \Gate::authorize('haveaccess', 'admin.perm');
 
         $validated = $request->validate([
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
