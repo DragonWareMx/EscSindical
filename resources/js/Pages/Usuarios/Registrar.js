@@ -92,7 +92,8 @@ const Usuarios = ({categories, regimes, units}) => {
         
     }
 
-    function changeTarjeton(){
+    function changeTarjeton(e){
+        console.log(e)
         
         var inputFotos = document.getElementById('tarjeton_de_pago');
         if ( inputFotos.files && inputFotos.files[0] ){
@@ -202,21 +203,21 @@ const Usuarios = ({categories, regimes, units}) => {
 
                                     <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN INSTITUCIONAL</p>
                                     <div className="area col s12" style={{marginBottom:"4%"}}>
-                                    <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo">help_outline</i></p>
-                                    <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px"}}>
-                                        <div className="col s12">
-                                        <span style={{fontSize:"12px", textAlign: "center", paddingTop:"10px"}} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
-                                        <input type="file" accept=".pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" value={values.tarjeton_de_pago} required autoComplete="tarjeton" onChange={changeTarjeton} />
-                                        {
-                                            errors.tarjeton_de_pago && 
-                                            <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px"}}>{errors.tarjeton_de_pago}</span>
-                                        }
-                                        </div>
-                                        <div className="file-path-wrapper">
-                                            <input className="file-path validate" type="text" />
+                                        <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo">help_outline</i></p>
+                                        <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px"}}>
+                                            <div className="col s12">
+                                            <span style={{fontSize:"12px", textAlign: "center", paddingTop:"10px"}} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
+                                            <input type="file" accept="image/png, image/jpeg, image/jpg, application/pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" required autoComplete="tarjeton" onChange={changeTarjeton} />
+                                            {
+                                                errors.tarjeton_de_pago && 
+                                                <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px"}}>{errors.tarjeton_de_pago}</span>
+                                            }
+                                            </div>
+                                            <div className="file-path-wrapper">
+                                                <input className="file-path validate" type="text" />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
                                     <div className="input-field col s12">
                                         <input  disabled={false} id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="255"/>
