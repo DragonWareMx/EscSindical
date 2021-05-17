@@ -46,6 +46,12 @@
     line-height: 18px;
 
     color: #424242;
+
+    /* Para truncar el texto a n lineas */
+    display: -webkit-box;   
+    -webkit-line-clamp: 2;              /* n */
+    -webkit-box-orient: vertical;     
+    overflow: hidden; 
 }
 
 .course-image-container

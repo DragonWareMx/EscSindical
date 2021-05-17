@@ -77,7 +77,7 @@ const BuscarCursos = ({ cursos }) => {
                     <div className="card darken-1 card-buscar-cursos">
                         <div className="card-content">
                             <h1>CURSOS PARA TI</h1>
-                            <OwlCarousel className='owl-theme' loop margin={36} nav autoplay responsive={responsive}>
+                            <OwlCarousel className='owl-theme' loop margin={8} nav autoplay responsive={responsive}>
                                 <div className='item'>
                                     <CourseCardSearch curso={cursos.data['0']} />
                                 </div>
@@ -125,24 +125,11 @@ const BuscarCursos = ({ cursos }) => {
                             <h1>MÁS CURSOS</h1>
                             <div className="row">
                                 {state.cursos.data.map(curso =>
-                                    <div className="col s12 m6 l3" key={curso.id}>
+                                    <div className="col s12 m6 l3" key={curso.id} style={{"padding": "0px"}}>
                                         {/* Aqui va el componente */}
                                         <CourseCardSearch curso={curso} />
                                     </div>
                                 )}
-                                <div className="col s12 m6 l3 red" style={{ "position": "relative" }}>
-                                    {/* Aqui va el componente */}
-                                    <CourseCardSearchHover />
-                                </div>
-                                <div className="col s12 m6 l3 green" style={{ "position": "relative" }}>
-                                    {/* Aqui va el componente */}
-                                    <CourseCardSearchHover />
-                                </div>
-                                <div className="col s12 m6 l3 yellow" style={{ "position": "relative" }}>
-                                    {/* Aqui va el componente */}
-                                    <CourseCardSearchHover />
-                                </div>
-
                             </div>
                         </div>
                     </div>
