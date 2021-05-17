@@ -121,7 +121,7 @@ class CourseController extends Controller
 
     public function searchIndex(Request $request)
     {
-        $cursos = Course::with(['teacher', 'tags', 'firstImage'])->paginate(12);
+        $cursos = Course::with(['teacher', 'tags', 'images'])->paginate(12);
 
         if ($request->wantsJson()) {
             return $cursos;
