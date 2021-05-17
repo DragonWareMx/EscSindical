@@ -236,8 +236,7 @@ class UserController extends Controller
             $newUser = new User;
 
             $foto = $request->file('foto')->store('public/fotos_perfil');
-            $newUser->foto = $request->file('foto')->getClientOriginalName();
-            dd($request->file('foto'));
+            $newUser->foto = $request->file('foto')->hashName();
             
             //---informacion personal---
             $newUser->nombre = $request->nombre;

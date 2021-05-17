@@ -92,6 +92,18 @@ const Usuarios = ({categories, regimes, units}) => {
         
     }
 
+    function changeTarjeton(){
+        
+        var inputFotos = document.getElementById('tarjeton_de_pago');
+        if ( inputFotos.files && inputFotos.files[0] ){
+            setValues(values => ({
+                ...values,
+                tarjeton_de_pago: inputFotos.files[0],
+            }))
+        }
+        
+    }
+
     function initializeSelects() {
         var elems = document.querySelectorAll('select');
         var instances = M.FormSelect.init(elems);
@@ -189,6 +201,22 @@ const Usuarios = ({categories, regimes, units}) => {
                                     </div>
 
                                     <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN INSTITUCIONAL</p>
+                                    <div className="area col s12" style={{marginBottom:"4%"}}>
+                                    <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo">help_outline</i></p>
+                                    <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px"}}>
+                                        <div className="col s12">
+                                        <span style={{fontSize:"12px", textAlign: "center", paddingTop:"10px"}} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
+                                        <input type="file" accept=".pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" value={values.tarjeton_de_pago} required autoComplete="tarjeton" onChange={changeTarjeton} />
+                                        {
+                                            errors.tarjeton_de_pago && 
+                                            <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px"}}>{errors.tarjeton_de_pago}</span>
+                                        }
+                                        </div>
+                                        <div className="file-path-wrapper">
+                                            <input className="file-path validate" type="text" />
+                                        </div>
+                                    </div>
+                                </div>
 
                                     <div className="input-field col s12">
                                         <input  disabled={false} id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="255"/>
@@ -255,7 +283,6 @@ const Usuarios = ({categories, regimes, units}) => {
                                         </datalist>
                                     </div>
 
-                                    <p style={{"marginTop":"0px", "fontFamily":"Montserrat" ,"fontSize":"13px"}}>Tarjetón de pago <a target="_blank">tarjeton</a><i style={{"color":"#7E7E7E"}} className="material-icons tiny">description</i></p>
                                 </div>
                                 <div className="col s12 m6 div-division">
                                     <p className="titles-sub" style={{"marginLeft":"3%"}}>DIRECCIÓN</p>
@@ -326,7 +353,7 @@ const Usuarios = ({categories, regimes, units}) => {
                                     <p className="titles-sub" style={{"marginLeft":"3%"}}>CUENTA</p>
 
                                     <div className="input-field col s12">
-                                        <i class="material-icons prefix">account_circle</i>
+                                        <i className="material-icons prefix">account_circle</i>
                                         <input disabled={false} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"}  name="email" value={values.email} required onChange={handleChange}/>
                                         <label htmlFor="email">Correo electrónico</label>
                                         {
@@ -336,7 +363,7 @@ const Usuarios = ({categories, regimes, units}) => {
                                     </div>
 
                                     <div className="input-field col s12">
-                                        <i class="material-icons prefix">lock</i>
+                                        <i className="material-icons prefix">lock</i>
                                         <input disabled={false} id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"}  name="contrasena" value={values.contrasena} required onChange={handleChange}/>
                                         <label htmlFor="email">Contraseña</label>
                                         {
@@ -346,7 +373,7 @@ const Usuarios = ({categories, regimes, units}) => {
                                     </div>
 
                                     <div className="input-field col s12">
-                                        <i class="material-icons prefix">lock</i>
+                                        <i className="material-icons prefix">lock</i>
                                         <input disabled={false} id="confirmar_contrasena" type="password" className={errors.confirmar_contrasena ? "validate form-control invalid" : "validate form-control"}  name="confirmar_contrasena" value={values.confirmar_contrasena} required onChange={handleChange}/>
                                         <label htmlFor="email">Confirmar contraseña</label>
                                         {
