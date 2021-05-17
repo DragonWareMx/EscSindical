@@ -73,7 +73,7 @@ class RegisterController extends Controller
             'colonia' => ['required', 'string', 'max:255'],
             'calle' => ['required', 'string', 'max:255'],
             'numero' => ['required', 'string', 'max:255'],
-            'numero_interior' => ['required', 'string', 'max:255'],
+            'numero_interior' => ['nullable', 'string', 'max:255'],
             'codigo_postal' => ['required', 'integer', 'min:1'],
             'matricula' => ['required', 'string', 'max:255'],
             'categoria' => ['required', 'string', 'max:255'],
@@ -91,6 +91,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     { 
+            // dd($data);
             // Guardar imagen de perfil
             $fileNameWithTheExtension = request('foto_perfil')->getClientOriginalName();
             $fileName = pathinfo($fileNameWithTheExtension, PATHINFO_FILENAME);
@@ -105,6 +106,9 @@ class RegisterController extends Controller
             $newFileName2=$fileName2.'_'.time().'.'.$extension2;
             $path2 = request('tarjeton')->storeAs('/public/tarjetones_pago/',$newFileName2);
 
+            if($data['numero_interior']==null){
+                $data['numero_interior']=0;
+            }
         
         $newUser = User::create([
             'nombre' => $data['nombre'],
