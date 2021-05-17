@@ -11,6 +11,7 @@ use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -173,10 +174,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //---Validar el rol del usuario---
+        //\Gate::authorize('haveaccess', 'admin.perm');
 
         $validated = $request->validate([
             //---falta el de la foto
-            'foto' => 'required',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
 
             //---informacion personal---
             'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
@@ -188,7 +190,7 @@ class UserController extends Controller
             //---informacion institucional---
             
             //-de momento las matriculas son numeros solamente de tamaño maximo de 255-
-            'matricula' => 'required|digits_between:0,255|numeric|unique:users,matricula,'.$id,
+            'matricula' => 'required|digits_between:0,255|numeric|unique:users,matricula',
             'regimen' => 'required|exists:regimes,nombre',
             'unidad' => 'required|exists:units,nombre',
             'categoria' => 'required|exists:categories,nombre',
@@ -198,16 +200,30 @@ class UserController extends Controller
             'ciudad' => ['required','max:60','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'colonia' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'calle' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
-            'numero_exterior' => ['required','max:10','regex:/^(((#|[nN][oO]\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
-            'numero_interior' => ['nullable','max:10','regex:/^(((#|[nN][oO]\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'numero_exterior' => ['required','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'numero_interior' => ['nullable','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
             'codigo_postal' => ['required','max:9','regex:/^\d{5}$/i'],
 
             //---cuenta---
             //--FALTA TARJETON DE PAGO
             'tarjeton_de_pago' => 'nullable',
-            'email' => 'required|email:rfc|max:255',
+            'email' => 'required|email:rfc|max:255|unique:users',
+            //'contrasena' => 'required|min:8',
+            'contrasena' => [
+                'required',
+                Password::min(8)
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->uncompromised(),
+            ],
+            'confirmar_contrasena' => 'required|min:8|same:contrasena',
         ]);
         // El nuevo usuario es valido...
+
+        //variables para comprobar la subida de archivos
+        $foto = null;
+        $tarjeton_pago = null;
 
         //COMIENZA LA TRANSACCION
         DB::beginTransaction();
@@ -215,82 +231,97 @@ class UserController extends Controller
         try {
             //---verificar que el regimen y la unidad esten relacionados---
 
+
             //SE CREA EL NUEVO USUARIO
             $newUser = new User;
 
+            $foto = $request->file('foto')->store('public/fotos_perfil');
+            $newUser->foto = $request->file('foto')->hashName();
+            
             //---informacion personal---
-            $newUser->foto = $request->foto;
             $newUser->nombre = $request->nombre;
-            $newUser->apellido_p = $request->apellido_p;
-            $newUser->apellido_m = $request->apellido_m;
-            $newUser->fecha_nac = $request->fecha_nac;
-
+            $newUser->apellido_p = $request->apellido_paterno;
+            $newUser->apellido_m = $request->apellido_materno;
+            $newUser->fecha_nac = $request->fecha_de_nacimiento;
+            $newUser->sexo = $request->sexo;
+            
             //---informacion institucional---
             $newUser->matricula = $request->matricula;
             //regimen...
             //unidad...
-            $newUser->categorie_id = $request->categorie_id;
-            $newUser->tarjeton_pago = $request->tarjeton_pago;
-
+            //categoria
+            //tarjeton de pago
+            
             //---direccion---
             $newUser->estado = $request->estado;
             $newUser->ciudad = $request->ciudad;
             $newUser->colonia = $request->colonia;
             $newUser->calle = $request->calle;
-            $newUser->num_ext = $request->num_ext;
-            $newUser->num_int = $request->num_int;
-            $newUser->cp = $request->cp;
-
+            $newUser->num_ext = $request->numero_exterior;
+            $newUser->num_int = $request->numero_interior;
+            $newUser->cp = $request->codigo_postal;
+            
             //---cuenta---
             $newUser->email = $request->email;
-
+            $newUser->password = \Hash::make($request->contrasena);
+            
             //SE GUARDA EL NUEVO USUARIO
             $newUser->save();
-
+            
             //SE CREA EL LOG
             $newLog = new Log;
-
+            
             $newLog->categoria = 'create';
             $newLog->user_id = Auth::id();
             $newLog->accion =
-                '{
-            users: {
-                nombre: ' . $request->nombre .
-                'apellido_p: ' . $request->apellido_p .
-                'apellido_m: ' . $request->apellido_m .
-                'fecha_nac: ' . $request->fecha_nac .
-
-                'matricula: ' . $request->matricula .
-                '//regimen...
-                //unidad...
-                categorie_id: ' . $request->categorie_id .
-                'tarjeton_pago: ' . $request->tarjeton_pago .
-
-                'estado: ' . $request->estado .
-                'ciudad: ' . $request->ciudad .
-                'colonia: ' . $request->colonia .
-                'calle: ' . $request->calle .
-                'num_ext: ' . $request->num_ext .
-                'num_int: ' . $request->num_int .
-                'cp: ' . $request->cp .
-
-                'email: ' . $request->email .
+            '{
+                users: {
+                    nombre: ' . $request->nombre .
+                    'apellido_p: ' . $request->apellido_p .
+                    'apellido_m: ' . $request->apellido_m .
+                    'fecha_nac: ' . $request->fecha_nac .
+                    
+                    'matricula: ' . $request->matricula .
+                    '//regimen...
+                    //unidad...
+                    categorie_id: ' . $request->categorie_id .
+                    'tarjeton_pago: ' . $request->tarjeton_pago .
+                    
+                    'estado: ' . $request->estado .
+                    'ciudad: ' . $request->ciudad .
+                    'colonia: ' . $request->colonia .
+                    'calle: ' . $request->calle .
+                    'num_ext: ' . $request->num_ext .
+                    'num_int: ' . $request->num_int .
+                    'cp: ' . $request->cp .
+                    
+                    'email: ' . $request->email .
                 '}
-        }';
-
+            }';
+                
             //SE GUARDA EL LOG
-
+            $newLog->save();
+            
             //SE HACE COMMIT
             DB::commit();
+            
+            if(!$newUser)
+            {
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
 
             //REDIRECCIONA A LA VISTA DE USUARIOS
-            return Redirect::route('usuarios');
+            return \Redirect::route('usuarios');
         } catch (\Exception $e) {
             DB::rollBack();
-        }
 
-        if ($newUser) {
-            return response()->json(["status" => 200]);
+            //si hay foto se elimina del servidor
+            if($foto)
+            {
+                \Storage::delete($foto);
+            }
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
         }
     }
 
@@ -364,13 +395,16 @@ class UserController extends Controller
             'ciudad' => ['required','max:60','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'colonia' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'calle' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
-            'numero_exterior' => ['required','max:10','regex:/^(((#|[nN][oO]\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
-            'numero_interior' => ['nullable','max:10','regex:/^(((#|[nN][oO]\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'numero_exterior' => ['required','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'numero_interior' => ['nullable','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
             'codigo_postal' => ['required','max:9','regex:/^\d{5}$/i'],
 
             //---cuenta---
             //--FALTA TARJETON DE PAGO
             'tarjeton_de_pago' => 'nullable',
+
+            'contrasena' => 'nullable|min:6',
+            'confirmar_contrasena' => 'min:6|same:contrasena|required_with:contrasena'
         ]);
 
         $user = User::find($id);
