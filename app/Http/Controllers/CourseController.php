@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Tag;
 use App\Models\Log;
-use Illuminate\Support\Facades\DB;
 
 
 class CourseController extends Controller
@@ -79,39 +80,39 @@ class CourseController extends Controller
             $newCourse->nombre = $request->nombre;
             $newCourse->fecha_inicio = $request->dateIni;
             $newCourse->fecha_final = $request->dateFin;
-            //$newCourse->max = $request->
+            $newCourse->max = 100;
             $newCourse->valor_curricular = $request->vc;
             $newCourse->tipo_acceso = $request->tipo;
             $newCourse->descripcion = $request->descripcion;
             $newCourse->teacher_id = Auth::id();
             $newCourse->link = $request->link;
 
+            $newCourse->save();
             //SE AGREGAN REGISTROS A SUS RELACIONES
             //TAGS
             $tags = $request->tags;
-
-
+            $tags_ids = [];
+            $i =0;
             foreach ($tags as $tag) {
                 if (Tag::where('nombre',$tag['tag'])->first()!=null){
                     $oldTag = Tag::where('nombre',$tag['tag'])->first();
-                    $newCourse->tags->tag_id = $oldTag->id; 
+                    $tags_ids[$i] = $oldTag->id;  
                 }
                 else {
                     $newTag = new Tag;
                     $newTag->nombre = $tag['tag'];
                     $newTag->save();
-
-                    $newCourse->tags->tag_id = $newTag->id;
+                    
+                    $tags_ids[$i] = $newTag->id;
                 }
+                $i++;
             }
             
+            $newCourse->tags()->sync($tags_ids);
             //CATEGORIAS
 
 
             //IMÁGENES
-            
-            
-            $newCourse->save();
                    
             //SE CREA EL LOG
             // $newLog = new Log;
@@ -125,14 +126,12 @@ class CourseController extends Controller
             //GUARDAMOS EL LOG
 
             DB::commit();
+            return \Redirect::route('cursos')->with('success','El usuario ha sido registrado con éxito!');
+
         } catch (\Exception $e) {
             DB::rollBack();
-        }
-
-        if ($newCourse) {
-            return response()->json(["status" => 200]);
-        }
-        
+            return response()->json(["status" => $e]);
+        }    
     }
 
     public function searchIndex(Request $request)
