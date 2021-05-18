@@ -29,10 +29,36 @@ const layoutCursos = ({ layoutCursos }) => {
                     <div className="row">
                         <div className="col s12">
                             <ul className="tabs">
-                                <li className="tab col s3"><a href="#test1">Test 1</a></li>
-                                <li className="tab col s3"><a  href="#test2">Test 2</a></li>
-                                <li className="tab col s3"><a href="#test3">Test 3</a></li>
-                                <li className="tab col s3"><a href="#test4">Test 4</a></li>
+                                <li className="tab LC_tab">
+                                    <a href="#test1" className="LC_a active">
+                                        <i className="material-icons col s3 LC_tab_icons">school</i>
+                                        <div className="col s9">Información</div>
+                                    </a>
+                                </li>
+                                <li className="tab">
+                                    <a href="#test1" className="LC_a">
+                                        <i className="material-icons col s3 LC_tab_icons">book</i>
+                                        <div className="col s9">Módulos</div>
+                                    </a>
+                                </li>
+                                <li className="tab">
+                                    <a href="#test1" className="LC_a">
+                                        <i className="material-icons col s3 LC_tab_icons">backpack</i>
+                                        <div className="col s9">Mochila</div>
+                                    </a>
+                                </li>
+                                <li className="tab">
+                                    <a href="#test1" className="LC_a">
+                                        <i className="material-icons col s3 LC_tab_icons">people</i>
+                                        <div className="col s9">Participantes</div>
+                                    </a>
+                                </li>
+                                <li className="tab">
+                                    <a href="#test1" className="LC_a">
+                                        <i className="material-icons col s3 LC_tab_icons">bar_chart</i>
+                                        <div className="col s9">Estadísticas</div>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
