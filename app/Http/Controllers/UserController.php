@@ -214,7 +214,6 @@ class UserController extends Controller
             //---cuenta---
             'tarjeton_de_pago' => 'required|file|mimes:jpeg,png,jpg,pdf|max:51200',
             'email' => 'required|email:rfc|max:255|unique:users',
-            //'contrasena' => 'required|min:8',
             'contrasena' => [
                 'required',
                 Password::min(8)
@@ -325,25 +324,25 @@ class UserController extends Controller
             $newLog->accion =
             '{
                 users: {
-                    nombre: ' . $request->nombre .
-                    'apellido_p: ' . $request->apellido_paterno .
-                    'apellido_m: ' . $request->apellido_materno .
-                    'fecha_nac: ' . $request->fecha_de_nacimiento .
-                    'sexo: '. $request->sexo.
-                    
-                    'matricula: ' . $request->matricula .
-                    'unit_id: '.$unidad[0]->id.
-                    'categorie_id: ' . $categoria[0]->id .
-                    
-                    'estado: ' . $request->estado .
-                    'ciudad: ' . $request->ciudad .
-                    'colonia: ' . $request->colonia .
-                    'calle: ' . $request->calle .
-                    'num_ext: ' . $request->numero_exterior .
-                    'num_int: ' . $request->numero_interior .
-                    'cp: ' . $request->codigo_postal .
-                    
-                    'email: ' . $request->email .
+                    nombre: ' . $request->nombre . ',\n
+                    apellido_p: ' . $request->apellido_paterno . ',\n
+                    apellido_m: ' . $request->apellido_materno . ',\n
+                    fecha_nac: ' . $request->fecha_de_nacimiento . ',\n
+                    sexo: '. $request->sexo. ',\n
+
+                    matricula: ' . $request->matricula . ',\n
+                    unit_id: '.$unidad[0]->id. ',\n
+                    categorie_id: ' . $categoria[0]->id . ',\n
+
+                    estado: ' . $request->estado . ',\n
+                    ciudad: ' . $request->ciudad . ',\n
+                    colonia: ' . $request->colonia . ',\n
+                    calle: ' . $request->calle . ',\n
+                    num_ext: ' . $request->numero_exterior . ',\n
+                    num_int: ' . $request->numero_interior . ',\n
+                    cp: ' . $request->codigo_postal . ',\n
+
+                    email: ' . $request->email .
                 '}
             }';
 
@@ -460,8 +459,7 @@ class UserController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
 
         $validated = $request->validate([
-            //---falta el de la foto
-            'foto' => 'nullable',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
 
             //---informacion personal---
             'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
@@ -473,7 +471,7 @@ class UserController extends Controller
             //---informacion institucional---
             
             //-de momento las matriculas son numeros solamente de tamaño maximo de 255-
-            'matricula' => 'required|digits_between:0,255|numeric|unique:users,matricula,'.$id,
+            'matricula' => 'required|digits_between:7,10|numeric|unique:users,matricula,'.$id,
             'regimen' => 'required|exists:regimes,nombre',
             'unidad' => 'required|exists:units,nombre',
             'categoria' => 'required|exists:categories,nombre',
@@ -483,17 +481,46 @@ class UserController extends Controller
             'ciudad' => ['required','max:60','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'colonia' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'calle' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
-            'numero_exterior' => ['required','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
-            'numero_interior' => ['nullable','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'numero_exterior' => ['required','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]*\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'numero_interior' => ['nullable','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]*\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
             'codigo_postal' => ['required','max:9','regex:/^\d{5}$/i'],
 
             //---cuenta---
-            //--FALTA TARJETON DE PAGO
-            'tarjeton_de_pago' => 'nullable',
+            'cambiar_tarjeton' => 'required|boolean',
+            'tarjeton_de_pago' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:51200',
+            'email' => 'required|email:rfc|max:255|unique:users,email,'.$id,
 
-            'contrasena' => 'nullable|min:6',
-            'confirmar_contrasena' => 'min:6|same:contrasena|required_with:contrasena'
+            'cambiar_contrasena' => 'required|boolean',
+            'contrasena' => [
+                'nullable',
+                Password::min(8)
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->uncompromised(),
+            ],
+            'confirmar_contrasena' => 'required_with:contrasena|same:contrasena',
+            'rol' => 'required|exists:roles,name'
         ]);
+        // El usuario es valido...
+
+        //si hay cambio de contraseña valida que no sea nula
+        if($request->cambiar_contrasena){
+            if(is_null($request->contrasena)){
+                DB::rollBack();
+                return \Redirect::back()->with('error','La nueva contraseña no ha sido introducida.');
+            }
+        }
+
+        //si hay cambio de contraseña valida que no sea nula
+        if($request->cambiar_tarjeton){
+            if(is_null($request->file('tarjeton_de_pago'))){
+                DB::rollBack();
+                return \Redirect::back()->with('error','No se ha enviado ningún archivo de tarjetón de pago.');
+            }
+        }
+
+        dd($request->file('tarjeton_de_pago'));
 
         $user = User::find($id);
         //---informacion personal---
@@ -552,7 +579,7 @@ class UserController extends Controller
                 DB::rollBack();
                 return \Redirect::back()->with('message','¡No puedes eliminar tu propio usuario!');
             }
-            
+
             $user->delete();
 
             //SE CREA EL LOG
