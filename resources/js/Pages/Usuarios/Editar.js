@@ -21,6 +21,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
     //valores para formulario
     const [values, setValues] = useState({
+        _method: 'patch',
         nombre: user.nombre || "",
         apellido_paterno: user.apellido_p || "",
         apellido_materno: user.apellido_m || "",
@@ -44,10 +45,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
         created_at: user.created_at,
         foto: null,
         deleted_at: user.deleted_at,
-        rol: user.roles[0].name || ""
-    })
-
-    const [state, setState] = useState({
+        rol: user.roles[0].name || "",
         cambiar_tarjeton: false,
         cambiar_contrasena: false
     })
@@ -74,7 +72,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
     //manda el forumulario
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.patch(route('usuarios.update', user.id), values,
+        Inertia.post(route('usuarios.update', user.id), values,
             {
                 onError: () => {
                     Inertia.reload({ only: ['units'], data: { regime: values.regimen } })
@@ -130,18 +128,34 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
     }
 
     function cambiarContrasena(){
-        setState(state => ({
-            ...state,
-            cambiar_contrasena: !state.cambiar_contrasena,
+        setValues(values => ({
+            ...values,
+            cambiar_contrasena: !values.cambiar_contrasena,
         }))
+
+        if(!values.cambiar_contrasena == false)
+        {
+            setValues(values => ({
+                ...values,
+                contrasena: "",
+                confirmar_contrasena: ""
+            }))
+        }
     }
 
     function cambiarTarjeton(){
-        console.log(state.cambiar_tarjeton)
-        setState(state => ({
-            ...state,
-            cambiar_tarjeton: !state.cambiar_tarjeton,
+        setValues(values => ({
+            ...values,
+            cambiar_tarjeton: !values.cambiar_tarjeton,
         }))
+
+        if(!values.cambiar_tarjeton == false)
+        {
+            setValues(values => ({
+                ...values,
+                tarjeton_de_pago: ""
+            }))
+        }
     }
 
     //se ejecuta cuando la pagina se renderiza
@@ -235,7 +249,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                     
                                     <div className="area col s12" style={{marginBottom:"4%"}}>
                                         
-                                        {!state.cambiar_tarjeton &&
+                                        {!values.cambiar_tarjeton &&
                                             <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px" }}>Tarjetón de pago <a target="_blank" href={user == null || user.tarjeton_pago == null ? null : "/storage/tarjetones_pago/" + user.tarjeton_pago}>{user != null && user.tarjeton_pago}</a><i style={{ "color": "#7E7E7E" }} className="material-icons tiny">description</i></p>
                                         }
 
@@ -244,13 +258,13 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         <div className="switch">
                                             <label>
                                             No
-                                            <input id="cambiar_tarjeton" type="checkbox" value={state.cambiar_tarjeton} onChange={cambiarTarjeton}/>
+                                            <input id="cambiar_tarjeton" type="checkbox" value={values.cambiar_tarjeton} onChange={cambiarTarjeton} />
                                             <span className="lever"></span>
                                             Sí
                                             </label>
                                         </div>
 
-                                        {state.cambiar_tarjeton &&
+                                        {values.cambiar_tarjeton &&
                                         <>
                                             <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF o imagen) para validar que seas un usuario activo">help_outline</i></p>
                                             <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px"}}>
@@ -418,7 +432,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         <div className="switch">
                                             <label>
                                             No
-                                            <input id="cambiar_contrasena" type="checkbox"  value={state.cambiar_contrasena} onChange={cambiarContrasena}/>
+                                            <input id="cambiar_contrasena" type="checkbox"  value={values.cambiar_contrasena} onChange={cambiarContrasena} />
                                             <span className="lever"></span>
                                             Sí
                                             </label>
@@ -426,7 +440,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                     </div>
 
 
-                                    {state.cambiar_contrasena &&
+                                    {values.cambiar_contrasena &&
                                     <>
                                         <div className="input-field col s12">
                                             <i className="material-icons prefix">lock</i>

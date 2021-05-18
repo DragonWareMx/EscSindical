@@ -14,6 +14,21 @@ export default function Alertas() {
             divsToHide[i].style.display = "none"; // depending on what you're doing
         }
     }
+
+    function openAlert(type){
+        var divsToHide = document.getElementsByClassName(type); //divsToHide is an array
+        for(var i = 0; i < divsToHide.length; i++){
+            divsToHide[i].style.visibility = "visible"; // or
+            divsToHide[i].style.display = "flex"; // depending on what you're doing
+        }
+    }
+
+    useEffect(() => {
+        openAlert('alert_error');
+        openAlert('alert_success');
+        openAlert('alert_message');
+    }, [flash])
+
     return (
         <div className="errores">
         <ul>
