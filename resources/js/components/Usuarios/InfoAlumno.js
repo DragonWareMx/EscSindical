@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import '/css/infoAlumno.css'
 import '/css/register.css'
 import '/css/login.css'
-import UserForm from '../../components/common/UserForm'
-import CourseCard from '../../components/cursos/CourseCard'
+import UserForm from './UserForm'
+import CourseCard from '../cursos/CourseCard'
 
 function initializeCollaps() {
     var elems = document.querySelectorAll('.collapsible')

@@ -3,7 +3,7 @@ import { usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 import '/css/infoAlumno.css'
 import { divide } from 'lodash'
-import ModalEliminarUsuario from '../../components/common/ModalEliminarUsuario';
+import ModalEliminarUsuario from './ModalEliminarUsuario';
 
 //este componente muestra el formulario para editar usuario o crear uno nuevo
 

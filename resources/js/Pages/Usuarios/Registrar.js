@@ -354,7 +354,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
 
                                     <div className="input-field col s12">
                                         <i className="material-icons prefix">account_circle</i>
-                                        <input disabled={false} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required onChange={handleChange} />
+                                        <input disabled={false} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required onChange={handleChange} readOnly onFocus={(e) => {e.target.removeAttribute("readonly")}} />
                                         <label htmlFor="email">Correo electrónico</label>
                                         {
                                             errors.email &&
