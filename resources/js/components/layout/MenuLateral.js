@@ -101,7 +101,7 @@ export default function MenuLateral() {
               <i className="material-icons icono-menu">settings</i>Configuración
               </InertiaLink>
           </li>
-          <li><InertiaLink href="/logout" method="post" className="icono-menu" as="button" type="button"><i className="material-icons icono-menu">logout</i>Cerrar sesión</InertiaLink></li>
+          <li><InertiaLink href="/logout" method="post" className="icono-menu logout-grande" as="button" type="button"><i className="material-icons icono-menu">logout</i>Cerrar sesión</InertiaLink></li>
           <div className="center-align" style={{ marginTop: '25px' }}>
             <a onClick={closeNav} className="btn-floating btn-large waves-effect waves-light sidenav-close" style={{ backgroundColor: '#108058' }}><i className="material-icons">arrow_back</i></a>
           </div>
@@ -148,7 +148,7 @@ export default function MenuLateral() {
           </InertiaLink>
         </div>
         <div className="col s12">
-          <InertiaLink href="/logout" method="post" className="icono-menu" as="button" type="button">
+          <InertiaLink href="/logout" method="post" className="icono-menu logout-chico" as="button" type="button">
             <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Cerrar sesión">logout</i>
           </InertiaLink>
         </div>

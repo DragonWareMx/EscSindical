@@ -6,6 +6,9 @@ import Create2 from '../Create2.js'
 import Create3 from '../Create3.js' 
 import '../../styles/cursos.css'
 
+
+
+
 function initializeModals() {
     var elems = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elems);
@@ -14,19 +17,34 @@ function initializeModals() {
     var instance = M.Tabs.init(el);
 }
 
+var instances;
+
+function initializeChips() {
+    var elems = document.querySelectorAll('.chips');
+    instances = M.Chips.init(elems);
+
+    var elems2 = document.querySelectorAll('.tooltipped');
+    var instancesT = M.Tooltip.init(elems2);
+}
 
 
 const FormCurso = () => {
     useEffect(() => {
         initializeModals();
     }, [])
+
+    useEffect(() => {
+        initializeChips();
+    }, [])
+
+
     const [values, setValues] = useState({
         nombre : "",
-        tags : "",
+        tags : [],
         dateIni : "",
         dateFin : "",
         link : "",
-        vc:0,
+        vc:true,
         categorias:"",
         active: true,
         inscIni:"",
@@ -49,15 +67,16 @@ const FormCurso = () => {
         values.tipo = e.target.value
     }
 
-    
+    function onChangeTags(){
+        values.tags = instances['0'].chipsData
+    }
 
     function handleSubmit(e) {
         e.preventDefault()
         Inertia.post('/storeCourse', values)
     }
 
-    
-    
+
     return(
         
     <>
@@ -78,7 +97,7 @@ const FormCurso = () => {
                             </ul>
 
                             <div id="test-swipe-1" class="col s12"><Create2 change = {handleChange} values = {useState} onValueChange ={onValueChange}/></div>
-                            <div id="test-swipe-2" class="col s12"><Create1 change = {handleChange} values = {useState} onChangeTags = {oncha}/></div>
+                            <div id="test-swipe-2" class="col s12"><Create1 change = {handleChange} values = {useState} onChangeTags ={onChangeTags}/></div>
                             <div id="test-swipe-3" class="col s12"><Create3 change = {handleChange} values = {useState}/></div>
 
                         </div>

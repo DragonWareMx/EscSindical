@@ -16,10 +16,12 @@ class ImageSeeder extends Seeder
     public function run()
     {
         DB::table('images')->insert([
-            'imagen'=>'curso1.png'
+            'imagen'=>'curso1.png',
+            'course_id'=>1
         ]);
         DB::table('images')->insert([
-            'imagen'=>'curso2.jpg'
+            'imagen'=>'curso2.jpg',
+            'course_id'=>2
         ]);
     }
 }

@@ -6,30 +6,37 @@ import { usePage } from '@inertiajs/inertia-react'
 
 export default function Alertas() {
     const {flash}=usePage().props
-    console.log(flash)
+    
+    function closeAlert(type){
+        var divsToHide = document.getElementsByClassName(type); //divsToHide is an array
+        for(var i = 0; i < divsToHide.length; i++){
+            divsToHide[i].style.visibility = "hidden"; // or
+            divsToHide[i].style.display = "none"; // depending on what you're doing
+        }
+    }
     return (
-        <div>
+        <div className="errores">
         <ul>
             {flash.error &&  
                
-                <li className="alert_error row">
+                <li className="alert_error">
                     <div className="col s11">{flash.error}</div>
-                    <div><i className="col s1 tiny material-icons">clear</i></div>
+                    <div onClick={() => {closeAlert('alert_error')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
                 </li>
             }
             {flash.success &&  
                
-               <li className="alert_sucess row">
-                   <div className="col s11">{flash.success}</div>
-                   <div><i className="col s1 tiny material-icons">clear</i></div>
-               </li>
+               <li className="alert_success">
+                    <div className="col s11">{flash.success}</div>
+                    <div onClick={() => {closeAlert('alert_success')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
+                </li>
            }
            {flash.message &&  
                
-               <li className="alert_message row">
-                   <div className="col s11">{flash.message}</div>
-                   <div><i className="col s1 tiny material-icons">clear</i></div>
-               </li>
+               <li className="alert_message">
+                    <div className="col s11">{flash.message}</div>
+                    <div onClick={() => {closeAlert('alert_message')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
+                </li>
            }
         </ul>  
         </div>

@@ -46,6 +46,12 @@
     line-height: 18px;
 
     color: #424242;
+
+    /* Para truncar el texto a n lineas */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;              /* n */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .course-image-container
@@ -59,7 +65,7 @@
 {
     margin: 0px !important;
     width: 100%;
-    height: 130px;
+    height: 180px;
     object-fit: cover;
 }
 
@@ -71,6 +77,14 @@
     line-height: 16px;
 
     color: #797979;
+}
+
+.hover-container
+{
+    background-color: purple;
+    color: white;
+    position: absolute;
+    left: 100px;
 }
 
 
@@ -113,4 +127,92 @@
     .courseCard_image{
         height: 90px;
     }
+}
+
+.fechas-card h3{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    margin-bottom: 3px !important;
+    margin-top:  8px !important;
+}
+
+.fechas-card{
+    margin-top: 10px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 20px;
+    color: #263238;
+    display: none;
+}
+
+.button-course button{
+    width: 80%;
+    margin: 0px auto;
+    filter: drop-shadow(0px 4px 3px rgba(158, 158, 158, 0.25));
+    background-color:  #108058;
+}
+.button-course button:hover{
+    background-color:  #108059c5;
+}
+
+.button-course{
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    display: none;
+}
+
+
+.course-card:hover{
+    height: 320px !important;
+}
+
+.course-card:hover .button-course{
+    display: flex;
+}
+
+.course-card:hover .fechas-card{
+    display: inline;
+}
+
+.course-card:hover .course-image{
+    height: 50px;
+}
+
+.course-card:hover .course-name{
+    position: absolute;
+    top: 10px;
+    display: flex !important;
+    background: rgba(60, 60, 60, 0.6);
+    color: white;
+    left: 0px;
+}
+
+.course-card{
+    height: 320px !important;
+}
+
+.valor-curri{
+    color: #134E39;
+
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 12px;
+
+    display: none;
+    margin-bottom: 5px;
+}
+
+.course-card:hover .valor-curri{
+    display: flex;
+}
+
+.valor-curri i{
+    margin-right: 5px;
 }

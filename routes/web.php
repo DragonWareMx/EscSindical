@@ -52,5 +52,7 @@ Route::get('/prueba', [App\Http\Controllers\CourseController::class, 'prueba'])-
 
 Route::get('/cursos/buscar', [App\Http\Controllers\CourseController::class, 'searchIndex'])->name('cursosBuscar');
 
+Route::get('/layoutCursos', [App\Http\Controllers\CourseController::class, 'layout'])->name('layoutCursos');
+
 //--------PERFIL--------
 Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');

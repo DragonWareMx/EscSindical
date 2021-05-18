@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Tag;
 use App\Models\Log;
 use Illuminate\Support\Facades\DB;
 
@@ -54,9 +55,6 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
-
-        dd($request);
-
         //VALIDAMOS DATOS
         $validated = $request->validate([
             'nombre' => 'required|max:255',
@@ -84,27 +82,44 @@ class CourseController extends Controller
             //$newCourse->max = $request->
             $newCourse->valor_curricular = $request->vc;
             $newCourse->tipo_acceso = $request->tipo;
-            //$newCourse->estatus = $request->;
             $newCourse->descripcion = $request->descripcion;
             $newCourse->teacher_id = Auth::id();
-            $newCourse->link = $request->link; 
-            
+            $newCourse->link = $request->link;
+
             //SE AGREGAN REGISTROS A SUS RELACIONES
             //TAGS
-            
-            
+            $tags = $request->tags;
 
+
+            foreach ($tags as $tag) {
+                if (Tag::where('nombre',$tag['tag'])->first()!=null){
+                    $oldTag = Tag::where('nombre',$tag['tag'])->first();
+                    $newCourse->tags->tag_id = $oldTag->id; 
+                }
+                else {
+                    $newTag = new Tag;
+                    $newTag->nombre = $tag['tag'];
+                    $newTag->save();
+
+                    $newCourse->tags->tag_id = $newTag->id;
+                }
+            }
+            
             //CATEGORIAS
 
-            //IMÁGENES
-            $newCourse->save();
-            //SE CREA EL LOG
-            $newLog = new Log;
 
-            $newLog->categoria = 'create';
-            $newLog->user_id = Auth::id();
-            $newLog->accion =
-                '';
+            //IMÁGENES
+            
+            
+            $newCourse->save();
+                   
+            //SE CREA EL LOG
+            // $newLog = new Log;
+
+            // $newLog->categoria = 'create';
+            // $newLog->user_id = Auth::id();
+            // $newLog->accion =
+            //     '';
             //falta agregar el accion del log, es un json
 
             //GUARDAMOS EL LOG
@@ -117,11 +132,22 @@ class CourseController extends Controller
         if ($newCourse) {
             return response()->json(["status" => 200]);
         }
+        
     }
 
-    public function searchIndex()
+    public function searchIndex(Request $request)
     {
-        return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => Course::with(['teacher', 'tags','firstImage'])->get()]);
+        $cursos = Course::with(['teacher', 'tags', 'images'])->paginate(12);
+
+        if ($request->wantsJson()) {
+            return $cursos;
+        }
+
+        return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => $cursos]);
+    }
+
+    public function layout(){
+        return Inertia::render('Cursos/layoutCursos');
     }
 
     public function prueba(){

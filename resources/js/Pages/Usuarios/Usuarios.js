@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../layouts/Layout';
 import { Inertia } from '@inertiajs/inertia'
+import route from 'ziggy-js';
+import { InertiaLink } from '@inertiajs/inertia-react';
+
+//componentes
 import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
-import InfoAlumno from '../../components/common/InfoAlumno';
-import UserForm from '../../components/common/UserForm';
-import ModalEliminarUsuario from '../../components/common/ModalEliminarUsuario';
-
-import '../../styles/usersStyle.css'
-import route from 'ziggy-js';
 import Alertas from '../../components/common/Alertas';
-import { InertiaLink } from '@inertiajs/inertia-react';
+
+//estilos
+import '../../styles/usersStyle.css'
 
 function initializeMat() {
     var elems = document.querySelectorAll('.dropdown-trigger');
@@ -674,7 +674,7 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                     </div>
                 </div>
             </div>
-            {state.newUser &&
+            {/* {state.newUser &&
             <div id="modalAgregarUsuario" className="modal">
                 <div className="modal-content">
                     <div className="modal-close right"><i className="material-icons">close</i></div>
@@ -685,7 +685,7 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
             }
             <FlotanteAyuda />
             {!state.newUser && <InfoAlumno user={user}  categories={categories} regimes={regimes} units={units}/>}
-            <ModalEliminarUsuario user={user}/>
+            <ModalEliminarUsuario user={user}/> */}
         </>
     )
 }
