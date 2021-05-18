@@ -542,10 +542,17 @@ class UserController extends Controller
         DB::beginTransaction();
         try{
             $user = User::find($id);
-            if(!$user || $user->id == Auth::id()){
+
+            if(!$user){
                 DB::rollBack();
-                return;
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar eliminar el usuario, inténtelo más tarde.');
             }
+
+            if($user->id == Auth::id()){
+                DB::rollBack();
+                return \Redirect::back()->with('message','¡No puedes eliminar tu propio usuario!');
+            }
+            
             $user->delete();
 
             //SE CREA EL LOG
