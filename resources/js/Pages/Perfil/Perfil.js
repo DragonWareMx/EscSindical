@@ -5,7 +5,7 @@ import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 
 import '../../styles/profileStyle.css'
-import UserForm from '../../components/common/UserForm';
+import UserForm from '../../components/Usuarios/UserForm';
 
 function initializeMat() {
     var elems = document.querySelectorAll('.modal');
@@ -14,11 +14,11 @@ function initializeMat() {
 
 const Perfil = ({ user }) => {
     const [edit, setEdit] = useState(false)
-    
+
     function handleEditChange(newValue) {
         setEdit(newValue)
     }
-    
+
     useEffect(() => {
         initializeMat();
     }, [])
