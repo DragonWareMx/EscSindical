@@ -109,3 +109,32 @@
 .nav-busqueda{
     display: flex;
 }
+
+.container-buttons{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.container-buttons button{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: center;
+    padding: 8px 10px !important;
+    width: auto !important;
+    background-color: #108058;
+}
+
+.container-buttons .guardar{
+    background-color: #108058;
+    filter: drop-shadow(0px 4px 3px rgba(0, 0, 0, 0.25));
+    color: #FFFFFF;
+}
+
+.container-buttons .cancelar{
+    background-color: transparent !important;
+    color: #263238 !important;
+    box-shadow: none;
+}

@@ -29,10 +29,10 @@ class CreateUsersTable extends Migration
             $table->string('colonia', 100);
             $table->string('calle', 100);
             $table->string('num_ext', 10);
-            $table->string('num_int', 10);
+            $table->string('num_int', 10)->nullable();
             $table->string('cp', 9);
-            $table->text('tarjeton_pago');
-            $table->string('matricula');
+            $table->text('tarjeton_pago')->nullable();
+            $table->string('matricula',10);
             $table->rememberToken();
 
             $table->unsignedBigInteger('categorie_id')->nullable();
@@ -40,9 +40,6 @@ class CreateUsersTable extends Migration
 
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->foreign('unit_id')->references('id')->on('units');
-
-            $table->unsignedBigInteger('regime_id')->nullable();
-            $table->foreign('unit_id')->references('id')->on('regimes');
 
             $table->softDeletes();
             $table->timestamps();

@@ -17,6 +17,7 @@ class CreateLogsTable extends Migration
             $table->id();
             $table->enum('categoria',['create','update','delete']);
             $table->text('accion'); //guarda la informacion del log, es decir, lo que el usuario realizo
+            $table->text('descripcion');
             $table->unsignedBigInteger('user_id');
             
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

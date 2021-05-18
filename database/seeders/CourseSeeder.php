@@ -56,16 +56,6 @@ class CourseSeeder extends Seeder
             'user_id'=>4
         ]);
 
-        DB::table('course_image')->insert([
-            'image_id'=>1,
-            'course_id'=>1
-        ]);
-
-        DB::table('course_image')->insert([
-            'image_id'=>2,
-            'course_id'=>2
-        ]);
-
         DB::table('course_tag')->insert([
             'tag_id'=>1,
             'course_id'=>1

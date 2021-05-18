@@ -38,8 +38,10 @@ Route::get('/ejemplo', [App\Http\Controllers\UserController::class, 'ejemplo'])-
 
 //--------USUARIOS--------
 Route::get('/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios');
-Route::post('/usuarios', [App\Http\Controllers\UserController::class, 'store'])->name('usuarios.create');
-Route::post('/usuarios/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('usuarios.edit');
+Route::get('/usuarios/create', [App\Http\Controllers\UserController::class, 'create'])->name('usuarios.create');
+Route::post('/usuarios', [App\Http\Controllers\UserController::class, 'store'])->name('usuarios.store');
+Route::get('/usuarios/{id}', [App\Http\Controllers\UserController::class, 'edit'])->name('usuarios.edit');
+Route::patch('/usuarios/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('usuarios.update');
 Route::delete('usuarios/{id}',  [App\Http\Controllers\UserController::class, 'destroy'])->name('usuarios.delete');
 
 //------CURSOS----
@@ -47,6 +49,8 @@ Route::get('/cursos', [App\Http\Controllers\CourseController::class, 'index'])->
 Route::post('/storeCourse', [App\Http\Controllers\CourseController::class, 'store'])->name('storeCourse');
 
 Route::get('/cursos/buscar', [App\Http\Controllers\CourseController::class, 'searchIndex'])->name('cursosBuscar');
+
+Route::get('/layoutCursos', [App\Http\Controllers\CourseController::class, 'layout'])->name('layoutCursos');
 
 //--------PERFIL--------
 Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');

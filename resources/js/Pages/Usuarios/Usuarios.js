@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../layouts/Layout';
 import { Inertia } from '@inertiajs/inertia'
+import route from 'ziggy-js';
+import { InertiaLink } from '@inertiajs/inertia-react';
+
+//componentes
 import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
-import InfoAlumno from '../../components/common/InfoAlumno';
-import UserForm from '../../components/common/UserForm';
-import ModalEliminarUsuario from '../../components/common/ModalEliminarUsuario';
+import Alertas from '../../components/common/Alertas';
 
+//estilos
 import '../../styles/usersStyle.css'
-import route from 'ziggy-js';
 
 function initializeMat() {
     var elems = document.querySelectorAll('.dropdown-trigger');
@@ -442,65 +444,66 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
 
     //onClick de cada elemento de la tabla, obtiene el usuario y abre el modal para editar usuario
     function getUser(id) {
-        setState(state => ({
-            ...state,
-            newUser: false,
-        }))
+        Inertia.get(route('usuarios.edit', id))
+        // setState(state => ({
+        //     ...state,
+        //     newUser: false,
+        // }))
 
-        Inertia.reload(
-            {
-                only: ['user','categories','regimes','units'],
-                data: { user: id },
-                onSuccess: ({ props }) => {
-                    console.log("success")
-                    //busca el modal infoAlumno
-                    const elem = document.getElementById('modalInfoAlumno');
-                    const instance = M.Modal.init(elem, { dismissible: false });
+        // Inertia.reload(
+        //     {
+        //         only: ['user','categories','regimes','units'],
+        //         data: { user: id },
+        //         onSuccess: ({ props }) => {
+        //             console.log("success")
+        //             //busca el modal infoAlumno
+        //             const elem = document.getElementById('modalInfoAlumno');
+        //             const instance = M.Modal.init(elem, { dismissible: false });
 
-                    //actualiza los textfields para que no se amontonen los labels
-                    M.updateTextFields();
+        //             //actualiza los textfields para que no se amontonen los labels
+        //             M.updateTextFields();
 
-                    //abre el modal
-                    instance.open();
-                },
-                onError: error => {
-                    //busca el modal infoAlumno
-                    const elem = document.getElementById('modalInfoAlumno');
-                    const instance = M.Modal.init(elem, { dismissible: false });
+        //             //abre el modal
+        //             instance.open();
+        //         },
+        //         onError: error => {
+        //             //busca el modal infoAlumno
+        //             const elem = document.getElementById('modalInfoAlumno');
+        //             const instance = M.Modal.init(elem, { dismissible: false });
 
-                    //actualiza los textfields para que no se amontonen los labels
-                    M.updateTextFields();
+        //             //actualiza los textfields para que no se amontonen los labels
+        //             M.updateTextFields();
 
-                    //abre el modal
-                    instance.open();},
-                onCancel: error => {console.log("cancel")},
-            }
-        )
+        //             //abre el modal
+        //             instance.open();},
+        //         onCancel: error => {console.log("cancel")},
+        //     }
+        // )
     }
 
     //onClick del botón Agregar Usuario
-    function openNewUserForm(){
-        setState(state => ({
-            ...state,
-            newUser: true,
-        }))
+    // function openNewUserForm(){
+    //     setState(state => ({
+    //         ...state,
+    //         newUser: true,
+    //     }))
 
-        Inertia.reload(
-        {
-            only: ['categories','regimes'],
-            onSuccess: ({ props }) => {
-                //busca el modal infoAlumno
-                const elem = document.getElementById('modalAgregarUsuario');
-                const instance = M.Modal.init(elem, { dismissible: false });
+    //     Inertia.reload(
+    //     {
+    //         only: ['categories','regimes'],
+    //         onSuccess: ({ props }) => {
+    //             //busca el modal infoAlumno
+    //             const elem = document.getElementById('modalAgregarUsuario');
+    //             const instance = M.Modal.init(elem, { dismissible: false });
 
-                //actualiza los textfields para que no se amontonen los labels
-                M.updateTextFields();
+    //             //actualiza los textfields para que no se amontonen los labels
+    //             M.updateTextFields();
 
-                //abre el modal
-                instance.open();
-            }
-        })
-    }
+    //             //abre el modal
+    //             instance.open();
+    //         }
+    //     })
+    // }
 
     //se ejecuta cuando se monta el componente, inicializa materialize y el buscador
     useEffect(() => {
@@ -518,9 +521,10 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
             <div className="row contenedor">
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
-                        <a className="btn-floating btn-large waves-effect waves-light green-sind button-addUser" onClick={() => openNewUserForm()}><i className="material-icons">add</i></a>
+                        <InertiaLink className="btn-floating btn-large waves-effect waves-light green-sind button-addUser" href={route('usuarios.create')}><i className="material-icons">add</i></InertiaLink>
                         <div className="card-content">
                             <span className="card-title">Usuarios</span>
+                            <Alertas/>
                             <nav className="searchUsers">
                                 <div className="nav-wrapper nav-busqueda">
                                     <div className="col filter-div">
@@ -670,7 +674,7 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                     </div>
                 </div>
             </div>
-            {state.newUser &&
+            {/* {state.newUser &&
             <div id="modalAgregarUsuario" className="modal">
                 <div className="modal-content">
                     <div className="modal-close right"><i className="material-icons">close</i></div>
@@ -681,7 +685,7 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
             }
             <FlotanteAyuda />
             {!state.newUser && <InfoAlumno user={user}  categories={categories} regimes={regimes} units={units}/>}
-            <ModalEliminarUsuario user={user}/>
+            <ModalEliminarUsuario user={user}/> */}
         </>
     )
 }

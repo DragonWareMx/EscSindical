@@ -7,7 +7,7 @@
     line-height: 17px;
     padding-bottom: 5px;
     border-bottom: 3px solid #515b60;
-    width: max-content !important;
+    width: fit-content;
 }
 .div-form-register .input-field{
     margin: 0px;
@@ -15,6 +15,10 @@
 }
 
 #imageUpload{
+    display: none;
+}
+
+.imageUpload{
     display: none;
 }
 
@@ -74,7 +78,9 @@
   display: block;
 }
 
-
+.datalist-register::-webkit-calendar-picker-indicator {
+    display: none;
+  }
 
 
 @media(max-width:1000px){

@@ -10,8 +10,8 @@ class Image extends Model
 {
     use HasFactory;
 
-    public function courses(){
-        return $this->belongsToMany('App\Models\Course');
+    public function course(){
+        return $this->belongsTo('App\Models\Course');
     }
     
     use SoftDeletes;

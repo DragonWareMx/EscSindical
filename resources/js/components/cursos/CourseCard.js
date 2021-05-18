@@ -39,7 +39,7 @@ export default function InfoAlumno({ curso, actuales }) {
                         <div className="col s10 truncate">{curso.nombre}</div>
                         <div className="col s2 center-align"><i className="material-icons">more_vert</i></div>
                         <div className="col s4 little_course" style={{ "marginTop": "10px", "padding": "0px" }}>
-                            <img className="courseCard_image" src={curso.first_image.length > 0 ? '/storage/imagenes_curso/' + curso.first_image[0].imagen : '/storage/imagenes_curso/default.png'} alt="img" />
+                            <img className="courseCard_image" src={curso.images.length > 0 ? '/storage/imagenes_curso/' + curso.images[0].imagen : '/storage/imagenes_curso/default.png'} alt="img" />
                         </div>
                         <div className="col s8 little_course" style={{ "marginTop": "10px" }}>
                             {/* DIV foto y nombre del profesor */}
@@ -50,8 +50,8 @@ export default function InfoAlumno({ curso, actuales }) {
                             <div className="col s12 courseCard_tags" >
                                 <div className="container-tags">
                                     {curso.tags.map(tag=>
-                                        <a className="div-tag" href="#!">
-                                            {tag.nombre} <i class="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
+                                        <a className="div-tag" href="#!" key={tag.pivot.tag_id + tag.nombre}>
+                                            {tag.nombre} <i className="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
                                         </a>
                                     )}
                                 </div>
