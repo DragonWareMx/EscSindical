@@ -206,7 +206,7 @@ class UserController extends Controller
 
             //---cuenta---
             //--FALTA TARJETON DE PAGO
-            'tarjeton_de_pago' => 'nullable',
+            'tarjeton_de_pago' => 'required|image|mimes:jpeg,png,jpg,pdf|max:51200',
             'email' => 'required|email:rfc|max:255|unique:users',
             //'contrasena' => 'required|min:8',
             'contrasena' => [
