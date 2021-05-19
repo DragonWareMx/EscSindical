@@ -12,17 +12,9 @@ import Alertas from '../../components/common/Alertas';
 //estilos
 import '../../styles/usersStyle.css'
 
-function initializeMat() {
-    var elems = document.querySelectorAll('.dropdown-trigger');
-    var instances = M.Dropdown.init(elems);
-
-    var elems = document.querySelectorAll('.collapsible');
-    var instances = M.Collapsible.init(elems);
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems);
-}
 
 const Usuarios = ({ users, user, request, categories, regimes, units }) => {
+    //iconos de sort asc y desc
     const iconASC = "M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z"
     const iconDESC = "M6 2l-6 8h4v12h4v-12h4l-6-8zm11.694.003h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z"
 
@@ -36,29 +28,28 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
         filter: "nombre",
         newUser: true
     })
-
+    
     //realiza la búsqueda cada vez que se escribe en el input
     function changeName(event) {
         if (state.typingTimeout) {
             clearTimeout(state.typingTimeout);
         }
-
+        
         let search = event.target.value
         let data;
-
+        
         setState({
             typingTimeout: setTimeout(function () {
                 data = {
                     user_search: search
                 }
                 if (request.filter)
-                    data.filter = request.filter
+                data.filter = request.filter
                 Inertia.replace(route('usuarios').url(), { data: data })
             }, 250)
         });
     }
-
-
+    
     function sort(campo) {
         let data;
         switch (campo) {
@@ -445,65 +436,18 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
     //onClick de cada elemento de la tabla, obtiene el usuario y abre el modal para editar usuario
     function getUser(id) {
         Inertia.get(route('usuarios.edit', id))
-        // setState(state => ({
-        //     ...state,
-        //     newUser: false,
-        // }))
-
-        // Inertia.reload(
-        //     {
-        //         only: ['user','categories','regimes','units'],
-        //         data: { user: id },
-        //         onSuccess: ({ props }) => {
-        //             console.log("success")
-        //             //busca el modal infoAlumno
-        //             const elem = document.getElementById('modalInfoAlumno');
-        //             const instance = M.Modal.init(elem, { dismissible: false });
-
-        //             //actualiza los textfields para que no se amontonen los labels
-        //             M.updateTextFields();
-
-        //             //abre el modal
-        //             instance.open();
-        //         },
-        //         onError: error => {
-        //             //busca el modal infoAlumno
-        //             const elem = document.getElementById('modalInfoAlumno');
-        //             const instance = M.Modal.init(elem, { dismissible: false });
-
-        //             //actualiza los textfields para que no se amontonen los labels
-        //             M.updateTextFields();
-
-        //             //abre el modal
-        //             instance.open();},
-        //         onCancel: error => {console.log("cancel")},
-        //     }
-        // )
     }
 
-    //onClick del botón Agregar Usuario
-    // function openNewUserForm(){
-    //     setState(state => ({
-    //         ...state,
-    //         newUser: true,
-    //     }))
-
-    //     Inertia.reload(
-    //     {
-    //         only: ['categories','regimes'],
-    //         onSuccess: ({ props }) => {
-    //             //busca el modal infoAlumno
-    //             const elem = document.getElementById('modalAgregarUsuario');
-    //             const instance = M.Modal.init(elem, { dismissible: false });
-
-    //             //actualiza los textfields para que no se amontonen los labels
-    //             M.updateTextFields();
-
-    //             //abre el modal
-    //             instance.open();
-    //         }
-    //     })
-    // }
+    //inicializa Materialize
+    function initializeMat() {
+        var elems = document.querySelectorAll('.dropdown-trigger');
+        var instances = M.Dropdown.init(elems);
+    
+        var elems = document.querySelectorAll('.collapsible');
+        var instances = M.Collapsible.init(elems);
+        var elems = document.querySelectorAll('.modal');
+        var instances = M.Modal.init(elems);
+    }
 
     //se ejecuta cuando se monta el componente, inicializa materialize y el buscador
     useEffect(() => {
@@ -664,18 +608,8 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                     </div>
                 </div>
             </div>
-            {/* {state.newUser &&
-            <div id="modalAgregarUsuario" className="modal">
-                <div className="modal-content">
-                    <div className="modal-close right"><i className="material-icons">close</i></div>
-                    <div style={{"color":"#134E39","fontSize":"16px","fontStyle": "normal"}}>VER USUARIO</div>
-                    <UserForm user={null} categories={categories} regimes={regimes} units={units}/>
-                </div>
-            </div>
-            }
+
             <FlotanteAyuda />
-            {!state.newUser && <InfoAlumno user={user}  categories={categories} regimes={regimes} units={units}/>}
-            <ModalEliminarUsuario user={user}/> */}
         </>
     )
 }
