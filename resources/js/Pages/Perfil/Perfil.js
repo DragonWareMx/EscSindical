@@ -5,7 +5,6 @@ import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 
 import '../../styles/profileStyle.css'
-import UserForm from '../../components/Usuarios/UserForm';
 
 function initializeMat() {
     var elems = document.querySelectorAll('.modal');
@@ -143,7 +142,7 @@ const Perfil = ({ user }) => {
                                                     <div className="col s12">
                                                         {/* {!state.newUser && <InfoAlumno user={user}/>} */}
                                                         {/* <UserForm /> */}
-                                                        <UserForm user={user} bEdit={edit} onEditChange={handleEditChange} />
+                                                        {/* <UserForm user={user} bEdit={edit} onEditChange={handleEditChange} /> */}
 
                                                     </div>
                                                 </div>
