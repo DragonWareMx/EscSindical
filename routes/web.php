@@ -43,6 +43,7 @@ Route::post('/usuarios', [App\Http\Controllers\UserController::class, 'store'])-
 Route::get('/usuarios/{id}', [App\Http\Controllers\UserController::class, 'edit'])->name('usuarios.edit');
 Route::patch('/usuarios/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('usuarios.update');
 Route::delete('usuarios/{id}',  [App\Http\Controllers\UserController::class, 'destroy'])->name('usuarios.delete');
+Route::put('usuarios/{id}/restore',  [App\Http\Controllers\UserController::class, 'restore'])->name('usuarios.restore');
 
 //------CURSOS----
 Route::get('/cursos', [App\Http\Controllers\CourseController::class, 'index'])->name('cursos');

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../layouts/Layout';
-import { usePage } from '@inertiajs/inertia-react'
+import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 
 import '../../styles/usersStyle.css'
 import '/css/infoAlumno.css'
@@ -10,7 +10,7 @@ import { Inertia } from '@inertiajs/inertia';
 import Alertas from '../../components/common/Alertas';
 
 
-const Usuarios = ({ categories, regimes, units }) => {
+const Usuarios = ({ categories, regimes, units, roles }) => {
     //errores de la validacion de laravel
     const { errors } = usePage().props
 
@@ -37,6 +37,7 @@ const Usuarios = ({ categories, regimes, units }) => {
         numero_interior: "",
         tarjeton_de_pago: "",
         foto: null,
+        rol: ""
     })
 
     //actualiza los hooks cada vez que se modifica un input
@@ -79,7 +80,6 @@ const Usuarios = ({ categories, regimes, units }) => {
     }
 
     function changeFoto() {
-
         var inputFotos = document.getElementById('foto');
         if (inputFotos.files && inputFotos.files[0]) {
             setValues(values => ({
@@ -88,11 +88,9 @@ const Usuarios = ({ categories, regimes, units }) => {
             }))
             document.getElementById("profileImage").src = window.URL.createObjectURL(inputFotos.files[0]);
         }
-
     }
 
     function changeTarjeton(e){
-        console.log(e)
         
         var inputFotos = document.getElementById('tarjeton_de_pago');
         if (inputFotos.files && inputFotos.files[0]) {
@@ -127,7 +125,7 @@ const Usuarios = ({ categories, regimes, units }) => {
             <div className="col contenedor s12">
                 <div className="card darken-1 cardUsers">
                     <div className="card-content">
-                        <span className="card-title">Usuarios / Crear Usuario</span>
+                        <span className="card-title"><InertiaLink href={route('usuarios')} style={{color: "#134E39"}}>Usuarios</InertiaLink> / Crear Usuario</span>
                         <Alertas />
                         {/* ----Formulario---- */}
                         <form onSubmit={handleSubmit}>
@@ -201,6 +199,7 @@ const Usuarios = ({ categories, regimes, units }) => {
                                     </div>
 
                                     <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN INSTITUCIONAL</p>
+                                    
                                     <div className="area col s12" style={{marginBottom:"4%"}}>
                                         <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo">help_outline</i></p>
                                         <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px"}}>
@@ -209,7 +208,7 @@ const Usuarios = ({ categories, regimes, units }) => {
                                             <input type="file" accept="image/png, image/jpeg, image/jpg, application/pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" required autoComplete="tarjeton" onChange={changeTarjeton} />
                                             {
                                                 errors.tarjeton_de_pago && 
-                                                <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px"}}>{errors.tarjeton_de_pago}</span>
+                                                <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px", color: "#F44336"}}>{errors.tarjeton_de_pago}</span>
                                             }
                                             </div>
                                             <div className="file-path-wrapper">
@@ -245,7 +244,7 @@ const Usuarios = ({ categories, regimes, units }) => {
 
                                     <div className="col s12" style={{ "marginTop": "5px" }}>
                                         <div className="input-field select-wrapper">
-                                            <input placeholder={values.regimen ? "Selecciona una unidad" : "Selecciona primerio un régimen"} disabled={false} id="unidad" list="unidades" type="text" className={errors.unidad ? "validate form-control invalid" : "validate"} value={values.unidad} onChange={handleChange} required />
+                                            <input placeholder={values.regimen ? "Selecciona una unidad" : "Selecciona primerio un régimen"} disabled={false} id="unidad" list="unidades" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.unidad} onChange={handleChange} required />
                                             <label htmlFor="unidad">Unidad</label>
                                             <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
                                             {
@@ -265,7 +264,7 @@ const Usuarios = ({ categories, regimes, units }) => {
 
                                     <div className="col s12">
                                         <div className="input-field select-wrapper">
-                                            <input placeholder="Selecciona una categoría" disabled={false} id="categoria" list="categorias" type="text" className={errors.unidad ? "validate form-control invalid" : "validate"} value={values.categoria} onChange={handleChange} required />
+                                            <input placeholder="Selecciona una categoría" disabled={false} id="categoria" list="categorias" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.categoria} onChange={handleChange} required />
                                             <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
                                             <label htmlFor="categoria">Categoría</label>
                                             {
@@ -284,6 +283,7 @@ const Usuarios = ({ categories, regimes, units }) => {
                                     </div>
 
                                 </div>
+                                
                                 <div className="col s12 m6 div-division">
                                     <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>DIRECCIÓN</p>
 
@@ -354,7 +354,7 @@ const Usuarios = ({ categories, regimes, units }) => {
 
                                     <div className="input-field col s12">
                                         <i className="material-icons prefix">account_circle</i>
-                                        <input disabled={false} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required onChange={handleChange} />
+                                        <input disabled={false} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required onChange={handleChange} readOnly onFocus={(e) => {e.target.removeAttribute("readonly")}} />
                                         <label htmlFor="email">Correo electrónico</label>
                                         {
                                             errors.email &&
@@ -365,7 +365,7 @@ const Usuarios = ({ categories, regimes, units }) => {
                                     <div className="input-field col s12">
                                         <i className="material-icons prefix">lock</i>
                                         <input disabled={false} id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"} name="contrasena" value={values.contrasena} required onChange={handleChange} />
-                                        <label htmlFor="email">Contraseña</label>
+                                        <label htmlFor="contrasena">Contraseña</label>
                                         {
                                             errors.contrasena &&
                                             <span className="helper-text" data-error={errors.contrasena} style={{ "marginBottom": "10px" }}>{errors.contrasena}</span>
@@ -375,11 +375,31 @@ const Usuarios = ({ categories, regimes, units }) => {
                                     <div className="input-field col s12">
                                         <i className="material-icons prefix">lock</i>
                                         <input disabled={false} id="confirmar_contrasena" type="password" className={errors.confirmar_contrasena ? "validate form-control invalid" : "validate form-control"} name="confirmar_contrasena" value={values.confirmar_contrasena} required onChange={handleChange} />
-                                        <label htmlFor="email">Confirmar contraseña</label>
+                                        <label htmlFor="confirmar_contrasena">Confirmar contraseña</label>
                                         {
                                             errors.confirmar_contrasena &&
                                             <span className="helper-text" data-error={errors.confirmar_contrasena} style={{ "marginBottom": "10px" }}>{errors.confirmar_contrasena}</span>
                                         }
+                                    </div>
+
+                                    <div className="col s12">
+                                        <div className="input-field select-wrapper">
+                                            <input placeholder="Selecciona un rol" disabled={false} id="rol" list="roles" type="text" className={errors.rol ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.rol} onChange={handleChange} required />
+                                            <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                                            <label htmlFor="rol">Rol</label>
+                                            {
+                                                errors.rol &&
+                                                <span className="helper-text" data-error={errors.rol} style={{ "marginBottom": "10px" }}>{errors.rol}</span>
+                                            }
+                                        </div>
+                                        <datalist id="roles">
+                                            {
+                                                roles && roles.length > 0 &&
+                                                roles.map(rol => (
+                                                    <option key={rol.name} value={rol.name} />
+                                                ))
+                                            }
+                                        </datalist>
                                     </div>
                                 </div>
                             </div>

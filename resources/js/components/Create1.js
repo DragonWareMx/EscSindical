@@ -2,18 +2,10 @@ import React from 'react'
 import { useEffect } from 'react'
 
 
-function initializeChips() {
-    var elems = document.querySelectorAll('.chips');
-    var instances = M.Chips.init(elems);
 
-    var elems2 = document.querySelectorAll('.tooltipped');
-    var instances = M.Tooltip.init(elems2);
-}
 
 const Create1 = ({ change, values, onChangeTags }) => {
-    useEffect(() => {
-        initializeChips();
-    }, [])
+
     return (
         <div className="row" style={{"marginLeft": "-1.5rem", "marginRight": "-1.5rem"}}>
             <div className="input-field col s12" >

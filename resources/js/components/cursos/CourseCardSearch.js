@@ -25,7 +25,7 @@ export default function CourseCardSearch({ curso }) {
                 {/* Imagen del curso */}
                 <div className="col s12 course-image-container center-align transicion">
                     {/* <img src="/images/monita.jpg" alt="imagen del curso" className="course-image" /> */}
-                    <img className="course-image transicion" src={curso.first_image.length > 0 ? '/storage/imagenes_curso/' + curso.first_image[0].imagen : '/storage/imagenes_curso/default.png'} alt="img" />
+                    <img className="course-image transicion" src={curso.images.length > 0 ? '/storage/imagenes_curso/' + curso.images['0'].imagen : '/storage/imagenes_curso/default.png'} alt="img" />
                 </div>
                 {/* Informacion sobre el curso */}
                 <div className="card-content">
@@ -47,6 +47,12 @@ export default function CourseCardSearch({ curso }) {
                                         {tag.nombre} <i className="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
                                     </a>
                                 )}
+                            </div>
+                        </div>
+                        <div className="col s12">
+                            <div className=" valor-curri valign-wrapper">
+                                <i className="material-icons verified-icon">verified</i>
+                            VALOR CURRICULAR
                             </div>
                         </div>
                         <div className="fechas-card transicion">

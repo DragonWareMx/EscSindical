@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../layouts/Layout';
 import { Inertia } from '@inertiajs/inertia'
+import route from 'ziggy-js';
+import { InertiaLink } from '@inertiajs/inertia-react';
+
+//componentes
 import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
-import InfoAlumno from '../../components/common/InfoAlumno';
-import UserForm from '../../components/common/UserForm';
-import ModalEliminarUsuario from '../../components/common/ModalEliminarUsuario';
-
-import '../../styles/usersStyle.css'
-import route from 'ziggy-js';
 import Alertas from '../../components/common/Alertas';
-import { InertiaLink } from '@inertiajs/inertia-react';
+
+//estilos
+import '../../styles/usersStyle.css'
 
 function initializeMat() {
     var elems = document.querySelectorAll('.dropdown-trigger');
@@ -644,7 +644,7 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                                             <td>{usuario.matricula}</td>
                                             <td>{usuario.roles && usuario.roles.length > 0 ? usuario.roles.map(rol => (rol.name + " ")) : "Sin Rol"}</td>
                                             <td>{usuario.nombre} {usuario.apellido_p} {usuario.apellido_m}</td>
-                                            <td>UMF80 - Morelia</td>
+                                            <td>{usuario.unit ? usuario.unit.nombre : "Sin unidad"}</td>
                                             <td>{usuario.categorie ? usuario.categorie.nombre : "Sin Categoría"}</td>
                                             <td><button><i className="material-icons">edit</i> </button></td>
                                             {/*<td>
@@ -654,17 +654,7 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                                     ))}
                                 </tbody>
                             </table>
-                            {/* <form onSubmit={handleSubmit}>
-                                <label htmlFor="nombre">Nombre(s):</label>
-                                <input id="nombre" value={values.first_name} onChange={handleChange} />
-                                <label htmlFor="apellido_p">Apellido Paterno:</label>
-                                <input id="apellido_p" value={values.last_name} onChange={handleChange} />
-                                <label htmlFor="apellido_m">Apellido Materno (opcional):</label>
-                                <input id="apellido_m" value={values.last_name} onChange={handleChange} />
-                                <label htmlFor="email">Email:</label>
-                                <input id="email" value={values.email} onChange={handleChange} />
-                                <button type="submit">Submit</button>
-                            </form> */}
+
                             <div className="row">
                                 <div className="col s12 center-align">
                                     <Paginacion links={users.links} />
@@ -674,7 +664,7 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                     </div>
                 </div>
             </div>
-            {state.newUser &&
+            {/* {state.newUser &&
             <div id="modalAgregarUsuario" className="modal">
                 <div className="modal-content">
                     <div className="modal-close right"><i className="material-icons">close</i></div>
@@ -685,7 +675,7 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
             }
             <FlotanteAyuda />
             {!state.newUser && <InfoAlumno user={user}  categories={categories} regimes={regimes} units={units}/>}
-            <ModalEliminarUsuario user={user}/>
+            <ModalEliminarUsuario user={user}/> */}
         </>
     )
 }

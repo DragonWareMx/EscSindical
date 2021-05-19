@@ -32,7 +32,7 @@ class CreateUsersTable extends Migration
             $table->string('num_int', 10)->nullable();
             $table->string('cp', 9);
             $table->text('tarjeton_pago')->nullable();
-            $table->string('matricula');
+            $table->string('matricula',10);
             $table->rememberToken();
 
             $table->unsignedBigInteger('categorie_id')->nullable();

@@ -385,3 +385,57 @@ body
     background-color: transparent;
     cursor: pointer;
 }
+
+.enter-div{
+    border-left: 0.2px solid rgba(128, 128, 128, 0.692);
+    height: 46px !important;
+    width: 46px;
+    background-color: transparent;
+    border-radius: 2px;
+}
+
+.enter-div i{
+    margin-top: -8px;
+}
+
+@media (max-width:600px){
+    .enter-div i{
+        margin-top: -3px !important;
+    }
+}
+
+.nav-flex{
+    display: flex;
+    align-items: center;
+}
+
+.barraSearch-grown{
+    width: 100% !important;
+}
+
+.main-bar-right-grown{
+    width: 80px !important;
+    justify-content: flex-end !important;
+}
+
+.error-div .row{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-div .row .col{
+    margin: 0px auto !important;
+}
+
+.error-div .card-action{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.error-div .card-content{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
