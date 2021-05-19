@@ -13,3 +13,22 @@
 #dropdown_LC{
     width: 242px;
 }
+
+.LC_a{
+    color:#626262 !important;
+    font-size: 13px !important;
+    display:flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    line-height: 13px;
+    text-transform: capitalize;
+    text-align: left;
+}
+
+.LC_tab{
+    padding: 0px !important;
+}
+
+.LC_tab_icons{
+    font-size: 16px;
+}

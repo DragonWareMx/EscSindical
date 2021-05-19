@@ -26,7 +26,7 @@ class CourseSeeder extends Seeder
             'max'=>'50',
             'valor_curricular'=>'100',
             'tipo_acceso' => 'Automática',
-            'estatus'=>'1',
+            'estatus'=>'Activo',
             'descripcion' =>'En este curso aprenderás a programar, usaremos el lenguaje Java y seremos todos muy felices',   
             'teacher_id' =>'3',
         ]);
@@ -41,7 +41,7 @@ class CourseSeeder extends Seeder
             'max'=>'100',
             'valor_curricular'=>'90',
             'tipo_acceso' => 'Automática',
-            'estatus'=>'1',
+            'estatus'=>'Activo',
             'descripcion' =>'Laravel es un framework muy usado en la actualidad, convinado con React puede crear aplicaciones realmente poderosas y con interfaces muy agradables para el usuario final',   
             'teacher_id' =>'3',
         ]);
