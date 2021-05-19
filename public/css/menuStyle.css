@@ -417,3 +417,25 @@ body
     width: 80px !important;
     justify-content: flex-end !important;
 }
+
+.error-div .row{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-div .row .col{
+    margin: 0px auto !important;
+}
+
+.error-div .card-action{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.error-div .card-content{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
