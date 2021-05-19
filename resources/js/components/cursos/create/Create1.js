@@ -13,29 +13,29 @@ const Create1 = ({ change, values, onChangeTags }) => {
                 <label for="nombre">Nombre del curso</label>
             </div>
 
-            <div className="input-field col s12" >
+            <div className="input-field col s12">
             <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Tags de búsqueda<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Los tags ayudarán con el filtrado y búsqueda de los cursos (Enter para agregar)" style={{"color":"rgb(159, 157, 157)", "cursor":"pointer"}}>help_outline</i></p>
                 <div className="chips">
                     <input className="custom-class" id="tags" value={values.tags} onChange={onChangeTags}  className="validate"/>
                 </div>
             </div>
 
-            <div className="input-field col s6" >
+            <div className="input-field col s12 m6 l6 xl6">
                 <input  id="dateIni" value={values.dateIni} onChange={change} type="date" className="validate"/>
                 <label for="dateIni">Fecha de inicio de curso</label>
             </div>
 
-            <div className="input-field col s6" >
+            <div className="input-field col s12 m6 l6 xl6">
                 <input  id="dateFin" value={values.dateFin} onChange={change} type="date" className="validate"/>
                 <label for="dateFin">Fecha de término de curso</label>
             </div>
 
-            <div className="input-field col s6" >
+            <div className="input-field col s12 m6 l6 xl6">
                 <input  id="link" value={values.link} onChange={change} type="url" className="validate"/>
                 <label for="link">Link de videoconferencias</label>
             </div>
 
-            <div className="input-field col s6" >
+            <div className="input-field col s12 m6 l6 xl6">
                 <p style={{"marginTop":"0px", "marginBottom":"8px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Valor curricular</p>
                 <div class="switch">
                     <label>
