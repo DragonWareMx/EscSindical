@@ -47,7 +47,11 @@ Route::put('usuarios/{id}/restore',  [App\Http\Controllers\UserController::class
 
 //------CURSOS----
 Route::get('/cursos', [App\Http\Controllers\CourseController::class, 'index'])->name('cursos');
+Route::get('/cursos/create', [App\Http\Controllers\CourseController::class, 'create'])->name('cursos.create');
 Route::post('/storeCourse', [App\Http\Controllers\CourseController::class, 'store'])->name('storeCourse');
+
+
+Route::get('/prueba', [App\Http\Controllers\CourseController::class, 'prueba'])->name('prueba');
 
 Route::get('/cursos/buscar', [App\Http\Controllers\CourseController::class, 'searchIndex'])->name('cursosBuscar');
 

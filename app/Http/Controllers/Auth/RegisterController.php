@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Regime;
+use App\Models\Unit;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -27,12 +29,8 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
+   
+    
 
     /**
      * Create a new controller instance.
@@ -48,8 +46,9 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         $categorias = Category::distinct()->get();
-        // dd($categorias);
-        return view('auth.register',['categorias' => $categorias ]);
+        $regimen = Regime::distinct()->get();
+        $unidades = Unit::distinct()->get();
+        return view('auth.register',['categorias' => $categorias, 'regimen' => $regimen, 'unidades' => $unidades ]);
     }
 
     /**
@@ -74,10 +73,11 @@ class RegisterController extends Controller
             'colonia' => ['required', 'string', 'max:255'],
             'calle' => ['required', 'string', 'max:255'],
             'numero' => ['required', 'string', 'max:255'],
-            'numero_interior' => ['required', 'string', 'max:255'],
+            'numero_interior' => ['nullable', 'string', 'max:255'],
             'codigo_postal' => ['required', 'integer', 'min:1'],
             'matricula' => ['required', 'string', 'max:255'],
             'categoria' => ['required', 'string', 'max:255'],
+            'unidad' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -91,8 +91,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     { 
-            // Falta guardar regimen y unidad
-
+            // dd($data);
             // Guardar imagen de perfil
             $fileNameWithTheExtension = request('foto_perfil')->getClientOriginalName();
             $fileName = pathinfo($fileNameWithTheExtension, PATHINFO_FILENAME);
@@ -106,17 +105,8 @@ class RegisterController extends Controller
             $extension2 = request('tarjeton')->getClientOriginalExtension();
             $newFileName2=$fileName2.'_'.time().'.'.$extension2;
             $path2 = request('tarjeton')->storeAs('/public/tarjetones_pago/',$newFileName2);
-
-            // Obtener id de la categoria
-            // obtener categorias
-            $categorias = Category::get();
-            $idct;
-            foreach ($categorias as $ct){
-                if($ct["nombre"]==$data['categoria'])
-                    $idct=$ct["id"];
-            }
         
-        return User::create([
+        $newUser = User::create([
             'nombre' => $data['nombre'],
             'foto' => $newFileName,
             'apellido_p' => $data['apellido_paterno'],
@@ -132,12 +122,15 @@ class RegisterController extends Controller
             'cp' => $data['codigo_postal'],
             'matricula' => $data['matricula'],
             'tarjeton_pago' => $newFileName2,
-            'categorie_id' => $idct,
+            'categorie_id' => $data['categoria'],
+            'unit_id' => $data['unidad'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
 
         ]);
-        // $newUser->roles()->sync(3);
+        $newUser->roles()->sync(3);
+        return $newUser;
+        
         
     }
 }

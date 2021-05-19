@@ -57,6 +57,9 @@
     color: #108058;
     transition: all ease-in-out 0.25s;
 }
+.tabs-responsive-register{
+    display:none !important;
+}
 
 .invalid-feedback {
     display: none;
@@ -113,6 +116,9 @@
     }
     .div-blanco-form{
         width: 100% !important;
+    }
+    .tabs-responsive-register{
+        display:block !important;
     }
 }
 @media(max-width:600px){

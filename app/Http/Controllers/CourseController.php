@@ -54,6 +54,11 @@ class CourseController extends Controller
         }
     }
 
+    public function create()
+    {
+        return Inertia::render('Cursos/FormCurso');
+    }
+
     public function store(Request $request)
     {
         //VALIDAMOS DATOS
@@ -147,5 +152,9 @@ class CourseController extends Controller
 
     public function layout(){
         return Inertia::render('Cursos/layoutCursos');
+    }
+
+    public function prueba(){
+        return Inertia::render('Cursos/Prueba');
     }
 }

@@ -33,7 +33,7 @@ const Perfil = ({ user }) => {
                                     <div className="row">
                                         <div className="col s12 center-align">
                                             <div className="center-align">
-                                                <img src={"/storage/fotos_perfil/" + user.foto} alt="foto de perfil" className="img-profile red" />
+                                                <img src={"/storage/fotos_perfil/" + user.foto} alt="foto de perfil" className="img-profile" />
                                             </div>
                                         </div>
                                         <div className="col s12 center-align">

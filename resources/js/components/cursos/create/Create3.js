@@ -10,7 +10,7 @@ const Create3 = ({ change, values }) => {
             
 
             <div className="area col s12">
-            <p style={{"marginTop":"0px", "marginBottom":"8px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Imagenes del curso</p>
+            <p style={{"marginTop":"0px", "marginBottom":"8px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Imagenes del curso<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Al menos una imagen que servirá como portada del curso" style={{"color":"rgb(159, 157, 157)", "cursor":"pointer"}}>help_outline</i></p>
                 <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", "boxSizing": "border-box", "bordeRadius": "4px"}}>
                     <div className="col s12">
                         <span style={{"fontSize":"12px", "textAlign":"center", "paddingTop":"10px"}} className="col s12">Arrastre aquí las imagenes o <b>clic</b> para seleccionarlas</span>

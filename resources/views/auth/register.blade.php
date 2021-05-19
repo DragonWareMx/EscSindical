@@ -8,6 +8,7 @@
     <title>Registrarse</title>
     <link rel="icon" href="{{ asset('img/imagenes/LogoNacionalCrop.png') }}">
     {{-- JQuery --}}
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- Compiled and minified CSS -->
@@ -67,6 +68,14 @@
                 <img src="{{ asset('img/imagenes/LogoSeccional.png') }}" class="col" alt="Escuela Sindical" width="80px" style="display: none">
                 
                 <div class="escHead col" style="display: none">Escuela Sindical Sección XX Michoacán</div>
+                <div class="row tabs-responsive-register" style="width: 100%">
+                    <div class="col s12 m12 l12" style="display: block !important">
+                        <ul class="tabs">
+                            <li class="tab col xl6 l6 m6"><a href="{{ route('login') }}">Ingresar</a></li>
+                            <li class="tab col xl6 l6 m6"><a class=""  href="{{ route('register') }}">Registrarse</a></li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="titulo2 col s12">REGISTRARSE</div>
             </div>
 
@@ -125,8 +134,9 @@
                         <div class="input-field col s6 input-50-re">
                             <select id="sexo" name="sexo" required autocomplete="sexo">
                                 {{-- <option value="" disabled selected>Selecciona una opción</option> --}}
-                                <option value="Femenino" {{ old('sexo') == 'Femenino' ? 'selected' : '' }}>Femenino</option>
-                                <option value="Masculino" {{ old('sexo') == 'Masculino' ? 'selected' : '' }}>Masculino</option>
+                                <option value="m" {{ old('sexo') == 'm' ? 'selected' : '' }}>Femenino</option>
+                                <option value="h" {{ old('sexo') == 'h' ? 'selected' : '' }}>Masculino</option>
+                                <option value="o" {{ old('sexo') == 'o' ? 'selected' : '' }}>Otro</option>
                             </select>
                             <label>Sexo</label>
                         </div>
@@ -177,33 +187,36 @@
                         </div>
 
                         <div class="input-field col s12">
-                            <select id="regimen" name="regimen" required autocomplete="regimen">
-                            <option value="" disabled selected>Selecciona una opción</option>
-                            <option value="1" {{ old('regimen') == 1 ? 'selected' : '' }}>Ordinario</option>
-                            <option value="2" {{ old('regimen') == 2 ? 'selected' : '' }}>Bienestar</option>
+                            <select id="regimen" name="regimen" required autocomplete="regimen" onchange="regimenChange()">
+                                <option value="0" disabled selected>Selecciona una opción</option>
+                                @foreach($regimen as $reg)
+                                    <option value="{{$reg -> id}}" {{ old('regimen') == $reg -> id ? 'selected' : '' }}>{{$reg -> nombre}}</option>
+                                @endforeach
                             </select>
                             <label>Regimen</label>
                         </div>
 
                         <div class="input-field col s12">
-                            <select id="unidad" name="unidad" required autocomplete="unidad">
-                            <option value="" disabled selected>Selecciona una opción</option>
-                            <option value="1" {{ old('unidad') == 1 ? 'selected' : '' }}>UMF 75 - Morelia c/UMAA</option>
-                            <option value="2" {{ old('unidad') == 2 ? 'selected' : '' }}>UMF 80 - Morelia</option>
+                            <select id="unidad" name="unidad" required autocomplete="unidad" class="">
+                                <option value="" disabled selected>Selecciona una opción</option>
+                                @foreach ($unidades as $uni)
+                                        <option value="{{$uni -> id}}" {{ old('unidad') == $uni -> id ? 'selected' : '' }}>{{$uni -> nombre}}</option>
+                                @endforeach
                             </select>
                             <label>Unidad</label>
                         </div>
 
+                    
                         <div class="input-field col s12">
-                            <input type="text" id="autocomplete-input" name="categoria" required autocomplete="categoria" class="autocomplete" value="{{ old('categoria') }}">
-                            <label for="autocomplete-input">Categoría</label>
-                            {{-- <select id="categoria" name="categoria" required autocomplete="categoria">
-                            <option value="" disabled selected>Selecciona una opción</option>
-                            @foreach ($categorias as $ct)
-                                <option value='{{$ct->id}}' {{ old('categoria') == $ct->id ? 'selected' : '' }}>{{$ct->nombre}}</option>
-                            @endforeach
+                            {{-- <input type="text" id="autocomplete-input" name="categoria" required autocomplete="categoria" class="autocomplete" value="{{ old('categoria') }}">
+                            <label for="autocomplete-input">Categoría</label> --}}
+                            <select id="categoria" name="categoria" required autocomplete="categoria" class="">
+                                <option value="" disabled selected>Selecciona una opción</option>
+                                @foreach ($categorias as $ct)
+                                        <option value="{{$ct -> id}}" {{ old('categoria') == $ct -> id ? 'selected' : '' }}>{{$ct -> nombre}}</option>
+                                @endforeach
                             </select>
-                            <label>Categoría</label> --}}
+                            <label>Categoría</label>
                         </div>
 
                         {{-- INPUT FILE --}}
@@ -282,15 +295,17 @@
 </body>
 
 <script>
+
+    function regimenChange() {
+        var x = document.getElementById("regimen").value;
+        alert(x);
+    }
+
+
     // SELECTS
     $(document).ready(function(){
         $('select').formSelect();
     });
-    // DATE PICKER
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     var elems = document.querySelectorAll('.datepicker');
-    //     var instances = M.Datepicker.init(elems, {maxDate: new Date(2004,1,1)});
-    // });
 
     $(function(){
         $('#fecha_nacimiento').datepicker({
@@ -321,18 +336,18 @@
 
 
     // AUTOCOMPLETE
-    $(document).ready(function(){
-        var ct=JSON.parse('<?php echo empty($categorias) ? '{}' : json_encode($categorias) ?>');
-        var dataCT = {};
-        for(var i in ct){
-                eval("dataCT." + ct[i]["nombre"] + " = null;");
-                // alert(eval("dataCT." + ct[i]["nombre"] + " = null;"));
-            }
+    // $(document).ready(function(){
+    //     var ct=JSON.parse('<?php echo empty($categorias) ? '{}' : json_encode($categorias) ?>');
+    //     var dataCT = {};
+    //     for(var i in ct){
+    //             eval("dataCT." + ct[i]["nombre"] + " = null;");
+    //             // alert(eval("dataCT." + ct[i]["nombre"] + " = null;"));
+    //         }
         
-        $('input.autocomplete').autocomplete({
-            data: dataCT
-        });
-    });
+    //     $('input.autocomplete').autocomplete({
+    //         data: dataCT
+    //     });
+    // });
 
     // IMAGEN DE PERFIL 
     $("#profileImage").click(function(e) {
