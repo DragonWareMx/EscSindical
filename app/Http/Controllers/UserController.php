@@ -592,7 +592,7 @@ class UserController extends Controller
             //guarda la foto
             if(!is_null($request->file('foto'))){
                 if($user->foto){
-                    \Storage::delete(''.$user->foto);
+                    \Storage::delete('public/fotos_perfil'.$user->foto);
                 }
                 $foto = $request->file('foto')->store('public/fotos_perfil');
                 $user->foto = $request->file('foto')->hashName();
@@ -611,7 +611,10 @@ class UserController extends Controller
             $user->categorie_id = $categoria[0]->id;
 
             //guarda el tarjeton de pago
-            if(!is_null($request->file('foto'))){
+            if(!is_null($request->file('tarjeton_de_pago'))){
+                if($user->tarjeton_pago){
+                    \Storage::delete('public/tarjetones_pago/'.$user->tarjeton_pago);
+                }
                 $tarjeton_pago = $request->file('tarjeton_de_pago')->store('public/tarjetones_pago');
                 $user->tarjeton_pago = $request->file('tarjeton_de_pago')->hashName();
             }
@@ -627,7 +630,10 @@ class UserController extends Controller
             
             //---cuenta---
             $user->email = $request->email;
-            $user->password = \Hash::make($request->contrasena);
+
+            if($request->cambiar_contrasena){
+                $user->password = \Hash::make($request->contrasena);
+            }
 
             //SE GUARDA EL NUEVO USUARIO
             $user->save();
