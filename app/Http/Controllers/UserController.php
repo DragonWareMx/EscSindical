@@ -34,10 +34,14 @@ class UserController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
 
         return Inertia::render('Usuarios/Usuarios', [
-            'users' => fn () => User::with('roles', 'categorie')
+            'users' => fn () => User::with('roles', 'categorie','unit')
                 ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
                 ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
                 ->leftJoin('categories', 'categories.id', '=', 'users.categorie_id')
+                ->leftJoin('units', 'units.id', '=', 'users.unit_id')
+                ->when($request->filter == 'eliminado', function ($query) {
+                    return $query->onlyTrashed();
+                })
                 ->when($request->user_search, function ($query, $search) use ($request) {
                     if ($request->filter) {
                         switch ($request->filter) {
@@ -50,14 +54,24 @@ class UserController extends Controller
                                 else
                                     return $query->where('roles.name', 'LIKE', '%' . $search . '%');
                                 break;
+                            case 'unidad':
+                                if ($search == "Sin unidad")
+                                    return $query->whereNull('users.unit_id');
+                                else
+                                    return $query->where('units.nombre', 'LIKE', '%' . $search . '%');
+                                break;
                             case 'nombre':
-                                return $query->where('users.nombre', 'LIKE', '%' . $search . '%');
+                                return $query->where('users.nombre', 'LIKE', '%' . $search . '%')
+                                            ->orWhere('users.apellido_p', 'LIKE', '%' . $search . '%')
+                                            ->orWhere('users.apellido_m', 'LIKE', '%' . $search . '%');
                                 break;
                             case 'categoria':
                                 return $query->where('categories.nombre', 'LIKE', '%' . $search . '%');
                                 break;
                             case 'eliminado':
-                                return $query->onlyTrashed()->where('users.matricula', 'LIKE', '%' . $search . '%');
+                                return $query
+                                            ->where('users.nombre', 'LIKE', '%' . $search . '%')
+                                            ->onlyTrashed();
                                 break;
 
                             default:
@@ -93,14 +107,14 @@ class UserController extends Controller
                             else
                                 return $query;
                             break;
-                            // case 'unidad':
-                            //     if($request->order == 'asc')
-                            //         return $query->orderBy('matricula', 'ASC');
-                            //     else if($request->order == 'desc')
-                            //         return $query->orderBy('matricula', 'DESC');
-                            //     else
-                            //         return $query;
-                            //     break;
+                        case 'unidad':
+                            if($request->order == 'asc')
+                                return $query->orderBy('units.nombre', 'ASC');
+                            else if($request->order == 'desc')
+                                return $query->orderBy('units.nombre', 'DESC');
+                            else
+                                return $query;
+                            break;
                         case 'categoria':
                             if ($request->order == 'asc')
                                 return $query->orderBy('categories.nombre', 'ASC');
@@ -114,7 +128,8 @@ class UserController extends Controller
                             break;
                     }
                 })
-                ->select('users.id', 'matricula', 'users.nombre', 'apellido_p', 'apellido_m', 'categorie_id')
+                ->select('users.id', 'matricula', 'users.nombre', 'apellido_p', 'apellido_m', 'categorie_id','users.unit_id','users.deleted_at')
+                ->orderBy('users.created_at','desc')
                 ->paginate(20)
                 ->withQueryString(),
             'user' => Inertia::lazy(
@@ -429,7 +444,7 @@ class UserController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
 
         return Inertia::render('Usuarios/Editar', [
-            'user' => User::with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.images:course_id,imagen', 'finishedCourses.images:course_id,imagen', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre', 'roles:name'])
+            'user' => User::withTrashed()->with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.images:course_id,imagen', 'finishedCourses.images:course_id,imagen', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre', 'roles:name'])
                             ->findOrFail($id),
             'categories'=> fn () => Category::select('id','nombre')->get(),
             'regimes'=> fn () => Regime::select('id','nombre')->get(),
@@ -758,6 +773,59 @@ class UserController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return \Redirect::back()->with('error','Ha ocurrido un error al intentar eliminar el usuario, inténtelo más tarde.');
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        //valida el rol del usuario
+        \Gate::authorize('haveaccess', 'admin.perm');
+
+        DB::beginTransaction();
+        try{
+            $user = User::withTrashed()->find($id);
+
+            if(!$user){
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar eliminar el usuario, inténtelo más tarde.');
+            }
+
+            if($user->id == Auth::id()){
+                DB::rollBack();
+                return \Redirect::back()->with('message','¡No puedes eliminar tu propio usuario!');
+            }
+
+            $user->restore();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'restore';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                users: {
+                    id: ' . $id .
+                '}
+            }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha restaurado al usuario: '. $user->email;
+
+            $newLog->save();
+
+            DB::commit();
+            return \Redirect::back()->with('success','¡Usuario restaurado con éxito!');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el usuario, inténtelo más tarde.');
         }
     }
 }

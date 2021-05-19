@@ -172,7 +172,19 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                 <div className="card darken-1 cardUsers">
                     <div className="card-content">
                         <span className="card-title"><InertiaLink href={route('usuarios')} style={{color: "#134E39"}}>Usuarios</InertiaLink> / Editar Usuario</span>
+                        
                         <Alertas />
+                        {user.deleted_at &&
+                        <div className="errores">
+                            <ul>
+                                <li className="alert_message">
+                                    <div className="col s11">Este usuario ha sido eliminado.</div>
+                                    <InertiaLink href={route('usuarios.restore',user.id)} method="put" as="button" type="button" style={{"cursor":"pointer"}}>Restaurar</InertiaLink>
+                                </li>
+                            </ul>  
+                        </div>
+                        }
+
                         {/* ----Formulario---- */}
                         <form onSubmit={handleSubmit}>
                             <div className="row div-form-register" style={{ "padding": "3%" }}>
@@ -500,7 +512,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                             </div>
                             <div className="row container-buttons">
                                 {
-                                !values.deleted_at && 
+                                !user.deleted_at && 
                                     <button data-target="modalEliminarUsuario" type="button" className="col s3 m2 center-align modal-trigger" style={{ "border": "none", "backgroundColor": "transparent", "color": "#515B60", "cursor": "pointer", marginLeft: "3%", marginRight: "auto" }}><i className="material-icons">delete</i></button>
                                 }
                                 <button type="button" className=" center-align  btn waves-effect waves-light cancelar" style={{ marginRight: "15px" }} onClick={cancelEditUser}>Cancelar</button>
