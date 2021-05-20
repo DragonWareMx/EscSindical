@@ -27,6 +27,16 @@ function initializeDatePicker() {
         }
       };
     var instances = M.Datepicker.init(elems, options);
+
+    var elems2 = document.querySelectorAll('.timepicker');
+    var options2 ={
+        format: 'yyyy-mm-dd',
+        i18n: {
+            done: 'Ok',
+            cancel: 'Cancelar',
+        }
+      };
+    var instances2 = M.Timepicker.init(elems2, options2);
   }
 
 
@@ -77,15 +87,75 @@ const Create1 = ({ change, values, onChangeTags }) => {
             </div>
 
             <div className="input-field col s12">
-            <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Horario semanal<i className="material-icons tiny" style={{"color":"#108058", "cursor":"pointer", "marginLeft":"5px"}}>control_point</i></p>
+                <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Horario semanal<i className="material-icons tiny" style={{"color":"#108058", "cursor":"pointer", "marginLeft":"5px"}}>add_circle</i></p>
+                <div className="div-row-horario" style={{"marginTop":"5px"}}>
+                    <i className="material-icons" style={{"color":"#D3766A", "cursor":"pointer", "marginRight":"13px"}}>do_not_disturb_on</i>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Lu</span>
+                    </label>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Ma</span>
+                    </label>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Mi</span>
+                    </label>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Jue</span>
+                    </label>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Vi</span>
+                    </label>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Sa</span>
+                    </label>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Do</span>
+                    </label>
+                    <input type="text" class="timepicker input-hora" style={{"width":"100px"}} />
+                </div>
+
+                <div className="div-row-horario" style={{"marginTop":"5px"}}>
+                    <i className="material-icons" style={{"color":"#D3766A", "cursor":"pointer", "marginRight":"13px"}}>do_not_disturb_on</i>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Lu</span>
+                    </label>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Ma</span>
+                    </label>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Mi</span>
+                    </label>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Jue</span>
+                    </label>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Vi</span>
+                    </label>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Sa</span>
+                    </label>
+                    <label>
+                        <input name="group1" type="radio" />
+                        <span className="span-radio-courses">Do</span>
+                    </label>
+                    <input type="text" class="timepicker" style={{"width":"100px"}} />
+                </div>
             </div>
             
         </div>
-
-       
-
-        //     {/*falta lo de los horarios  */}
-        //     <label>Siguiente</label>
     )
        
 }

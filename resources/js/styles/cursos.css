@@ -226,9 +226,27 @@
     font-size: 12px !important;
     line-height: 15px;
     color: #9F9D9D;
+    padding-left:25px !important;
+    margin-right:10px;
+}
+[type="radio"]:not(:checked)+span:before, [type="radio"]:not(:checked)+span:after{
+    border: 1px solid #9F9D9D;
+}
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:after{
+    background-color:#108058;
+}
+[type="radio"]:checked+span:after, [type="radio"].with-gap:checked+span:before, [type="radio"].with-gap:checked+span:after{
+    border: 1px solid #108058;
 }
 .no-uppercase{
     text-transform:initial !important;
+}
+.div-row-horario{
+    display:flex;
+    align-items:center;
+}
+.input-hora{
+    margin:0px !important;
 }
 
 /* MODALES---------------- */
@@ -258,5 +276,8 @@
     }
     .txt-teacher-name{
         font-size:12px;
+    }
+    .div-row-horario{
+        flex-wrap:wrap;
     }
 }
