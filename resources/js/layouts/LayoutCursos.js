@@ -52,9 +52,9 @@ const LayoutCursos = ({children, id}) => {
                         <div className="col s11 valign-wrapper LC_title">Programación Lógica y Funcional (Grupo de las 8 am) &nbsp; <i className="material-icons">verified</i></div>
                         <div className="col s1 LC_more"><a className='dropdown-trigger' href='#' data-target='dropdown_LC'><i className="small material-icons" style={{"color":"#727272"}}>more_vert</i></a></div>
                         <ul id='dropdown_LC' className='dropdown-content'>
-                            <li><span><a className="dropdown-text1" href="#!">Descargar reporte del curso</a></span></li>
+                            <li><span><a className="dropdown-text" href="#!">Descargar reporte del curso</a></span></li>
                             <li className="divider" tabIndex="-1"></li>
-                            <li><span><a className="dropdown-text1" href="#!">Solicitar eliminación del curso</a></span></li>
+                            <li><span><a className="dropdown-text" href="#!">Solicitar eliminación del curso</a></span></li>
                         </ul>
                    </div>
                     <div className="row">
