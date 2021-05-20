@@ -54,6 +54,26 @@ class CourseController extends Controller
         }
     }
 
+    public function create()
+    {
+        return Inertia::render('Cursos/FormCurso');
+    }
+
+    public function edit($id)
+    {
+        return Inertia::render('Cursos/FormCursoEdit');
+    }
+
+    public function moduleCreate()
+    {
+        return Inertia::render('Cursos/ModuleCreate');
+    }
+
+    public function moduleEdit()
+    {
+        return Inertia::render('Cursos/ModuleEdit');
+    }
+
     public function store(Request $request)
     {
         //\Gate::authorize('haveaccess', 'ponent.perm');
@@ -290,4 +310,16 @@ class CourseController extends Controller
     public function layout(){
         return Inertia::render('Cursos/layoutCursos');
     }
+
+    public function prueba(){
+        return Inertia::render('Cursos/Prueba');
+    }
+
+    public function informacion($id){
+        return Inertia::render('Curso/Informacion');
+    }
+
+    public function modulos(){
+        return Inertia::render('Curso/Modulos');
+    } 
 }

@@ -5,7 +5,6 @@ import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 
 import '../../styles/profileStyle.css'
-import UserForm from '../../components/common/UserForm';
 
 function initializeMat() {
     var elems = document.querySelectorAll('.modal');
@@ -14,11 +13,11 @@ function initializeMat() {
 
 const Perfil = ({ user }) => {
     const [edit, setEdit] = useState(false)
-    
+
     function handleEditChange(newValue) {
         setEdit(newValue)
     }
-    
+
     useEffect(() => {
         initializeMat();
     }, [])
@@ -34,7 +33,7 @@ const Perfil = ({ user }) => {
                                     <div className="row">
                                         <div className="col s12 center-align">
                                             <div className="center-align">
-                                                <img src={"/storage/fotos_perfil/" + user.foto} alt="foto de perfil" className="img-profile red" />
+                                                <img src={"/storage/fotos_perfil/" + user.foto} alt="foto de perfil" className="img-profile" />
                                             </div>
                                         </div>
                                         <div className="col s12 center-align">
@@ -143,7 +142,7 @@ const Perfil = ({ user }) => {
                                                     <div className="col s12">
                                                         {/* {!state.newUser && <InfoAlumno user={user}/>} */}
                                                         {/* <UserForm /> */}
-                                                        <UserForm user={user} bEdit={edit} onEditChange={handleEditChange} />
+                                                        {/* <UserForm user={user} bEdit={edit} onEditChange={handleEditChange} /> */}
 
                                                     </div>
                                                 </div>
