@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InertiaLink } from "@inertiajs/inertia-react"
+import { Inertia } from '@inertiajs/inertia'
 import route from 'ziggy-js';
+import { usePage } from '@inertiajs/inertia-react'
+
+//componentes
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 import FlotanteProfe from '../../components/common/FlotanteProfe';
 import FlotanteAdmin from '../../components/common/FlotanteAdmin';
-import { usePage } from '@inertiajs/inertia-react'
 
 
 function openNav() {
@@ -65,6 +68,26 @@ function shrinkSearchBar() {
 
 export default function BarraBusqueda() {
     const { auth } = usePage().props;
+
+    //para la búsqueda
+    const [values, setValues] = useState({
+        busqueda: ""
+    })
+
+    function handleChange(e) {
+        const key = e.target.id;
+        const value = e.target.value
+        setValues(values => ({
+            ...values,
+            [key]: value,
+        }))
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.get(route('cursosBuscar'), values)
+    }
+
     return (
         <div>
             {/* bara de busqueda superior */}
@@ -74,15 +97,17 @@ export default function BarraBusqueda() {
 
                 {/* Parte izquierda de la barra superior */}
                 <nav className="main-bar-search" id="main-bar-search" onClick={growSearchBar}>
-                    <div className="nav-wrapper nav-flex row">
-                        <div className="input-field col s12" style={{ marginLeft: "0px", padding: "0px" }}>
-                            <input className="main-bar-search-2" id="search" type="search" required style={{ "borderRadius": "4px" }} onBlur={shrinkSearchBar} />
-                            <label className="label-icon margin-search-icons" htmlFor="search"><i className="material-icons">search</i></label>
+                    <form onSubmit={handleSubmit}>
+                        <div className="nav-wrapper nav-flex row">
+                            <div className="input-field col s12" style={{ marginLeft: "0px", padding: "0px" }}>
+                                <input className="main-bar-search-2" id="busqueda" type="search" required style={{ "borderRadius": "4px" }} onBlur={shrinkSearchBar} value={values.busqueda} onChange={handleChange} />
+                                <label className="label-icon margin-search-icons" htmlFor="search"><i className="material-icons">search</i></label>
+                            </div>
+                            <div className="col enter-div hide-on-small-only" id="enter-search">
+                                <button type="submit"><i className="material-icons">chevron_right</i></button>
+                            </div>
                         </div>
-                        <div className="col enter-div hide-on-small-only" id="enter-search">
-                            <a className="" href="#!"><i className="material-icons">chevron_right</i></a>
-                        </div>
-                    </div>
+                    </form>
                 </nav>
                 {/* Parte derecha de la barra superior*/}
                 <div className="main-bar-right" id="main-bar-right">

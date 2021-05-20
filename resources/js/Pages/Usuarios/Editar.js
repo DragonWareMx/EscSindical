@@ -78,7 +78,6 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                     Inertia.reload({ only: ['units'], data: { regime: values.regimen } })
                 },
                 onSuccess: () => {
-                    console.log('si jaló')
                     setValues(values => ({
                         ...values,
                         cambiar_contrasena: false,

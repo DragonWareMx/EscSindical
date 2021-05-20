@@ -97,9 +97,6 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                         data: data,
                         preserveScroll: true,
                         preserveState: true,
-                        onSuccess: (data2) => {
-                            console.log(data2)
-                        }
                     })
                 break;
             case "rol":
@@ -147,9 +144,6 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                         data: data,
                         preserveScroll: true,
                         preserveState: true,
-                        onSuccess: (data2) => {
-                            console.log(data2)
-                        }
                     })
                 break;
             case "nombre":
@@ -197,9 +191,6 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                         data: data,
                         preserveScroll: true,
                         preserveState: true,
-                        onSuccess: (data2) => {
-                            console.log(data2)
-                        }
                     })
                 break;
             case "unidad":
@@ -247,9 +238,6 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                         data: data,
                         preserveScroll: true,
                         preserveState: true,
-                        onSuccess: (data2) => {
-                            console.log(data2)
-                        }
                     })
                 break;
             case "categoria":
@@ -297,9 +285,6 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                         data: data,
                         preserveScroll: true,
                         preserveState: true,
-                        onSuccess: (data2) => {
-                            console.log(data2)
-                        }
                     })
                 break;
 
@@ -326,9 +311,6 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                         data: data,
                         preserveScroll: true,
                         preserveState: true,
-                        onSuccess: (data2) => {
-                            console.log(data2)
-                        }
                     })
                 break;
             case "rol":
@@ -345,9 +327,6 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                         data: data,
                         preserveScroll: true,
                         preserveState: true,
-                        onSuccess: (data2) => {
-                            console.log(data2)
-                        }
                     })
                 break;
             case "nombre":
@@ -364,9 +343,6 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                         data: data,
                         preserveScroll: true,
                         preserveState: true,
-                        onSuccess: (data2) => {
-                            console.log(data2)
-                        }
                     })
                 break;
             case "unidad":
@@ -383,9 +359,6 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                         data: data,
                         preserveScroll: true,
                         preserveState: true,
-                        onSuccess: (data2) => {
-                            console.log(data2)
-                        }
                     })
                 break;
             case "categoria":
@@ -402,9 +375,6 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                         data: data,
                         preserveScroll: true,
                         preserveState: true,
-                        onSuccess: (data2) => {
-                            console.log(data2)
-                        }
                     })
                 break;
             case "eliminado":
@@ -421,9 +391,6 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                         data: data,
                         preserveScroll: true,
                         preserveState: true,
-                        onSuccess: (data2) => {
-                            console.log(data2)
-                        }
                     })
                 break;
 
