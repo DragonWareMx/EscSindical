@@ -6,7 +6,6 @@ import { InertiaLink } from '@inertiajs/inertia-react';
 
 //componentes
 import Paginacion from '../../components/common/Paginacion';
-import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 import Alertas from '../../components/common/Alertas';
 
 //estilos
@@ -608,8 +607,6 @@ const Usuarios = ({ users, user, request, categories, regimes, units }) => {
                     </div>
                 </div>
             </div>
-
-            <FlotanteAyuda />
         </>
     )
 }

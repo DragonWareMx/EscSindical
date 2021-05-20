@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import Layout from '../../layouts/Layout';
-import { Inertia } from '@inertiajs/inertia'
+import React, { useEffect, useState } from 'react'
+import Layout from './Layout'
 import '/css/layoutCursos.css'
+import route from 'ziggy-js'
+import { InertiaLink } from '@inertiajs/inertia-react'
 
 function initializeMat() {
     var elems = document.querySelectorAll('.dropdown-trigger');
@@ -12,7 +13,33 @@ function initializeMat() {
     var instances = M.FormSelect.init(elems);
 }
 
-const layoutCursos = ({ layoutCursos }) => {   
+function isUrl(...urls) {
+    let currentUrl = window.location.href.substr(1)
+    if (urls[0] === '') {
+      return currentUrl === ''
+    }
+    return urls.filter(url => currentUrl.startsWith(url)).length
+  }
+
+// function active(tab){
+//     var actual=window.location.href
+//     if(actual.includes(tab))
+//         return 'LC_a active'
+//     else
+//         return 'LC_a'
+// }
+
+// function active_active(id){
+//     var tabs = document.getElementsByClassName('LC_a')
+//     Array.from(tabs).forEach((tab)=>{
+//         tab.classList.remove('active')
+//     })
+//     var selected = document.getElementById(id)
+//     selected.classList.add('active')
+// }
+
+
+const LayoutCursos = ({children, id}) => {   
     useEffect(() => {
         initializeMat();
     }, [])
@@ -32,51 +59,47 @@ const layoutCursos = ({ layoutCursos }) => {
                    </div>
                     <div className="row">
                         <div className="col s12">
-                            <ul className="tabs">
+                            <ul className="tabs LC">
                                 <li className="tab LC_tab">
-                                    <a href="#test1" className="LC_a">
+                                    <InertiaLink id="tab_informacion" href={route('cursos.informacion', id)}  className={false ? 'LC_a active' : 'LC_a'}  target="_self">
                                         <i className="material-icons col s3 LC_tab_icons">school</i>
                                         <div className="col s9">Información</div>
-                                    </a>
+                                    </InertiaLink>
                                 </li>
                                 <li className="tab">
-                                    <a href="#test2" className="LC_a">
+                                    <InertiaLink id="tab_modulos" href={route('cursos.modulos', id)} className={true  ? 'LC_a active' : 'LC_a'} target="_self">
                                         <i className="material-icons col s3 LC_tab_icons">book</i>
                                         <div className="col s9">Módulos</div>
-                                    </a>
+                                    </InertiaLink>
                                 </li>
                                 <li className="tab">
-                                    <a href="#test3" className="LC_a">
+                                    <InertiaLink id="tab_mochila" href="" className="LC_a" target="_self">
                                         <i className="material-icons col s3 LC_tab_icons">backpack</i>
                                         <div className="col s9">Mochila</div>
-                                    </a>
+                                    </InertiaLink>
                                 </li>
                                 <li className="tab">
-                                    <a href="#test4" className="LC_a">
+                                    <InertiaLink id="tab_participantes" href="" className="LC_a" target="_self">
                                         <i className="material-icons col s3 LC_tab_icons">people</i>
                                         <div className="col s9">Participantes</div>
-                                    </a>
+                                    </InertiaLink>
                                 </li>
                                 <li className="tab">
-                                    <a href="#test5" className="LC_a">
+                                    <InertiaLink id="tab_estadisticas" href="" className="LC_a" target="_self">
                                         <i className="material-icons col s3 LC_tab_icons">bar_chart</i>
                                         <div className="col s9">Estadísticas</div>
-                                    </a>
+                                    </InertiaLink>
                                 </li>
                             </ul>
                         </div>
-                        <div id="test1" class="col s12">Test 1</div>
-                        <div id="test2" class="col s12">Test 2</div>
-                        <div id="test3" class="col s12">Test 3</div>
-                        <div id="test4" class="col s12">Test 4</div>
-                        <div id="test5" class="col s12">Test 5</div>
-                    </div>
+                        {children}
+                    </div> 
                </div>
             </div>
         </>
     )
 }
 
-layoutCursos.layout = page => <Layout children={page} title="Escuela Sindical - Curso" pageTitle="MIS CURSOS" />
+// LayoutCursos.layout = page => <Layout children={page} title="Escuela Sindical - Curso" pageTitle="MIS CURSOS" />
 
-export default layoutCursos
+export default LayoutCursos
