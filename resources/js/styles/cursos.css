@@ -227,7 +227,9 @@
     line-height: 15px;
     color: #9F9D9D;
 }
-
+.no-uppercase{
+    text-transform:initial !important;
+}
 
 /* MODALES---------------- */
 .txt-modal-inst{

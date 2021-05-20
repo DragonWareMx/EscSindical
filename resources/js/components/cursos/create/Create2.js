@@ -1,7 +1,10 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 
-
+function fechasInscripcion(){
+    var input = document.getElementsByClassName('fechas_insc').value;
+    alert(input);
+}
 function initializeChips() {
     var elems = document.querySelectorAll('.chips');
     var instances = M.Chips.init(elems);
@@ -9,12 +12,41 @@ function initializeChips() {
     var elems2 = document.querySelectorAll('.tooltipped');
     var instances = M.Tooltip.init(elems2);
 }
+function initializeDatePicker() {
+    var elems = document.querySelectorAll('.datepicker');
+    var options = {
+        format: 'yyyy-mm-dd',
+        setDefaultDate: true,
+        defaultDate: new Date(2021,0,1),
+        i18n: {
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+            weekdaysAbbrev: ['D', 'L', 'M', 'Mi', 'J', 'V', 'S'],
+            selectMonths: true,
+            selectYears: 100, // Puedes cambiarlo para mostrar más o menos años
+            today: 'Hoy',
+            clear: 'Limpiar',
+            close: 'Ok',
+            cancel: 'Cancelar',
+            labelMonthNext: 'Siguiente mes',
+            labelMonthPrev: 'Mes anterior',
+            labelMonthSelect: 'Selecciona un mes',
+            labelYearSelect: 'Selecciona un año',
+        }
+      };
+    var instances = M.Datepicker.init(elems, options);
+  }
 
 const Create2 = ({ change, values, onValueChange }) => {
-    
-    
     useEffect(() => {
         initializeChips();
+    }, [])
+
+    useEffect(() => {
+        initializeDatePicker();
     }, [])
     return (
         <div className="row" style={{"marginLeft": "-1.5rem", "marginRight": "-1.5rem"}}>
@@ -51,21 +83,21 @@ const Create2 = ({ change, values, onValueChange }) => {
                 <div class="switch">
                     <label>
                     Si
-                    <input id="active" value={values.active} onChange={change} type="checkbox"/>
+                    <input id="active" className="fechas_insc" value={values.active} onChange="fechasInscripcion()" type="checkbox"/>
                     <span class="lever"></span>
                     No
                     </label>
                 </div>
             </div>
 
-            <div className="yellow">
+            <div id="div_fechas_insc" style={{"display":"block"}}>
                 <div className="input-field col s12 m6 l6 xl6">
-                    <input  id="inscIni" value={values.inscIni} onChange={change} type="date" className="validate"/>
+                    <input  id="inscIni" value={values.inscIni} onChange={change} type="text" className="validate datepicker"/>
                     <label for="inscIni">Fecha de inicio de inscripciones</label>
                 </div>
 
                 <div className="input-field col s12 m6 l6 xl6">
-                    <input  id="inscFin" value={values.inscFin} onChange={change} type="date" className="validate"/>
+                    <input  id="inscFin" value={values.inscFin} onChange={change} type="text" className="validate datepicker"/>
                     <label for="inscFin">Fecha de término de inscripciones</label>
                 </div>
             </div>
