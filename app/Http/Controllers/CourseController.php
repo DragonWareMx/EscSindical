@@ -160,7 +160,7 @@ class CourseController extends Controller
 
     public function informacion($id){
         return Inertia::render('Curso/Informacion',[
-            'curso'=>Course::findOrFail($id),
+            'curso'=>Course::with('images:imagen,course_id','tags:nombre')->findOrFail($id),
         ]);
     }
 
