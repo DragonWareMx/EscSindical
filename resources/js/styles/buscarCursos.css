@@ -18,12 +18,13 @@
     height: 0px;
 }
 
+
 .owl-nav button{
     background: #FFFFFF !important;
     box-shadow: 0px 4px 4px rgba(133, 133, 133, 0.25) !important;
     border-radius: 50% !important;
-    width: 30px !important;
-    height: 30px !important;
+    width: 35px !important;
+    height: 35px !important;
     color: #134E39 !important;
 }
 

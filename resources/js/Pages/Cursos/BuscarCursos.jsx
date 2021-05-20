@@ -12,7 +12,6 @@ import route from 'ziggy-js';
 import '../../styles/buscarCursos.css';
 
 import CourseCardSearch from '../../components/cursos/CourseCardSearch'
-import CourseCardSearchHover from '../../components/cursos/CourseCardSearchHover'
 import axios from 'axios';
 import { debounce } from 'lodash';
 
@@ -31,7 +30,6 @@ const BuscarCursos = ({ cursos }) => {
             let pixelsFromBottom = document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight;
             if (pixelsFromBottom < 200) {
                 axios.get(cursos.next_page_url).then(response => {
-                    console.log(response)
                     setState(state => ({
                         ...state,
                         cursos: {
@@ -39,15 +37,10 @@ const BuscarCursos = ({ cursos }) => {
                             data: [...state.cursos.data, ...response.data.data]
                         }
                     }))
-                    console.log(state.cursos)
                 });
             }
         }, 100));
     }, [])
-
-    useEffect(() => {
-        console.log('hola', cursos)
-    }, [cursos]);
 
     const responsive = {
         0: {
@@ -125,7 +118,7 @@ const BuscarCursos = ({ cursos }) => {
                             <h1>MÁS CURSOS</h1>
                             <div className="row">
                                 {state.cursos.data.map(curso =>
-                                    <div className="col s12 m6 l3" key={curso.id} style={{"padding": "0px"}}>
+                                    <div className="col s12 m6 l3" key={curso.id} style={{ "padding": "0px" }}>
                                         {/* Aqui va el componente */}
                                         <CourseCardSearch curso={curso} />
                                     </div>

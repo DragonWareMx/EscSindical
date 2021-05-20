@@ -376,6 +376,10 @@ body
     background-color: rgba(0,0,0,0.05);
 }
 
+.logout-grande:focus{
+    background-color: rgba(0,0,0,0.05);
+}
+
 .logout-grande i{
     margin-right: 32px;
 }
@@ -384,6 +388,10 @@ body
     border: none;
     background-color: transparent;
     cursor: pointer;
+}
+
+.logout-chico:focus{
+    background-color: rgba(0,0,0,0.05);
 }
 
 .enter-div{
