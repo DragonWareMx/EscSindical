@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import { InertiaLink } from "@inertiajs/inertia-react"
 import { Inertia } from '@inertiajs/inertia'
 import route from 'ziggy-js';
@@ -68,6 +68,7 @@ function shrinkSearchBar() {
 
 export default function BarraBusqueda() {
     const { auth } = usePage().props;
+    const { busqueda } = usePage().props;
 
     //para la búsqueda
     const [values, setValues] = useState({
@@ -87,6 +88,19 @@ export default function BarraBusqueda() {
         e.preventDefault()
         Inertia.get(route('cursosBuscar'), values)
     }
+
+    //se ejecuta cuando se monta el componente, inicializa materialize y el buscador
+    useEffect(() => {
+        //si hay una busqueda en el url se pone en el input
+        if (busqueda) {
+            const elem = document.getElementById('busqueda');
+            elem.value = busqueda;
+            setValues(values => ({
+                ...values,
+                busqueda: busqueda
+            }))
+        }
+    }, [])
 
     return (
         <div>

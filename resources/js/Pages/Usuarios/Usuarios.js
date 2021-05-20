@@ -49,6 +49,7 @@ const Usuarios = ({ users, request }) => {
         });
     }
     
+    //sort de la tabla
     function sort(campo) {
         let data;
         switch (campo) {
@@ -293,6 +294,7 @@ const Usuarios = ({ users, request }) => {
         }
     }
 
+    //filtros de busqueda
     function filter(filtro) {
         state.filter = filtro
         let data

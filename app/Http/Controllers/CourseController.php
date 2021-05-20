@@ -312,8 +312,24 @@ class CourseController extends Controller
     public function searchIndex(Request $request)
     {
         $cursos = Course::with(['teacher:nombre,apellido_p,apellido_m,foto,id', 'tags:nombre', 'images:imagen'])
-
+                        // ->leftJoin('course_tag', 'course_tag.course_id', '=', 'courses.id')
+                        // ->leftJoin('tags', 'tags.id', '=', 'course_tag.tag_id')
+                        ->when($request->busqueda, function ($query, $busqueda) {
+                            $searchValues = preg_split('/\s+/', $busqueda, -1, PREG_SPLIT_NO_EMPTY);
+                            foreach ($searchValues as $value) {
+                                $query->where('courses.nombre','LIKE', '%' . $value . '%')
+                                    // ->orWhere('tags.nombre','LIKE', '%' . $value . '%')
+                                    ->orWhereHas('tags', function ($query) use ($value) {
+                                        $query->where('nombre', 'LIKE', '%' . $value . '%');
+                                    });
+                            } 
+                        })
+                        // ->select('courses.nombre','courses.fecha_inicio','courses.fecha_final')
                         ->paginate(12);
+
+        $cursosParaTi = Course::with(['teacher:nombre,apellido_p,apellido_m,foto,id', 'tags:nombre', 'images:imagen'])
+                            ->take(10)
+                            ->get();
 
         //sirve para el scroll infinito
         if ($request->wantsJson()) {
@@ -321,7 +337,8 @@ class CourseController extends Controller
         }
 
         return Inertia::render('Cursos/BuscarCursos', [
-            'cursos' => fn () => $cursos
+            'cursos' => fn () => $cursos,
+            'cursosParaTi' => fn () => $cursosParaTi
         ]);
     }
 

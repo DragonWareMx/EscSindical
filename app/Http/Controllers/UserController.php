@@ -61,16 +61,17 @@ class UserController extends Controller
                                     return $query->where('units.nombre', 'LIKE', '%' . $search . '%');
                                 break;
                             case 'nombre':
-                                return $query->where('users.nombre', 'LIKE', '%' . $search . '%')
-                                            ->orWhere('users.apellido_p', 'LIKE', '%' . $search . '%')
-                                            ->orWhere('users.apellido_m', 'LIKE', '%' . $search . '%');
+                                return $query->WhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                            );
                                 break;
                             case 'categoria':
                                 return $query->where('categories.nombre', 'LIKE', '%' . $search . '%');
                                 break;
                             case 'eliminado':
-                                return $query
-                                            ->where('users.nombre', 'LIKE', '%' . $search . '%')
+                                return $query->WhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                            )
                                             ->onlyTrashed();
                                 break;
 

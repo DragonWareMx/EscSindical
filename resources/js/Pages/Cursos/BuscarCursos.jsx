@@ -18,7 +18,7 @@ import { debounce } from 'lodash';
 function initializeMat() {
 }
 
-const BuscarCursos = ({ cursos }) => {
+const BuscarCursos = ({ cursos, cursosParaTi }) => {
 
     const [state, setState] = useState({
         cursos: cursos
@@ -66,63 +66,37 @@ const BuscarCursos = ({ cursos }) => {
         <>
             <div className="row contenedor">
                 {/* Contenedor Cursos para ti */}
+
+                {cursosParaTi && cursosParaTi.length > 0 &&
                 <div className="col contenedor s12">
                     <div className="card darken-1 card-buscar-cursos">
                         <div className="card-content">
                             <h1>CURSOS PARA TI</h1>
                             <OwlCarousel className='owl-theme' loop margin={8} nav autoplay responsive={responsive}>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['0']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['1']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['0']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['1']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['0']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['1']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['0']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['1']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['0']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['1']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['0']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['1']} />
-                                </div>
+                                {cursosParaTi.map((curso, index) => (
+                                    <div className='item' key={index}>
+                                        <CourseCardSearch curso={curso} />
+                                    </div>
+                                ))}
                             </OwlCarousel>
                         </div>
                     </div>
                 </div>
+                }
                 {/* Contenedor Más Cursos */}
                 <div className="col contenedor s12">
                     <div className="card darken-1 card-buscar-cursos">
                         <div className="card-content">
                             <h1>MÁS CURSOS</h1>
                             <div className="row">
-                                {state.cursos.data.map(curso =>
+                                {state.cursos.data && state.cursos.data.length > 0 ? state.cursos.data.map(curso =>
                                     <div className="col s12 m6 l3" key={curso.id} style={{ "padding": "0px" }}>
                                         {/* Aqui va el componente */}
                                         <CourseCardSearch curso={curso} />
                                     </div>
-                                )}
+                                ) :
+                                   <div className="col s12 m6 l3">No se encontraron cursos</div>
+                                }
                             </div>
                         </div>
                     </div>

@@ -4,6 +4,7 @@ import { Inertia } from '@inertiajs/inertia'
 
 import '../../styles/cursos.css'
 import '/css/courseCardSearch.css'
+import Tag from '../common/Tag'
 
 export default function CourseCardSearch({ curso }) {
 
@@ -42,10 +43,8 @@ export default function CourseCardSearch({ curso }) {
                         {/* Tags del curso */}
                         <div className="col s12 courseCard_tags" style={{ marginTop: "5px", marginBottom: "5px" }}>
                             <div className="container-tags">
-                                {curso.tags.map((tag, index) =>
-                                    <a className="div-tag" href="#!" key={index}>
-                                        {tag.nombre} <i className="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
-                                    </a>
+                                {curso.tags && curso.tags.length > 0 && curso.tags.map((tag, index) =>
+                                    <Tag nombre={tag.nombre} key={index} />
                                 )}
                             </div>
                         </div>
