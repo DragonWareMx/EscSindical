@@ -3,9 +3,9 @@ import { useEffect } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import Layout from '../../layouts/Layout';
 
-import Create1 from '../../components/cursos/create/Create1.js' 
-import Create2 from '../../components/cursos/create/Create2.js' 
-import Create3 from '../../components/cursos/create/Create3.js' 
+import Edit1 from '../../components/cursos/edit/Edit1.js' 
+import Edit2 from '../../components/cursos/edit/Edit2.js' 
+import Edit3 from '../../components/cursos/edit/Edit3.js' 
 import '../../styles/cursos.css'
 
 
@@ -28,7 +28,7 @@ function initializeChips() {
 }
 
 
-const FormCurso = () => {
+const FormCursoEdit = () => {
     useEffect(() => {
         initializeModals();
     }, [])
@@ -88,14 +88,14 @@ const FormCurso = () => {
                             <div className="modal-content">
                                 <div className="row">
                                     <ul id="tabs-swipe-demo" class="tabs" style={{"marginBottom": "20px"}}>
-                                        <li class="tab col s4"><a href="#create1" class="active" >1. Generalidades</a></li>
-                                        <li class="tab col s4"><a href="#create2">2. Participantes</a></li>
-                                        <li class="tab col s4"><a href="#create3">3. Presentación</a></li>
+                                        <li class="tab col s4"><a href="#edit1" class="active" >1. Generalidades</a></li>
+                                        <li class="tab col s4"><a href="#edit2">2. Participantes</a></li>
+                                        <li class="tab col s4"><a href="#edit3">3. Presentación</a></li>
                                     </ul>
 
-                                    <div id="create2" class="col s12"><Create2 change = {handleChange} values = {useState} onValueChange ={onValueChange}/></div>
-                                    <div id="create1" class="col s12"><Create1 change = {handleChange} values = {useState} onChangeTags ={onChangeTags}/></div>
-                                    <div id="create3" class="col s12"><Create3 change = {handleChange} values = {useState}/></div>
+                                    <div id="edit2" class="col s12"><Edit2 change = {handleChange} values = {useState} onValueChange ={onValueChange}/></div>
+                                    <div id="edit1" class="col s12"><Edit1 change = {handleChange} values = {useState} onChangeTags ={onChangeTags}/></div>
+                                    <div id="edit3" class="col s12"><Edit3 change = {handleChange} values = {useState}/></div>
                                 </div>
                             </div>
                         </form>
@@ -107,6 +107,6 @@ const FormCurso = () => {
     )
 }
 
-FormCurso.layout = page => <Layout children={page} title="Agregar curso" pageTitle="AGREGAR CURSO"/>
+FormCursoEdit.layout = page => <Layout children={page} title="Editar curso" pageTitle="EDITAR CURSO"/>
 
-export default FormCurso
+export default FormCursoEdit
