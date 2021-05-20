@@ -30,28 +30,34 @@ export default function FlotanteAyuda() {
                         <div className="col s12 center-align modal-title">¿Necesitas ayuda? Contáctanos</div>
                         <div className="col s12 modal-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod </div>
                         <div className="row" style={{ "margin": "0px" }}>
-                            <div className="col s1">
-                                <i className="material-icons" style={{ "color": "#656565", "marginTop": "12px" }}>language</i>
-                            </div>
-                            <div className="col s11">
-                                <div className="" style={{ "color": "#5C5C5C", "fontSize": "15px", "marginTop": "12px", "paddingLeft": "10px" }}>www.sindicatoxx.com</div>
-                            </div>
+                            <a href="https://www.sntssseccionxxmichoacan.org/" target="_blank">
+                                <div className="col s1">
+                                    <i className="material-icons" style={{ "color": "#656565", "marginTop": "12px" }}>language</i>
+                                </div>
+                                <div className="col s11">
+                                    <div className="" style={{ "color": "#5C5C5C", "fontSize": "15px", "marginTop": "12px", "paddingLeft": "10px" }}>www.sindicatoxx.com</div>
+                                </div>
+                            </a>
                         </div>
                         <div className="row" style={{ "margin": "0px" }}>
-                            <div className="col s1">
-                                <i className="material-icons" style={{ "color": "#656565", "marginTop": "12px" }}>mail_outline</i>
-                            </div>
-                            <div className="col s11">
-                                <div className="" style={{ "color": "#5C5C5C", "fontSize": "15px", "marginTop": "12px", "paddingLeft": "10px" }}>escuelasindical@imss.com</div>
-                            </div>
+                            <a href="mailto: escuelasindical@imss.com">
+                                <div className="col s1">
+                                    <i className="material-icons" style={{ "color": "#656565", "marginTop": "12px" }}>mail_outline</i>
+                                </div>
+                                <div className="col s11">
+                                    <div className="" style={{ "color": "#5C5C5C", "fontSize": "15px", "marginTop": "12px", "paddingLeft": "10px" }}>escuelasindical@imss.com</div>
+                                </div>
+                            </a>
                         </div>
                         <div className="row" style={{ "margin": "0px" }}>
-                            <div className="col s1">
-                                <i className="material-icons" style={{ "color": "#656565", "marginTop": "12px" }}>call</i>
-                            </div>
-                            <div className="col s11">
-                                <div className="" style={{ "color": "#5C5C5C", "fontSize": "15px", "marginTop": "12px", "paddingLeft": "10px" }}>44 44 44 44 44</div>
-                            </div>
+                            <a href="tel:4433998915">
+                                <div className="col s1">
+                                    <i className="material-icons" style={{ "color": "#656565", "marginTop": "12px" }}>call</i>
+                                </div>
+                                <div className="col s11">
+                                    <div className="" style={{ "color": "#5C5C5C", "fontSize": "15px", "marginTop": "12px", "paddingLeft": "10px" }}>44 44 44 44 44</div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
