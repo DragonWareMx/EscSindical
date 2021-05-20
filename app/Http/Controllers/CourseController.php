@@ -64,7 +64,7 @@ class CourseController extends Controller
         return Inertia::render('Cursos/ModuleCreate');
     }
 
-    public function moduleEdit()
+    public function moduleEdit($id)
     {
         return Inertia::render('Cursos/ModuleEdit');
     }
