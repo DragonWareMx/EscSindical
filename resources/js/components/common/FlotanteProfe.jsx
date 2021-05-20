@@ -25,9 +25,9 @@ export default function FlotanteProfe() {
                     </a>
                     <ul>
                     <li><a className="btn-floating blue-grey lighten-1 modal-trigger tooltipped" href="#modalHelp" data-position="left" data-tooltip="Ayuda"><i className="material-icons">help_outline</i></a></li>
-                        <li><InertiaLink href="#" className="btn-floating blue lighten-1 tooltipped" data-position="left" data-tooltip="Agregar módulo"><i className="material-icons">book</i></InertiaLink></li>
                         <li><InertiaLink href="#" className="btn-floating orange lighten-1 tooltipped" data-position="left" data-tooltip="Agregar actividad"><i className="material-icons">work</i></InertiaLink></li>
                         <li><InertiaLink href="#" className="btn-floating red lighten-1 tooltipped" data-position="left" data-tooltip="Agregar recurso"><i className="material-icons">description</i></InertiaLink></li>
+                        <li><InertiaLink href={route('module.create')} className="btn-floating blue lighten-1 tooltipped" data-position="left" data-tooltip="Agregar módulo"><i className="material-icons">book</i></InertiaLink></li>
                         <li><InertiaLink href={route('cursos.create')} className="btn-floating purple lighten-3 tooltipped" data-position="left" data-tooltip="Agregar curso"><i className="material-icons">school</i></InertiaLink></li>
                     </ul>
                 </div>

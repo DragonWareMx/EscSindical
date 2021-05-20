@@ -6,7 +6,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import '../../styles/cursos.css'
 
-const ModuleCreate = () => {
+const ModuleEdit = () => {
   return (
     <>
     
@@ -63,7 +63,7 @@ const ModuleCreate = () => {
                                 
                                 <div className="col s12 ">
                                     <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
-                                        Agregar
+                                        Guardar
                                         <i className="material-icons right">save</i>
                                     </button>
                                 </div>
@@ -79,6 +79,6 @@ const ModuleCreate = () => {
   )
 }
 
-ModuleCreate.layout = page => <Layout children={page} title="Agregar módulo" pageTitle="AGREGAR MÓDULO"/>
+ModuleEdit.layout = page => <Layout children={page} title="Editar módulo" pageTitle="EDITAR MÓDULO"/>
 
-export default ModuleCreate
+export default ModuleEdit

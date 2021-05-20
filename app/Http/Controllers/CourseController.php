@@ -69,6 +69,11 @@ class CourseController extends Controller
         return Inertia::render('Cursos/ModuleCreate');
     }
 
+    public function moduleEdit()
+    {
+        return Inertia::render('Cursos/ModuleEdit');
+    }
+
     public function store(Request $request)
     {
         //VALIDAMOS DATOS
