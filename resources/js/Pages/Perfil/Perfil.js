@@ -74,15 +74,11 @@ const Perfil = ({ user }) => {
                                             <div className="titles-sub">
                                                 INFORMACIÓN PERSONAL
                                             </div>
-
-                                            {/* <div style={{"marginTop":"20px"}}>
-                                                <br/>
-                                            </div> */}
                                             <div className="info-txt-format">
                                                 Fecha de Nacimiento: {user.fecha_nac}
                                             </div>
                                             <div className="info-txt-format">
-                                                Sexo: {user.sexo}
+                                                Sexo: {user.sexo == 'h' && "Hombre"}{user.sexo == 'm' && "Mujer"}{user.sexo == 'o' && "Otro"}
                                             </div>
                                         </div>
                                         <div className="col s12 m6" style={{ "marginTop": "15px" }}>
@@ -127,26 +123,7 @@ const Perfil = ({ user }) => {
                                         </div>
                                         {/* Boton de editar */}
                                         <div className="col s12 m12 right-align" style={{ "marginTop": "25px" }}>
-                                            <a href="#modal-editar" class="waves-effect waves-light btn boton-verde modal-trigger"><i class="material-icons right" style={{ "font-size": "18px" }}>settings</i>Configuración</a>
-                                        </div>
-                                        {/* Modal */}
-                                        <div id="modal-editar" className="modal">
-                                            <div className="modal-content">
-                                                <div className="row">
-                                                    <div className="col s11">
-                                                        <div className="title-configuracion valign-wrapper"><i className="material-icons" style={{ "marginRight": "10px" }}>settings</i>CONFIGURACIÓN</div>
-                                                    </div>
-                                                    <div className="col s1 modal-close">
-                                                        <i className="material-icons">close</i>
-                                                    </div>
-                                                    <div className="col s12">
-                                                        {/* {!state.newUser && <InfoAlumno user={user}/>} */}
-                                                        {/* <UserForm /> */}
-                                                        {/* <UserForm user={user} bEdit={edit} onEditChange={handleEditChange} /> */}
-
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <a href="/perfil/configuracion" class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{ "font-size": "18px" }}>settings</i>Configuración</a>
                                         </div>
                                     </div>
                                 </div>
