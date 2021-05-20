@@ -56,6 +56,8 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
+        //\Gate::authorize('haveaccess', 'ponent.perm');
+        
         //VALIDAMOS DATOS
         $validated = $request->validate([
             'nombre' => 'required|max:255',
@@ -126,12 +128,152 @@ class CourseController extends Controller
             //GUARDAMOS EL LOG
 
             DB::commit();
-            return \Redirect::route('cursos')->with('success','El usuario ha sido registrado con éxito!');
+            return \Redirect::route('cursos')->with('success','El curso se ha creado exitosamente');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(["status" => $e]);
+            return \Redirect::route('cursos')->with('error','Hubo un problema con tu solicitud, inténtalo más tarde');
+            //return response()->json(["status" => $e]);
         }    
+    }
+
+    public function edit($id){
+        //\Gate::authorize('haveaccess', 'ponent.perm');
+        return Inertia::render('Usuarios/Editar', [
+            'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id),//falta lo de categories
+        ]); 
+    }
+
+    public function update($id, Request $request){
+        //\Gate::authorize('haveaccess', 'ponent.perm');
+        //VALIDAMOS DATOS
+        $validated = $request->validate([
+            'nombre' => 'required|max:255',
+            'tags' => 'required',
+            'dateIni' => 'required',
+            'dateFin' => 'required',
+            'link' => 'required',
+            'vc' => 'required',
+            'categorias' => 'required',
+            'tipo' => 'required',
+            'descripcion' => 'required',
+            'imgs' => 'required',
+        ]);
+
+        //COMIENZA TRANSACCIÓN
+        DB::beginTransaction();
+
+        try {
+            //Se busca curso a editar con id
+            $myCourse = Course::findOrFail($id);
+
+            $myCourse->nombre = $request->nombre;
+            $myCourse->fecha_inicio = $request->dateIni;
+            $myCourse->fecha_final = $request->dateFin;
+            $myCourse->max = 100;
+            $myCourse->valor_curricular = $request->vc;
+            $myCourse->tipo_acceso = $request->tipo;
+            $myCourse->descripcion = $request->descripcion;
+            $myCourse->teacher_id = Auth::id();
+            $myCourse->link = $request->link;
+
+            $myCourse->save();
+            //SE AGREGAN REGISTROS A SUS RELACIONES
+            //TAGS
+            $tags = $request->tags;
+            $tags_ids = [];
+            $i =0;
+            foreach ($tags as $tag) {
+                if (Tag::where('nombre',$tag['tag'])->first()!=null){
+                    $oldTag = Tag::where('nombre',$tag['tag'])->first();
+                    $tags_ids[$i] = $oldTag->id;  
+                }
+                else {
+                    $newTag = new Tag;
+                    $newTag->nombre = $tag['tag'];
+                    $newTag->save();
+                    
+                    $tags_ids[$i] = $newTag->id;
+                }
+                $i++;
+            }
+            
+            $myCourse->tags()->sync($tags_ids);
+            //CATEGORIAS
+
+
+            //IMÁGENES
+                   
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'update';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                courses: {
+                    nombre: ' . $request->nombre .
+                    'fecha_inicio: ' . $request->apellido_paterno .
+                    'fecha_final: ' . $request->apellido_materno .
+                    'max: ' . $request->fecha_de_nacimiento .
+                    'valor_curricular: '. $request->sexo.
+                    
+                    'tipo_acceso: ' . $request->matricula .
+                    'descripcion: '.$unidad[0]->id.
+                    'teacher_id: ' . $categoria[0]->id .
+                    
+                    'link: ' . $request->estado .
+                '}
+            }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha editado el curso: '. $myCourse->nombre;
+                
+            //SE GUARDA EL LOG
+            $newLog->save();
+            
+            DB::commit();
+            return \Redirect::route('cursos')->with('success','El curso se ha actualizado exitosamente');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return \Redirect::route('cursos')->with('error','Hubo un problema con tu solicitud, inténtalo más tarde');
+            //return response()->json(["status" => $e]);
+        }
+    }
+
+    public function delete($id){
+        
+        //\Gate::authorize('haveaccess', 'ponent.perm');
+        DB::beginTransaction();
+        try{
+            $course = User::find($id);
+            
+            $course->delete();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'delete';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                courses: {
+                    id: ' . $id .
+                '}
+            }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha eliminado el curso: '. $course->nombre;
+
+            $newLog->save();
+
+            DB::commit();
+            return \Redirect::route('cursos')->with('success','¡Curso eliminado con éxito!');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
+        }
+
     }
 
     public function searchIndex(Request $request)
