@@ -400,10 +400,25 @@ body
     width: 46px;
     background-color: transparent;
     border-radius: 2px;
+    padding: 0px !important;
 }
 
 .enter-div i{
     margin-top: -8px;
+}
+
+.enter-div button{
+    height: 46px !important;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 46px;
+}
+
+.enter-div button:active{
+    background-color: transparent;
 }
 
 @media (max-width:600px){
