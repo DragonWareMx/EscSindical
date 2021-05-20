@@ -34,10 +34,14 @@ class UserController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
 
         return Inertia::render('Usuarios/Usuarios', [
-            'users' => fn () => User::with('roles', 'categorie')
+            'users' => fn () => User::with('roles', 'categorie','unit')
                 ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
                 ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
                 ->leftJoin('categories', 'categories.id', '=', 'users.categorie_id')
+                ->leftJoin('units', 'units.id', '=', 'users.unit_id')
+                ->when($request->filter == 'eliminado', function ($query) {
+                    return $query->onlyTrashed();
+                })
                 ->when($request->user_search, function ($query, $search) use ($request) {
                     if ($request->filter) {
                         switch ($request->filter) {
@@ -50,14 +54,24 @@ class UserController extends Controller
                                 else
                                     return $query->where('roles.name', 'LIKE', '%' . $search . '%');
                                 break;
+                            case 'unidad':
+                                if ($search == "Sin unidad")
+                                    return $query->whereNull('users.unit_id');
+                                else
+                                    return $query->where('units.nombre', 'LIKE', '%' . $search . '%');
+                                break;
                             case 'nombre':
-                                return $query->where('users.nombre', 'LIKE', '%' . $search . '%');
+                                return $query->where('users.nombre', 'LIKE', '%' . $search . '%')
+                                            ->orWhere('users.apellido_p', 'LIKE', '%' . $search . '%')
+                                            ->orWhere('users.apellido_m', 'LIKE', '%' . $search . '%');
                                 break;
                             case 'categoria':
                                 return $query->where('categories.nombre', 'LIKE', '%' . $search . '%');
                                 break;
                             case 'eliminado':
-                                return $query->onlyTrashed()->where('users.matricula', 'LIKE', '%' . $search . '%');
+                                return $query
+                                            ->where('users.nombre', 'LIKE', '%' . $search . '%')
+                                            ->onlyTrashed();
                                 break;
 
                             default:
@@ -93,14 +107,14 @@ class UserController extends Controller
                             else
                                 return $query;
                             break;
-                            // case 'unidad':
-                            //     if($request->order == 'asc')
-                            //         return $query->orderBy('matricula', 'ASC');
-                            //     else if($request->order == 'desc')
-                            //         return $query->orderBy('matricula', 'DESC');
-                            //     else
-                            //         return $query;
-                            //     break;
+                        case 'unidad':
+                            if($request->order == 'asc')
+                                return $query->orderBy('units.nombre', 'ASC');
+                            else if($request->order == 'desc')
+                                return $query->orderBy('units.nombre', 'DESC');
+                            else
+                                return $query;
+                            break;
                         case 'categoria':
                             if ($request->order == 'asc')
                                 return $query->orderBy('categories.nombre', 'ASC');
@@ -114,7 +128,8 @@ class UserController extends Controller
                             break;
                     }
                 })
-                ->select('users.id', 'matricula', 'users.nombre', 'apellido_p', 'apellido_m', 'categorie_id')
+                ->select('users.id', 'matricula', 'users.nombre', 'apellido_p', 'apellido_m', 'categorie_id','users.unit_id','users.deleted_at')
+                ->orderBy('users.created_at','desc')
                 ->paginate(20)
                 ->withQueryString(),
             'user' => Inertia::lazy(
@@ -429,7 +444,7 @@ class UserController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
 
         return Inertia::render('Usuarios/Editar', [
-            'user' => User::with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.images:course_id,imagen', 'finishedCourses.images:course_id,imagen', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre', 'roles:name'])
+            'user' => User::withTrashed()->with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.images:course_id,imagen', 'finishedCourses.images:course_id,imagen', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre', 'roles:name'])
                             ->findOrFail($id),
             'categories'=> fn () => Category::select('id','nombre')->get(),
             'regimes'=> fn () => Regime::select('id','nombre')->get(),
@@ -520,39 +535,199 @@ class UserController extends Controller
             }
         }
 
-        dd($request->file('tarjeton_de_pago'));
+        //variables para comprobar la subida de archivos
+        $foto = null;
+        $tarjeton_pago = null;
 
-        $user = User::find($id);
-        //---informacion personal---
-        $user->foto = $request->foto;
-        $user->nombre = $request->nombre;
-        $user->apellido_p = $request->apellido_paterno;
-        $user->apellido_m = $request->apellido_materno;
-        $user->fecha_nac = $request->fecha_de_nacimiento;
+        //COMIENZA LA TRANSACCION
+        DB::beginTransaction();
 
-        //---informacion institucional---
-        $user->matricula = $request->matricula;
-        //regimen...
-        //unidad...
-        //categoria
-        $user->tarjeton_pago = $request->tarjeton_de_pago;
+        try {
+            //se busca el regimen en la bd
+            $regimen = Regime::where("nombre", $request->regimen)->get();
 
-        //---direccion---
-        $user->estado = $request->estado;
-        $user->ciudad = $request->ciudad;
-        $user->colonia = $request->colonia;
-        $user->calle = $request->calle;
-        $user->num_ext = $request->numero_exterior;
-        $user->num_int = $request->numero_interior;
-        $user->cp = $request->codigo_postal;
+            if($regimen->isEmpty())
+            {
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
 
-        //---cuenta---
-        $user->email = $request->email;
+            //se busca la unidad en la bd
+            $unidad = Unit::where("nombre", $request->unidad)->get();
 
-        //SE GUARDA EL NUEVO USUARIO
-        $user->save();
+            if($unidad->isEmpty())
+            {
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
 
-        return \Redirect::route('usuarios')->with('success','¡Usuario editado de manera exitosa!');
+            //se busca ña categoria en la bd
+            $categoria = Category::where("nombre", $request->categoria)->get();
+
+            if($categoria->isEmpty())
+            {
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
+
+            //verifica que la unidad y el regimen esten relacionados
+            if($unidad[0]->regime->id != $regimen[0]->id)
+            {
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
+
+            //se busca el rol en la bd
+            $rol = Role::where("name", $request->rol)->get();
+
+            if($rol->isEmpty())
+            {
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
+
+            //SE CREA EL NUEVO USUARIO
+            $user = User::find($id);
+
+            //guarda la foto
+            if(!is_null($request->file('foto'))){
+                if($user->foto){
+                    \Storage::delete('public/fotos_perfil'.$user->foto);
+                }
+                $foto = $request->file('foto')->store('public/fotos_perfil');
+                $user->foto = $request->file('foto')->hashName();
+            }
+            
+            //---informacion personal---
+            $user->nombre = $request->nombre;
+            $user->apellido_p = $request->apellido_paterno;
+            $user->apellido_m = $request->apellido_materno;
+            $user->fecha_nac = $request->fecha_de_nacimiento;
+            $user->sexo = $request->sexo;
+            
+            //---informacion institucional---
+            $user->matricula = $request->matricula;
+            $user->unit_id = $unidad[0]->id;
+            $user->categorie_id = $categoria[0]->id;
+
+            //guarda el tarjeton de pago
+            if(!is_null($request->file('tarjeton_de_pago'))){
+                if($user->tarjeton_pago){
+                    \Storage::delete('public/tarjetones_pago/'.$user->tarjeton_pago);
+                }
+                $tarjeton_pago = $request->file('tarjeton_de_pago')->store('public/tarjetones_pago');
+                $user->tarjeton_pago = $request->file('tarjeton_de_pago')->hashName();
+            }
+            
+            //---direccion---
+            $user->estado = $request->estado;
+            $user->ciudad = $request->ciudad;
+            $user->colonia = $request->colonia;
+            $user->calle = $request->calle;
+            $user->num_ext = $request->numero_exterior;
+            $user->num_int = $request->numero_interior;
+            $user->cp = $request->codigo_postal;
+            
+            //---cuenta---
+            $user->email = $request->email;
+
+            if($request->cambiar_contrasena){
+                $user->password = \Hash::make($request->contrasena);
+            }
+
+            //SE GUARDA EL NUEVO USUARIO
+            $user->save();
+            
+            //se asigna el rol
+            $user->roles()->sync([$rol[0]->id]);
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+            
+            $newLog->categoria = 'update';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                users: {
+                    nombre: ' . $request->nombre . ',\n
+                    apellido_p: ' . $request->apellido_paterno . ',\n
+                    apellido_m: ' . $request->apellido_materno . ',\n
+                    fecha_nac: ' . $request->fecha_de_nacimiento . ',\n
+                    sexo: '. $request->sexo. ',\n
+
+                    matricula: ' . $request->matricula . ',\n
+                    unit_id: '.$unidad[0]->id. ',\n
+                    categorie_id: ' . $categoria[0]->id . ',\n
+
+                    estado: ' . $request->estado . ',\n
+                    ciudad: ' . $request->ciudad . ',\n
+                    colonia: ' . $request->colonia . ',\n
+                    calle: ' . $request->calle . ',\n
+                    num_ext: ' . $request->numero_exterior . ',\n
+                    num_int: ' . $request->numero_interior . ',\n
+                    cp: ' . $request->codigo_postal . ',\n
+
+                    email: ' . $request->email .
+                '}
+            }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha registrado un nuevo usuario: '. $user->email;
+                
+            //SE GUARDA EL LOG
+            $newLog->save();
+            
+            
+            if(!$user)
+            {
+                DB::rollBack();
+                //si hay foto se elimina del servidor
+                if($foto)
+                {
+                    \Storage::delete($foto);
+                }
+                //si hay tarjeton se elimina del servidor
+                if($tarjeton_pago)
+                {
+                    \Storage::delete($tarjeton_pago);
+                }
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
+            if(!$newLog)
+            {
+                DB::rollBack();
+                //si hay foto se elimina del servidor
+                if($foto)
+                {
+                    \Storage::delete($foto);
+                }
+                //si hay tarjeton se elimina del servidor
+                if($tarjeton_pago)
+                {
+                    \Storage::delete($tarjeton_pago);
+                }
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            }
+
+            //SE HACE COMMIT
+            DB::commit();
+            
+            //REDIRECCIONA A LA VISTA DE USUARIOS
+            return \Redirect::back()->with('success','El usuario ha sido editado con éxito!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            //si hay foto se elimina del servidor
+            if($foto)
+            {
+                \Storage::delete($foto);
+            }
+            //si hay tarjeton se elimina del servidor
+            if($tarjeton_pago)
+            {
+                \Storage::delete($tarjeton_pago);
+            }
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+        }
     }
 
     /**
@@ -604,6 +779,59 @@ class UserController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return \Redirect::back()->with('error','Ha ocurrido un error al intentar eliminar el usuario, inténtelo más tarde.');
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        //valida el rol del usuario
+        \Gate::authorize('haveaccess', 'admin.perm');
+
+        DB::beginTransaction();
+        try{
+            $user = User::withTrashed()->find($id);
+
+            if(!$user){
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar eliminar el usuario, inténtelo más tarde.');
+            }
+
+            if($user->id == Auth::id()){
+                DB::rollBack();
+                return \Redirect::back()->with('message','¡No puedes eliminar tu propio usuario!');
+            }
+
+            $user->restore();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'restore';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                users: {
+                    id: ' . $id .
+                '}
+            }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha restaurado al usuario: '. $user->email;
+
+            $newLog->save();
+
+            DB::commit();
+            return \Redirect::back()->with('success','¡Usuario restaurado con éxito!');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el usuario, inténtelo más tarde.');
         }
     }
 }

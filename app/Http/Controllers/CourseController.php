@@ -167,4 +167,12 @@ class CourseController extends Controller
     public function prueba(){
         return Inertia::render('Cursos/Prueba');
     }
+
+    public function informacion($id){
+        return Inertia::render('Curso/Informacion');
+    }
+
+    public function modulos(){
+        return Inertia::render('Curso/Modulos');
+    } 
 }
