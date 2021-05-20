@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import '/css/informacionCursos.css'
 import '../../styles/cursos.css'
 import '/css/courseCardSearch.css'
+import Tag from '../../components/common/Tag';
 
 const Informacion = ({curso}) => {
   function initializeMaterialize(){
@@ -86,9 +87,7 @@ const Informacion = ({curso}) => {
                 <div className="col s12 courseCard_tags" style={{ marginTop: "5px", marginBottom: "5px" }}>
                   <div className="container-tags">
                     {curso.tags && curso.tags.length>0 && curso.tags.map((tag, index) =>
-                        <a className="div-tag" href="#!" key={index}>
-                            {tag.nombre} <i className="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
-                        </a>
+                        <Tag nombre={tag.nombre} key={index} />
                     )}
                   </div>
                 </div>

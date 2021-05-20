@@ -4,6 +4,7 @@ import { Inertia } from '@inertiajs/inertia'
 
 import '../../styles/cursos.css'
 import '/css/courseCard.css'
+import Tag from '../common/Tag'
 
 export default function InfoAlumno({ curso, actuales }) {
 
@@ -49,10 +50,8 @@ export default function InfoAlumno({ curso, actuales }) {
                             <div className="col s10 truncate" style={{ "height": "30px", "display": "flex", "alignItems": "center" }}>{curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}</div>
                             <div className="col s12 courseCard_tags" >
                                 <div className="container-tags">
-                                    {curso.tags.map(tag=>
-                                        <a className="div-tag" href="#!" key={tag.pivot.tag_id + tag.nombre}>
-                                            {tag.nombre} <i className="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
-                                        </a>
+                                    {curso.tags && curso.tags.length > 0 && curso.tags.map((tag, index)=>
+                                        <Tag nombre={tag.nombre} key={index} />
                                     )}
                                 </div>
 
