@@ -38,6 +38,10 @@ function initializeDatePicker() {
         }
       };
     var instances = M.Datepicker.init(elems, options);
+
+    var elems3 = document.querySelectorAll('select');
+    var options3;
+    var instances3 = M.FormSelect.init(elems3, options3);
   }
 
 const Create2 = ({ change, values, onValueChange }) => {
@@ -51,8 +55,15 @@ const Create2 = ({ change, values, onValueChange }) => {
     return (
         <div className="row" style={{"marginLeft": "-1.5rem", "marginRight": "-1.5rem"}}>
             <div className="input-field col s12">
-                <input  id="categorias" value={values.categorias} onChange={change} type="text" className="validate"/>
-                <label for="categorias">Categorías de estudiante permitidas</label>
+                {/* <input  id="categorias" value={values.categorias} onChange={change} type="text" className="validate"/>
+                <label for="categorias">Categorías de estudiante permitidas</label> */}
+                <select multiple id="categorias" onChange={change}>
+                    <option value="" disabled selected>Selecciona al menos una opción</option>
+                    <option value="1">Categoría 1</option>
+                    <option value="2">Categoría 2</option>
+                    <option value="3">Categoría 3</option>
+                    </select>
+                <label>Categorías de estudiante permitidas</label>
             </div>
 
             <div className="input-field col s12 m6 l6 xl6">

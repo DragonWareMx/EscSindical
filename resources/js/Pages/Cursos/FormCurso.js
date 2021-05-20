@@ -9,8 +9,6 @@ import Create3 from '../../components/cursos/create/Create3.js'
 import '../../styles/cursos.css'
 
 
-
-
 function initializeModals() {
     var elems = document.querySelectorAll('.modal');
     var instances = M.Modal.init(elems);
