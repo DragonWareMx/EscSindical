@@ -59,11 +59,6 @@ class CourseController extends Controller
         return Inertia::render('Cursos/FormCurso');
     }
 
-    public function edit($id)
-    {
-        return Inertia::render('Cursos/FormCursoEdit');
-    }
-
     public function moduleCreate()
     {
         return Inertia::render('Cursos/ModuleCreate');
@@ -137,15 +132,32 @@ class CourseController extends Controller
             //IMÁGENES
                    
             //SE CREA EL LOG
-            // $newLog = new Log;
+            $newLog = new Log;
 
-            // $newLog->categoria = 'create';
-            // $newLog->user_id = Auth::id();
-            // $newLog->accion =
-            //     '';
-            //falta agregar el accion del log, es un json
+            $newLog->categoria = 'create';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                courses: {
+                    nombre: ' . $request->nombre .
+                    'fecha_inicio: ' . $request->dateIni .
+                    'fecha_final: ' . $request->dateFin .
+                    'max: ' . $request->max .
+                    'valor_curricular: '. $request->vc.
+                    
+                    'tipo_acceso: ' . $request->tipo .
+                    'descripcion: '.$request->descripcion.
+                    'teacher_id: ' . Auth::id() .
+                    
+                    'link: ' . $request->link .
+                '}
 
-            //GUARDAMOS EL LOG
+            }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha creado el curso: '. $myCourse->nombre;
+                
+            //SE GUARDA EL LOG
+            $newLog->save();
 
             DB::commit();
             return \Redirect::route('cursos')->with('success','El curso se ha creado exitosamente');
@@ -159,7 +171,7 @@ class CourseController extends Controller
 
     public function edit($id){
         //\Gate::authorize('haveaccess', 'ponent.perm');
-        return Inertia::render('Usuarios/Editar', [
+        return Inertia::render('Cursos/FormCursoEdit', [
             'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id),//falta lo de categories
         ]); 
     }
@@ -233,17 +245,18 @@ class CourseController extends Controller
             '{
                 courses: {
                     nombre: ' . $request->nombre .
-                    'fecha_inicio: ' . $request->apellido_paterno .
-                    'fecha_final: ' . $request->apellido_materno .
-                    'max: ' . $request->fecha_de_nacimiento .
-                    'valor_curricular: '. $request->sexo.
+                    'fecha_inicio: ' . $request->dateIni .
+                    'fecha_final: ' . $request->dateFin .
+                    'max: ' . $request->max .
+                    'valor_curricular: '. $request->vc.
                     
-                    'tipo_acceso: ' . $request->matricula .
-                    'descripcion: '.$unidad[0]->id.
-                    'teacher_id: ' . $categoria[0]->id .
+                    'tipo_acceso: ' . $request->tipo .
+                    'descripcion: '.$request->descripcion.
+                    'teacher_id: ' . Auth::id() .
                     
-                    'link: ' . $request->estado .
+                    'link: ' . $request->link .
                 '}
+
             }';
 
             $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha editado el curso: '. $myCourse->nombre;
