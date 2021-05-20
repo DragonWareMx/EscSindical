@@ -14,6 +14,7 @@ import '../../styles/buscarCursos.css';
 import CourseCardSearch from '../../components/cursos/CourseCardSearch'
 import axios from 'axios';
 import { debounce } from 'lodash';
+import Loader from 'react-loader-spinner';
 
 function initializeMat() {
 }
@@ -21,21 +22,27 @@ function initializeMat() {
 const BuscarCursos = ({ cursos }) => {
 
     const [state, setState] = useState({
-        cursos: cursos
+        cursos: cursos,
+        loader: false
     })
 
     useEffect(() => {
         //initializeMat();
         window.addEventListener('scroll', debounce((e) => {
             let pixelsFromBottom = document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight;
-            if (pixelsFromBottom < 200) {
+            if (pixelsFromBottom < 220) {
+                setState(state => ({
+                    ...state,
+                    loader: true
+                }))
                 axios.get(cursos.next_page_url).then(response => {
                     setState(state => ({
                         ...state,
                         cursos: {
                             ...response.data,
                             data: [...state.cursos.data, ...response.data.data]
-                        }
+                        },
+                        loader: false
                     }))
                 });
             }
@@ -124,6 +131,15 @@ const BuscarCursos = ({ cursos }) => {
                                     </div>
                                 )}
                             </div>
+                            {state.cursos.data.length > 0 && state.loader &&
+                                <div style={{ display: "flex", justifyContent: "center" }}>
+                                    <Loader
+                                        type="Oval"
+                                        color="#134E39"
+                                        height={80}
+                                        width={80}
+                                    />
+                                </div>}
                         </div>
                     </div>
                 </div>
