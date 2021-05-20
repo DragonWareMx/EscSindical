@@ -53,3 +53,30 @@
 .LC_tab_icons{
     font-size: 16px;
 }
+
+
+.tabs .tab a.active{
+    color: #134E39 !important;
+    background-color: transparent;
+  } 
+  
+  .tabs .tab a{
+    background-color: transparent;
+    color: rgba(159, 157, 157, 0.6);
+  } 
+  
+   .tabs .tab a:hover {
+    background-color:#eee;
+    color:#000;
+  }
+  
+   .tabs .tab a:focus {
+    background-color: rgba(0, 255, 0, 0.1);
+  }
+   .tabs .tab a:focus.active {
+    background-color: rgba(0, 255, 0, 0.1);
+  }
+  
+   .tabs .indicator {
+    background-color:#134E39;
+  }

@@ -1,7 +1,9 @@
 import React from 'react';
 import { InertiaLink } from "@inertiajs/inertia-react"
 import route from 'ziggy-js';
-
+import FlotanteAyuda from '../../components/common/FlotanteAyuda';
+import FlotanteProfe from '../../components/common/FlotanteProfe';
+import FlotanteAdmin from '../../components/common/FlotanteAdmin';
 import { usePage } from '@inertiajs/inertia-react'
 
 
@@ -108,7 +110,11 @@ export default function BarraBusqueda() {
                 </div>
             </div>
             {/* contenido */}
-            <div className="main-bar-background" />
+            <div className="main-bar-background" /> 
+            {/* Los botonsitos */}
+            {auth.roles[0].slug == 'alumno' && <FlotanteAyuda />}
+            {auth.roles[0].slug == 'ponente' && <FlotanteProfe />}
+            {auth.roles[0].slug == 'admin' && <FlotanteAdmin />}
         </div>
     );
 }
