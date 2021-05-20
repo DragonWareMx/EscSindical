@@ -66,6 +66,11 @@ const Create2 = ({ change, values, onValueChange }) => {
                 <label>Categorías de estudiante permitidas</label>
             </div>
 
+            <div className="input-field col s12">
+                <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Cantidad máxima de alumnos permitidos<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Plazo de inscripciones permitido" style={{"color":"rgb(159, 157, 157)", "cursor":"pointer"}}>help_outline</i></p>
+                <input  id="numero" value={values.numero} onChange={change} type="number" min="0" className="validate"/>
+            </div>
+
             <div className="input-field col s12 m6 l6 xl6">
                 <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Tipo de inscripción al curso<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Tipo de inscripción para los estudiantes a este curso" style={{"color":"rgb(159, 157, 157)", "cursor":"pointer"}}>help_outline</i></p>
                 <p>
