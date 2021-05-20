@@ -1,16 +1,18 @@
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
-import React, { useEffect } from 'react'
-
+import React, { useEffect } from 'react';
 import '/css/informacionCursos.css'
+import '../../styles/cursos.css'
+import '/css/courseCardSearch.css'
 
-const Informacion = () => {
-
+const Informacion = ({curso}) => {
   function initializeMaterialize(){
     var elems = document.querySelectorAll('.slider');
     var options = { 
       interval: 4000,
-      duration: 1000, 
+      duration: 1000,
+      height: 250,
+      width: 275, 
     }
     var instances = M.Slider.init(elems, options);
 
@@ -24,19 +26,21 @@ const Informacion = () => {
 
   return (
     <>
-      <div className="row" style={{"marginTop":"10px"}}>
+      <div className="row">
         {/* Slider con las fotos del curso */}
-        <div className="col s12 m6 l4">
+        <div className="col s12 m6 l4" style={{marginTop:"25px"}}>
           <div className="slider">
             <ul className="slides">
-              <li><img src="https://www.zaplo.es/blog/wp-content/uploads/2019/06/cursos-online-gratis-612x361.jpeg"></img></li>
-              <li><img src="https://assets.entrepreneur.com/content/3x2/2000/20160331180223-businessman-typing-computer-laptop-writing-working-remotely-blogging-blogger-education-learning-connecting.jpeg?width=700&crop=2:1"></img></li>
-              <li><img src="https://lorempixel.com/580/250/nature/3"></img></li>
+            {curso.images && curso.images.length>0 && 
+                curso.images.map( (foto , index) => (
+                  <li key={index}><img src={'/storage/imagenes_curso/'+foto.imagen}></img></li>
+                ))
+              }
             </ul>
           </div>
         </div>
         {/* Informacion general del curso */}
-        <div className="col s12 m6 l8">
+        <div className="col s12 m6 l8" style={{marginTop:"25px"}}>
           {/* row con 2 bloques */}
           <div className="row">
             {/* bloque 2 */}
@@ -55,7 +59,7 @@ const Informacion = () => {
                 {/* Enlace a las videoconferencias */}
                 <div className="valign-wrapper">
                   <div className="col s1 valign-wrapper">
-                    <i className="material-icons" style={{"font-size": "15px","color":"#134E39"}}>videocam</i>
+                    <i className="material-icons" style={{fontSize: "15px","color":"#134E39"}}>videocam</i>
                   </div>
                   <div className="col s11">
                     <a href="#" style={{"textDecoration":"underline","color":"#134E39"}}>Clic para acceder </a>
@@ -78,19 +82,23 @@ const Informacion = () => {
               {/* Etiquetas */}
               <div className="col s12">
                 <div className="info-title">ETIQUETAS</div>
-                aqui van los tags
+                {/* Tags del curso */}
+                <div className="col s12 courseCard_tags" style={{ marginTop: "5px", marginBottom: "5px" }}>
+                  <div className="container-tags">
+                    {curso.tags && curso.tags.length>0 && curso.tags.map((tag, index) =>
+                        <a className="div-tag" href="#!" key={index}>
+                            {tag.nombre} <i className="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
+                        </a>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
         {/* Descripcion del curso */}
-        <div className="col s12" style={{"marginTop":"15px"}}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis quaerat nemo tempora aperiam facere velit officia veniam rerum autem suscipit, molestiae, reiciendis doloremque minima placeat! Suscipit repellat neque rerum odit.
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi debitis voluptatem sunt. In, cupiditate officia repellat laudantium corrupti aliquid necessitatibus est officiis nisi aut, accusamus, suscipit minima quibusdam dolorem! Eos?
-          <br /><br />
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut eum, dolore necessitatibus ad assumenda laborum. Aliquam minus, ratione voluptatibus ab corporis similique tempora ipsum autem reprehenderit nesciunt laudantium minima ea.
-          <br /><br />
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio dolorum rem praesentium eligendi ut similique nobis corporis doloribus perferendis, necessitatibus soluta libero tenetur aliquid tempora aut consectetur maiores in expedita.
+        <div className="col s12" style={{"marginTop":"15px"}} dangerouslySetInnerHTML={{__html: curso.descripcion}}>
+          {/* Aquí va la descripcion pero se pone en el dangerouslySetInnerHTML */}
         </div>
         {/* Evaluacion y bibliografia */}
         <div className="col s12">
@@ -101,26 +109,25 @@ const Informacion = () => {
           <div style={{"marginTop":"15px"}}>
             <ul className="collapsible">
               <li>
-                <div class="collapsible-header"><i class="material-icons">attach_file</i>Bibliografía</div>
-                <div class="collapsible-body">
+                <div className="collapsible-header"><i className="material-icons">attach_file</i>Bibliografía</div>
+                <div className="collapsible-body">
                   Aqui va la bibliografia
                 </div>
               </li>
             </ul>
           </div>
         </div>
-        
-        
-        
       </div>
     </>
   )
 }
 
 Informacion.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="Curso Nombre del curso">
-    <LayoutCursos children={page} id={1} /> 
-  </Layout>
+  <>
+    <Layout title="Escuela sindical - Curso" pageTitle="Curso Nombre del curso">
+      <LayoutCursos children={page} />  
+    </Layout>
+  </>
 )
 
 export default Informacion
