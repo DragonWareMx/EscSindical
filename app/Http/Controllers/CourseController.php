@@ -311,13 +311,18 @@ class CourseController extends Controller
 
     public function searchIndex(Request $request)
     {
-        $cursos = Course::with(['teacher', 'tags', 'images'])->paginate(12);
+        $cursos = Course::with(['teacher:nombre,apellido_p,apellido_m,foto,id', 'tags:nombre', 'images:imagen'])
 
+                        ->paginate(12);
+
+        //sirve para el scroll infinito
         if ($request->wantsJson()) {
             return $cursos;
         }
 
-        return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => $cursos]);
+        return Inertia::render('Cursos/BuscarCursos', [
+            'cursos' => fn () => $cursos
+        ]);
     }
 
     public function layout(){
