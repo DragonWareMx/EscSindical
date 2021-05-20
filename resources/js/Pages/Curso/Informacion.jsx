@@ -1,9 +1,9 @@
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 
-const Informacion = () => {
 
+const Informacion = ({curso}) => {
   function initializeMaterialize(){
     var elems = document.querySelectorAll('.slider');
     var options = { 
@@ -38,9 +38,11 @@ const Informacion = () => {
 }
 
 Informacion.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="Curso Nombre del curso">
-    <LayoutCursos children={page} id={1} /> 
-  </Layout>
+  <>
+    <Layout title="Escuela sindical - Curso" pageTitle="Curso Nombre del curso">
+      <LayoutCursos children={page} />  
+    </Layout>
+  </>
 )
 
 export default Informacion
