@@ -169,7 +169,7 @@ class CourseController extends Controller
         }    
     }
 
-    public function edit($id){
+    public function editCourse($id){
         //\Gate::authorize('haveaccess', 'ponent.perm');
         return Inertia::render('Cursos/FormCursoEdit', [
             'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id),//falta lo de categories
