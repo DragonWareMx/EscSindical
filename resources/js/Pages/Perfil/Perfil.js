@@ -3,6 +3,8 @@ import Layout from '../../layouts/Layout';
 import { Inertia } from '@inertiajs/inertia'
 import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
+import route from 'ziggy-js';
+import { InertiaLink } from '@inertiajs/inertia-react';
 
 import '../../styles/profileStyle.css'
 
@@ -123,7 +125,8 @@ const Perfil = ({ user }) => {
                                         </div>
                                         {/* Boton de editar */}
                                         <div className="col s12 m12 right-align" style={{ "marginTop": "25px" }}>
-                                            <a href="/perfil/configuracion" class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{ "font-size": "18px" }}>settings</i>Configuración</a>
+                                            <InertiaLink href={route('perfil.edit', user.id)} class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{ "font-size": "18px" }}>settings</i>Configuración</InertiaLink>
+                                            
                                         </div>
                                     </div>
                                 </div>

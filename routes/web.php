@@ -59,3 +59,4 @@ Route::get('/layoutCursos', [App\Http\Controllers\CourseController::class, 'layo
 
 //--------PERFIL--------
 Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');
+Route::get('/perfil/configuracion/{id}', [App\Http\Controllers\PerfilController::class, 'edit'])->name('perfil.edit');
