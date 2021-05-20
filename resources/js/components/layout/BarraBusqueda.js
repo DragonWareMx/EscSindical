@@ -85,8 +85,12 @@ export default function BarraBusqueda() {
                 {/* Parte derecha de la barra superior*/}
                 <div className="main-bar-right" id="main-bar-right">
                     <div className="main-bar-right-leftSide" id="main-bar-backNoti">
-                        <i className="material-icons icono-notificaciones">backpack</i>
-                        <i className="material-icons icono-notificaciones">notifications</i>
+                        <a href="#">
+                            <i className="material-icons icono-notificaciones">backpack</i>
+                        </a>
+                        <a href="#">
+                            <i className="material-icons icono-notificaciones">notifications</i>
+                        </a>
                     </div>
 
                     <div className="main-bar-right-rightSide">

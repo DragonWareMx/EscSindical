@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { InertiaLink, usePage } from "@inertiajs/inertia-react"
 import route from 'ziggy-js';
+import ModalLogout from '../common/ModalLogout';
 
 function openNav() {
   var menu = document.getElementById("slide-out");
@@ -93,7 +94,7 @@ export default function MenuLateral() {
           <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">assignment_late</i>Reportes</a></li>
           <li>
             {/* <InertiaLink href={route('perfil').url()} className="icono-menu"> */}
-            <a><i className="material-icons icono-menu">history</i>Bitácora</a>
+            <a href="#"><i className="material-icons icono-menu">history</i>Bitácora</a>
             {/* </InertiaLink> */}
           </li>
           <li>
@@ -101,7 +102,9 @@ export default function MenuLateral() {
               <i className="material-icons icono-menu">settings</i>Configuración
               </InertiaLink>
           </li>
-          <li><InertiaLink href="/logout" method="post" className="icono-menu logout-grande" as="button" type="button"><i className="material-icons icono-menu">logout</i>Cerrar sesión</InertiaLink></li>
+          <li>
+            <button className="icono-menu logout-grande modal-trigger" data-target="modalCerrarSesion" type="button"><i className="material-icons icono-menu">logout</i>Cerrar sesión</button>
+          </li>
           <div className="center-align" style={{ marginTop: '25px' }}>
             <a onClick={closeNav} className="btn-floating btn-large waves-effect waves-light sidenav-close" style={{ backgroundColor: '#108058' }}><i className="material-icons">arrow_back</i></a>
           </div>
@@ -148,14 +151,15 @@ export default function MenuLateral() {
           </InertiaLink>
         </div>
         <div className="col s12">
-          <InertiaLink href="/logout" method="post" className="icono-menu logout-chico" as="button" type="button">
+          <button data-target="modalCerrarSesion" className="icono-menu logout-chico modal-trigger" >
             <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Cerrar sesión">logout</i>
-          </InertiaLink>
+          </button>
         </div>
         <div className="col s12 center-align" style={{ marginTop: '10px' }}>
           <a onClick={openNav} data-target="slide-out" className="btn-floating btn-medium waves-effect waves-light sidenav-trigger tooltipped" style={{ backgroundColor: '#108058' }} data-position="right" data-tooltip="Abrir menú"><i className="material-icons">arrow_forward</i></a>
         </div>
       </div>
+      <ModalLogout></ModalLogout>
     </div>
   );
 }
