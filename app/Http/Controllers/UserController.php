@@ -61,16 +61,17 @@ class UserController extends Controller
                                     return $query->where('units.nombre', 'LIKE', '%' . $search . '%');
                                 break;
                             case 'nombre':
-                                return $query->where('users.nombre', 'LIKE', '%' . $search . '%')
-                                            ->orWhere('users.apellido_p', 'LIKE', '%' . $search . '%')
-                                            ->orWhere('users.apellido_m', 'LIKE', '%' . $search . '%');
+                                return $query->WhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                            );
                                 break;
                             case 'categoria':
                                 return $query->where('categories.nombre', 'LIKE', '%' . $search . '%');
                                 break;
                             case 'eliminado':
-                                return $query
-                                            ->where('users.nombre', 'LIKE', '%' . $search . '%')
+                                return $query->WhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                            )
                                             ->onlyTrashed();
                                 break;
 
@@ -132,34 +133,13 @@ class UserController extends Controller
                 ->orderBy('users.created_at','desc')
                 ->paginate(20)
                 ->withQueryString(),
-            'user' => Inertia::lazy(
-                fn () => User::with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.firstImage:imagen', 'finishedCourses.firstImage:imagen', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre'])
-                    ->when($request->user, function ($query, $user) {
-                        $query->find($user);
-                    })
-                    ->first()
-            ),
-            'request' => $request,
-            'categories'=> Inertia::lazy(
-                fn () => Category::select('id','nombre')->get(),
-            ),
-            'regimes'=> Inertia::lazy(
-                fn () => Regime::select('id','nombre')->get(),
-            ),
-            'units'=> Inertia::lazy(
-                fn () => Unit::select('units.id','units.nombre')
-                            ->leftJoin('regimes', 'regimes.id', '=', 'units.regime_id')
-                            ->when($request->regime, function ($query, $regime) {
-                                $query->where('regimes.nombre',$regime);
-                            })
-                            ->get(),
-            )
+            'request' => $request
         ]);
     }
 
     public function ejemplo()
     {
-        $users = User::factory()->count(80)->create();
+        //$users = User::factory()->count(80)->create();
         return Inertia::render('Ejemplo');
     }
 
@@ -444,7 +424,7 @@ class UserController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
 
         return Inertia::render('Usuarios/Editar', [
-            'user' => User::withTrashed()->with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.images:course_id,imagen', 'finishedCourses.images:course_id,imagen', 'activeCourses.teacher:nombre,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre', 'roles:name'])
+            'user' => User::withTrashed()->with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.images:course_id,imagen', 'finishedCourses.images:course_id,imagen', 'activeCourses.teacher:nombre,apellido_p,apellido_m,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre', 'roles:name'])
                             ->findOrFail($id),
             'categories'=> fn () => Category::select('id','nombre')->get(),
             'regimes'=> fn () => Regime::select('id','nombre')->get(),
