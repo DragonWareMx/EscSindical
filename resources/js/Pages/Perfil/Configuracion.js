@@ -198,7 +198,7 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
                             {/* ----Formulario---- */}
                             <form onSubmit={handleSubmit}>
                                 <div className="row div-form-register" style={{ "padding": "3%" }}>
-                                    <div className="col s12 m6 div-division user-form-border">
+                                    <div className="col s12 m6 div-division">
                                         <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" , "marginBottom":"15px"}}>INFORMACIÓN PERSONAL</p>
 
                                         <div className="col s12" style={{ "display": "flex", "justifyContent": "center", "flexDirection": "column", "marginTop": "5px", "marginBottom": "5px" }}>
@@ -236,7 +236,7 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
 
                                         <div className="input-field col s12 input-50-re">
                                             <input disabled={false} id="apellido_materno" type="text" className={errors.apellido_materno ? "validate form-control invalid" : "validate form-control"} name="apellido_materno" value={values.apellido_materno} onChange={handleChange} autoComplete="apellido_materno" maxLength="255" />
-                                            <label htmlFor="apellido_materno">Apellido Materno (opcional)</label>
+                                            <label htmlFor="apellido_materno">Apellido Materno</label>
                                             {
                                                 errors.apellido_materno &&
                                                 <span className="helper-text" data-error={errors.apellido_materno} style={{ "marginBottom": "10px" }}>{errors.apellido_materno}</span>
@@ -265,117 +265,13 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
                                                 <span className="helper-text" data-error={errors.sexo} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.sexo}</span>
                                             }
                                         </div>
-
-                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" , "marginBottom":"15px" }}>INFORMACIÓN INSTITUCIONAL</p>
-
                                         
-                                        <div className="area col s12" style={{marginBottom:"4%"}}>
-                                            
-                                            {!values.cambiar_tarjeton &&
-                                                <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px" }}>Tarjetón de pago <a target="_blank" href={user == null || user.tarjeton_pago == null ? null : "/storage/tarjetones_pago/" + user.tarjeton_pago}>{user != null && user.tarjeton_pago}</a><i style={{ "color": "#7E7E7E" }} className="material-icons tiny">description</i></p>
-                                            }
-
-                                            <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>¿Cambiar tarjetón de pago?</p>
-                                            
-                                            <div className="switch">
-                                                <label>
-                                                No
-                                                <input id="cambiar_tarjeton" type="checkbox" checked={values.cambiar_tarjeton} onChange={cambiarTarjeton} />
-                                                <span className="lever"></span>
-                                                Sí
-                                                </label>
-                                            </div>
-
-                                            {values.cambiar_tarjeton &&
-                                            <>
-                                                <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF o imagen) para validar que seas un usuario activo">help_outline</i></p>
-                                                <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px"}}>
-                                                    <div className="col s12">
-                                                    <span style={{fontSize:"12px", textAlign: "center", paddingTop:"10px"}} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
-                                                    <input type="file" accept="image/png, image/jpeg, image/jpg, application/pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" required autoComplete="tarjeton" onChange={changeTarjeton} />
-                                                    {
-                                                        errors.tarjeton_de_pago && 
-                                                        <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px", color: "#F44336"}}>{errors.tarjeton_de_pago}</span>
-                                                    }
-                                                    </div>
-                                                    <div className="file-path-wrapper">
-                                                        <input className="file-path validate" type="text" />
-                                                    </div>
-                                                </div>
-                                            </>
-                                            }
-                                        </div>
-
-                                        <div className="input-field col s12">
-                                            <input disabled={false} id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="255" />
-                                            <label htmlFor="matricula">Matrícula</label>
-                                            {
-                                                errors.matricula &&
-                                                <span className="helper-text" data-error={errors.matricula} style={{ "marginBottom": "10px" }}>{errors.matricula}</span>
-                                            }
-                                        </div>
-
-                                        <div className="input-field col s12">
-                                            <select disabled={false} id="regimen" name="regimen" value={values.regimen} onChange={handleChange} required>
-                                                <option value="" disabled>Selecciona una opción</option>
-                                                {regimes && regimes.length > 0 &&
-                                                    regimes.map(regime => (
-                                                        <option key={regime.nombre} value={regime.nombre}>{regime.nombre}</option>
-                                                    ))
-                                                }
-                                            </select>
-                                            <label>Regimen</label>
-                                            {
-                                                errors.regimen &&
-                                                <span className="helper-text" data-error={errors.regimen} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.regimen}</span>
-                                            }
-                                        </div>
-
-                                        <div className="col s12" style={{ "marginTop": "5px" }}>
-                                            <div className="input-field select-wrapper">
-                                                <input placeholder={values.regimen ? "Selecciona una unidad" : "Selecciona primerio un régimen"} disabled={false} id="unidad" list="unidades" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.unidad} onChange={handleChange} required />
-                                                <label htmlFor="unidad">Unidad</label>
-                                                <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
-                                                {
-                                                    errors.unidad &&
-                                                    <span className="helper-text" data-error={errors.unidad} style={{ "marginBottom": "10px" }}>{errors.unidad}</span>
-                                                }
-                                            </div>
-                                            <datalist id="unidades">
-                                                {
-                                                    units && units.length > 0 &&
-                                                    units.map(units => (
-                                                        <option key={units.nombre} value={units.nombre} />
-                                                    ))
-                                                }
-                                            </datalist>
-                                        </div>
-
-                                        <div className="col s12">
-                                            <div className="input-field select-wrapper">
-                                                <input placeholder="Selecciona una categoría" disabled={false} id="categoria" list="categorias" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.categoria} onChange={handleChange} required />
-                                                <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
-                                                <label htmlFor="categoria">Categoría</label>
-                                                {
-                                                    errors.categoria &&
-                                                    <span className="helper-text" data-error={errors.categoria} style={{ "marginBottom": "10px" }}>{errors.categoria}</span>
-                                                }
-                                            </div>
-                                            <datalist id="categorias">
-                                                {
-                                                    categories && categories.length > 0 &&
-                                                    categories.map(category => (
-                                                        <option key={category.nombre} value={category.nombre} />
-                                                    ))
-                                                }
-                                            </datalist>
-                                        </div>
                                     </div>
 
-                                    <div className="col s12 m6 div-division">
+                                    <div className="col s12 m6 div-division user-form-border2">
                                         <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" , "marginBottom":"25px" }}>DIRECCIÓN</p>
 
-                                        <div className="input-field col s6 ">
+                                        <div className="input-field col s12 ">
                                             <input disabled={false} maxLength="50" id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado" value={values.estado} required autoComplete="estado" onChange={handleChange} />
                                             <label htmlFor="estado">Estado</label>
                                             {
@@ -393,7 +289,7 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
                                             }
                                         </div>
 
-                                        <div className="input-field col s12 input-50-re">
+                                        <div className="input-field col s6 input-50-re">
                                             <input disabled={false} maxLength="100" id="colonia" type="text" className={errors.colonia ? "validate form-control invalid" : "validate"} name="colonia" value={values.colonia} required autoComplete="colonia" onChange={handleChange} />
                                             <label htmlFor="colonia">Colonia</label>
                                             {
@@ -402,7 +298,7 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
                                             }
                                         </div>
 
-                                        <div className="input-field col s12 input-50-re">
+                                        <div className="input-field col s6 input-50-re">
                                             <input disabled={false} maxLength="100" id="calle" type="text" className={errors.calle ? "validate form-control invalid" : "validate"} name="calle" value={values.calle} required autoComplete="calle" onChange={handleChange} />
                                             <label htmlFor="calle">Calle</label>
                                             {
@@ -431,7 +327,7 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
 
                                         <div className="input-field col s6 input-50-re">
                                             <input disabled={false} maxLength="10" id="numero_interior" type="text" className={errors.numero_interior ? "validate form-control invalid" : "validate"} name="numero_interior" value={values.numero_interior} autoComplete="numero_interior" onChange={handleChange} />
-                                            <label htmlFor="numero_interior">No. Interior (opcional)</label>
+                                            <label htmlFor="numero_interior">No. Interior</label>
                                             {
                                                 errors.numero_interior &&
                                                 <span className="helper-text" data-error={errors.numero_interior} style={{ "marginBottom": "10px" }}>{errors.numero_interior}</span>
@@ -442,7 +338,7 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
 
                                         <div className="input-field col s12">
                                             <i className="material-icons prefix">account_circle</i>
-                                            <input disabled={false} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required autoComplete="email" onChange={handleChange} />
+                                            <input disabled={true} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required autoComplete="email" onChange={handleChange} />
                                             <label htmlFor="email">Correo electrónico</label>
                                             {
                                                 errors.email &&
@@ -486,38 +382,6 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
                                         </>
                                         }
 
-                                        <div className="col s12">
-                                            <div className="input-field select-wrapper">
-                                                <input placeholder="Selecciona un rol" disabled={false} id="rol" list="roles" type="text" className={errors.rol ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.rol} onChange={handleChange} required />
-                                                <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
-                                                <label htmlFor="rol">Rol</label>
-                                                {
-                                                    errors.rol &&
-                                                    <span className="helper-text" data-error={errors.rol} style={{ "marginBottom": "10px" }}>{errors.rol}</span>
-                                                }
-                                            </div>
-                                            <datalist id="roles">
-                                                {
-                                                    roles && roles.length > 0 &&
-                                                    roles.map(rol => (
-                                                        <option key={rol.name} value={rol.name} />
-                                                    ))
-                                                }
-                                            </datalist>
-                                        </div>
-
-                                        <div className="input-field col s12 input-50-re">
-                                            {values.created_at ?
-                                                <>
-                                                    <input disabled={true} id="created_at" max="2004-01-01" type="date" name="created_at" required autoComplete="created_at" value={values.created_at} />
-                                                    <label htmlFor="created_at">Fecha de Registro</label>
-                                                </>
-                                                :
-                                                <>
-                                                    <label htmlFor="created_at">Sin fecha de registro</label>
-                                                </>
-                                            }
-                                        </div>
                                     </div>
                                 </div>
                                 <div className="row container-buttons">
