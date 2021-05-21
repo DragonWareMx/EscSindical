@@ -338,5 +338,11 @@ class CourseController extends Controller
         return Inertia::render('Curso/Modulos',[
             'curso'=>Course::findOrFail($id),
         ]);
+    }
+
+    public function participantes($id){
+        return Inertia::render('Curso/Participantes',[
+            'curso'=>Course::findOrFail($id),
+        ]);
     } 
 }

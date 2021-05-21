@@ -57,6 +57,7 @@ Route::get('/cursos/module/edit/{id}', [App\Http\Controllers\CourseController::c
 //------Rutas del layout cursos
 Route::get('/cursos/{id}/informacion', [App\Http\Controllers\CourseController::class, 'informacion'])->name('cursos.informacion');
 Route::get('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class, 'modulos'])->name('cursos.modulos');
+Route::get('/cursos/{id}/participantes', [App\Http\Controllers\CourseController::class, 'participantes'])->name('cursos.participantes');
 
 
 Route::get('/prueba', [App\Http\Controllers\CourseController::class, 'prueba'])->name('prueba');
