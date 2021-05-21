@@ -557,7 +557,7 @@ const Usuarios = ({ users, request }) => {
                                             <td>{usuario.roles && usuario.roles.length > 0 ? usuario.roles.map(rol => (rol.name + " ")) : "Sin Rol"}</td>
                                             <td>{usuario.nombre} {usuario.apellido_p} {usuario.apellido_m}</td>
                                             <td>{usuario.unit ? usuario.unit.nombre : "Sin unidad"}</td>
-                                            <td>{usuario.categorie ? usuario.categorie.nombre : "Sin Categoría"}</td>
+                                            <td>{usuario.category ? usuario.category.nombre : "Sin Categoría"}</td>
                                             <td><button><i className="material-icons">edit</i> </button></td>
                                             {/*<td>
                                         <InertiaLink href={`/users/${user.id}/edit`}>Edit</InertiaLink>

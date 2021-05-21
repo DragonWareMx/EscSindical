@@ -34,10 +34,10 @@ class UserController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
 
         return Inertia::render('Usuarios/Usuarios', [
-            'users' => fn () => User::with('roles', 'categorie','unit')
+            'users' => fn () => User::with('roles', 'category','unit')
                 ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
                 ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
-                ->leftJoin('categories', 'categories.id', '=', 'users.categorie_id')
+                ->leftJoin('categories', 'categories.id', '=', 'users.category_id')
                 ->leftJoin('units', 'units.id', '=', 'users.unit_id')
                 ->when($request->filter == 'eliminado', function ($query) {
                     return $query->onlyTrashed();
@@ -129,7 +129,7 @@ class UserController extends Controller
                             break;
                     }
                 })
-                ->select('users.id', 'matricula', 'users.nombre', 'apellido_p', 'apellido_m', 'categorie_id','users.unit_id','users.deleted_at')
+                ->select('users.id', 'matricula', 'users.nombre', 'apellido_p', 'apellido_m', 'category_id','users.unit_id','users.deleted_at')
                 ->orderBy('users.created_at','desc')
                 ->paginate(20)
                 ->withQueryString(),
@@ -286,7 +286,7 @@ class UserController extends Controller
             //---informacion institucional---
             $newUser->matricula = $request->matricula;
             $newUser->unit_id = $unidad[0]->id;
-            $newUser->categorie_id = $categoria[0]->id;
+            $newUser->category_id = $categoria[0]->id;
 
             //guarda el tarjeton de pago
             $tarjeton_pago = $request->file('tarjeton_de_pago')->store('public/tarjetones_pago');
@@ -327,7 +327,7 @@ class UserController extends Controller
 
                     matricula: ' . $request->matricula . ',\n
                     unit_id: '.$unidad[0]->id. ',\n
-                    categorie_id: ' . $categoria[0]->id . ',\n
+                    category_id: ' . $categoria[0]->id . ',\n
 
                     estado: ' . $request->estado . ',\n
                     ciudad: ' . $request->ciudad . ',\n
@@ -424,7 +424,7 @@ class UserController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
 
         return Inertia::render('Usuarios/Editar', [
-            'user' => User::withTrashed()->with(['categorie:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.images:course_id,imagen', 'finishedCourses.images:course_id,imagen', 'activeCourses.teacher:nombre,apellido_p,apellido_m,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre', 'roles:name'])
+            'user' => User::withTrashed()->with(['category:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.images:course_id,imagen', 'finishedCourses.images:course_id,imagen', 'activeCourses.teacher:nombre,apellido_p,apellido_m,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre', 'roles:name'])
                             ->findOrFail($id),
             'categories'=> fn () => Category::select('id','nombre')->get(),
             'regimes'=> fn () => Regime::select('id','nombre')->get(),
@@ -588,7 +588,7 @@ class UserController extends Controller
             //---informacion institucional---
             $user->matricula = $request->matricula;
             $user->unit_id = $unidad[0]->id;
-            $user->categorie_id = $categoria[0]->id;
+            $user->category_id = $categoria[0]->id;
 
             //guarda el tarjeton de pago
             if(!is_null($request->file('tarjeton_de_pago'))){
@@ -637,7 +637,7 @@ class UserController extends Controller
 
                     matricula: ' . $request->matricula . ',\n
                     unit_id: '.$unidad[0]->id. ',\n
-                    categorie_id: ' . $categoria[0]->id . ',\n
+                    category_id: ' . $categoria[0]->id . ',\n
 
                     estado: ' . $request->estado . ',\n
                     ciudad: ' . $request->ciudad . ',\n

@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
             'cp' => '58189',
             'tarjeton_pago' => 'tarjeton.pdf',
             'matricula' => '17121035',
-            'categorie_id' => '1',
+            'category_id' => '1',
             'unit_id' => 1
         ]);
 
@@ -56,7 +56,7 @@ class UserSeeder extends Seeder
             'cp' => '58189',
             'tarjeton_pago' => 'tarjeton.pdf',
             'matricula' => '17121031',
-            'categorie_id' => '1',
+            'category_id' => '1',
             'unit_id' => 2
         ]);
 
@@ -78,7 +78,7 @@ class UserSeeder extends Seeder
             'cp' => '58189',
             'tarjeton_pago' => 'tarjeton.pdf',
             'matricula' => '17121030',
-            'categorie_id' => '1',
+            'category_id' => '1',
             'unit_id' => 2
         ]);
 
@@ -100,7 +100,7 @@ class UserSeeder extends Seeder
             'cp' => '58189',
             'tarjeton_pago' => 'tarjeton.pdf',
             'matricula' => '17121037',
-            'categorie_id' => '1',
+            'category_id' => '1',
             'unit_id' => 3
         ]);
     }

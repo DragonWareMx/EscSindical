@@ -12,7 +12,7 @@ import { Inertia } from '@inertiajs/inertia';
 import Alertas from '../../components/common/Alertas';
 
 
-const Configuracion = ({ user, categories, regimes, units, roles }) => {
+const Configuracion = ({ user }) => {
     //errores de la validacion de laravel
     const { errors } = usePage().props
 

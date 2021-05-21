@@ -138,7 +138,9 @@ export default function MenuLateral() {
           <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Mis cursos">school</i>
         </div>
         <div className="col s12">
-          <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Buscar cursos">search</i>
+          <InertiaLink href={route('cursosBuscar').url()} className="icono-menu">
+            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Buscar cursos">search</i>
+          </InertiaLink>
         </div>
         <div className="col s12">
           <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Reportes">assignment_late</i>

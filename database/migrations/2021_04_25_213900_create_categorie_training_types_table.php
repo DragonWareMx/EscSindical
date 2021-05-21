@@ -13,12 +13,12 @@ class CreateCategorieTrainingTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categorie_training_types', function (Blueprint $table) {
+        Schema::create('category_training_type', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('categorie_id');
-            $table->foreign('categorie_id')->references('id')->on('categories');
-            $table->unsignedBigInteger('training_type');
-            $table->foreign('training_type')->references('id')->on('training_types');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->unsignedBigInteger('training_type_id');
+            $table->foreign('training_type_id')->references('id')->on('training_types')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
