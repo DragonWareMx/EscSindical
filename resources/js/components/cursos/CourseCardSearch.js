@@ -66,10 +66,12 @@ export default function CourseCardSearch({ curso }) {
                         </div>
                         <div className="fechas-card transicion">
                             <h3>Inscripciones</h3>
-                            {curso.inicio_inscripciones && curso.fecha_limite &&
+                            {curso.inicio_inscripciones && curso.fecha_limite ?
                                 <div>
                                     {transformaFecha(curso.inicio_inscripciones)}-{transformaFecha(curso.fecha_limite)}
                                 </div>
+                                :
+                                <div>Sin fechas de inscripciones</div>
                             }
                             <h3>Fechas del curso</h3>
                             <div>{transformaFecha(curso.fecha_inicio)}-{transformaFecha(curso.fecha_final)} </div>
