@@ -1,0 +1,35 @@
+.titulo-modulo
+{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+
+    color: #134E39 !important;
+
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.subtitulo-modulo
+{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+
+    color: #848484 !important;
+
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.default-text
+{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+
+    color: #383838;
+}

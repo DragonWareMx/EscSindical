@@ -74,7 +74,7 @@ class CourseController extends Controller
     {
         //\Gate::authorize('haveaccess', 'ponent.perm');
         //dd($request);
-        //VALIDAMOS DATOS
+          //VALIDAMOS DATOS
         $validated = $request->validate([
             'nombre' => 'required|max:255',
             'tags' => 'required',
@@ -112,22 +112,21 @@ class CourseController extends Controller
             //TAGS
             $tags = $request->tags;
             $tags_ids = [];
-            $i =0;
+            $i = 0;
             foreach ($tags as $tag) {
-                if (Tag::where('nombre',$tag['tag'])->first()!=null){
-                    $oldTag = Tag::where('nombre',$tag['tag'])->first();
-                    $tags_ids[$i] = $oldTag->id;  
-                }
-                else {
+                if (Tag::where('nombre', $tag['tag'])->first() != null) {
+                    $oldTag = Tag::where('nombre', $tag['tag'])->first();
+                    $tags_ids[$i] = $oldTag->id;
+                } else {
                     $newTag = new Tag;
                     $newTag->nombre = $tag['tag'];
                     $newTag->save();
-                    
+
                     $tags_ids[$i] = $newTag->id;
                 }
                 $i++;
             }
-            
+
             $newCourse->tags()->sync($tags_ids);
             
             //TIPO DE CAPACITACIONES
@@ -172,16 +171,16 @@ class CourseController extends Controller
             // $newLog->save();
 
             DB::commit();
-            return \Redirect::route('cursos')->with('success','El curso se ha creado exitosamente');
-
+            return \Redirect::route('cursos')->with('success', 'El curso se ha creado exitosamente');
         } catch (\Exception $e) {
             DB::rollBack();
-            //return \Redirect::route('cursos')->with('error','Hubo un problema con tu solicitud, inténtalo más tarde');
-            return response()->json(["status" => $e]);
-        }    
+            return \Redirect::route('cursos')->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
+            //return response()->json(["status" => $e]);
+        }
     }
 
-    public function edit($id){
+    public function editCourse($id)
+    {
         //\Gate::authorize('haveaccess', 'ponent.perm');
         return Inertia::render('Cursos/FormCursoEdit', [
             'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id),
@@ -189,7 +188,8 @@ class CourseController extends Controller
         ]); 
     }
 
-    public function update($id, Request $request){
+    public function update($id, Request $request)
+    {
         //\Gate::authorize('haveaccess', 'ponent.perm');
         //VALIDAMOS DATOS
         $validated = $request->validate([
@@ -227,35 +227,34 @@ class CourseController extends Controller
             //TAGS
             $tags = $request->tags;
             $tags_ids = [];
-            $i =0;
+            $i = 0;
             foreach ($tags as $tag) {
-                if (Tag::where('nombre',$tag['tag'])->first()!=null){
-                    $oldTag = Tag::where('nombre',$tag['tag'])->first();
-                    $tags_ids[$i] = $oldTag->id;  
-                }
-                else {
+                if (Tag::where('nombre', $tag['tag'])->first() != null) {
+                    $oldTag = Tag::where('nombre', $tag['tag'])->first();
+                    $tags_ids[$i] = $oldTag->id;
+                } else {
                     $newTag = new Tag;
                     $newTag->nombre = $tag['tag'];
                     $newTag->save();
-                    
+
                     $tags_ids[$i] = $newTag->id;
                 }
                 $i++;
             }
-            
+
             $myCourse->tags()->sync($tags_ids);
             //tipos_de_capacitacion
 
 
             //IMÁGENES
-                   
+
             //SE CREA EL LOG
             $newLog = new Log;
 
             $newLog->categoria = 'update';
             $newLog->user_id = Auth::id();
             $newLog->accion =
-            '{
+                '{
                 courses: {
                     nombre: ' . $request->nombre .
                     'fecha_inicio: ' . $request->fecha_inicio .
@@ -272,28 +271,28 @@ class CourseController extends Controller
 
             }';
 
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha editado el curso: '. $myCourse->nombre;
-                
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha editado el curso: ' . $myCourse->nombre;
+
             //SE GUARDA EL LOG
             $newLog->save();
-            
-            DB::commit();
-            return \Redirect::route('cursos')->with('success','El curso se ha actualizado exitosamente');
 
+            DB::commit();
+            return \Redirect::route('cursos')->with('success', 'El curso se ha actualizado exitosamente');
         } catch (\Exception $e) {
             DB::rollBack();
-            return \Redirect::route('cursos')->with('error','Hubo un problema con tu solicitud, inténtalo más tarde');
+            return \Redirect::route('cursos')->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
             //return response()->json(["status" => $e]);
         }
     }
 
-    public function delete($id){
-        
+    public function delete($id)
+    {
+
         //\Gate::authorize('haveaccess', 'ponent.perm');
         DB::beginTransaction();
-        try{
+        try {
             $course = User::find($id);
-            
+
             $course->delete();
 
             //SE CREA EL LOG
@@ -302,50 +301,83 @@ class CourseController extends Controller
             $newLog->categoria = 'delete';
             $newLog->user_id = Auth::id();
             $newLog->accion =
-            '{
+                '{
                 courses: {
                     id: ' . $id .
                 '}
             }';
 
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha eliminado el curso: '. $course->nombre;
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha eliminado el curso: ' . $course->nombre;
 
             $newLog->save();
 
             DB::commit();
-            return \Redirect::route('cursos')->with('success','¡Curso eliminado con éxito!');
-            
+            return \Redirect::route('cursos')->with('success', '¡Curso eliminado con éxito!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return \Redirect::back()->with('error','Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
+            return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
         }
-
     }
 
     public function searchIndex(Request $request)
     {
-        $cursos = Course::with(['teacher', 'tags', 'images'])->paginate(12);
+        $cursos = Course::with(['teacher:nombre,apellido_p,apellido_m,foto,id', 'tags:nombre', 'images:imagen,course_id'])
+            ->when($request->busqueda, function ($query, $busqueda) {
+                $searchValues = preg_split('/\s+/', $busqueda, -1, PREG_SPLIT_NO_EMPTY);
+                foreach ($searchValues as $value) {
+                    $query->where('courses.nombre', 'LIKE', '%' . $value . '%')
+                        ->orWhereHas('tags', function ($query) use ($value) {
+                            $query->where('nombre', 'LIKE', '%' . $value . '%');
+                        });
+                }
+            })
+            ->select('courses.nombre', 'courses.fecha_inicio', 'courses.fecha_final', 'courses.id', 'courses.teacher_id', 'courses.inicio_inscripciones', 'courses.fecha_limite')
+            ->paginate(12);
 
+        $cursosParaTi = Course::with(['teacher:nombre,apellido_p,apellido_m,foto,id', 'tags:nombre', 'images:imagen,course_id', 'training_types'])
+            ->whereHas('training_types', function ($query) {
+                $query->whereHas('categories', function ($query2) {
+                    $query2->where('categories.id', Auth::User()->category->id);
+                });
+            })
+            ->select('courses.nombre', 'courses.fecha_inicio', 'courses.fecha_final', 'courses.id', 'courses.teacher_id', 'courses.inicio_inscripciones', 'courses.fecha_limite')
+            ->take(10)
+            ->get();
+
+        //sirve para el scroll infinito
         if ($request->wantsJson()) {
             return $cursos;
         }
 
-        return Inertia::render('Cursos/BuscarCursos', ['cursos' => fn () => $cursos]);
+        return Inertia::render('Cursos/BuscarCursos', [
+            'cursos' => fn () => $cursos,
+            'cursosParaTi' => fn () => $cursosParaTi
+        ]);
     }
 
-    public function layout(){
+    public function layout()
+    {
         return Inertia::render('Cursos/layoutCursos');
     }
 
-    public function prueba(){
-        return Inertia::render('Cursos/Prueba');
+    public function informacion($id)
+    {
+        return Inertia::render('Curso/Informacion', [
+            'curso' => Course::with('images:imagen,course_id', 'tags:nombre')->findOrFail($id),
+        ]);
     }
 
-    public function informacion($id){
-        return Inertia::render('Curso/Informacion');
+    public function modulos($id)
+    {
+        return Inertia::render('Curso/Modulos', [
+            'curso' => Course::findOrFail($id),
+        ]);
     }
 
-    public function modulos(){
-        return Inertia::render('Curso/Modulos');
-    } 
+    public function participantes($id)
+    {
+        return Inertia::render('Curso/Participantes', [
+            'curso' => Course::findOrFail($id),
+        ]);
+    }
 }

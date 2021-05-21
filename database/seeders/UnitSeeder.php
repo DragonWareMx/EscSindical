@@ -16,28 +16,16 @@ class UnitSeeder extends Seeder
     {
         //
         DB::table('units')->insert([
-            'nombre' => 'Unidad 1 1',
+            'nombre' => 'HGZ 83 - Morelia',
             'regime_id' => 1
         ]);
         DB::table('units')->insert([
-            'nombre' => 'Unidad 1 2',
+            'nombre' => 'HGZ MF 12 - Lázaro Cárdenas',
             'regime_id' => 1
         ]);
         DB::table('units')->insert([
-            'nombre' => 'Unidad 2 1',
+            'nombre' => 'UMF 10 - Jungapeo',
             'regime_id' => 2
-        ]);
-        DB::table('units')->insert([
-            'nombre' => 'Unidad 3 1',
-            'regime_id' => 3
-        ]);
-        DB::table('units')->insert([
-            'nombre' => 'Unidad 3 2',
-            'regime_id' => 3
-        ]);
-        DB::table('units')->insert([
-            'nombre' => 'Unidad 3 3',
-            'regime_id' => 3
         ]);
     }
 }

@@ -4,6 +4,7 @@ import { Inertia } from '@inertiajs/inertia'
 
 import '../../styles/cursos.css'
 import '/css/courseCardSearch.css'
+import Tag from '../common/Tag'
 
 export default function CourseCardSearch({ curso }) {
 
@@ -37,15 +38,23 @@ export default function CourseCardSearch({ curso }) {
                         </div>
                         {/* Nombre del ponente */}
                         <div className="col s12" style={{ "marginTop": "5px" }}>
-                            <span className="course-teacher truncate">{curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}</span>
+                            <span className="course-teacher truncate">
+                                {curso.teacher ? 
+                                <>
+                                    {curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}
+                                </>
+                                : 
+                                <>
+                                    Sin profesor asignado
+                                </>
+                                }
+                            </span>
                         </div>
                         {/* Tags del curso */}
                         <div className="col s12 courseCard_tags" style={{ marginTop: "5px", marginBottom: "5px" }}>
                             <div className="container-tags">
-                                {curso.tags.map((tag, index) =>
-                                    <a className="div-tag" href="#!" key={index}>
-                                        {tag.nombre} <i className="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
-                                    </a>
+                                {curso.tags && curso.tags.length > 0 && curso.tags.map((tag, index) =>
+                                    <Tag nombre={tag.nombre} key={index} />
                                 )}
                             </div>
                         </div>
@@ -57,7 +66,13 @@ export default function CourseCardSearch({ curso }) {
                         </div>
                         <div className="fechas-card transicion">
                             <h3>Inscripciones</h3>
-                            <div>{transformaFecha(curso.inicio_inscripciones)}-{transformaFecha(curso.fecha_limite)} </div>
+                            {curso.inicio_inscripciones && curso.fecha_limite ?
+                                <div>
+                                    {transformaFecha(curso.inicio_inscripciones)}-{transformaFecha(curso.fecha_limite)}
+                                </div>
+                                :
+                                <div>Sin fechas de inscripciones</div>
+                            }
                             <h3>Fechas del curso</h3>
                             <div>{transformaFecha(curso.fecha_inicio)}-{transformaFecha(curso.fecha_final)} </div>
                         </div>

@@ -1,0 +1,15 @@
+body{
+    padding: 0px !important;
+    min-height: 100vh !important;
+}
+
+#app{
+    min-height: 100vh !important;
+}
+
+.error-div{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    height: 100vh;
+}

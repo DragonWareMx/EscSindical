@@ -12,42 +12,47 @@ import route from 'ziggy-js';
 import '../../styles/buscarCursos.css';
 
 import CourseCardSearch from '../../components/cursos/CourseCardSearch'
-import CourseCardSearchHover from '../../components/cursos/CourseCardSearchHover'
 import axios from 'axios';
 import { debounce } from 'lodash';
+import Loader from 'react-loader-spinner';
 
 function initializeMat() {
 }
 
-const BuscarCursos = ({ cursos }) => {
+const BuscarCursos = ({ cursos, cursosParaTi }) => {
 
     const [state, setState] = useState({
-        cursos: cursos
+        cursos: cursos,
+        loader: false
     })
 
     useEffect(() => {
         //initializeMat();
         window.addEventListener('scroll', debounce((e) => {
             let pixelsFromBottom = document.documentElement.offsetHeight - document.documentElement.scrollTop - window.innerHeight;
-            if (pixelsFromBottom < 200) {
+            if (pixelsFromBottom < 220) {
+                setState(state => ({
+                    ...state,
+                    loader: true
+                }))
                 axios.get(cursos.next_page_url).then(response => {
-                    console.log(response)
                     setState(state => ({
                         ...state,
                         cursos: {
                             ...response.data,
                             data: [...state.cursos.data, ...response.data.data]
-                        }
+                        },
+                        loader: false
                     }))
-                    console.log(state.cursos)
+                }).catch(function (error) {
+                    setState(state => ({
+                        ...state,
+                        loader: false
+                    }))
                 });
             }
         }, 100));
     }, [])
-
-    useEffect(() => {
-        console.log('hola', cursos)
-    }, [cursos]);
 
     const responsive = {
         0: {
@@ -67,70 +72,51 @@ const BuscarCursos = ({ cursos }) => {
         }
     }
 
-    console.log(cursos)
-
     return (
         <>
             <div className="row contenedor">
                 {/* Contenedor Cursos para ti */}
-                <div className="col contenedor s12">
-                    <div className="card darken-1 card-buscar-cursos">
-                        <div className="card-content">
-                            <h1>CURSOS PARA TI</h1>
-                            <OwlCarousel className='owl-theme' loop margin={8} nav autoplay responsive={responsive}>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['0']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['1']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['0']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['1']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['0']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['1']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['0']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['1']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['0']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['1']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['0']} />
-                                </div>
-                                <div className='item'>
-                                    <CourseCardSearch curso={cursos.data['1']} />
-                                </div>
-                            </OwlCarousel>
+
+                {cursosParaTi && cursosParaTi.length > 0 &&
+                    <div className="col contenedor s12">
+                        <div className="card darken-1 card-buscar-cursos">
+                            <div className="card-content">
+                                <h1>CURSOS PARA TI</h1>
+                                <OwlCarousel className='owl-theme' margin={8} nav autoplay responsive={responsive}>
+                                    {cursosParaTi.map((curso, index) => (
+                                        <div className='item' key={index}>
+                                            <CourseCardSearch curso={curso} />
+                                        </div>
+                                    ))}
+                                </OwlCarousel>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
                 {/* Contenedor Más Cursos */}
                 <div className="col contenedor s12">
                     <div className="card darken-1 card-buscar-cursos">
                         <div className="card-content">
                             <h1>MÁS CURSOS</h1>
                             <div className="row">
-                                {state.cursos.data.map(curso =>
-                                    <div className="col s12 m6 l3" key={curso.id} style={{"padding": "0px"}}>
+                                {state.cursos.data && state.cursos.data.length > 0 ? state.cursos.data.map(curso =>
+                                    <div className="col s12 m6 l3" key={curso.id} style={{ "padding": "0px" }}>
                                         {/* Aqui va el componente */}
                                         <CourseCardSearch curso={curso} />
                                     </div>
-                                )}
+                                ) :
+                                    <div className="col s12 m6 l3">No se encontraron cursos</div>
+                                }
                             </div>
+                            {state.cursos.data.length > 0 && state.loader &&
+                                <div style={{ display: "flex", justifyContent: "center" }}>
+                                    <Loader
+                                        type="Oval"
+                                        color="#134E39"
+                                        height={80}
+                                        width={80}
+                                    />
+                                </div>}
                         </div>
                     </div>
                 </div>

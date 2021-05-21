@@ -1,9 +1,10 @@
-import React from 'react'
-import Layout from '../layouts/Layout';
+import React from 'react';
 import route from 'ziggy-js';
 import { InertiaLink } from '@inertiajs/inertia-react';
 
-function ErrorPage({ status }) {
+import '../styles/errores.css';
+
+export default function ErrorPage({ status }) {
     const title = {
         503: '503: Service Unavailable',
         500: '500: Server Error',
@@ -19,7 +20,7 @@ function ErrorPage({ status }) {
     }[status]
 
     return (
-        <div className="error-div" style={{ width: "100%", height: "70vh" }}>
+        <div className="error-div" style={{ width: "100%" }}>
             <div className="row" style={{ width: "100%", height: "100%" }}>
                 <div className="col s12 m9 xl6">
                     <div className="card">
@@ -37,7 +38,3 @@ function ErrorPage({ status }) {
         </div>
     )
 }
-
-ErrorPage.layout = page => <Layout children={page} title="Escuela Sindical - Error" pageTitle="ERROR" />
-
-export default ErrorPage

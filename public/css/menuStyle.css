@@ -376,6 +376,10 @@ body
     background-color: rgba(0,0,0,0.05);
 }
 
+.logout-grande:focus{
+    background-color: rgba(0,0,0,0.05);
+}
+
 .logout-grande i{
     margin-right: 32px;
 }
@@ -386,16 +390,35 @@ body
     cursor: pointer;
 }
 
+.logout-chico:focus{
+    background-color: rgba(0,0,0,0.05);
+}
+
 .enter-div{
     border-left: 0.2px solid rgba(128, 128, 128, 0.692);
     height: 46px !important;
     width: 46px;
     background-color: transparent;
     border-radius: 2px;
+    padding: 0px !important;
 }
 
 .enter-div i{
     margin-top: -8px;
+}
+
+.enter-div button{
+    height: 46px !important;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 46px;
+}
+
+.enter-div button:active{
+    background-color: transparent;
 }
 
 @media (max-width:600px){
@@ -438,4 +461,8 @@ body
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+.main-bar-search .input-field{
+    margin-bottom: 0px !important;
 }
