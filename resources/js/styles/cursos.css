@@ -290,3 +290,47 @@
     height: 75px;
     border-radius: 50%;
 }
+
+.default-text
+{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    
+    color: #383838;
+}
+
+.description-text
+{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    
+    color: #263238;
+}
+
+.nombre-ponente
+{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    
+    color: #383838;
+    
+    margin-bottom: 5px;
+}
+
+.grado-ponente
+{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+
+    color: #585858;
+
+    margin-bottom: 10px;
+}

@@ -26,7 +26,7 @@ const Informacion = ({curso}) => {
 
   return (
     <>
-      <div className="row">
+      <div className="row default-text">
         {/* Slider con las fotos del curso */}
         <div className="col s12 m6 l4" style={{marginTop:"25px"}}>
           <div className="slider">
@@ -51,16 +51,24 @@ const Informacion = ({curso}) => {
                 Sin evaluar
               </div>
               {/* Videoconferencias */}
-              <div className="col s12">
+              <div className="col s12 default-text">
                 <div className="info-title">VIDEOCONFERENCIAS</div>
-                <div className="" >
-                  Aqui van las fechas de las videoconferencias
+                <div className="col s6" style={{"padding":"0px"}}>
+                  Lu,Mie,Jue<br />
+                  Ma,Vie
+                </div>
+                <div className="col s6" style={{"padding":"0px"}}>
+                  20:00 - 21:00<br />
+                  15:00 - 17:00
                 </div>
                 {/* Enlace a las videoconferencias */}
-                <a href={curso.link} className="txt-video-course" style={{"marginTop":"0px"}}>
-                    <i className="material-icons tiny">videocam</i>
-                    <p style={{"marginLeft": "5px", "textDecoration": "underline"}}>Clic para acceder</p>
-                </a>
+                <div className="col s12">
+                  <a href={curso.link} className="txt-video-course" style={{"marginTop":"0px"}}>
+                      <i className="material-icons tiny">videocam</i>
+                      <p style={{"marginLeft": "5px", "textDecoration": "underline"}}>Clic para acceder</p>
+                  </a>
+                </div>
+                
               </div>
             </div>
             {/* bloque 1 */}
@@ -84,10 +92,17 @@ const Informacion = ({curso}) => {
               {/* Ponente */}
               <div className="col s12">
                 <div className="info-title">PONENTE</div>
+                <div className="col s12" style={{"padding":"0px"}}>
+                  <div className="nombre-ponente">
+                    Nombre del profesor
+                  </div>
+                  <div className="grado-ponente">
+                    Grado del profesor
+                  </div>
+                </div>
                 <div className="col s3 m5 l3">
                   {/* <img className="foto-ponente red" src={"/storage/fotos_perfil/" + curso.teacher.foto} alt="img" /> */}
                   <img className="foto-ponente red" src="/img/monita.jpg" alt="img" />
-                  
                 </div>
                 <div className="col s9 m7 l9">
                   {/* cantidad de cursos */}
@@ -122,7 +137,7 @@ const Informacion = ({curso}) => {
           </div>
         </div>
         {/* Descripcion del curso */}
-        <div className="col s12" style={{"marginTop":"15px"}} dangerouslySetInnerHTML={{__html: curso.descripcion}}>
+        <div className="col s12 description-text" style={{"marginTop":"15px"}} dangerouslySetInnerHTML={{__html: curso.descripcion}}>
           {/* Aquí va la descripcion pero se pone en el dangerouslySetInnerHTML */}
         </div>
         {/* Evaluacion y bibliografia */}
