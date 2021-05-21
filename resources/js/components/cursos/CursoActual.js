@@ -5,6 +5,7 @@ import { InertiaLink } from '@inertiajs/inertia-react'
 //import circlesImg from '../images/circles.png'
 //import emptyImg from '../images/empty.png'
 import '../../styles/cursos.css'
+import route from 'ziggy-js'
 
 function initializeDROP() {
     var elems = document.querySelectorAll('.dropdown-trigger');
@@ -41,7 +42,7 @@ export default function CursoActual({cursos, profesor, tags}) {
                                     <a href="#!"><img src={cursos.images && cursos.images.length>0 && "/storage/imagenes_curso/"+cursos.images['0'].imagen} className="img-course" style={{"width":"100%"}} /></a>
                                 </div>
                                 <div className="col s12 m9 l10">
-                                    <div className="txt-course-title"><a href="#!" className="title-course-hover">{cursos.nombre}</a></div>
+                                    <div className="txt-course-title"><a href={route('cursos.informacion',1)} className="title-course-hover">{cursos.nombre}</a></div>
                                     <div className="" style={{"display": "flex", "alignItems": "center", "marginTop": "10px"}}>
                                         <div style={{"width": "max-content", "marginRight": "10px"}}><img src="images/profile.jpg" style={{"width": "25px", "height": "25px", "borderRadius": "50%", "objectFit": "cover"}} /></div>
                                         <a className="txt-teacher-name" style={{"width": "max-content"}} href="#!">{profesor.nombre} {profesor.apellido_p} {profesor.apellido_m}</a>
