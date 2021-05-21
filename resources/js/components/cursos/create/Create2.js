@@ -1,24 +1,8 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 
-function fechasInscripcion(){
-    var input = document.getElementsByClassName('fechas_insc').value;
-    alert(input);
-}
 
-function initializeChips() {
-    var elems = document.querySelectorAll('.chips');
-    var instances = M.Chips.init(elems);
-
-    var elems2 = document.querySelectorAll('.tooltipped');
-    var instances = M.Tooltip.init(elems2);
-
-}
-
-const Create2 = ({ change, values, onValueChange, errors}) => {
-    useEffect(() => {
-        initializeChips();
-    }, [])
+const Create2 = ({ change, values, onValueChange, errors, capacitaciones, changeSelect}) => {
 
     const [valores, setValues] = useState({
         dates : true,
@@ -34,12 +18,12 @@ const Create2 = ({ change, values, onValueChange, errors}) => {
             <div className="input-field col s12">
                 {/* <input  id="categorias" value={values.categorias} onChange={change} type="text" className="validate"/>
                 <label htmlFor="categorias">Categorías de estudiante permitidas</label> */}
-                <select multiple id="tipos_de_capacitacion" >
-                    <option value="0" disabled selected>Selecciona al menos una opción</option>
-                    <option value="1">Capacitación 1</option>
-                    <option value="2">Capacitación 2</option>
-                    <option value="3">Capacitación 3</option>
-                    </select>
+                <select multiple="multiple" id="tipos_de_capacitacion" onChange={changeSelect}>
+                    <option value="0" disabled>Selecciona al menos una opción</option>
+                    {capacitaciones.map ((capacitacion) =>
+                        <option value={capacitacion.id}>{capacitacion.nombre}</option>
+                    )}
+                </select>
                 <label>Tipos de capacitación de estudiante permitidas</label>
             </div>
 

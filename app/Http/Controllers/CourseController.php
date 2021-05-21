@@ -12,6 +12,8 @@ use App\Models\Course;
 use App\Models\Tag;
 use App\Models\Log;
 use App\Models\Image;
+use App\Models\Training_type;
+
 
 
 class CourseController extends Controller
@@ -53,7 +55,9 @@ class CourseController extends Controller
 
     public function create()
     {
-        return Inertia::render('Cursos/FormCurso');
+        return Inertia::render('Cursos/FormCurso', [ 
+        'capacitaciones'=> Training_type::get(),
+        ]);
     }
 
     public function moduleCreate()
@@ -78,7 +82,7 @@ class CourseController extends Controller
             'fecha_final' => 'required',
             'link' => 'required',
             'vc' => 'required',
-            //'categorias' => 'required',
+            'tipos_de_capacitacion' => 'required',
             'tipo_inscripcion' => 'required',
             'descripcion' => 'required',
             'imgs' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
@@ -125,8 +129,11 @@ class CourseController extends Controller
             }
             
             $newCourse->tags()->sync($tags_ids);
-            //CATEGORIAS
+            
+            //TIPO DE CAPACITACIONES
+            $tipos = $request->tipos_de_capacitacion;
 
+            $newCourse->training_types()->sync($tipos);
 
             //IMÁGENES
             $newImagen = new Image;
@@ -177,7 +184,8 @@ class CourseController extends Controller
     public function edit($id){
         //\Gate::authorize('haveaccess', 'ponent.perm');
         return Inertia::render('Cursos/FormCursoEdit', [
-            'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id),//falta lo de categories
+            'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id),
+            'capacitaciones'=> Training_type::get(),
         ]); 
     }
 
@@ -191,7 +199,7 @@ class CourseController extends Controller
             'fecha_final' => 'required',
             'link' => 'required',
             'vc' => 'required',
-            'categorias' => 'required',
+            'tipos_de_capacitacion' => 'required',
             'tipo_inscripcion' => 'required',
             'descripcion' => 'required',
             'imgs' => 'required',
@@ -236,7 +244,7 @@ class CourseController extends Controller
             }
             
             $myCourse->tags()->sync($tags_ids);
-            //CATEGORIAS
+            //tipos_de_capacitacion
 
 
             //IMÁGENES
