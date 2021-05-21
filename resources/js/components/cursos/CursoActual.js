@@ -38,7 +38,7 @@ export default function CursoActual({cursos, profesor, tags}) {
                                 {/* CONTENIDO DEL CARD */}
                                     {/* Imagen del curso */}
                                 <div className="col s10 m3 l2">
-                                    <a href="#!"><img src="img/imagenes/Teacher-cuate.svg" className="img-course" style={{"width":"100%"}} /></a>
+                                    <a href="#!"><img src="storage/imagenes_curso/curso1.png" className="img-course" style={{"width":"100%"}} /></a>
                                 </div>
                                 <div className="col s12 m9 l10">
                                     <div className="txt-course-title"><a href="#!" className="title-course-hover">{cursos['0'].nombre}</a></div>
