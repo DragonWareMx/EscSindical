@@ -318,16 +318,16 @@ class CourseController extends Controller
                         });
                 }
             })
-            ->select('courses.nombre','courses.fecha_inicio','courses.fecha_final','courses.id','courses.teacher_id','courses.inicio_inscripciones','courses.fecha_limite')
+            ->select('courses.nombre', 'courses.fecha_inicio', 'courses.fecha_final', 'courses.id', 'courses.teacher_id', 'courses.inicio_inscripciones', 'courses.fecha_limite')
             ->paginate(12);
 
-        $cursosParaTi = Course::with(['teacher:nombre,apellido_p,apellido_m,foto,id', 'tags:nombre', 'images:imagen,course_id','training_types'])
-            ->whereHas('training_types', function($query) {
-                $query->whereHas('categories', function($query2) {
-                    $query2->where('categories.id',Auth::User()->category->id);
+        $cursosParaTi = Course::with(['teacher:nombre,apellido_p,apellido_m,foto,id', 'tags:nombre', 'images:imagen,course_id', 'training_types'])
+            ->whereHas('training_types', function ($query) {
+                $query->whereHas('categories', function ($query2) {
+                    $query2->where('categories.id', Auth::User()->category->id);
                 });
             })
-            ->select('courses.nombre','courses.fecha_inicio','courses.fecha_final','courses.id','courses.teacher_id','courses.inicio_inscripciones','courses.fecha_limite')
+            ->select('courses.nombre', 'courses.fecha_inicio', 'courses.fecha_final', 'courses.id', 'courses.teacher_id', 'courses.inicio_inscripciones', 'courses.fecha_limite')
             ->take(10)
             ->get();
 
@@ -357,6 +357,13 @@ class CourseController extends Controller
     public function modulos($id)
     {
         return Inertia::render('Curso/Modulos', [
+            'curso' => Course::findOrFail($id),
+        ]);
+    }
+
+    public function participantes($id)
+    {
+        return Inertia::render('Curso/Participantes', [
             'curso' => Course::findOrFail($id),
         ]);
     }
