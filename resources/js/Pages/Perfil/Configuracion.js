@@ -10,7 +10,6 @@ import { Inertia } from '@inertiajs/inertia';
 
 //COMPONENTES
 import Alertas from '../../components/common/Alertas';
-import CourseCard from '../../components/cursos/CourseCard'
 
 
 const Configuracion = ({ user, categories, regimes, units, roles }) => {
@@ -28,10 +27,6 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
         confirmar_contrasena: "",
         fecha_de_nacimiento: user.fecha_nac || "",
         sexo: user.sexo || "",
-        matricula: user.matricula || "",
-        categoria: user.categorie && user.categorie.nombre || "",
-        unidad: user.unit && user.unit.nombre || "",
-        regimen: user.unit && user.unit.regime.nombre || "",
         estado: user.estado || "",
         ciudad: user.ciudad || "",
         colonia: user.colonia || "",
@@ -40,10 +35,8 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
         numero_exterior: user.num_ext || "",
         numero_interior: user.num_int || "",
         tarjeton_de_pago: "",
-        created_at: parseFecha(user.created_at),
         foto: null,
         deleted_at: user.deleted_at,
-        rol: user.roles[0].name || "",
         cambiar_tarjeton: false,
         cambiar_contrasena: false
     })
@@ -57,25 +50,14 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
             [key]: value,
         }))
 
-        if (key == "regimen") {
-            Inertia.reload({ only: ['units'], data: { regime: value } })
-            setValues(values => ({
-                ...values,
-                unidad: "",
-            }))
-        }
     }
 
     //manda el forumulario
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.post(route('usuarios.update', user.id), values,
+        Inertia.post(route('perfil.update'), values,
             {
-                onError: () => {
-                    Inertia.reload({ only: ['units'], data: { regime: values.regimen } })
-                },
                 onSuccess: () => {
-                    console.log('si jaló')
                     setValues(values => ({
                         ...values,
                         cambiar_contrasena: false,
@@ -105,17 +87,6 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
             }))
             document.getElementById("profileImage").src = window.URL.createObjectURL(inputFotos.files[0]);
         }
-    }
-
-    function changeTarjeton(e){
-        var inputFotos = document.getElementById('tarjeton_de_pago');
-        if (inputFotos.files && inputFotos.files[0]) {
-            setValues(values => ({
-                ...values,
-                tarjeton_de_pago: inputFotos.files[0],
-            }))
-        }
-
     }
 
     function initializeSelects() {
@@ -148,41 +119,9 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
         }
     }
 
-    function cambiarTarjeton(){
-        setValues(values => ({
-            ...values,
-            cambiar_tarjeton: !values.cambiar_tarjeton,
-        }))
-
-        if(!values.cambiar_tarjeton == false)
-        {
-            setValues(values => ({
-                ...values,
-                tarjeton_de_pago: ""
-            }))
-        }
-    }
-
-    //para mostrar la fecha de registro
-    function parseFecha(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2)
-            month = '0' + month;
-        if (day.length < 2)
-            day = '0' + day;
-
-        return [year, month, day].join('-');
-    }
-
     //se ejecuta cuando la pagina se renderiza
     useEffect(() => {
         initializeSelects();
-        if (values.regimen)
-            Inertia.reload({ only: ['units'], data: { regime: values.regimen } })
     }, [])
 
     return (
@@ -401,6 +340,6 @@ const Configuracion = ({ user, categories, regimes, units, roles }) => {
     )
 }
 
-Configuracion.layout = page => <Layout children={page} title="Escuela Sindical - Usuarios" pageTitle="USUARIOS" />
+Configuracion.layout = page => <Layout children={page} title="Escuela Sindical - Configuración" pageTitle="CONFIGURACIÓN" />
 
 export default Configuracion

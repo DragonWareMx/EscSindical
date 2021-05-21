@@ -6,6 +6,9 @@
     line-height: 20px;
 
     color: #134E39 !important;
+
+    margin-top: 15px;
+    margin-bottom: 5px;
 }
 
 .subtitulo-modulo
@@ -16,6 +19,9 @@
     line-height: 16px;
 
     color: #848484 !important;
+
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .default-text

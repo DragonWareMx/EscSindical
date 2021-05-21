@@ -99,7 +99,7 @@ export default function MenuLateral() {
             {/* </InertiaLink> */}
           </li>
           <li>
-            <InertiaLink href={route('perfil').url()} className="icono-menu">
+            <InertiaLink href={route('perfil.edit')} className="icono-menu">
               <i className="material-icons icono-menu">settings</i>Configuración
               </InertiaLink>
           </li>
@@ -150,7 +150,7 @@ export default function MenuLateral() {
           <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Bitácora">history</i>
         </div>
         <div className="col s12">
-          <InertiaLink href={route('perfil').url()} className="icono-menu">
+          <InertiaLink href={route('perfil.edit').url()} className="icono-menu">
             <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Configuración">settings</i>
           </InertiaLink>
         </div>
