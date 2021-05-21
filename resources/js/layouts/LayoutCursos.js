@@ -3,6 +3,7 @@ import Layout from './Layout'
 import '/css/layoutCursos.css'
 import route from 'ziggy-js'
 import { InertiaLink } from '@inertiajs/inertia-react'
+import { usePage } from '@inertiajs/inertia-react'
 
 function initializeMat() {
     var elems = document.querySelectorAll('.dropdown-trigger');
@@ -39,7 +40,10 @@ function isUrl(...urls) {
 // }
 
 
-const LayoutCursos = ({children, id}) => {   
+const LayoutCursos = ({children}) => {   
+
+    const {curso} =usePage().props
+
     useEffect(() => {
         initializeMat();
     }, [])
@@ -61,13 +65,13 @@ const LayoutCursos = ({children, id}) => {
                         <div className="col s12">
                             <ul className="tabs LC">
                                 <li className="tab LC_tab">
-                                    <InertiaLink id="tab_informacion" href={route('cursos.informacion', id)}  className={false ? 'LC_a active' : 'LC_a'}  target="_self">
+                                    <InertiaLink id="tab_informacion" href={route('cursos.informacion', curso.id)}  className={false ? 'LC_a active' : 'LC_a'}  target="_self">
                                         <i className="material-icons col s3 LC_tab_icons">school</i>
                                         <div className="col s9">Información</div>
                                     </InertiaLink>
                                 </li>
                                 <li className="tab">
-                                    <InertiaLink id="tab_modulos" href={route('cursos.modulos', id)} className={true  ? 'LC_a active' : 'LC_a'} target="_self">
+                                    <InertiaLink id="tab_modulos" href={route('cursos.modulos', curso.id)} className={true  ? 'LC_a active' : 'LC_a'} target="_self">
                                         <i className="material-icons col s3 LC_tab_icons">book</i>
                                         <div className="col s9">Módulos</div>
                                     </InertiaLink>

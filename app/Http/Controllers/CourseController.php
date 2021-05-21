@@ -316,10 +316,14 @@ class CourseController extends Controller
     }
 
     public function informacion($id){
-        return Inertia::render('Curso/Informacion');
+        return Inertia::render('Curso/Informacion',[
+            'curso'=>Course::with('images:imagen,course_id','tags:nombre')->findOrFail($id),
+        ]);
     }
 
-    public function modulos(){
-        return Inertia::render('Curso/Modulos');
+    public function modulos($id){
+        return Inertia::render('Curso/Modulos',[
+            'curso'=>Course::findOrFail($id),
+        ]);
     } 
 }
