@@ -44,6 +44,11 @@ const BuscarCursos = ({ cursos, cursosParaTi }) => {
                         },
                         loader: false
                     }))
+                }).catch(function (error) {
+                    setState(state => ({
+                        ...state,
+                        loader: false
+                    }))
                 });
             }
         }, 100));
@@ -67,28 +72,26 @@ const BuscarCursos = ({ cursos, cursosParaTi }) => {
         }
     }
 
-    console.log(cursos)
-
     return (
         <>
             <div className="row contenedor">
                 {/* Contenedor Cursos para ti */}
 
                 {cursosParaTi && cursosParaTi.length > 0 &&
-                <div className="col contenedor s12">
-                    <div className="card darken-1 card-buscar-cursos">
-                        <div className="card-content">
-                            <h1>CURSOS PARA TI</h1>
-                            <OwlCarousel className='owl-theme' loop margin={8} nav autoplay responsive={responsive}>
-                                {cursosParaTi.map((curso, index) => (
-                                    <div className='item' key={index}>
-                                        <CourseCardSearch curso={curso} />
-                                    </div>
-                                ))}
-                            </OwlCarousel>
+                    <div className="col contenedor s12">
+                        <div className="card darken-1 card-buscar-cursos">
+                            <div className="card-content">
+                                <h1>CURSOS PARA TI</h1>
+                                <OwlCarousel className='owl-theme' loop margin={8} nav autoplay responsive={responsive}>
+                                    {cursosParaTi.map((curso, index) => (
+                                        <div className='item' key={index}>
+                                            <CourseCardSearch curso={curso} />
+                                        </div>
+                                    ))}
+                                </OwlCarousel>
+                            </div>
                         </div>
                     </div>
-                </div>
                 }
                 {/* Contenedor Más Cursos */}
                 <div className="col contenedor s12">
@@ -102,7 +105,7 @@ const BuscarCursos = ({ cursos, cursosParaTi }) => {
                                         <CourseCardSearch curso={curso} />
                                     </div>
                                 ) :
-                                   <div className="col s12 m6 l3">No se encontraron cursos</div>
+                                    <div className="col s12 m6 l3">No se encontraron cursos</div>
                                 }
                             </div>
                             {state.cursos.data.length > 0 && state.loader &&
