@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Inertia\Inertia;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
@@ -43,12 +44,25 @@ class RegisterController extends Controller
     }
 
     // Llamado de la vista
-    public function showRegistrationForm()
+    public function showRegistrationForm(Request $request)
     {
-        $categorias = Category::distinct()->get();
-        $regimen = Regime::distinct()->get();
-        $unidades = Unit::distinct()->get();
-        return view('auth.register',['categorias' => $categorias, 'regimen' => $regimen, 'unidades' => $unidades ]);
+        // $categorias = Category::distinct()->get();
+        // $regimen = Regime::distinct()->get();
+        // $unidades = Unit::distinct()->get();
+        // return view('auth.register',['categorias' => $categorias, 'regimen' => $regimen, 'unidades' => $unidades ]);
+
+        return Inertia::render('Usuarios/AuthRegister', [
+            'categories'=> fn () => Category::select('nombre')->get(),
+            'regimes'=> fn () => Regime::select('nombre')->get(),
+            'units'=>  Inertia::lazy(
+                fn () => Unit::select('units.id','units.nombre')
+                            ->leftJoin('regimes', 'regimes.id', '=', 'units.regime_id')
+                            ->when($request->regime, function ($query, $regime) {
+                                $query->where('regimes.nombre',$regime);
+                            })
+                            ->get()
+            )
+        ]);
     }
 
     /**

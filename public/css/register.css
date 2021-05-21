@@ -121,6 +121,7 @@
         display:block !important;
     }
 }
+
 @media(max-width:600px){
     .div-division{
         width: 100% !important;
