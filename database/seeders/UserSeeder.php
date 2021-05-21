@@ -83,10 +83,10 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'nombre' => 'Joca Guadalupe',
+            'nombre' => 'Dulce Gabriela',
             'sexo' => 'm',
             'apellido_p' => 'Marín',
-            'apellido_m' => 'Piñón',
+            'apellido_m' => 'Rendón',
             'email' =>  'estudiante@dragonware.com.mx',
             'password' => Hash::make('viledruid9000'),
             'foto' =>  'avatar4.jpg',
@@ -101,7 +101,7 @@ class UserSeeder extends Seeder
             'tarjeton_pago' => 'tarjeton.pdf',
             'matricula' => '17121037',
             'categorie_id' => '1',
-            'unit_id' => 4
+            'unit_id' => 3
         ]);
     }
 }

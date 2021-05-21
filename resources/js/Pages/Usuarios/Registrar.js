@@ -134,7 +134,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
                                     <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>INFORMACIÓN PERSONAL</p>
 
                                     <div className="col s12" style={{ "display": "flex", "justifyContent": "center", "flexDirection": "column", "marginTop": "5px", "marginBottom": "5px" }}>
-                                        <img id="profileImage" onClick={clickFoto} src={"/storage/fotos_perfil/avatar1.jpg"}></img>
+                                        <img id="profileImage" onClick={clickFoto} src={"/img/avatar3.png"}></img>
                                         <p id="txt-profile" style={{ "cursor": "pointer" }} onClick={clickFoto}>Foto de perfil</p>
                                     </div>
 

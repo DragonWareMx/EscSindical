@@ -12,6 +12,9 @@ function initializeMat() {
     var instance = M.Tabs.init(el);
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
+
+    var elems1 = document.querySelectorAll('.modal');
+    var instances1 = M.Modal.init(elems1);
 }
 
 function isUrl(...urls) {
@@ -54,11 +57,12 @@ const LayoutCursos = ({children}) => {
                <div className="card darken-1" style={{"padding":"5px 25px"}}>
                    <div className="card-content row valign-wrapper" style={{"padding":"10px","marginBottom":"0px"}}>
                         <div className="col s11 valign-wrapper LC_title">Programación Lógica y Funcional (Grupo de las 8 am) &nbsp; <i className="material-icons">verified</i></div>
-                        <div className="col s1 LC_more"><a className='dropdown-trigger' href='#' data-target='dropdown_LC'><i className="small material-icons" style={{"color":"#727272"}}>more_vert</i></a></div>
+                        <div className="col s1 LC_more"><a className='dropdown-trigger' href='#' data-target='dropdown_LC'><i className="material-icons" style={{"color":"#727272", "font-size":"22px"}}>more_vert</i></a></div>
                         <ul id='dropdown_LC' className='dropdown-content'>
+                            <li><span><a className="dropdown-text" href="#!">Editar curso</a></span></li>
                             <li><span><a className="dropdown-text" href="#!">Descargar reporte del curso</a></span></li>
                             <li className="divider" tabIndex="-1"></li>
-                            <li><span><a className="dropdown-text" href="#!">Solicitar eliminación del curso</a></span></li>
+                            <li><span><a className="dropdown-text modal-trigger" href="#modalSolicitud">Solicitar eliminación del curso</a></span></li>
                         </ul>
                    </div>
                     <div className="row">
@@ -99,6 +103,29 @@ const LayoutCursos = ({children}) => {
                         {children}
                     </div> 
                </div>
+            </div>
+
+            <div id="modalSolicitud" className="modal">
+                <div className="modal-content">
+                    <div className="modal-close right"><i className="material-icons">close</i></div>
+                    <div className="row">
+                        <span className="txt-title-card">SOLICITAR ELIMINACIÓN DE CURSO</span>  
+                        <p class="txt-modal-inst">Ingresa un texto explicando los motivos de tu solicitud de eliminación para el curso <p class="" style={{"color":"#134E39", "margin":"0px"}}>Nombre completo del curso</p></p> 
+                    
+                        <div className="input-field col s12" style={{"padding":"0px"}}>
+                            <textarea class="materialize-textarea text-area-modal" id="descripcion"></textarea>
+                        </div>
+
+                        <div class="info-txt-modal">Un administrador revisará tu solicitud y se te notificará su aprobación o rechazo.</div>
+                    
+                        <div class="col s12" style={{"padding":"0px", "marginTop": "15px"}}> 
+                            <div className="col s12 right-align" style={{ "padding": "0%" }}>
+                                <a class="waves-effect waves-light btn" style={{"textTransform": "initial" }}><i class="material-icons right" style={{ "font-size": "18px"}}>send</i>Enviar</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </>
     )

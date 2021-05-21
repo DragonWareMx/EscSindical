@@ -59,7 +59,6 @@ Route::get('/cursos/{id}/informacion', [App\Http\Controllers\CourseController::c
 Route::get('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class, 'modulos'])->name('cursos.modulos');
 
 
-Route::get('/prueba', [App\Http\Controllers\CourseController::class, 'prueba'])->name('prueba');
 
 Route::get('/cursos/buscar', [App\Http\Controllers\CourseController::class, 'searchIndex'])->name('cursosBuscar');
 
