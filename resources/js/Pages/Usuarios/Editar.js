@@ -346,7 +346,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
                                         <div className="col s12" style={{ "marginTop": "5px" }}>
                                             <div className="input-field select-wrapper">
-                                                <input placeholder={values.regimen ? "Selecciona una unidad" : "Selecciona primerio un régimen"} disabled={false} id="unidad" list="unidades" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.unidad} onChange={handleChange} required />
+                                                <input placeholder={values.regimen ? "Selecciona una unidad" : "Selecciona primerio un régimen"} disabled={false} id="unidad" list="unidades" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.unidad} onChange={handleChange} required autoComplete="off" />
                                                 <label htmlFor="unidad">Unidad</label>
                                                 <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
                                                 {
@@ -366,7 +366,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
                                         <div className="col s12">
                                             <div className="input-field select-wrapper">
-                                                <input placeholder="Selecciona una categoría" disabled={false} id="categoria" list="categorias" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.categoria} onChange={handleChange} required />
+                                                <input placeholder="Selecciona una categoría" disabled={false} id="categoria" list="categorias" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.categoria} onChange={handleChange} required autoComplete="off" />
                                                 <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
                                                 <label htmlFor="categoria">Categoría</label>
                                                 {
@@ -501,7 +501,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
                                         <div className="col s12">
                                             <div className="input-field select-wrapper">
-                                                <input placeholder="Selecciona un rol" disabled={false} id="rol" list="roles" type="text" className={errors.rol ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.rol} onChange={handleChange} required />
+                                                <input placeholder="Selecciona un rol" disabled={false} id="rol" list="roles" type="text" className={errors.rol ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.rol} onChange={handleChange} required autoComplete="off" />
                                                 <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
                                                 <label htmlFor="rol">Rol</label>
                                                 {

@@ -324,7 +324,9 @@ class CourseController extends Controller
         $cursosParaTi = Course::with(['teacher:nombre,apellido_p,apellido_m,foto,id', 'tags:nombre', 'images:imagen,course_id','training_types'])
             ->whereHas('training_types', function($query) {
                 $query->whereHas('categories', function($query2) {
-                    $query2->where('categories.id',Auth::User()->category->id);
+                    if(isset(Auth::User()->category)){
+                        $query2->where('categories.id',Auth::User()->category->id);
+                    }
                 });
             })
             ->select('courses.nombre','courses.fecha_inicio','courses.fecha_final','courses.id','courses.teacher_id','courses.inicio_inscripciones','courses.fecha_limite')

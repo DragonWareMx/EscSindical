@@ -80,7 +80,9 @@ class UserController extends Controller
                                 break;
                         }
                     } else
-                        return $query->where('users.nombre', 'LIKE', '%' . $search . '%');
+                        return $query->WhereRaw(
+                            "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                        );
                 })
                 ->when($request->sort, function ($query, $sort) use ($request) {
                     switch ($sort) {

@@ -122,7 +122,7 @@ class RegisterController extends Controller
             'cp' => $data['codigo_postal'],
             'matricula' => $data['matricula'],
             'tarjeton_pago' => $newFileName2,
-            'categorie_id' => $data['categoria'],
+            'category_id' => $data['categoria'],
             'unit_id' => $data['unidad'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),

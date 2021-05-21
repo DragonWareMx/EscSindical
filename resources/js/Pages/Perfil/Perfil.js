@@ -97,7 +97,7 @@ const Perfil = ({ user }) => {
                                                 Unidad:
                                             </div>
                                             <div className="info-txt-format">
-                                                Categoría: {user.category.nombre}
+                                                Categoría: {user.category ? user.category.nombre : "Sin categoría"}
                                             </div>
                                         </div>
                                         <div className="col s12 m6" style={{ "marginTop": "15px" }}>
