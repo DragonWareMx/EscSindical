@@ -462,3 +462,7 @@ body
     justify-content: center;
     flex-wrap: wrap;
 }
+
+.main-bar-search .input-field{
+    margin-bottom: 0px !important;
+}

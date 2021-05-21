@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { InertiaLink } from "@inertiajs/inertia-react"
 import { Inertia } from '@inertiajs/inertia'
 import route from 'ziggy-js';
@@ -149,7 +149,7 @@ export default function BarraBusqueda() {
                 </div>
             </div>
             {/* contenido */}
-            <div className="main-bar-background" /> 
+            <div className="main-bar-background" />
             {/* Los botonsitos */}
             {auth.roles[0].slug == 'alumno' && <FlotanteAyuda />}
             {auth.roles[0].slug == 'ponente' && <FlotanteProfe />}
