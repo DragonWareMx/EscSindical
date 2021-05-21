@@ -28,7 +28,7 @@ function initializeChips() {
 }
 
 
-const FormCursoEdit = () => {
+const FormCursoEdit = ({curso}) => {
     useEffect(() => {
         initializeModals();
     }, [])
@@ -39,7 +39,7 @@ const FormCursoEdit = () => {
 
 
     const [values, setValues] = useState({
-        nombre : "",
+        nombre : curso.nombre,
         tags : [],
         dateIni : "",
         dateFin : "",
