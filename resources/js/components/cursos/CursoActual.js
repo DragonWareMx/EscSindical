@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
-
+import { InertiaLink } from '@inertiajs/inertia-react'
 //import circlesImg from '../images/circles.png'
 //import emptyImg from '../images/empty.png'
 import '../../styles/cursos.css'
@@ -41,7 +41,7 @@ export default function CursoActual({cursos, profesor, tags}) {
                                     <a href="#!"><img src="storage/imagenes_curso/curso1.png" className="img-course" style={{"width":"100%"}} /></a>
                                 </div>
                                 <div className="col s12 m9 l10">
-                                    <div className="txt-course-title"><a href="#!" className="title-course-hover">{cursos['0'].nombre}</a></div>
+                                    <div className="txt-course-title"><InertiaLink href={route('cursos.informacion',1)} className="title-course-hover">{cursos['0'].nombre}</InertiaLink></div>
                                     <div className="" style={{"display": "flex", "alignItems": "center", "marginTop": "10px"}}>
                                         <div style={{"width": "max-content", "marginRight": "10px"}}><img src="images/profile.jpg" style={{"width": "25px", "height": "25px", "borderRadius": "50%", "objectFit": "cover"}} /></div>
                                         <a className="txt-teacher-name" style={{"width": "max-content"}} href="#!">{profesor.nombre} {profesor.apellido_p} {profesor.apellido_m}</a>
