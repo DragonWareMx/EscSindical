@@ -53,18 +53,14 @@ const Informacion = ({curso}) => {
               {/* Videoconferencias */}
               <div className="col s12">
                 <div className="info-title">VIDEOCONFERENCIAS</div>
-                <div>
+                <div className="" >
                   Aqui van las fechas de las videoconferencias
                 </div>
                 {/* Enlace a las videoconferencias */}
-                <div className="valign-wrapper">
-                  <div className="col s1 valign-wrapper">
-                    <i className="material-icons" style={{fontSize: "15px","color":"#134E39"}}>videocam</i>
-                  </div>
-                  <div className="col s11">
-                    <a href="#" style={{"textDecoration":"underline","color":"#134E39"}}>Clic para acceder </a>
-                  </div>
-                </div>
+                <a href={curso.link} className="txt-video-course" style={{"marginTop":"0px"}}>
+                    <i className="material-icons tiny">videocam</i>
+                    <p style={{"marginLeft": "5px", "textDecoration": "underline"}}>Clic para acceder</p>
+                </a>
               </div>
             </div>
             {/* bloque 1 */}
@@ -72,12 +68,41 @@ const Informacion = ({curso}) => {
               {/* Fechas */}
               <div className="col s12">
                 <div className="info-title">FECHAS</div>
-                aqui van las fechas
+                <div className="txt-presentation txt-date-course">Inicio {curso.fecha_inicio}, Fin {curso.fecha_final}</div>                   
+                {/* DIV progress bar del curso */}
+                <div className="row" style={{"display":"flex", "alignItems": "center", "marginBottom": "0px"}}>
+                    <div className="col s5">
+                        <div className="progress" style={{"margin": "0px"}}>
+                            <div className="determinate" style={{"width": "70%"}}></div>
+                        </div>
+                    </div>
+                    <div className="col s7">
+                        <div className="txt-progress-course">Avance 15%</div>
+                    </div>
+                </div>
               </div>
               {/* Ponente */}
               <div className="col s12">
                 <div className="info-title">PONENTE</div>
-                aqui van los datos del ponente
+                <div className="col s3 m5 l3">
+                  {/* <img className="foto-ponente red" src={"/storage/fotos_perfil/" + curso.teacher.foto} alt="img" /> */}
+                  <img className="foto-ponente red" src="/img/monita.jpg" alt="img" />
+                  
+                </div>
+                <div className="col s9 m7 l9">
+                  {/* cantidad de cursos */}
+                  <div className="txt-video-course">
+                      {/* cantidad de participantes */}
+                      <i className="material-icons tiny">play_circle</i> 
+                      <p style={{"marginLeft": "5px", "color": "#585858 !important"}}>15 cursos</p> 
+                  </div>
+                  {/* cantidad de participantes */}
+                  <div className="txt-video-course" style={{"marginTop":"0px"}}>
+                    <i className="material-icons tiny">people</i>
+                    <p style={{"marginLeft": "5px", "color": "#585858 !important"}}> 125 participantes</p>
+                    {/* <p style={{"marginLeft": "5px", "color": "#585858 !important"}}> {curso.users.length} participantes</p> */}
+                  </div>
+                </div>
               </div>
               {/* Etiquetas */}
               <div className="col s12">
