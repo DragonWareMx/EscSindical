@@ -11,19 +11,9 @@
 }
 
 #dropdown_LC{
-    width: 242px !important;
+    width: max-content !important;
 }
 
-.dropdown-text
-{
-    font-family: Montserrat;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
-    line-height: 16px;
-
-    color: #8A8A8A;
-}
 
 .LC_a{
     color:#626262 !important;
