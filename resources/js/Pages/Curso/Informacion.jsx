@@ -83,8 +83,8 @@ const Informacion = ({curso}) => {
               <div className="col s12">
                 <div className="info-title">ETIQUETAS</div>
                 {/* Tags del curso */}
-                <div className="col s12 courseCard_tags" style={{ marginTop: "5px", marginBottom: "5px" }}>
-                  <div className="container-tags">
+                <div className="col s12 courseCard_tags" style={{ "marginTop": "5px", "marginBottom": "5px", "padding" : "0px" }}>
+                  <div className="container-tags" style={{"marginTop":"0px"}}>
                     {curso.tags && curso.tags.length>0 && curso.tags.map((tag, index) =>
                         <a className="div-tag" href="#!" key={index}>
                             {tag.nombre} <i className="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
