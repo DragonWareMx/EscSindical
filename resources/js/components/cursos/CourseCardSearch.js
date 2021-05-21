@@ -38,7 +38,17 @@ export default function CourseCardSearch({ curso }) {
                         </div>
                         {/* Nombre del ponente */}
                         <div className="col s12" style={{ "marginTop": "5px" }}>
-                            <span className="course-teacher truncate">{curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}</span>
+                            <span className="course-teacher truncate">
+                                {curso.teacher ? 
+                                <>
+                                    {curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}
+                                </>
+                                : 
+                                <>
+                                    Sin profesor asignado
+                                </>
+                                }
+                            </span>
                         </div>
                         {/* Tags del curso */}
                         <div className="col s12 courseCard_tags" style={{ marginTop: "5px", marginBottom: "5px" }}>
@@ -56,7 +66,11 @@ export default function CourseCardSearch({ curso }) {
                         </div>
                         <div className="fechas-card transicion">
                             <h3>Inscripciones</h3>
-                            <div>{transformaFecha(curso.inicio_inscripciones)}-{transformaFecha(curso.fecha_limite)} </div>
+                            {curso.inicio_inscripciones && curso.fecha_limite &&
+                                <div>
+                                    {transformaFecha(curso.inicio_inscripciones)}-{transformaFecha(curso.fecha_limite)}
+                                </div>
+                            }
                             <h3>Fechas del curso</h3>
                             <div>{transformaFecha(curso.fecha_inicio)}-{transformaFecha(curso.fecha_final)} </div>
                         </div>

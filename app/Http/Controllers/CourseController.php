@@ -318,7 +318,7 @@ class CourseController extends Controller
                         });
                 }
             })
-            // ->select('courses.nombre','courses.fecha_inicio','courses.fecha_final')
+            ->select('courses.nombre','courses.fecha_inicio','courses.fecha_final','courses.id','courses.teacher_id','courses.inicio_inscripciones','courses.fecha_limite')
             ->paginate(12);
 
         $cursosParaTi = Course::with(['teacher:nombre,apellido_p,apellido_m,foto,id', 'tags:nombre', 'images:imagen,course_id','training_types'])
@@ -327,6 +327,7 @@ class CourseController extends Controller
                     $query2->where('categories.id',Auth::User()->category->id);
                 });
             })
+            ->select('courses.nombre','courses.fecha_inicio','courses.fecha_final','courses.id','courses.teacher_id','courses.inicio_inscripciones','courses.fecha_limite')
             ->take(10)
             ->get();
 
