@@ -197,24 +197,74 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
                                         }
                                     </div>
 
-                                    <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN INSTITUCIONAL</p>
-                                    
-                                    <div className="area col s12" style={{marginBottom:"4%"}}>
-                                        <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo">help_outline</i></p>
-                                        <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px"}}>
-                                            <div className="col s12">
-                                            <span style={{fontSize:"12px", textAlign: "center", paddingTop:"10px"}} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
-                                            <input type="file" accept="image/png, image/jpeg, image/jpg, application/pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" required autoComplete="tarjeton" onChange={changeTarjeton} />
-                                            {
-                                                errors.tarjeton_de_pago && 
-                                                <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px", color: "#F44336"}}>{errors.tarjeton_de_pago}</span>
-                                            }
-                                            </div>
-                                            <div className="file-path-wrapper">
-                                                <input className="file-path validate" type="text" />
-                                            </div>
-                                        </div>
+                                    <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>DIRECCIÓN</p>
+
+                                    <div className="input-field col s12 ">
+                                        <input  maxLength="50" id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado" value={values.estado} required autoComplete="estado" onChange={handleChange} />
+                                        <label htmlFor="estado">Estado</label>
+                                        {
+                                            errors.estado &&
+                                            <span className="helper-text" data-error={errors.estado} style={{ "marginBottom": "10px" }}>{errors.estado}</span>
+                                        }
                                     </div>
+
+                                    <div className="input-field col s6 input-50-re">
+                                        <input  maxLength="60" id="ciudad" type="text" className={errors.ciudad ? "validate form-control invalid" : "validate"} name="ciudad" value={values.ciudad} required autoComplete="ciudad" onChange={handleChange} />
+                                        <label htmlFor="ciudad">Ciudad</label>
+                                        {
+                                            errors.ciudad &&
+                                            <span className="helper-text" data-error={errors.ciudad} style={{ "marginBottom": "10px" }}>{errors.ciudad}</span>
+                                        }
+                                    </div>
+
+                                    <div className="input-field col s6 input-50-re">
+                                        <input  maxLength="100" id="colonia" type="text" className={errors.colonia ? "validate form-control invalid" : "validate"} name="colonia" value={values.colonia} required autoComplete="colonia" onChange={handleChange} />
+                                        <label htmlFor="colonia">Colonia</label>
+                                        {
+                                            errors.colonia &&
+                                            <span className="helper-text" data-error={errors.colonia} style={{ "marginBottom": "10px" }}>{errors.colonia}</span>
+                                        }
+                                    </div>
+
+                                    <div className="input-field col s6 input-50-re">
+                                        <input  maxLength="100" id="calle" type="text" className={errors.calle ? "validate form-control invalid" : "validate"} name="calle" value={values.calle} required autoComplete="calle" onChange={handleChange} />
+                                        <label htmlFor="calle">Calle</label>
+                                        {
+                                            errors.calle &&
+                                            <span className="helper-text" data-error={errors.calle} style={{ "marginBottom": "10px" }}>{errors.calle}</span>
+                                        }
+                                    </div>
+
+                                    <div className="input-field col s6 input-50-re">
+                                        <input  maxLength="10" id="codigo_postal" type="text" className={errors.codigo_postal ? "validate form-control invalid" : "validate"} name="codigo_postal" value={values.codigo_postal} required autoComplete="codigo_postal" onChange={handleChange} />
+                                        <label htmlFor="codigo_postal">Código Postal</label>
+                                        {
+                                            errors.codigo_postal &&
+                                            <span className="helper-text" data-error={errors.codigo_postal} style={{ "marginBottom": "10px" }}>{errors.codigo_postal}</span>
+                                        }
+                                    </div>
+
+                                    <div className="input-field col s6 input-50-re">
+                                        <input  maxLength="10" id="numero_exterior" type="text" className={errors.numero_exterior ? "validate form-control invalid" : "validate"} name="numero_exterior" value={values.numero_exterior} required autoComplete="numero_exterior" onChange={handleChange} />
+                                        <label htmlFor="numero_exterior">No. Exterior</label>
+                                        {
+                                            errors.numero_exterior &&
+                                            <span className="helper-text" data-error={errors.numero_exterior} style={{ "marginBottom": "10px" }}>{errors.numero_exterior}</span>
+                                        }
+                                    </div>
+
+                                    <div className="input-field col s6 input-50-re">
+                                        <input  maxLength="10" id="numero_interior" type="text" className={errors.numero_interior ? "validate form-control invalid" : "validate"} name="numero_interior" value={values.numero_interior} autoComplete="numero_interior" onChange={handleChange} />
+                                        <label htmlFor="numero_interior">No. Interior (opcional)</label>
+                                        {
+                                            errors.numero_interior &&
+                                            <span className="helper-text" data-error={errors.numero_interior} style={{ "marginBottom": "10px" }}>{errors.numero_interior}</span>
+                                        }
+                                    </div>
+                                </div>
+                                
+                                <div className="col s12 m6 div-division">
+                                    <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN INSTITUCIONAL</p>
 
                                     <div className="input-field col s12">
                                         <input  id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="255" />
@@ -281,72 +331,21 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
                                         </datalist>
                                     </div>
 
-                                </div>
-                                
-                                <div className="col s12 m6 div-division">
-                                    <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>DIRECCIÓN</p>
-
-                                    <div className="input-field col s6 ">
-                                        <input  maxLength="50" id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado" value={values.estado} required autoComplete="estado" onChange={handleChange} />
-                                        <label htmlFor="estado">Estado</label>
-                                        {
-                                            errors.estado &&
-                                            <span className="helper-text" data-error={errors.estado} style={{ "marginBottom": "10px" }}>{errors.estado}</span>
-                                        }
-                                    </div>
-
-                                    <div className="input-field col s6 input-50-re">
-                                        <input  maxLength="60" id="ciudad" type="text" className={errors.ciudad ? "validate form-control invalid" : "validate"} name="ciudad" value={values.ciudad} required autoComplete="ciudad" onChange={handleChange} />
-                                        <label htmlFor="ciudad">Ciudad</label>
-                                        {
-                                            errors.ciudad &&
-                                            <span className="helper-text" data-error={errors.ciudad} style={{ "marginBottom": "10px" }}>{errors.ciudad}</span>
-                                        }
-                                    </div>
-
-                                    <div className="input-field col s12 input-50-re">
-                                        <input  maxLength="100" id="colonia" type="text" className={errors.colonia ? "validate form-control invalid" : "validate"} name="colonia" value={values.colonia} required autoComplete="colonia" onChange={handleChange} />
-                                        <label htmlFor="colonia">Colonia</label>
-                                        {
-                                            errors.colonia &&
-                                            <span className="helper-text" data-error={errors.colonia} style={{ "marginBottom": "10px" }}>{errors.colonia}</span>
-                                        }
-                                    </div>
-
-                                    <div className="input-field col s12 input-50-re">
-                                        <input  maxLength="100" id="calle" type="text" className={errors.calle ? "validate form-control invalid" : "validate"} name="calle" value={values.calle} required autoComplete="calle" onChange={handleChange} />
-                                        <label htmlFor="calle">Calle</label>
-                                        {
-                                            errors.calle &&
-                                            <span className="helper-text" data-error={errors.calle} style={{ "marginBottom": "10px" }}>{errors.calle}</span>
-                                        }
-                                    </div>
-
-                                    <div className="input-field col s6 input-50-re">
-                                        <input  maxLength="10" id="codigo_postal" type="text" className={errors.codigo_postal ? "validate form-control invalid" : "validate"} name="codigo_postal" value={values.codigo_postal} required autoComplete="codigo_postal" onChange={handleChange} />
-                                        <label htmlFor="codigo_postal">Código Postal</label>
-                                        {
-                                            errors.codigo_postal &&
-                                            <span className="helper-text" data-error={errors.codigo_postal} style={{ "marginBottom": "10px" }}>{errors.codigo_postal}</span>
-                                        }
-                                    </div>
-
-                                    <div className="input-field col s6 input-50-re">
-                                        <input  maxLength="10" id="numero_exterior" type="text" className={errors.numero_exterior ? "validate form-control invalid" : "validate"} name="numero_exterior" value={values.numero_exterior} required autoComplete="numero_exterior" onChange={handleChange} />
-                                        <label htmlFor="numero_exterior">No. Exterior</label>
-                                        {
-                                            errors.numero_exterior &&
-                                            <span className="helper-text" data-error={errors.numero_exterior} style={{ "marginBottom": "10px" }}>{errors.numero_exterior}</span>
-                                        }
-                                    </div>
-
-                                    <div className="input-field col s6 input-50-re">
-                                        <input  maxLength="10" id="numero_interior" type="text" className={errors.numero_interior ? "validate form-control invalid" : "validate"} name="numero_interior" value={values.numero_interior} autoComplete="numero_interior" onChange={handleChange} />
-                                        <label htmlFor="numero_interior">No. Interior (opcional)</label>
-                                        {
-                                            errors.numero_interior &&
-                                            <span className="helper-text" data-error={errors.numero_interior} style={{ "marginBottom": "10px" }}>{errors.numero_interior}</span>
-                                        }
+                                    <div className="area col s12" style={{marginBottom:"4%"}}>
+                                        <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo">help_outline</i></p>
+                                        <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px"}}>
+                                            <div className="col s12">
+                                            <span style={{fontSize:"12px", textAlign: "center", paddingTop:"10px"}} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
+                                            <input type="file" accept="image/png, image/jpeg, image/jpg, application/pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" required autoComplete="tarjeton" onChange={changeTarjeton} />
+                                            {
+                                                errors.tarjeton_de_pago && 
+                                                <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px", color: "#F44336"}}>{errors.tarjeton_de_pago}</span>
+                                            }
+                                            </div>
+                                            <div className="file-path-wrapper">
+                                                <input className="file-path validate" type="text" />
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>CUENTA</p>
