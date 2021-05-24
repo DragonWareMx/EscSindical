@@ -175,7 +175,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
                                     </div>
 
                                     <div className="input-field col s6 input-50-re">
-                                        <input id="fecha_de_nacimiento" className={errors.fecha_de_nacimiento ? "validate form-control invalid" : "validate form-control"} type="date" name="fecha_de_nacimiento" required autoComplete="fecha_de_nacimiento" value={values.fecha_de_nacimiento} onChange={handleChange} />
+                                        <input id="fecha_de_nacimiento" min="1930-01-01" className={errors.fecha_de_nacimiento ? "validate form-control invalid" : "validate form-control"} type="date" name="fecha_de_nacimiento" required autoComplete="fecha_de_nacimiento" value={values.fecha_de_nacimiento} onChange={handleChange} />
                                         <label htmlFor="fecha_de_nacimiento">Fecha de Nacimiento</label>
                                         {
                                             errors.fecha_de_nacimiento &&

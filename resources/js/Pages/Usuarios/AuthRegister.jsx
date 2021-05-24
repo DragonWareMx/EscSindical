@@ -171,7 +171,7 @@ const Usuarios = ({ categories, regimes, units }) => {
                         <div className="col s12 m12 l12" style={{display: 'block'}}>
                             <ul className="tabs">
                                 <li className="tab col xl6 l6 m6"><a href="{{ route('login') }}">Ingresar</a></li>
-                                <li className="tab col xl6 l6 m6"><a className href="{{ route('register') }}">Registrarse</a></li>
+                                <li className="tab col xl6 l6 m6"><a href="{{ route('register') }}">Registrarse</a></li>
                             </ul>
                         </div>
                     </div>
@@ -195,7 +195,7 @@ const Usuarios = ({ categories, regimes, units }) => {
                                     name="foto" placeholder="Photo" accept="image/png, image/jpeg, image/jpg, image/gif" onChange={changeFoto}></input>
                                 {
                                     errors.foto &&
-                                    <span className="helper-text" data-error={errors.foto} style={{ "marginBottom": "125px", color: "#F44336", maxHeight: "18px" }}>{errors.foto}</span>
+                                    <span className="helper-text" data-error={errors.foto} style={{ "marginBottom": "125px", color: "#F44336", maxHeight: "18px", marginLeft: "3%"}}>{errors.foto}</span>
                                 }
                             </div>
 
@@ -242,13 +242,17 @@ const Usuarios = ({ categories, regimes, units }) => {
                             </div>
 
                             <div className="input-field col s6 input-50-re">
-                                <input id="fecha_nacimiento" max="2004-01-01" type="text" className="datepicker" name="fecha_nacimiento" required autoComplete="fecha_nacimiento" />
+                                <input id="fecha_nacimiento" min="1930-01-01" type="text" className="datepicker" name="fecha_nacimiento" required autoComplete="fecha_nacimiento" />
                                 <label htmlFor="fecha_nacimiento">Fec. Nacimiento</label>
+                                {
+                                    errors.fecha_de_nacimiento &&
+                                    <span className="helper-text" data-error={errors.fecha_de_nacimiento} style={{ "marginBottom": "10px" }}>{errors.fecha_de_nacimiento}</span>
+                                }
                             </div>
 
                             <div className="input-field col s6 input-50-re">
                                 <select id="sexo" name="sexo" required autoComplete="sexo" value={values.sexo} onChange={handleChange} className={errors.sexo ? "input-field invalid" : "input-field"}>
-                                    <option value="" disabled selected>Selecciona una opción</option>
+                                    <option value="" disabled>Selecciona una opción</option>
                                     <option value="m">Femenino</option>
                                     <option value="h">Masculino</option>
                                     <option value="o">Otro</option>
@@ -263,38 +267,67 @@ const Usuarios = ({ categories, regimes, units }) => {
                             <p className="titles-sub" style={{marginLeft: '3%'}}>DIRECCIÓN</p>
 
                             <div className="input-field col s12 ">
-                                <input id="estado" type="text" className="validate" name="estado" required autoComplete="estado" />
+                                <input maxLength="50" id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado" value={values.estado} required autoComplete="estado" onChange={handleChange} />
                                 <label htmlFor="estado">Estado</label>
+
+                                {
+                                    errors.estado &&
+                                    <span className="helper-text" data-error={errors.estado} style={{ "marginBottom": "10px" }}>{errors.estado}</span>
+                                }
                             </div>
 
                             <div className="input-field col s6 input-50-re">
-                                <input id="ciudad" type="text" className="validate" name="ciudad" required autoComplete="ciudad" />
+                                <input maxLength="60" id="ciudad" type="text" className={errors.ciudad ? "validate form-control invalid" : "validate"} name="ciudad" value={values.ciudad} required autoComplete="ciudad" onChange={handleChange} />
                                 <label htmlFor="ciudad">Ciudad</label>
+                                {
+                                    errors.ciudad &&
+                                    <span className="helper-text" data-error={errors.ciudad} style={{ "marginBottom": "10px" }}>{errors.ciudad}</span>
+                                }
                             </div>
 
                             <div className="input-field col s6 input-50-re">
-                                <input id="colonia" type="text" className="validate" name="colonia" required autoComplete="colonia" />
+                                <input maxLength="100" id="colonia" type="text" className={errors.colonia ? "validate form-control invalid" : "validate"} name="colonia" value={values.colonia} required autoComplete="colonia" onChange={handleChange} />
                                 <label htmlFor="colonia">Colonia</label>
+                                {
+                                    errors.colonia &&
+                                    <span className="helper-text" data-error={errors.colonia} style={{ "marginBottom": "10px" }}>{errors.colonia}</span>
+                                }
                             </div>
 
                             <div className="input-field col s6 input-50-re">
-                                <input id="calle" type="text" className="validate" name="calle" required autoComplete="calle" />
+                                <input maxLength="100" id="calle" type="text" className={errors.calle ? "validate form-control invalid" : "validate"} name="calle" value={values.calle} required autoComplete="calle" onChange={handleChange} />
                                 <label htmlFor="calle">Calle</label>
+                                {
+                                    errors.calle &&
+                                    <span className="helper-text" data-error={errors.calle} style={{ "marginBottom": "10px" }}>{errors.calle}</span>
+                                }
                             </div>
 
                             <div className="input-field col s6 input-50-re">
-                                <input id="codigo_postal" min={0} step={1} type="number" className="validate" name="codigo_postal" required autoComplete="codigo_postal" />
+                                <input maxLength="10" id="codigo_postal" type="text" className={errors.codigo_postal ? "validate form-control invalid" : "validate"} name="codigo_postal" value={values.codigo_postal} required autoComplete="codigo_postal" onChange={handleChange} />
                                 <label htmlFor="codigo_postal">Código Postal</label>
+                                {
+                                    errors.codigo_postal &&
+                                    <span className="helper-text" data-error={errors.codigo_postal} style={{ "marginBottom": "10px" }}>{errors.codigo_postal}</span>
+                                }
                             </div>
 
                             <div className="input-field col s6 input-50-re">
-                                <input id="numero" min={0} step={1} type="number" className="validate" name="numero" required autoComplete="numero" />
-                                <label htmlFor="numero">No. Exterior</label>
+                                <input maxLength="10" id="numero_exterior" type="text" className={errors.numero_exterior ? "validate form-control invalid" : "validate"} name="numero_exterior" value={values.numero_exterior} required autoComplete="numero_exterior" onChange={handleChange} />
+                                <label htmlFor="numero_exterior">No. Exterior</label>
+                                {
+                                    errors.numero_exterior &&
+                                    <span className="helper-text" data-error={errors.numero_exterior} style={{ "marginBottom": "10px" }}>{errors.numero_exterior}</span>
+                                }
                             </div>
 
                             <div className="input-field col s6 input-50-re">
-                                <input id="numero_interior" min={0} step={1} type="number" className="validate" name="numero_interior" autoComplete="numero_interior" />
+                                <input maxLength="10" id="numero_interior" type="text" className={errors.numero_interior ? "validate form-control invalid" : "validate"} name="numero_interior" value={values.numero_interior} autoComplete="numero_interior" onChange={handleChange} />
                                 <label htmlFor="numero_interior">No. Interior</label>
+                                {
+                                    errors.numero_interior &&
+                                    <span className="helper-text" data-error={errors.numero_interior} style={{ "marginBottom": "10px" }}>{errors.numero_interior}</span>
+                                }
                             </div>
                         </div>
 
@@ -302,43 +335,93 @@ const Usuarios = ({ categories, regimes, units }) => {
                             <p className="titles-sub" style={{marginLeft: '3%'}}>INFORMACIÓN INSTITUCIONAL</p>
 
                             <div className="input-field col s12">
-                                <input id="matricula" type="text" className="validate" name="matricula" required autoComplete="matricula" />
+                                <input id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="255" />
                                 <label htmlFor="matricula">Matrícula</label>
+                                {
+                                    errors.matricula &&
+                                    <span className="helper-text" data-error={errors.matricula} style={{ "marginBottom": "10px" }}>{errors.matricula}</span>
+                                }
                             </div>
 
                             <div className="input-field col s12">
-                                <select id="regimen" name="regimen" required autoComplete="regimen" onchange="regimenChange()">
-                                    <option value={0} disabled selected>Selecciona una opción</option>
-                                    {/* @foreach($regimen as $reg)
-                                    <option value="{{$reg -> id}}" {{ old('regimen')="=" $reg -> id ? 'selected' : '' {'}'}{'}'}&gt;{'{'}{'{'}$reg -&gt; nombre{'}'}{'}'}</option>
-                                    @endforeach */}
+                                <select id="regimen" name="regimen" value={values.regimen} onChange={handleChange} required>
+                                    <option value="" disabled>Selecciona una opción</option>
+                                    {regimes && regimes.length > 0 &&
+                                        regimes.map(regime => (
+                                            <option key={regime.nombre} value={regime.nombre}>{regime.nombre}</option>
+                                        ))
+                                    }
                                 </select>
                                 <label>Regimen</label>
+                                {
+                                    errors.regimen &&
+                                    <span className="helper-text" data-error={errors.regimen} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.regimen}</span>
+                                }
                             </div>
 
-                            <div className="input-field col s12">
+                            {/* <div className="input-field col s12">
                                 <select id="unidad" name="unidad" required autoComplete="unidad" className>
                                     <option value disabled selected>Selecciona una opción</option>
                                     {/* @foreach ($unidades as $uni)
                                     <option value="{{$uni -> id}}" {{ old('unidad')="=" $uni -> id ? 'selected' : '' {'}'}{'}'}&gt;{'{'}{'{'}$uni -&gt; nombre{'}'}{'}'}</option>
-                                    @endforeach */}
+                                    @endforeach 
                                 </select>
                                 <label>Unidad</label>
+                            </div> */}
+
+                            <div className="col s12" style={{ "marginTop": "5px" }}>
+                                <div className="input-field select-wrapper">
+                                    <input placeholder={values.regimen ? "Selecciona una unidad" : "Selecciona primerio un régimen"}  id="unidad" list="unidades" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.unidad} onChange={handleChange} required autoComplete="off" />
+                                    <label htmlFor="unidad">Unidad</label>
+                                    <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                                    {
+                                        errors.unidad &&
+                                        <span className="helper-text" data-error={errors.unidad} style={{ "marginBottom": "10px" }}>{errors.unidad}</span>
+                                    }
+                                </div>
+                                <datalist id="unidades">
+                                    {
+                                        units && units.length > 0 &&
+                                        units.map(units => (
+                                            <option key={units.nombre} value={units.nombre} />
+                                        ))
+                                    }
+                                </datalist>
                             </div>
 
-                            <div className="input-field col s12">
+                            {/* <div className="input-field col s12">
                                 <label htmlFor="autocomplete-input">Categoría</label>
                                 <select id="categoria" name="categoria" required autoComplete="categoria" className>
                                     <option value disabled selected>Selecciona una opción</option>
                                     {/* @foreach ($categorias as $ct)
                                     <option value="{{$ct -> id}}" {{ old('categoria')="=" $ct -> id ? 'selected' : '' {'}'}{'}'}&gt;{'{'}{'{'}$ct -&gt; nombre{'}'}{'}'}</option>
-                                    @endforeach */}
+                                    @endforeach 
                                 </select>
                                 <label>Categoría</label>
+                            </div> */}
+
+                            <div className="col s12">
+                                <div className="input-field select-wrapper">
+                                    <input placeholder="Selecciona una categoría"  id="categoria" list="categorias" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.categoria} onChange={handleChange} required autoComplete="off" />
+                                    <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+                                    <label htmlFor="categoria">Categoría</label>
+                                    {
+                                        errors.categoria &&
+                                        <span className="helper-text" data-error={errors.categoria} style={{ "marginBottom": "10px" }}>{errors.categoria}</span>
+                                    }
+                                </div>
+                                <datalist id="categorias">
+                                    {
+                                        categories && categories.length > 0 &&
+                                        categories.map(category => (
+                                            <option key={category.nombre} value={category.nombre} />
+                                        ))
+                                    }
+                                </datalist>
                             </div>
 
                             {/* -- INPUT FILE -- */}
-                            <div className="area col s12" style={{marginBottom: '4%'}}>
+                            {/* <div className="area col s12" style={{marginBottom: '4%'}}>
                                 <p style={{marginTop: '0px', fontFamily: 'Montserrat', fontSize: '13px'}}>
                                     Tarjetón de pago
                                     <i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo" style={{color: 'rgb(159, 157, 157)', cursor: 'pointer'}}>help_outline</i>
@@ -352,7 +435,24 @@ const Usuarios = ({ categories, regimes, units }) => {
                                         <span className="invalid-feedback col s12" role="alert" style={{marginBottom: '12px', textAlign: 'center'}}>
                                             <strong>{'{'}{'{'} $message {'}'}{'}'}</strong>
                                         </span>
-                                        @enderror */}
+                                        @enderror 
+                                    </div>
+                                    <div className="file-path-wrapper">
+                                        <input className="file-path validate" type="text" />
+                                    </div>
+                                </div>
+                            </div> */}
+
+                            <div className="area col s12" style={{marginBottom:"4%"}}>
+                                <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo">help_outline</i></p>
+                                <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px"}}>
+                                    <div className="col s12">
+                                    <span style={{fontSize:"12px", textAlign: "center", paddingTop:"10px"}} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
+                                    <input type="file" accept="image/png, image/jpeg, image/jpg, application/pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" required autoComplete="tarjeton" onChange={changeTarjeton} />
+                                    {
+                                        errors.tarjeton_de_pago && 
+                                        <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px", color: "#F44336"}}>{errors.tarjeton_de_pago}</span>
+                                    }
                                     </div>
                                     <div className="file-path-wrapper">
                                         <input className="file-path validate" type="text" />
@@ -364,30 +464,42 @@ const Usuarios = ({ categories, regimes, units }) => {
 
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">account_circle</i>
-                                <input id="email" type="email" className="validate form-control @error('email') is-invalid @enderror" name="email" required autoComplete="email" />
+                                <input id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required onChange={handleChange} readOnly onFocus={(e) => {e.target.removeAttribute("readonly")}} />
                                 <label htmlFor="email">Correo electrónico</label>
                                 {/* @error('email')
                                 <span className="invalid-feedback" role="alert">
                                     <strong>{'{'}{'{'} $message {'}'}{'}'}</strong>
                                 </span>
                                 @enderror */}
+                                {
+                                    errors.email &&
+                                    <span className="helper-text" data-error={errors.email} style={{ "marginBottom": "10px" }}>{errors.email}</span>
+                                }
                             </div>
 
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">lock</i>
-                                <input id="password" type="password" className="validate form-control @error('password') is-invalid @enderror" name="password" required />
-                                <label htmlFor="password">Contraseña</label>
+                                <input id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"} name="contrasena" value={values.contrasena} required onChange={handleChange} />
+                                <label htmlFor="contrasena">Contraseña</label>
                                 {/* @error('password')
                                 <span className="invalid-feedback" role="alert">
                                     <strong>{'{'}{'{'} $message {'}'}{'}'}</strong>
                                 </span>
                                 @enderror */}
+                                {
+                                    errors.contrasena &&
+                                    <span className="helper-text" data-error={errors.contrasena} style={{ "marginBottom": "10px" }}>{errors.contrasena}</span>
+                                }
                             </div>
 
                             <div className="input-field col s12">
                                 <i className="material-icons prefix">lock</i>
-                                <input id="password-confirm" type="password" className="validate form-control" name="password_confirmation" required />
-                                <label htmlFor="password-confirm">Confirmar contraseña</label> 
+                                <input id="confirmar_contrasena" type="password" className={errors.confirmar_contrasena ? "validate form-control invalid" : "validate form-control"} name="confirmar_contrasena" value={values.confirmar_contrasena} required onChange={handleChange} />
+                                <label htmlFor="confirmar_contrasena">Confirmar contraseña</label>
+                                {
+                                    errors.confirmar_contrasena &&
+                                    <span className="helper-text" data-error={errors.confirmar_contrasena} style={{ "marginBottom": "10px" }}>{errors.confirmar_contrasena}</span>
+                                } 
                             </div>
 
                             <div className="col s12 right-align">
