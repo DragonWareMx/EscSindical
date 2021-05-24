@@ -110,6 +110,32 @@ const Usuarios = ({ categories, regimes, units }) => {
         var instances = M.Autocomplete.init(elems);
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems);
+        
+        var elems = document.querySelectorAll('.datepicker');
+        var options = {
+            format: 'yyyy-mm-dd',
+            setDefaultDate: false,
+            defaultDate: new Date(2021,0,1),
+            i18n: {
+                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+                weekdaysAbbrev: ['D', 'L', 'M', 'Mi', 'J', 'V', 'S'],
+                selectMonths: true,
+                selectYears: 100, // Puedes cambiarlo para mostrar más o menos años
+                today: 'Hoy',
+                clear: 'Limpiar',
+                close: 'Ok',
+                cancel: 'Cancelar',
+                labelMonthNext: 'Siguiente mes',
+                labelMonthPrev: 'Mes anterior',
+                labelMonthSelect: 'Selecciona un mes',
+                labelYearSelect: 'Selecciona un año',
+            }
+        };
+        var instances = M.Datepicker.init(elems, options);
 
         M.updateTextFields();
     }
