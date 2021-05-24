@@ -131,7 +131,43 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
         var elems = document.querySelectorAll('.collapsible')
         var instances = M.Collapsible.init(elems)
 
+        initializeDatePicker();
+
         M.updateTextFields();
+    }
+
+    function initializeDatePicker() {
+        var elems = document.querySelectorAll('.datepicker');
+        var options = {
+            format: 'yyyy-mm-dd',
+            setDefaultDate: true,
+            defaultDate: new Date(values.fecha_de_nacimiento),
+            i18n: {
+                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+                weekdaysAbbrev: ['D', 'L', 'M', 'Mi', 'J', 'V', 'S'],
+                selectMonths: true,
+                selectYears: 100, // Puedes cambiarlo para mostrar más o menos años
+                today: 'Hoy',
+                clear: 'Limpiar',
+                close: 'Ok',
+                cancel: 'Cancelar',
+                labelMonthNext: 'Siguiente mes',
+                labelMonthPrev: 'Mes anterior',
+                labelMonthSelect: 'Selecciona un mes',
+                labelYearSelect: 'Selecciona un año',
+            },
+            onClose: ()=>{
+                setValues(values => ({
+                    ...values,
+                    fecha_de_nacimiento: document.getElementById("fecha_de_nacimiento").value,
+                }))
+            },
+          };
+        const instancesDate = M.Datepicker.init(elems, options);
     }
 
     function cambiarContrasena(){
@@ -257,7 +293,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s6 input-50-re">
-                                            <input  id="fecha_de_nacimiento"  min="1930-01-01" className={errors.fecha_de_nacimiento ? "validate form-control invalid" : "validate form-control"} type="date" name="fecha_de_nacimiento" required autoComplete="fecha_de_nacimiento" value={values.fecha_de_nacimiento} onChange={handleChange} />
+                                            <input  id="fecha_de_nacimiento" type="text" className={errors.fecha_de_nacimiento ? "validate datepicker invalid" : "validate datepicker"} name="fecha_de_nacimiento" required autoComplete="fecha_de_nacimiento" value={values.fecha_de_nacimiento} readOnly />
                                             <label htmlFor="fecha_de_nacimiento">Fecha de Nacimiento</label>
                                             {
                                                 errors.fecha_de_nacimiento &&
@@ -318,7 +354,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s6 input-50-re">
-                                            <input  maxLength="10" id="codigo_postal" type="text" className={errors.codigo_postal ? "validate form-control invalid" : "validate"} name="codigo_postal" value={values.codigo_postal} required autoComplete="codigo_postal" onChange={handleChange} />
+                                            <input  maxLength="9" id="codigo_postal" type="text" className={errors.codigo_postal ? "validate form-control invalid" : "validate"} name="codigo_postal" value={values.codigo_postal} required autoComplete="codigo_postal" onChange={handleChange} />
                                             <label htmlFor="codigo_postal">Código Postal</label>
                                             {
                                                 errors.codigo_postal &&
@@ -350,7 +386,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>INFORMACIÓN INSTITUCIONAL</p>
 
                                         <div className="input-field col s12">
-                                            <input  id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="255" />
+                                            <input  id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="10" />
                                             <label htmlFor="matricula">Matrícula</label>
                                             {
                                                 errors.matricula &&

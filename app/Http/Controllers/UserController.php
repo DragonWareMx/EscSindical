@@ -139,12 +139,6 @@ class UserController extends Controller
         ]);
     }
 
-    public function ejemplo()
-    {
-        //$users = User::factory()->count(80)->create();
-        return Inertia::render('Ejemplo');
-    }
-
     /**
      * Show the form for creating a new resource.
      *

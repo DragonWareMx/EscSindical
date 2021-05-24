@@ -50,11 +50,6 @@ class RegisterController extends Controller
     // Llamado de la vista
     public function showRegistrationForm(Request $request)
     {
-        // $categorias = Category::distinct()->get();
-        // $regimen = Regime::distinct()->get();
-        // $unidades = Unit::distinct()->get();
-        // return view('auth.register',['categorias' => $categorias, 'regimen' => $regimen, 'unidades' => $unidades ]);
-
         return Inertia::render('Usuarios/AuthRegister', [
             'categories'=> fn () => Category::select('nombre')->get(),
             'regimes'=> fn () => Regime::select('nombre')->get(),
@@ -127,45 +122,6 @@ class RegisterController extends Controller
      */
     protected function create(Request $request)
     { 
-        // Guardar imagen de perfil
-        // $fileNameWithTheExtension = request('foto_perfil')->getClientOriginalName();
-        // $fileName = pathinfo($fileNameWithTheExtension, PATHINFO_FILENAME);
-        // $extension = request('foto_perfil')->getClientOriginalExtension();
-        // $newFileName = $fileName . '_' . time() . '.' . $extension;
-        // $path = request('foto_perfil')->storeAs('/public/fotos_perfil/', $newFileName);
-
-        // // Guardar tarjeton de pago
-        // $fileNameWithTheExtension2 = request('tarjeton')->getClientOriginalName();
-        // $fileName2 = pathinfo( $fileNameWithTheExtension2,PATHINFO_FILENAME);
-        // $extension2 = request('tarjeton')->getClientOriginalExtension();
-        // $newFileName2=$fileName2.'_'.time().'.'.$extension2;
-        // $path2 = request('tarjeton')->storeAs('/public/tarjetones_pago/',$newFileName2);
-        
-        // $newUser = User::create([
-        //     'nombre' => $data['nombre'],
-        //     'foto' => $newFileName,
-        //     'apellido_p' => $data['apellido_paterno'],
-        //     'apellido_m' => $data['apellido_materno'],
-        //     'sexo' => $data['sexo'],
-        //     'fecha_nac' => $data['fecha_nacimiento'],
-        //     'estado' => $data['estado'],
-        //     'ciudad' => $data['ciudad'],
-        //     'colonia' => $data['colonia'],
-        //     'calle' => $data['calle'],
-        //     'num_ext' => $data['numero'],
-        //     'num_int' => $data['numero_interior'],
-        //     'cp' => $data['codigo_postal'],
-        //     'matricula' => $data['matricula'],
-        //     'tarjeton_pago' => $newFileName2,
-        //     'category_id' => $data['categoria'],
-        //     'unit_id' => $data['unidad'],
-        //     'email' => $data['email'],
-        //     'password' => Hash::make($data['password']),
-
-        // ]);
-        // $newUser->roles()->sync(3);
-        // return $newUser;
-
         //variables para comprobar la subida de archivos
         $foto = null;
         $tarjeton_pago = null;

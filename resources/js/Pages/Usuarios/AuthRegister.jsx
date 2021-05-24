@@ -71,11 +71,6 @@ const Usuarios = ({ categories, regimes, units }) => {
         )
     }
 
-    //boton de cancelar
-    function cancelEditUser() {
-        Inertia.get(route('usuarios'))
-    }
-
     function clickFoto() {
         document.getElementById("foto").click();
     }
@@ -91,8 +86,7 @@ const Usuarios = ({ categories, regimes, units }) => {
         }
     }
 
-    function changeTarjeton(e){
-        
+    function changeTarjeton(e){       
         var inputFotos = document.getElementById('tarjeton_de_pago');
         if (inputFotos.files && inputFotos.files[0]) {
             setValues(values => ({
@@ -215,7 +209,9 @@ const Usuarios = ({ categories, regimes, units }) => {
                     <div className="titulo2 col s12">REGISTRARSE</div>
                 </div>
 
-                <Alertas />
+                <div className={"col s12"}>
+                    <Alertas />
+                </div>
 
                 {/* -- DIV PADRE DE DIVISIONES -- */}
                 <form onSubmit={handleSubmit}>
@@ -240,11 +236,6 @@ const Usuarios = ({ categories, regimes, units }) => {
                             <div className="input-field col s12">
                                 <input id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={values.nombre} onChange={handleChange} autoFocus maxLength="255" />
                                 <label htmlFor="nombre">Nombre</label>
-                                {/* @error('nombre')
-                                <span className="invalid-feedback" role="alert" style={{marginBottom: '12px'}}>
-                                    <strong>{'{'}{'{'} $message {'}'}{'}'}</strong>
-                                </span>
-                                @enderror */}
                                 {
                                     errors.nombre &&
                                     <span className="helper-text" data-error={errors.nombre} style={{ "marginBottom": "10px" }}>{errors.nombre}</span>
@@ -254,11 +245,6 @@ const Usuarios = ({ categories, regimes, units }) => {
                             <div className="input-field col s6 input-50-re">
                                 <input id="apellido_paterno" type="text" className={errors.apellido_paterno ? "validate form-control invalid" : "validate form-control"} name="apellido_paterno" value={values.apellido_paterno} onChange={handleChange} required autoComplete="apellido_paterno" maxLength="255" />
                                 <label htmlFor="apellido_paterno">Apellido Paterno</label>
-                                {/* @error('apellido_paterno')
-                                <span className="invalid-feedback" role="alert" style={{marginBottom: '12px'}}>
-                                    <strong>{'{'}{'{'} $message {'}'}{'}'}</strong>
-                                </span>
-                                @enderror */}
                                 {
                                     errors.apellido_paterno &&
                                     <span className="helper-text" data-error={errors.apellido_paterno} style={{ "marginBottom": "10px" }}>{errors.apellido_paterno}</span>
@@ -268,11 +254,6 @@ const Usuarios = ({ categories, regimes, units }) => {
                             <div className="input-field col s6 input-50-re">
                                 <input id="apellido_materno" type="text" className={errors.apellido_materno ? "validate form-control invalid" : "validate form-control"} name="apellido_materno" value={values.apellido_materno} onChange={handleChange} autoComplete="apellido_materno" maxLength="255" />
                                 <label htmlFor="apellido_materno">Apellido Materno (opcional)</label>
-                                {/* @error('apellido_materno')
-                                <span className="invalid-feedback" role="alert" style={{marginBottom: '12px'}}>
-                                    <strong>{'{'}{'{'} $message {'}'}{'}'}</strong>
-                                </span>
-                                @enderror */}
                                 {
                                     errors.apellido_materno &&
                                     <span className="helper-text" data-error={errors.apellido_materno} style={{ "marginBottom": "10px" }}>{errors.apellido_materno}</span>
@@ -342,7 +323,7 @@ const Usuarios = ({ categories, regimes, units }) => {
                             </div>
 
                             <div className="input-field col s6 input-50-re">
-                                <input maxLength="10" id="codigo_postal" type="text" className={errors.codigo_postal ? "validate form-control invalid" : "validate"} name="codigo_postal" value={values.codigo_postal} required autoComplete="codigo_postal" onChange={handleChange} />
+                                <input maxLength="9" id="codigo_postal" type="text" className={errors.codigo_postal ? "validate form-control invalid" : "validate"} name="codigo_postal" value={values.codigo_postal} required autoComplete="codigo_postal" onChange={handleChange} />
                                 <label htmlFor="codigo_postal">Código Postal</label>
                                 {
                                     errors.codigo_postal &&
@@ -373,7 +354,7 @@ const Usuarios = ({ categories, regimes, units }) => {
                             <p className="titles-sub" style={{marginLeft: '3%'}}>INFORMACIÓN INSTITUCIONAL</p>
 
                             <div className="input-field col s12">
-                                <input id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="255" />
+                                <input id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="10" />
                                 <label htmlFor="matricula">Matrícula</label>
                                 {
                                     errors.matricula &&
@@ -397,16 +378,6 @@ const Usuarios = ({ categories, regimes, units }) => {
                                 }
                             </div>
 
-                            {/* <div className="input-field col s12">
-                                <select id="unidad" name="unidad" required autoComplete="unidad" className>
-                                    <option value disabled selected>Selecciona una opción</option>
-                                    {/* @foreach ($unidades as $uni)
-                                    <option value="{{$uni -> id}}" {{ old('unidad')="=" $uni -> id ? 'selected' : '' {'}'}{'}'}&gt;{'{'}{'{'}$uni -&gt; nombre{'}'}{'}'}</option>
-                                    @endforeach 
-                                </select>
-                                <label>Unidad</label>
-                            </div> */}
-
                             <div className="col s12" style={{ "marginTop": "5px" }}>
                                 <div className="input-field select-wrapper">
                                     <input placeholder={values.regimen ? "Selecciona una unidad" : "Selecciona primerio un régimen"}  id="unidad" list="unidades" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.unidad} onChange={handleChange} required autoComplete="off" />
@@ -426,17 +397,6 @@ const Usuarios = ({ categories, regimes, units }) => {
                                     }
                                 </datalist>
                             </div>
-
-                            {/* <div className="input-field col s12">
-                                <label htmlFor="autocomplete-input">Categoría</label>
-                                <select id="categoria" name="categoria" required autoComplete="categoria" className>
-                                    <option value disabled selected>Selecciona una opción</option>
-                                    {/* @foreach ($categorias as $ct)
-                                    <option value="{{$ct -> id}}" {{ old('categoria')="=" $ct -> id ? 'selected' : '' {'}'}{'}'}&gt;{'{'}{'{'}$ct -&gt; nombre{'}'}{'}'}</option>
-                                    @endforeach 
-                                </select>
-                                <label>Categoría</label>
-                            </div> */}
 
                             <div className="col s12">
                                 <div className="input-field select-wrapper">
@@ -459,28 +419,6 @@ const Usuarios = ({ categories, regimes, units }) => {
                             </div>
 
                             {/* -- INPUT FILE -- */}
-                            {/* <div className="area col s12" style={{marginBottom: '4%'}}>
-                                <p style={{marginTop: '0px', fontFamily: 'Montserrat', fontSize: '13px'}}>
-                                    Tarjetón de pago
-                                    <i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo" style={{color: 'rgb(159, 157, 157)', cursor: 'pointer'}}>help_outline</i>
-                                </p>
-
-                                <div className="file-field input-field" style={{border: '1px dashed rgba(159, 157, 157, 0.6)', boxSizing: 'border-box', borderRadius: '4px'}}>
-                                    <div className="col s12">
-                                        <span style={{fontSize: '12px', textAlign: 'center', paddingTop: '10px'}} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
-                                        <input type="file" accept=".pdf" className="form-control @error('tarjeton') is-invalid @enderror" id="tarjeton" name="tarjeton" required autoComplete="tarjeton" />
-                                        {/* @error('tarjeton')
-                                        <span className="invalid-feedback col s12" role="alert" style={{marginBottom: '12px', textAlign: 'center'}}>
-                                            <strong>{'{'}{'{'} $message {'}'}{'}'}</strong>
-                                        </span>
-                                        @enderror 
-                                    </div>
-                                    <div className="file-path-wrapper">
-                                        <input className="file-path validate" type="text" />
-                                    </div>
-                                </div>
-                            </div> */}
-
                             <div className="area col s12" style={{marginBottom:"4%"}}>
                                 <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF) para validar que seas un usuario activo">help_outline</i></p>
                                 <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px"}}>
@@ -504,11 +442,6 @@ const Usuarios = ({ categories, regimes, units }) => {
                                 <i className="material-icons prefix">account_circle</i>
                                 <input id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required onChange={handleChange} readOnly onFocus={(e) => {e.target.removeAttribute("readonly")}} />
                                 <label htmlFor="email">Correo electrónico</label>
-                                {/* @error('email')
-                                <span className="invalid-feedback" role="alert">
-                                    <strong>{'{'}{'{'} $message {'}'}{'}'}</strong>
-                                </span>
-                                @enderror */}
                                 {
                                     errors.email &&
                                     <span className="helper-text" data-error={errors.email} style={{ "marginBottom": "10px" }}>{errors.email}</span>
@@ -519,11 +452,6 @@ const Usuarios = ({ categories, regimes, units }) => {
                                 <i className="material-icons prefix">lock</i>
                                 <input id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"} name="contrasena" value={values.contrasena} required onChange={handleChange} />
                                 <label htmlFor="contrasena">Contraseña</label>
-                                {/* @error('password')
-                                <span className="invalid-feedback" role="alert">
-                                    <strong>{'{'}{'{'} $message {'}'}{'}'}</strong>
-                                </span>
-                                @enderror */}
                                 {
                                     errors.contrasena &&
                                     <span className="helper-text" data-error={errors.contrasena} style={{ "marginBottom": "10px" }}>{errors.contrasena}</span>
