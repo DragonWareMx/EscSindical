@@ -31,7 +31,7 @@ function calculaAvance(ini, fin) {
   else return porcentaje
 }
 
-const Informacion = ({curso}) => {
+const Informacion = ({curso, cursos_count}) => {
   function initializeMaterialize(){
     var elems = document.querySelectorAll('.slider');
     var options = { 
@@ -120,22 +120,19 @@ const Informacion = ({curso}) => {
                 <div className="info-title">PONENTE</div>
                 <div className="col s12" style={{"padding":"0px"}}>
                   <div className="nombre-ponente">
-                    Nombre del profesor
-                  </div>
-                  <div className="grado-ponente">
-                    Grado del profesor
+                    {curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}
                   </div>
                 </div>
                 <div className="col s3 m5 l3">
                   {/* <img className="foto-ponente red" src={"/storage/fotos_perfil/" + curso.teacher.foto} alt="img" /> */}
-                  <img className="foto-ponente red" src="/img/monita.jpg" alt="img" />
+                  <img className="foto-ponente" src={"/storage/fotos_perfil/"+curso.teacher.foto} alt="img" />
                 </div>
                 <div className="col s9 m7 l9">
                   {/* cantidad de cursos */}
                   <div className="txt-video-course">
                       {/* cantidad de participantes */}
                       <i className="material-icons tiny">play_circle</i> 
-                      <p style={{"marginLeft": "5px", "color": "#585858 !important"}}>15 cursos</p> 
+                      <p style={{"marginLeft": "5px", "color": "#585858 !important"}}>{cursos_count} cursos</p> 
                   </div>
                   {/* cantidad de participantes */}
                   <div className="txt-video-course" style={{"marginTop":"0px"}}>

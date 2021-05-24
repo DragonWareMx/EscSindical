@@ -57,7 +57,7 @@ const LayoutCursos = ({children}) => {
                <div className="card darken-1" style={{"padding":"5px 25px"}}>
                    <div className="card-content row valign-wrapper" style={{"padding":"10px","marginBottom":"0px"}}>
                         <div className="col s11 valign-wrapper LC_title">Programación Lógica y Funcional (Grupo de las 8 am) &nbsp; <i className="material-icons">verified</i></div>
-                        <div className="col s1 LC_more"><a className='dropdown-trigger' href='#' data-target='dropdown_LC'><i className="material-icons" style={{"color":"#727272", "font-size":"22px"}}>more_vert</i></a></div>
+                        <div className="col s1 LC_more"><a className='dropdown-trigger' href='#' data-target='dropdown_LC'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                         <ul id='dropdown_LC' className='dropdown-content'>
                             <li><span><a className="dropdown-text" href="#!">Editar curso</a></span></li>
                             <li><span><a className="dropdown-text" href="#!">Descargar reporte del curso</a></span></li>
@@ -110,17 +110,17 @@ const LayoutCursos = ({children}) => {
                     <div className="modal-close right"><i className="material-icons">close</i></div>
                     <div className="row">
                         <span className="txt-title-card">SOLICITAR ELIMINACIÓN DE CURSO</span>  
-                        <p class="txt-modal-inst">Ingresa un texto explicando los motivos de tu solicitud de eliminación para el curso <p class="" style={{"color":"#134E39", "margin":"0px"}}>Nombre completo del curso</p></p> 
+                        <p className="txt-modal-inst">Ingresa un texto explicando los motivos de tu solicitud de eliminación para el curso <p  style={{"color":"#134E39", "margin":"0px"}}>Nombre completo del curso</p></p> 
                     
                         <div className="input-field col s12" style={{"padding":"0px"}}>
-                            <textarea class="materialize-textarea text-area-modal" id="descripcion"></textarea>
+                            <textarea className="materialize-textarea text-area-modal" id="descripcion"></textarea>
                         </div>
 
-                        <div class="info-txt-modal">Un administrador revisará tu solicitud y se te notificará su aprobación o rechazo.</div>
+                        <div className="info-txt-modal">Un administrador revisará tu solicitud y se te notificará su aprobación o rechazo.</div>
                     
-                        <div class="col s12" style={{"padding":"0px", "marginTop": "15px"}}> 
+                        <div className="col s12" style={{"padding":"0px", "marginTop": "15px"}}> 
                             <div className="col s12 right-align" style={{ "padding": "0%" }}>
-                                <a class="waves-effect waves-light btn" style={{"textTransform": "initial" }}><i class="material-icons right" style={{ "font-size": "18px"}}>send</i>Enviar</a>
+                                <a className="waves-effect waves-light btn" style={{"textTransform": "initial" }}><i className="material-icons right" style={{ "fontSize": "18px"}}>send</i>Enviar</a>
                             </div>
                         </div>
 
