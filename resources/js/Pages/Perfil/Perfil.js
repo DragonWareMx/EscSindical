@@ -97,7 +97,7 @@ const Perfil = ({ user }) => {
                                                 Unidad:
                                             </div>
                                             <div className="info-txt-format">
-                                                Categoría: {user.categorie.nombre}
+                                                Categoría: {user.category.nombre}
                                             </div>
                                         </div>
                                         <div className="col s12 m6" style={{ "marginTop": "15px" }}>
@@ -125,7 +125,7 @@ const Perfil = ({ user }) => {
                                         </div>
                                         {/* Boton de editar */}
                                         <div className="col s12 m12 right-align" style={{ "marginTop": "25px" }}>
-                                            <InertiaLink href={route('perfil.edit', user.id)} class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{ "font-size": "18px" }}>settings</i>Configuración</InertiaLink>
+                                            <InertiaLink href={route('perfil.edit')} class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{ "font-size": "18px" }}>settings</i>Configuración</InertiaLink>
                                             
                                         </div>
                                     </div>

@@ -60,7 +60,6 @@ Route::get('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class
 Route::get('/cursos/{id}/participantes', [App\Http\Controllers\CourseController::class, 'participantes'])->name('cursos.participantes');
 
 
-Route::get('/prueba', [App\Http\Controllers\CourseController::class, 'prueba'])->name('prueba');
 
 Route::get('/cursos/buscar', [App\Http\Controllers\CourseController::class, 'searchIndex'])->name('cursosBuscar');
 
@@ -68,4 +67,5 @@ Route::get('/layoutCursos', [App\Http\Controllers\CourseController::class, 'layo
 
 //--------PERFIL--------
 Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');
-Route::get('/perfil/configuracion/{id}', [App\Http\Controllers\PerfilController::class, 'edit'])->name('perfil.edit');
+Route::get('/perfil/configuracion', [App\Http\Controllers\PerfilController::class, 'edit'])->name('perfil.edit');
+Route::patch('/perfil/configuracion', [App\Http\Controllers\PerfilController::class, 'update'])->name('perfil.update');

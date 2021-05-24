@@ -4,6 +4,7 @@ import { Inertia } from '@inertiajs/inertia'
 
 import '../../styles/cursos.css'
 import '/css/courseCard.css'
+import Tag from '../common/Tag'
 
 export default function InfoAlumno({ curso, actuales }) {
 
@@ -44,15 +45,23 @@ export default function InfoAlumno({ curso, actuales }) {
                         <div className="col s8 little_course" style={{ "marginTop": "10px" }}>
                             {/* DIV foto y nombre del profesor */}
                             <div className="col s2 center-align">
-                                <img className="courseCard_pp" style={{ "color": "#585858", "fontSize": "12px" }} src={curso.teacher.foto ? '/storage/fotos_perfil/' + curso.teacher.foto : '/storage/fotos_perfil/avatar1.png'} alt="img" />
+                                <img className="courseCard_pp" style={{ "color": "#585858", "fontSize": "12px" }} src={curso.teacher ? curso.teacher.foto ? '/storage/fotos_perfil/' + curso.teacher.foto : '/storage/fotos_perfil/avatar1.jpg' : '/storage/fotos_perfil/avatar1.jpg'} alt="img" />
                             </div>
-                            <div className="col s10 truncate" style={{ "height": "30px", "display": "flex", "alignItems": "center" }}>{curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}</div>
+                            <div className="col s10 truncate" style={{ "height": "30px", "display": "flex", "alignItems": "center" }}>
+                                {curso.teacher ? 
+                                <>
+                                    {curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}
+                                </>
+                                :
+                                <>
+                                    Sin profesor asignado
+                                </>
+                                }
+                                </div>
                             <div className="col s12 courseCard_tags" >
                                 <div className="container-tags">
-                                    {curso.tags.map(tag=>
-                                        <a className="div-tag" href="#!" key={tag.pivot.tag_id + tag.nombre}>
-                                            {tag.nombre} <i className="material-icons" style={{ "fontSize": "12px" }}>local_offer</i>
-                                        </a>
+                                    {curso.tags && curso.tags.length > 0 && curso.tags.map((tag, index)=>
+                                        <Tag nombre={tag.nombre} key={index} />
                                     )}
                                 </div>
 

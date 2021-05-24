@@ -16,13 +16,10 @@ class RegimeSeeder extends Seeder
     {
         //
         DB::table('regimes')->insert([
-            'nombre' => 'Regimen 1',
+            'nombre' => 'Ordinario',
         ]);
         DB::table('regimes')->insert([
-            'nombre' => 'Regimen 2',
-        ]);
-        DB::table('regimes')->insert([
-            'nombre' => 'Regimen 3',
+            'nombre' => 'Bienestar',
         ]);
     }
 }

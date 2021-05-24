@@ -37,7 +37,7 @@ class User extends Authenticatable
         'cp',
         'tarjeton_pago',
         'matricula',
-        'categorie_id', 
+        'category_id', 
         'unit_id',
     ];
 
@@ -116,7 +116,7 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Module')->withPivot("calificacion");
     }
 
-    public function categorie()
+    public function category()
     {
         return $this->belongsTo('App\Models\Category');
     }

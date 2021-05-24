@@ -32,7 +32,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
         fecha_de_nacimiento: user.fecha_nac || "",
         sexo: user.sexo || "",
         matricula: user.matricula || "",
-        categoria: user.categorie && user.categorie.nombre || "",
+        categoria: user.category && user.category.nombre || "",
         unidad: user.unit && user.unit.nombre || "",
         regimen: user.unit && user.unit.regime.nombre || "",
         estado: user.estado || "",
@@ -78,7 +78,6 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                     Inertia.reload({ only: ['units'], data: { regime: values.regimen } })
                 },
                 onSuccess: () => {
-                    console.log('si jaló')
                     setValues(values => ({
                         ...values,
                         cambiar_contrasena: false,

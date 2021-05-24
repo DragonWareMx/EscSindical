@@ -298,7 +298,7 @@
 
     function regimenChange() {
         var x = document.getElementById("regimen").value;
-        alert(x);
+        // alert(x);
     }
 
 
