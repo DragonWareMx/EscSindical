@@ -110,7 +110,13 @@ const Usuarios = ({ categories, regimes, units }) => {
         var instances = M.Autocomplete.init(elems);
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems);
+        initializeDatePicker();
         
+
+        M.updateTextFields();
+    }
+
+    function initializeDatePicker() {
         var elems = document.querySelectorAll('.datepicker');
         var options = {
             format: 'yyyy-mm-dd',
@@ -133,11 +139,15 @@ const Usuarios = ({ categories, regimes, units }) => {
                 labelMonthPrev: 'Mes anterior',
                 labelMonthSelect: 'Selecciona un mes',
                 labelYearSelect: 'Selecciona un año',
-            }
-        };
-        var instances = M.Datepicker.init(elems, options);
-
-        M.updateTextFields();
+            },
+            onClose: ()=>{
+                setValues(values => ({
+                    ...values,
+                    fecha_de_nacimiento: document.getElementById("fecha_de_nacimiento").value,
+                }))
+            },
+          };
+        const instancesDate = M.Datepicker.init(elems, options);
     }
 
     //se ejecuta cuando la pagina se renderiza
@@ -270,8 +280,8 @@ const Usuarios = ({ categories, regimes, units }) => {
                             </div>
 
                             <div className="input-field col s6 input-50-re">
-                                <input id="fecha_nacimiento" min="1930-01-01" type="text" className="datepicker" name="fecha_nacimiento" required autoComplete="fecha_nacimiento" />
-                                <label htmlFor="fecha_nacimiento">Fec. Nacimiento</label>
+                                <input id="fecha_de_nacimiento" type="text" className={errors.fecha_inicio ? "validate datepicker invalid" : "validate datepicker"} name="fecha_de_nacimiento" required value={values.fecha_de_nacimiento} autoComplete="fecha_nacimiento" readOnly />
+                                <label htmlFor="fecha_de_nacimiento">Fec. Nacimiento</label>
                                 {
                                     errors.fecha_de_nacimiento &&
                                     <span className="helper-text" data-error={errors.fecha_de_nacimiento} style={{ "marginBottom": "10px" }}>{errors.fecha_de_nacimiento}</span>

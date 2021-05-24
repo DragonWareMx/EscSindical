@@ -17,6 +17,7 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Events\Registered;
 use App\Permission\Models\Role;
+use App\Models\Log;
 
 class RegisterController extends Controller
 {
@@ -258,7 +259,7 @@ class RegisterController extends Controller
             $newLog = new Log;
             
             $newLog->categoria = 'create';
-            $newLog->user_id = Auth::id();
+            $newLog->user_id = $newUser->id;
             $newLog->accion =
             '{
                 users: {
@@ -360,6 +361,7 @@ class RegisterController extends Controller
         if(get_class($user) == "App\Models\User"){
             $this->guard()->login($user);
             if ($response = $this->registered($request, $user)) {
+                dd($response);
                 return $response;
             }
     
