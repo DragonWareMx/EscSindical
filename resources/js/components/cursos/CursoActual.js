@@ -38,10 +38,10 @@ export default function CursoActual({cursos, profesor, tags}) {
                                 {/* CONTENIDO DEL CARD */}
                                     {/* Imagen del curso */}
                                 <div className="col s10 m3 l2">
-                                    <a href="#!"><img src="storage/imagenes_curso/curso1.png" className="img-course" style={{"width":"100%"}} /></a>
+                                    <a href="#!"><img src={cursos.images && cursos.images.length>0 && "/storage/imagenes_curso/"+cursos.images['0'].imagen} className="img-course" style={{"width":"100%"}} /></a>
                                 </div>
                                 <div className="col s12 m9 l10">
-                                    <div className="txt-course-title"><a href="#!" className="title-course-hover">{cursos['0'].nombre}</a></div>
+                                    <div className="txt-course-title"><a href="#!" className="title-course-hover">{cursos.nombre}</a></div>
                                     <div className="" style={{"display": "flex", "alignItems": "center", "marginTop": "10px"}}>
                                         <div style={{"width": "max-content", "marginRight": "10px"}}><img src="images/profile.jpg" style={{"width": "25px", "height": "25px", "borderRadius": "50%", "objectFit": "cover"}} /></div>
                                         <a className="txt-teacher-name" style={{"width": "max-content"}} href="#!">{profesor.nombre} {profesor.apellido_p} {profesor.apellido_m}</a>
@@ -57,7 +57,7 @@ export default function CursoActual({cursos, profesor, tags}) {
                                     </div>
                                     <div className="txt-presentation">Presentación del curso</div>
                                     <div className="txt-presentation-content">
-                                        {cursos['0'].descripcion}                                        
+                                        {cursos.descripcion}                                        
                                     </div>
                                 </div>
                             </div>

@@ -11,6 +11,9 @@ use App\Models\User;
 use App\Models\Course;
 use App\Models\Tag;
 use App\Models\Log;
+use App\Models\Image;
+use App\Models\Training_type;
+
 
 
 class CourseController extends Controller
@@ -28,13 +31,11 @@ class CourseController extends Controller
         $user = User::find(Auth::id());
 
         if ($user->roles[0]->name == 'Ponente') {
-            $cursos = Course::where('teacher_id', Auth::id())->with('users')->get();
+            $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users','images')->get();
 
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
-                    'roles', 'courses' => function ($query) {
-                        $query->join('users', 'users.id', '=', 'courses.teacher_id');
-                    }
+                    'roles', 'activeCourses', 'activeCourses.images'  
                 ])->where('id', Auth::id())->first(),
                 'cursos' => fn () => $cursos,
             ]);
@@ -44,9 +45,7 @@ class CourseController extends Controller
             $tags = $curso_actual->tags;
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
-                    'roles', 'courses' => function ($query) {
-                        $query->join('users', 'users.id', '=', 'courses.teacher_id');
-                    }
+                    'roles', 'activeCourses' ,'activeCourses.images'
                 ])->where('id', Auth::id())->first(),
                 'profesor' => $profesor,
                 'tags' => $tags,
@@ -56,7 +55,9 @@ class CourseController extends Controller
 
     public function create()
     {
-        return Inertia::render('Cursos/FormCurso');
+        return Inertia::render('Cursos/FormCurso', [ 
+        'capacitaciones'=> Training_type::get(),
+        ]);
     }
 
     public function moduleCreate()
@@ -72,34 +73,36 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         //\Gate::authorize('haveaccess', 'ponent.perm');
-
-        //VALIDAMOS DATOS
+        //dd($request);
+          //VALIDAMOS DATOS
         $validated = $request->validate([
             'nombre' => 'required|max:255',
             'tags' => 'required',
-            'dateIni' => 'required',
-            'dateFin' => 'required',
+            'fecha_inicio' => 'required',
+            'fecha_final' => 'required',
             'link' => 'required',
             'vc' => 'required',
-            'categorias' => 'required',
-            'tipo' => 'required',
+            'tipos_de_capacitacion' => 'required',
+            'tipo_inscripcion' => 'required',
             'descripcion' => 'required',
-            'imgs' => 'required',
+            'imgs' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
+            'maximo' =>'required|digits_between:1,3|numeric' //cuál sería el máximo permitido
         ]);
 
         //COMIENZA TRANSACCIÓN
         DB::beginTransaction();
-
+        
+        $imagen = null;
         try {
             //SE CREA EL NUEVO CURSO
             $newCourse = new Course;
 
             $newCourse->nombre = $request->nombre;
-            $newCourse->fecha_inicio = $request->dateIni;
-            $newCourse->fecha_final = $request->dateFin;
-            $newCourse->max = 100;
+            $newCourse->fecha_inicio = $request->fecha_inicio;
+            $newCourse->fecha_final = $request->fecha_final;
+            $newCourse->max = $request->maximo;
             $newCourse->valor_curricular = $request->vc;
-            $newCourse->tipo_acceso = $request->tipo;
+            $newCourse->tipo_acceso = $request->tipo_inscripcion;
             $newCourse->descripcion = $request->descripcion;
             $newCourse->teacher_id = Auth::id();
             $newCourse->link = $request->link;
@@ -125,38 +128,47 @@ class CourseController extends Controller
             }
 
             $newCourse->tags()->sync($tags_ids);
-            //CATEGORIAS
+            
+            //TIPO DE CAPACITACIONES
+            $tipos = $request->tipos_de_capacitacion;
 
+            $newCourse->training_types()->sync($tipos);
 
             //IMÁGENES
-
+            $newImagen = new Image;
+            $newImagen->course_id =$newCourse->id;
+            $imagen = $request->file('imgs')->store('/public/imagenes_curso');
+            $newImagen->imagen = $request->file('imgs')->hashName();
+            
+            $newImagen->save();
+                   
             //SE CREA EL LOG
-            $newLog = new Log;
+            // $newLog = new Log;
 
-            $newLog->categoria = 'create';
-            $newLog->user_id = Auth::id();
-            $newLog->accion =
-                '{
-                courses: {
-                    nombre: ' . $request->nombre .
-                'fecha_inicio: ' . $request->dateIni .
-                'fecha_final: ' . $request->dateFin .
-                'max: ' . $request->max .
-                'valor_curricular: ' . $request->vc .
+            // $newLog->categoria = 'create';
+            // $newLog->user_id = Auth::id();
+            // $newLog->accion =
+            // '{
+            //     courses: {
+            //         nombre: ' . $request->nombre .
+            //         'fecha_inicio: ' . $request->fecha_inicio .
+            //         'fecha_final: ' . $request->fecha_final .
+            //         'max: ' . $request->max .
+            //         'valor_curricular: '. $request->vc.
+                    
+            //         'tipo_acceso: ' . $request->tipo_inscripcion .
+            //         'descripcion: '.$request->descripcion.
+            //         'teacher_id: ' . Auth::id() .
+            //         'max: ' .$request->maximo.
+            //         'link: ' . $request->link .
+            //     '}
 
-                'tipo_acceso: ' . $request->tipo .
-                'descripcion: ' . $request->descripcion .
-                'teacher_id: ' . Auth::id() .
+            // }';
 
-                'link: ' . $request->link .
-                '}
-
-            }';
-
-            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado el curso: ' . $myCourse->nombre;
-
-            //SE GUARDA EL LOG
-            $newLog->save();
+            // $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha creado el curso: '. $myCourse->nombre;
+                
+            // //SE GUARDA EL LOG
+            // $newLog->save();
 
             DB::commit();
             return \Redirect::route('cursos')->with('success', 'El curso se ha creado exitosamente');
@@ -171,8 +183,9 @@ class CourseController extends Controller
     {
         //\Gate::authorize('haveaccess', 'ponent.perm');
         return Inertia::render('Cursos/FormCursoEdit', [
-            'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id), //falta lo de categories
-        ]);
+            'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id),
+            'capacitaciones'=> Training_type::get(),
+        ]); 
     }
 
     public function update($id, Request $request)
@@ -182,12 +195,12 @@ class CourseController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|max:255',
             'tags' => 'required',
-            'dateIni' => 'required',
-            'dateFin' => 'required',
+            'fecha_inicio' => 'required',
+            'fecha_final' => 'required',
             'link' => 'required',
             'vc' => 'required',
-            'categorias' => 'required',
-            'tipo' => 'required',
+            'tipos_de_capacitacion' => 'required',
+            'tipo_inscripcion' => 'required',
             'descripcion' => 'required',
             'imgs' => 'required',
         ]);
@@ -200,11 +213,11 @@ class CourseController extends Controller
             $myCourse = Course::findOrFail($id);
 
             $myCourse->nombre = $request->nombre;
-            $myCourse->fecha_inicio = $request->dateIni;
-            $myCourse->fecha_final = $request->dateFin;
+            $myCourse->fecha_inicio = $request->fecha_inicio;
+            $myCourse->fecha_final = $request->fecha_final;
             $myCourse->max = 100;
             $myCourse->valor_curricular = $request->vc;
-            $myCourse->tipo_acceso = $request->tipo;
+            $myCourse->tipo_acceso = $request->tipo_inscripcion;
             $myCourse->descripcion = $request->descripcion;
             $myCourse->teacher_id = Auth::id();
             $myCourse->link = $request->link;
@@ -230,7 +243,7 @@ class CourseController extends Controller
             }
 
             $myCourse->tags()->sync($tags_ids);
-            //CATEGORIAS
+            //tipos_de_capacitacion
 
 
             //IMÁGENES
@@ -244,16 +257,16 @@ class CourseController extends Controller
                 '{
                 courses: {
                     nombre: ' . $request->nombre .
-                'fecha_inicio: ' . $request->dateIni .
-                'fecha_final: ' . $request->dateFin .
-                'max: ' . $request->max .
-                'valor_curricular: ' . $request->vc .
-
-                'tipo_acceso: ' . $request->tipo .
-                'descripcion: ' . $request->descripcion .
-                'teacher_id: ' . Auth::id() .
-
-                'link: ' . $request->link .
+                    'fecha_inicio: ' . $request->fecha_inicio .
+                    'fecha_final: ' . $request->fecha_final .
+                    'max: ' . $request->max .
+                    'valor_curricular: '. $request->vc.
+                    
+                    'tipo_acceso: ' . $request->tipo_inscripcion .
+                    'descripcion: '.$request->descripcion.
+                    'teacher_id: ' . Auth::id() .
+                    
+                    'link: ' . $request->link .
                 '}
 
             }';
@@ -318,7 +331,7 @@ class CourseController extends Controller
                         });
                 }
             })
-            ->select('courses.nombre','courses.fecha_inicio','courses.fecha_final','courses.id','courses.teacher_id','courses.inicio_inscripciones','courses.fecha_limite')
+            ->select('courses.nombre', 'courses.fecha_inicio', 'courses.fecha_final', 'courses.id', 'courses.teacher_id', 'courses.inicio_inscripciones', 'courses.fecha_limite')
             ->paginate(12);
 
         $cursosParaTi = Course::with(['teacher:nombre,apellido_p,apellido_m,foto,id', 'tags:nombre', 'images:imagen,course_id','training_types'])
@@ -329,7 +342,7 @@ class CourseController extends Controller
                     }
                 });
             })
-            ->select('courses.nombre','courses.fecha_inicio','courses.fecha_final','courses.id','courses.teacher_id','courses.inicio_inscripciones','courses.fecha_limite')
+            ->select('courses.nombre', 'courses.fecha_inicio', 'courses.fecha_final', 'courses.id', 'courses.teacher_id', 'courses.inicio_inscripciones', 'courses.fecha_limite')
             ->take(10)
             ->get();
 
@@ -359,6 +372,13 @@ class CourseController extends Controller
     public function modulos($id)
     {
         return Inertia::render('Curso/Modulos', [
+            'curso' => Course::findOrFail($id),
+        ]);
+    }
+
+    public function participantes($id)
+    {
+        return Inertia::render('Curso/Participantes', [
             'curso' => Course::findOrFail($id),
         ]);
     }
