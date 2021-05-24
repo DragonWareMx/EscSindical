@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Auth\Events\Registered;
+use App\Permission\Models\Role;
 
 class RegisterController extends Controller
 {
@@ -121,7 +124,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+    protected function create(Request $request)
     { 
         // Guardar imagen de perfil
         // $fileNameWithTheExtension = request('foto_perfil')->getClientOriginalName();
@@ -201,7 +204,7 @@ class RegisterController extends Controller
                 return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
             }
 
-            $rol = Role::where("name", $request->rol)->get();
+            $rol = Role::where("name", "Alumno")->get();
 
             if($rol->isEmpty())
             {
@@ -340,5 +343,33 @@ class RegisterController extends Controller
             }
             return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
         }
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request)));
+
+        if(get_class($user) == "App\Models\User"){
+            $this->guard()->login($user);
+            if ($response = $this->registered($request, $user)) {
+                return $response;
+            }
+    
+            return $request->wantsJson()
+                        ? new JsonResponse([], 201)
+                        : redirect($this->redirectPath());
+        }
+        else{
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+        }
+
     }
 }

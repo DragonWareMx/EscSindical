@@ -179,6 +179,8 @@ const Usuarios = ({ categories, regimes, units }) => {
                     <div className="titulo2 col s12">REGISTRARSE</div>
                 </div>
 
+                <Alertas />
+
                 {/* -- DIV PADRE DE DIVISIONES -- */}
                 <form onSubmit={handleSubmit}>
                     <div className="col s12 div-form-register">
