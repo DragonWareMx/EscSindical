@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../layouts/Layout';
-import { Inertia } from '@inertiajs/inertia'
-import Paginacion from '../../components/common/Paginacion';
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 import route from 'ziggy-js';
 import { InertiaLink } from '@inertiajs/inertia-react';
@@ -14,11 +12,18 @@ function initializeMat() {
 }
 
 const Perfil = ({ user }) => {
-    const [edit, setEdit] = useState(false)
-
-    function handleEditChange(newValue) {
-        setEdit(newValue)
+    function transformaFecha(fecha) {
+        const dob = new Date(fecha);
+        const monthNames = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+            'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        const day = dob.getDate();
+        const monthIndex = dob.getMonth();
+        const year = dob.getFullYear();
+        return `${day} de ${monthNames[monthIndex]} del ${year}`;
     }
+
 
     useEffect(() => {
         initializeMat();
@@ -40,19 +45,19 @@ const Perfil = ({ user }) => {
                                         </div>
                                         <div className="col s12 center-align">
                                             <div className="profile-txt-category">
-                                                Categoría
+                                                {user.category ? user.category.nombre : "Sin categoría"}
                                             </div>
                                             <div className="profile-txt-name">
                                                 {user.nombre} {user.apellido_p} {user.apellido_m}
                                             </div>
                                             <div className="profile-txt-active-since">
-                                                Activo desde {user.created_at}
+                                                Activo desde {user.created_at ? transformaFecha(user.created_at) : "el inicio de los tiempos"}
                                             </div>
-                                            <div className="profile-txt-email valign-wrapper truncate"><i class="material-icons profile-icon-email">mail_outline</i>{user.email}</div>
+                                            <div className="profile-txt-email valign-wrapper truncate"><i className="material-icons profile-icon-email">mail_outline</i>{user.email}</div>
                                         </div>
                                         {/* Boton de enviar mensaje */}
                                         <div className="col s12 center-align" style={{ "padding": "0%" }}>
-                                            <a class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{ "font-size": "18px" }}>send</i>Mensaje</a>
+                                            <a className="waves-effect waves-light btn boton-verde" href={"mailto:"+user.email}><i className="material-icons right" style={{ "fontSize": "18px" }}>send</i>Mensaje</a>
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +130,7 @@ const Perfil = ({ user }) => {
                                         </div>
                                         {/* Boton de editar */}
                                         <div className="col s12 m12 right-align" style={{ "marginTop": "25px" }}>
-                                            <InertiaLink href={route('perfil.edit')} class="waves-effect waves-light btn boton-verde"><i class="material-icons right" style={{ "font-size": "18px" }}>settings</i>Configuración</InertiaLink>
+                                            <InertiaLink href={route('perfil.edit')} className="waves-effect waves-light btn boton-verde"><i className="material-icons right" style={{ "fontSize": "18px" }}>settings</i>Configuración</InertiaLink>
                                             
                                         </div>
                                     </div>
