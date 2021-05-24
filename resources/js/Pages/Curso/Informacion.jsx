@@ -5,6 +5,31 @@ import '/css/informacionCursos.css'
 import '../../styles/cursos.css'
 import '/css/courseCardSearch.css'
 
+
+function transformaFecha(fecha) {
+  const dob = new Date(fecha);
+  const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+      'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+  const day = dob.getDate();
+  const monthIndex = dob.getMonth();
+  const year = dob.getFullYear();
+  return `${day} ${monthNames[monthIndex]} ${year}`;
+}
+
+function calculaAvance(ini, fin) {
+  var start = new Date(ini),
+      end = new Date(fin),
+      today = new Date(),
+      porcentaje = Math.round(((today - start) / (end - start)) * 100)
+  if (porcentaje < 0)
+      return 0
+  else if (porcentaje > 100)
+      return 100
+  else return porcentaje
+}
+
 const Informacion = ({curso}) => {
   function initializeMaterialize(){
     var elems = document.querySelectorAll('.slider');
@@ -68,16 +93,16 @@ const Informacion = ({curso}) => {
               {/* Fechas */}
               <div className="col s12">
                 <div className="info-title">FECHAS</div>
-                <div className="txt-presentation txt-date-course">Inicio {curso.fecha_inicio}, Fin {curso.fecha_final}</div>                   
+                <div className="txt-presentation txt-date-course">Inicio {transformaFecha(curso.fecha_inicio)}, Fin {transformaFecha(curso.fecha_final)}</div>                   
                 {/* DIV progress bar del curso */}
                 <div className="row" style={{"display":"flex", "alignItems": "center", "marginBottom": "0px"}}>
                     <div className="col s5">
                         <div className="progress" style={{"margin": "0px"}}>
-                            <div className="determinate" style={{"width": "70%"}}></div>
+                            <div className="determinate" style={{"width": calculaAvance(curso.fecha_inicio, curso.fecha_final)+"%"}}></div>
                         </div>
                     </div>
                     <div className="col s7">
-                        <div className="txt-progress-course">Avance 15%</div>
+                        <div className="txt-progress-course">Avance {calculaAvance(curso.fecha_inicio, curso.fecha_final)}%</div>
                     </div>
                 </div>
               </div>
