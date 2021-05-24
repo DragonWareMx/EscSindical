@@ -74,7 +74,7 @@ class CourseController extends Controller
     {
         //\Gate::authorize('haveaccess', 'ponent.perm');
         //dd($request);
-          //VALIDAMOS DATOS
+        //VALIDAMOS DATOS
         $validated = $request->validate([
             'nombre' => 'required|max:255',
             'tags' => 'required',
@@ -381,5 +381,5 @@ class CourseController extends Controller
         return Inertia::render('Curso/Participantes', [
             'curso' => Course::findOrFail($id),
         ]);
-    }
+    } 
 }

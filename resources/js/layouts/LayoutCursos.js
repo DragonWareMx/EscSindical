@@ -4,6 +4,7 @@ import '/css/layoutCursos.css'
 import route from 'ziggy-js'
 import { InertiaLink } from '@inertiajs/inertia-react'
 import { usePage } from '@inertiajs/inertia-react'
+import '../styles/cursos.css'
 
 function initializeMat() {
     var elems = document.querySelectorAll('.dropdown-trigger');
@@ -56,13 +57,13 @@ const LayoutCursos = ({children}) => {
             <div className="row contenedor">
                <div className="card darken-1" style={{"padding":"5px 25px"}}>
                    <div className="card-content row valign-wrapper" style={{"padding":"10px","marginBottom":"0px"}}>
-                        <div className="col s11 valign-wrapper LC_title">Programación Lógica y Funcional (Grupo de las 8 am) &nbsp; <i className="material-icons">verified</i></div>
+                        <div className="col s11 valign-wrapper LC_title">Programación orientada a objetos&nbsp; <i className="material-icons">verified</i></div>
                         <div className="col s1 LC_more"><a className='dropdown-trigger' href='#' data-target='dropdown_LC'><i className="material-icons" style={{"color":"#727272", "font-size":"22px"}}>more_vert</i></a></div>
                         <ul id='dropdown_LC' className='dropdown-content'>
-                            <li><span><a className="dropdown-text" href="#!">Editar curso</a></span></li>
-                            <li><span><a className="dropdown-text" href="#!">Descargar reporte del curso</a></span></li>
+                            <li><span><InertiaLink className="dropdown-text" href={route('cursos.edit',1)}><i class="material-icons">edit</i>Editar curso</InertiaLink></span></li>
+                            <li><span><a className="dropdown-text" href="#!"><i class="material-icons">file_download</i>Descargar reporte del curso</a></span></li>
                             <li className="divider" tabIndex="-1"></li>
-                            <li><span><a className="dropdown-text modal-trigger" href="#modalSolicitud">Solicitar eliminación del curso</a></span></li>
+                            <li><span><a className="dropdown-text modal-trigger" href="#modalSolicitud"><i class="material-icons">error_outline</i>Solicitar eliminación del curso</a></span></li>
                         </ul>
                    </div>
                     <div className="row">
