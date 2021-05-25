@@ -364,10 +364,13 @@ class CourseController extends Controller
     {
         $cursosCount=Course::with('teacher:id')->find($id);
         $cursosCount=Course::where('teacher_id',$cursosCount->teacher->id)->count();
+        $participantesCount=Course::with('users:id')->findOrFail($id);
+        $participantesCount=$participantesCount['users']->count();
 
         return Inertia::render('Curso/Informacion', [
             'curso' => Course::with('images:imagen,course_id', 'tags:nombre','teacher:nombre,apellido_p,apellido_m,foto,id')->findOrFail($id),
-            'cursos_count'=> $cursosCount
+            'cursos_count'=> $cursosCount,
+            'participantes_count'=>$participantesCount,
         ]);
     }
 
@@ -381,7 +384,7 @@ class CourseController extends Controller
     public function participantes($id)
     {
         return Inertia::render('Curso/Participantes', [
-            'curso' => Course::findOrFail($id),
+            'curso' => Course::with('users:id,nombre,foto,apellido_p,apellido_m,email','teacher:nombre,apellido_p,apellido_m,foto,id,email')->findOrFail($id),
         ]);
     }
 }
