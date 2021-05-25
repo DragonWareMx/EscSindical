@@ -21,6 +21,7 @@ function initializeModals() {
 var instances;
 var instancesDate;
 var instancesDate2;
+var instances3;
 
 function initializeChips() {
     var elems = document.querySelectorAll('.chips');
@@ -28,10 +29,14 @@ function initializeChips() {
 
     var elems2 = document.querySelectorAll('.tooltipped');
     var instancesT = M.Tooltip.init(elems2);
+
+    var elems3 = document.querySelectorAll('select');
+    var options3;
+    instances3 = M.FormSelect.init(elems3, options3);
 }
 
 
-const FormCurso = () => {
+const FormCurso = ({capacitaciones}) => {
     //errores de validación 
     const { errors } = usePage().props
 
@@ -98,7 +103,7 @@ const FormCurso = () => {
         fecha_final : "",
         link : "",
         vc:true,
-        categorias:"",
+        tipos_de_capacitacion: [],
         active: true,
         inscIni:"",
         inscFin: "",
@@ -139,7 +144,9 @@ const FormCurso = () => {
         values.descripcion = description
     }
 
-
+    function changeSelect(){
+        values.tipos_de_capacitacion = instances3[0].getSelectedValues();
+    }
 
     return(
         
@@ -161,7 +168,9 @@ const FormCurso = () => {
                                                                             change = {handleChange} 
                                                                             values = {useState} 
                                                                             onValueChange ={onValueChange} 
-                                                                            errors ={ errors }/></div>
+                                                                            errors ={ errors }
+                                                                            capacitaciones = {capacitaciones}
+                                                                            changeSelect ={changeSelect}/></div>
                                     <div id="create1" className="col s12"><Create1 
                                                                             change = {handleChange} 
                                                                             values = {useState} 

@@ -33,7 +33,7 @@ Route::get('/inicio', function () {
 Auth::routes();
 
 //--------RUTAS DE EJEMPLO
-Route::get('/ejemplo', [App\Http\Controllers\UserController::class, 'ejemplo'])->name('ejemplo1');
+Route::get('/ejemplo', [App\Http\Controllers\HomeController::class, 'ejemplo'])->name('ejemplo1');
 //--------RUTAS DE EJEMPLO
 
 //--------USUARIOS--------
@@ -67,5 +67,6 @@ Route::get('/layoutCursos', [App\Http\Controllers\CourseController::class, 'layo
 
 //--------PERFIL--------
 Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');
+Route::get('/perfil/publico/{id}', [App\Http\Controllers\PerfilController::class, 'verPerfil'])->name('perfil.public');
 Route::get('/perfil/configuracion', [App\Http\Controllers\PerfilController::class, 'edit'])->name('perfil.edit');
 Route::patch('/perfil/configuracion', [App\Http\Controllers\PerfilController::class, 'update'])->name('perfil.update');

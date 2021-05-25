@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { usePage } from '@inertiajs/inertia-react'
+import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 
 import '../../styles/cursos.css'
@@ -41,7 +41,9 @@ export default function CourseCardSearch({ curso }) {
                             <span className="course-teacher truncate">
                                 {curso.teacher ? 
                                 <>
-                                    {curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}
+                                    <InertiaLink href={route('perfil.public',curso.teacher.id)} style={{color: "#A6A6A6"}}>
+                                        {curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}
+                                    </InertiaLink>
                                 </>
                                 : 
                                 <>
