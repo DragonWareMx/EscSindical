@@ -35,3 +35,17 @@
     font-weight: normal;
     font-size: 14px;
 }
+
+/* Solicitudes */
+.link-solicitudes{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: #8A8A8A;
+    transition: all ease-in-out 0.25s;
+}
+.link-solicitudes:hover{
+    transition: all ease-in-out 0.25s;
+    color: #134E39;
+}
