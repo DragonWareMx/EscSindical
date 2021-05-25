@@ -317,7 +317,6 @@ class RegisterController extends Controller
         if(get_class($user) == "App\Models\User"){
             $this->guard()->login($user);
             if ($response = $this->registered($request, $user)) {
-                dd($response);
                 return $response;
             }
     
