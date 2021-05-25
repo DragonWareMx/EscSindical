@@ -13,9 +13,6 @@ function initializeMat() {
     var instance = M.Tabs.init(el);
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
-
-    var elems1 = document.querySelectorAll('.modal');
-    var instances1 = M.Modal.init(elems1);
 }
 
 function isUrl(...urls) {
@@ -60,10 +57,14 @@ const LayoutCursos = ({children}) => {
                         <div className="col s11 valign-wrapper LC_title">Programación orientada a objetos&nbsp; <i className="material-icons">verified</i></div>
                         <div className="col s1 LC_more"><a className='dropdown-trigger' href='#' data-target='dropdown_LC'><i className="material-icons" style={{"color":"#727272", "font-size":"22px"}}>more_vert</i></a></div>
                         <ul id='dropdown_LC' className='dropdown-content'>
-                            <li><span><InertiaLink className="dropdown-text" href={route('cursos.edit',1)}><i class="material-icons">edit</i>Editar curso</InertiaLink></span></li>
-                            <li><span><a className="dropdown-text" href="#!"><i class="material-icons">file_download</i>Descargar reporte del curso</a></span></li>
+                            <li><InertiaLink className="dropdown-text" href="#"><i class="material-icons">error_outline</i>Solicitar baja del curso</InertiaLink></li>
                             <li className="divider" tabIndex="-1"></li>
-                            <li><span><a className="dropdown-text modal-trigger" href="#modalSolicitud"><i class="material-icons">error_outline</i>Solicitar eliminación del curso</a></span></li>
+                            {/* Opciones exclusivas del ponente */}
+                            <li><InertiaLink className="dropdown-text" href={route('cursos.edit',1)}><i class="material-icons">edit</i>Editar curso</InertiaLink></li>
+                            <li className="divider" tabIndex="-1"></li>
+                            <li><a className="dropdown-text" href="#!"><i class="material-icons">file_download</i>Descargar reporte del curso</a></li>
+                            <li className="divider" tabIndex="-1"></li>
+                            <li><a className="dropdown-text modal-trigger" href="#modalSolicitud"><i class="material-icons">error_outline</i>Solicitar eliminación del curso</a></li>
                         </ul>
                    </div>
                     <div className="row">
@@ -104,29 +105,6 @@ const LayoutCursos = ({children}) => {
                         {children}
                     </div> 
                </div>
-            </div>
-
-            <div id="modalSolicitud" className="modal">
-                <div className="modal-content">
-                    <div className="modal-close right"><i className="material-icons">close</i></div>
-                    <div className="row">
-                        <span className="txt-title-card">SOLICITAR ELIMINACIÓN DE CURSO</span>  
-                        <p className="txt-modal-inst">Ingresa un texto explicando los motivos de tu solicitud de eliminación para el curso <p  style={{"color":"#134E39", "margin":"0px"}}>Nombre completo del curso</p></p> 
-                    
-                        <div className="input-field col s12" style={{"padding":"0px"}}>
-                            <textarea className="materialize-textarea text-area-modal" id="descripcion"></textarea>
-                        </div>
-
-                        <div className="info-txt-modal">Un administrador revisará tu solicitud y se te notificará su aprobación o rechazo.</div>
-                    
-                        <div className="col s12" style={{"padding":"0px", "marginTop": "15px"}}> 
-                            <div className="col s12 right-align" style={{ "padding": "0%" }}>
-                                <a className="waves-effect waves-light btn" style={{"textTransform": "initial" }}><i className="material-icons right" style={{ "fontSize": "18px"}}>send</i>Enviar</a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
             </div>
         </>
     )
