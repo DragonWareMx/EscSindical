@@ -77,10 +77,13 @@ const FormCurso = ({capacitaciones}) => {
                 labelYearSelect: 'Selecciona un año',
             },
             onClose: ()=>{
-                values.fecha_inicio =document.getElementById("fecha_inicio").value;
-                values.fecha_final =document.getElementById("fecha_final").value;
-                values.inscIni =document.getElementById("inscIni").value;
-                values.inscFin =document.getElementById("inscFin").value;
+                setValues (values =>({
+                    ... values,
+                    fecha_inicio : document.getElementById("fecha_inicio").value,
+                    fecha_final : document.getElementById("fecha_final").value,
+                    inscIni : document.getElementById("inscIni").value,
+                    inscFin : document.getElementById("inscFin").value,
+                }))
             },
           };
         instancesDate = M.Datepicker.init(elems, options);
@@ -123,11 +126,17 @@ const FormCurso = ({capacitaciones}) => {
     }
 
     function onValueChange(e) {
-        values.tipo_inscripcion = e.target.value
+        setValues (values =>({
+            ... values,
+            tipo_inscripcion: e.target.value,
+        }))
     }
 
     function onChangeTags(){
-        values.tags = instances['0'].chipsData
+        setValues (values =>({
+            ... values,
+            tags : instances['0'].chipsData
+        }))
     }
 
     function handleSubmit(e) {
@@ -136,17 +145,31 @@ const FormCurso = ({capacitaciones}) => {
     }
 
     function changeSwitch() {
-        values.vc ? values.vc = false : values.vc = true
+        values.vc ? 
+        setValues (values =>({
+            ... values,
+            vc : false,
+        })) 
+        : 
+        setValues (values =>({
+            ... values,
+            vc : true,
+        }))
     }
 
     function changeCK(description){
-        console.log(description)
-        values.descripcion = description
+        setValues (values =>({
+            ... values,
+           descripcion : description
+        }))
     }
 
     function changeSelect(){
-        values.tipos_de_capacitacion = instances3[0].getSelectedValues();
-    }
+        setValues (values =>({
+            ... values,
+            tipos_de_capacitacion: instances3[0].getSelectedValues(),
+        }))
+   }
 
     return(
         

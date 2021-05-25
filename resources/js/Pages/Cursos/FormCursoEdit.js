@@ -97,7 +97,8 @@ const FormCursoEdit = ({capacitaciones, curso}) => {
     }
     
     const [values, setValues] = useState({
-        nombre : curso.nombre,
+        
+        nombre : curso.nombre || "",
         tags : [],
         fecha_inicio : "",
         fecha_final : "",
@@ -157,13 +158,13 @@ const FormCursoEdit = ({capacitaciones, curso}) => {
                     <div className="card-content">
                         <form onSubmit={handleSubmit} noValidate>
                             <div className="modal-content">
+                                <div>{values.nombre}</div>
                                 <div className="row">
                                     <ul id="tabs-swipe-demo" className="tabs" style={{"marginBottom": "20px"}}>
                                         <li className="tab col s4"><a href="#create1" className="active" >1. Generalidades</a></li>
                                         <li className="tab col s4"><a href="#create2">2. Participantes</a></li>
                                         <li className="tab col s4"><a href="#create3">3. Presentación</a></li>
                                     </ul>
-
                                     <div id="create2" className="col s12"><Create2 
                                                                             change = {handleChange} 
                                                                             values = {useState} 
