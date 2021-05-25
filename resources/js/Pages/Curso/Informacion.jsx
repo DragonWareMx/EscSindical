@@ -185,7 +185,7 @@ const Informacion = ({curso, cursos_count}) => {
 
 Informacion.layout = page => (
   <>
-    <Layout title="Escuela sindical - Curso" pageTitle="Curso Nombre del curso">
+    <Layout title="Escuela sindical - Curso" pageTitle="Curso">
       <LayoutCursos children={page} />  
     </Layout>
   </>

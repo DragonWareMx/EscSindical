@@ -26,7 +26,7 @@ export default function CursoActualPonente({cursos}) {
                                     <div key={curso.id} className="col m12 l6 div-cousers-teacher">
                                         {/* Imagen del curso */}
                                         <div className="col s10 m3 l3">
-                                            <a href="#!"><img src="img/imagenes/Teacher-cuate.svg" className="img-course" style={{"width":"100%"}} /></a>
+                                            <a href="#!"><img src={curso.images && curso.images.length>0 && "/storage/imagenes_curso/"+curso.images['0'].imagen} className="img-course" style={{"width":"100%"}} /></a>
                                         </div>
                                         <div className="col s12 m9 l9">
                                             <div className="txt-course-title txt-course-title-teacher"><a href="#!" className="title-course-hover">{curso.nombre}</a></div>                                   

@@ -5,19 +5,21 @@ import Layout from '../../layouts/Layout';
 import CursoActual from '../../components/cursos/CursoActual';
 import CursoActualPonente from '../../components/cursos/CursoActualPonente';
 import HistorialCursos from '../../components/cursos/HistorialCursos';
-import HistorialCursosPonente from '../../components/cursos/HistorialCursosPonente';
+import HistorialCursosPonente from '../../components/cursos/HistorialCursosPonente'
+//COMPONENTS
+import Alertas from '../../components/common/Alertas'; 
 
 const Cursos = ({user, cursos, profesor, tags}) => {
-  console.log(user.courses)
+  
   return (
     <>
     
     {/* Componente para el historial de cursos de estudiantes y solicitudes............. */}
     {/* <HistorialCursos /> */}
-
+    <Alertas />
     {user.roles['0'].name == 'Ponente' ? <CursoActualPonente cursos = {cursos}/> 
     : <CursoActual 
-    cursos = {user.courses}
+    cursos = {user.active_courses['0']}
     profesor = {profesor}
     tags = {tags}
     />}
