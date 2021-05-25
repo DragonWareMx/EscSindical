@@ -364,8 +364,12 @@ class CourseController extends Controller
 
     public function informacion($id)
     {
+        $cursosCount=Course::with('teacher:id')->find($id);
+        $cursosCount=Course::where('teacher_id',$cursosCount->teacher->id)->count();
+
         return Inertia::render('Curso/Informacion', [
-            'curso' => Course::with('images:imagen,course_id', 'tags:nombre')->findOrFail($id),
+            'curso' => Course::with('images:imagen,course_id', 'tags:nombre','teacher:nombre,apellido_p,apellido_m,foto,id')->findOrFail($id),
+            'cursos_count'=> $cursosCount
         ]);
     }
 

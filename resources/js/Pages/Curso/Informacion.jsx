@@ -6,7 +6,32 @@ import '../../styles/cursos.css'
 import '/css/courseCardSearch.css'
 import Tag from '../../components/common/Tag';
 
-const Informacion = ({curso}) => {
+
+function transformaFecha(fecha) {
+  const dob = new Date(fecha);
+  const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+      'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+  const day = dob.getDate();
+  const monthIndex = dob.getMonth();
+  const year = dob.getFullYear();
+  return `${day} ${monthNames[monthIndex]} ${year}`;
+}
+
+function calculaAvance(ini, fin) {
+  var start = new Date(ini),
+      end = new Date(fin),
+      today = new Date(),
+      porcentaje = Math.round(((today - start) / (end - start)) * 100)
+  if (porcentaje < 0)
+      return 0
+  else if (porcentaje > 100)
+      return 100
+  else return porcentaje
+}
+
+const Informacion = ({curso, cursos_count}) => {
   function initializeMaterialize(){
     var elems = document.querySelectorAll('.slider');
     var options = { 
@@ -77,16 +102,16 @@ const Informacion = ({curso}) => {
               {/* Fechas */}
               <div className="col s12">
                 <div className="info-title">FECHAS</div>
-                <div className="txt-presentation txt-date-course">Inicio {curso.fecha_inicio}, Fin {curso.fecha_final}</div>                   
+                <div className="txt-presentation txt-date-course">Inicio {transformaFecha(curso.fecha_inicio)}, Fin {transformaFecha(curso.fecha_final)}</div>                   
                 {/* DIV progress bar del curso */}
                 <div className="row" style={{"display":"flex", "alignItems": "center", "marginBottom": "0px"}}>
                     <div className="col s5">
                         <div className="progress" style={{"margin": "0px"}}>
-                            <div className="determinate" style={{"width": "70%"}}></div>
+                            <div className="determinate" style={{"width": calculaAvance(curso.fecha_inicio, curso.fecha_final)+"%"}}></div>
                         </div>
                     </div>
                     <div className="col s7">
-                        <div className="txt-progress-course">Avance 15%</div>
+                        <div className="txt-progress-course">Avance {calculaAvance(curso.fecha_inicio, curso.fecha_final)}%</div>
                     </div>
                 </div>
               </div>
@@ -95,22 +120,19 @@ const Informacion = ({curso}) => {
                 <div className="info-title">PONENTE</div>
                 <div className="col s12" style={{"padding":"0px"}}>
                   <div className="nombre-ponente">
-                    Nombre del profesor
-                  </div>
-                  <div className="grado-ponente">
-                    Grado del profesor
+                    {curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}
                   </div>
                 </div>
                 <div className="col s3 m5 l3">
                   {/* <img className="foto-ponente red" src={"/storage/fotos_perfil/" + curso.teacher.foto} alt="img" /> */}
-                  <img className="foto-ponente red" src="/img/monita.jpg" alt="img" />
+                  <img className="foto-ponente" src={"/storage/fotos_perfil/"+curso.teacher.foto} alt="img" />
                 </div>
                 <div className="col s9 m7 l9">
                   {/* cantidad de cursos */}
                   <div className="txt-video-course">
                       {/* cantidad de participantes */}
                       <i className="material-icons tiny">play_circle</i> 
-                      <p style={{"marginLeft": "5px", "color": "#585858 !important"}}>15 cursos</p> 
+                      <p style={{"marginLeft": "5px", "color": "#585858 !important"}}>{cursos_count} cursos</p> 
                   </div>
                   {/* cantidad de participantes */}
                   <div className="txt-video-course" style={{"marginTop":"0px"}}>
