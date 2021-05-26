@@ -165,8 +165,8 @@ const Informacion = ({curso}) => {
                     </div>
                     {/* nombre del modulo y fecha de vencimiento*/}
                     <div className="col s12 posted-date">
-                      <span className="col m12 l6 posted-date">Módulo N "Nombre completo del modulo"</span>
-                      <span className="col m12 l6 expiration-date ">Vence el "fecha" a las "hora"</span>
+                      <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo N "Nombre completo del modulo"</span>
+                      <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el "fecha" a las "hora"</span>
                     </div>
                   </div>
                   {/* estatus */}
@@ -193,8 +193,8 @@ const Informacion = ({curso}) => {
                     </div>
                     {/* nombre del modulo y fecha de vencimiento*/}
                     <div className="col s12 posted-date">
-                      <span className="col m12 l6 posted-date">Módulo N "Nombre completo del modulo"</span>
-                      <span className="col m12 l6 expiration-date ">Vence el "fecha" a las "hora"</span>
+                      <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo N "Nombre completo del modulo"</span>
+                      <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el "fecha" a las "hora"</span>
                     </div>
                   </div>
                   {/* estatus */}
