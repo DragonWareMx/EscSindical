@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Module;
 use App\Models\Tag;
 use App\Models\Log;
 use App\Models\Image;
@@ -374,10 +375,21 @@ class CourseController extends Controller
         ]);
     }
 
-    public function modulos($id)
+    public function modulos($id){
+        return 'holiwis kiwis la ruta que buscas es /curso/1/modulo/1   , si quieres hacer la vista de modulos en general ve a CourseController.php y el return cambialo por el que debe de ser y ya ';
+    }
+
+    public function modulo($id,$mid)
     {
+        //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
+        $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
+        if(!$modulo){
+            return abort(404);
+        }
+        dd($modulo);
+
         return Inertia::render('Curso/Modulos', [
-            'curso' => Course::findOrFail($id),
+            'curso' => Course::findOrFail($id), 
         ]);
     }
 
