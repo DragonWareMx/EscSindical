@@ -387,4 +387,11 @@ class CourseController extends Controller
             'curso' => Course::with('users:id,nombre,foto,apellido_p,apellido_m,email','teacher:nombre,apellido_p,apellido_m,foto,id,email')->findOrFail($id),
         ]);
     }
+
+    public function mochila($id)
+    {
+        return Inertia::render('Curso/Mochila', [
+            'curso' => Course::findOrFail($id),
+        ]);
+    }
 }

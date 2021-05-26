@@ -83,7 +83,7 @@ const LayoutCursos = ({children}) => {
                                     </InertiaLink>
                                 </li>
                                 <li className="tab">
-                                    <InertiaLink id="tab_mochila" href="" className="LC_a" target="_self">
+                                    <InertiaLink id="tab_mochila" href={route('cursos.mochila', curso.id)} className="LC_a" target="_self">
                                         <i className="material-icons col s3 LC_tab_icons">backpack</i>
                                         <div className="col s9">Mochila</div>
                                     </InertiaLink>
