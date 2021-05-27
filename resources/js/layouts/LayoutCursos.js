@@ -57,14 +57,14 @@ const LayoutCursos = ({children}) => {
                         <div className="col s11 valign-wrapper LC_title">Programación orientada a objetos&nbsp; <i className="material-icons">verified</i></div>
                         <div className="col s1 LC_more"><a className='dropdown-trigger' href='#' data-target='dropdown_LC'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                         <ul id='dropdown_LC' className='dropdown-content'>
-                            <li><InertiaLink className="dropdown-text" href="#"><i class="material-icons">error_outline</i>Solicitar baja del curso</InertiaLink></li>
+                            <li><InertiaLink className="dropdown-text" href="#"><i className="material-icons">error_outline</i>Solicitar baja del curso</InertiaLink></li>
                             <li className="divider" tabIndex="-1"></li>
                             {/* Opciones exclusivas del ponente */}
-                            <li><InertiaLink className="dropdown-text" href={route('cursos.edit',1)}><i class="material-icons">edit</i>Editar curso</InertiaLink></li>
+                            <li><InertiaLink className="dropdown-text" href={route('cursos.edit',1)}><i className="material-icons">edit</i>Editar curso</InertiaLink></li>
                             <li className="divider" tabIndex="-1"></li>
-                            <li><a className="dropdown-text" href="#!"><i class="material-icons">file_download</i>Descargar reporte del curso</a></li>
+                            <li><a className="dropdown-text" href="#!"><i className="material-icons">file_download</i>Descargar reporte del curso</a></li>
                             <li className="divider" tabIndex="-1"></li>
-                            <li><a className="dropdown-text modal-trigger" href="#modalSolicitud"><i class="material-icons">error_outline</i>Solicitar eliminación del curso</a></li>
+                            <li><a className="dropdown-text modal-trigger" href="#modalSolicitud"><i className="material-icons">error_outline</i>Solicitar eliminación del curso</a></li>
                         </ul>
                    </div>
                     <div className="row">
@@ -83,7 +83,7 @@ const LayoutCursos = ({children}) => {
                                     </InertiaLink>
                                 </li>
                                 <li className="tab">
-                                    <InertiaLink id="tab_mochila" href="" className="LC_a" target="_self">
+                                    <InertiaLink id="tab_mochila" href={route('cursos.mochila', curso.id)} className="LC_a" target="_self">
                                         <i className="material-icons col s3 LC_tab_icons">backpack</i>
                                         <div className="col s9">Mochila</div>
                                     </InertiaLink>

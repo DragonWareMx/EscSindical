@@ -31,7 +31,7 @@ function calculaAvance(ini, fin) {
   else return porcentaje
 }
 
-const Informacion = ({curso, cursos_count}) => {
+const Informacion = ({curso, cursos_count, participantes_count}) => {
   function initializeMaterialize(){
     var elems = document.querySelectorAll('.slider');
     var options = { 
@@ -89,9 +89,9 @@ const Informacion = ({curso, cursos_count}) => {
                 </div>
                 {/* Enlace a las videoconferencias */}
                 <div className="col s12">
-                  <a href={curso.link} className="txt-video-course" style={{"marginTop":"0px"}}>
-                      <i className="material-icons tiny">videocam</i>
-                      <p style={{"marginLeft": "5px", "textDecoration": "underline"}}>Clic para acceder</p>
+                  <a href={curso.link} className="txt-video-course" style={{"marginTop":"10px"}}>
+                      <i className="material-icons tiny" >videocam</i>
+                      <a href={curso.link} target="_blank" style={{"marginLeft": "5px", "textDecoration": "underline",color:"#185E45"}}>Clic para acceder</a>
                   </a>
                 </div>
                 
@@ -137,7 +137,7 @@ const Informacion = ({curso, cursos_count}) => {
                   {/* cantidad de participantes */}
                   <div className="txt-video-course" style={{"marginTop":"0px"}}>
                     <i className="material-icons tiny">people</i>
-                    <p style={{"marginLeft": "5px", "color": "#585858 !important"}}> 125 participantes</p>
+                    <p style={{"marginLeft": "5px", "color": "#585858 !important"}}> {participantes_count} participantes</p>
                     {/* <p style={{"marginLeft": "5px", "color": "#585858 !important"}}> {curso.users.length} participantes</p> */}
                   </div>
                 </div>
