@@ -12,18 +12,33 @@ function tooltip(){
     var instances = M.Tooltip.init(elems);
 }
 
-function seleccionar_todo(){
-    for (i=0;i<document.form_solicitudes.elements.length;i++)
-       if(document.form_solicitudes.elements[i].type == "checkbox")
-        document.form_solicitudes.elements[i].checked=1
-       
-          
- }
+
 
 const Solicitudes = ({curso}) => {
     useEffect(() => {
         tooltip();
     }, [])
+
+    function seleccionar_todo(){
+        // for (i=0;i<document.form_solicitudes.elements.length;i++)
+        //    if(document.form_solicitudes.elements[i].type == "checkbox")
+        //     document.form_solicitudes.elements[i].checked=1
+        textOn = document.getElementById('txt-select-all');
+        textOff = document.getElementById('txt-select-all-not');
+        textOn.style.display = 'none';
+        textOn.style.display = 'block';
+     }
+    
+     function seleccionar_todo_not(){
+        // for (i=0;i<document.form_solicitudes.elements.length;i++)
+        //    if(document.form_solicitudes.elements[i].type == "checkbox")
+        //     document.form_solicitudes.elements[i].checked=1
+        textOn = document.getElementById('txt-select-all');
+        textOff = document.getElementById('txt-select-all-not');
+        textOn.style.display = 'block';
+        textOn.style.display = 'none';
+     }
+
     return (
     <>
         <div className="row">
@@ -33,8 +48,11 @@ const Solicitudes = ({curso}) => {
                 <InertiaLink  href={route('cursos.participantes', curso.id)}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i class="material-icons">keyboard_backspace</i></InertiaLink>
                 SOLICITUDES
             </div>
-            {/* <div className="col s12 m3 l2 xl2 right" style={{"textAlign":"right"}}><InertiaLink  className="link-solicitudes">Solicitudes<i class="material-icons tiny" style={{"marginLeft":"10px","marginRight":"5px"}}>mail</i>3</InertiaLink></div> */}
-            <a className="col s12 a-select-all" onClick={seleccionar_todo}>Seleccionar todos</a>
+            <div className="col s12">
+                <a className="a-select-all" id="txt-select-all" onClick={seleccionar_todo}>Seleccionar todos</a>
+                <a className="a-select-all" id="txt-select-all-not" onClick={seleccionar_todo_not} style={{"display":"none"}}>Descartar selección</a>
+            </div>
+            
 
             {/* Row de estudiante item*/}
             <div className="col s12 div-collection-item div-item-solicitudes">

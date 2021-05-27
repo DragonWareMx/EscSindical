@@ -56,6 +56,7 @@
     color:#108058;
     transition: all ease-in-out 0.25s;
     margin-bottom: 15px;
+    cursor:pointer;
 }
 .link-solicitudes{
     font-style: normal;
