@@ -11,10 +11,10 @@ const Participantes = ({curso}) => {
     <>
         <div className="row">
             <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>PARTICIPANTES</div>
-            <div className="col s12 m3 l2 xl2 right" style={{"textAlign":"right"}}><InertiaLink className="link-solicitudes">Solicitudes<i class="material-icons tiny" style={{"marginLeft":"10px"}}>mail</i>3</InertiaLink></div>
+            <div className="col s12 m3 l2 xl2 right" style={{"textAlign":"right"}}><InertiaLink href={route('cursos.solicitudes', curso.id)} className="link-solicitudes">Solicitudes<i class="material-icons tiny" style={{"marginLeft":"10px","marginRight":"5px"}}>mail</i>3</InertiaLink></div>
             <div className="col s12 P_sub" style={{marginTop:"15px"}}>Ponente</div>
             
-            {/* Row de estudiante */}
+            {/* Row de ponente */}
             <div className="col s12 div-collection-item ">
                 {/* btn de opciones, solo aparece para los estudiantes*/}
                 <div className="col s12 m1 l1 xl1 right "><a className='dropdown-trigger right' href='#' data-target='dropdown-option-student'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
@@ -65,7 +65,7 @@ const Participantes = ({curso}) => {
 }
 
 Participantes.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="Curso Nombre del curso">
+  <Layout title="Escuela sindical - Curso" pageTitle="PARTICIPANTES">
     <LayoutCursos children={page} />
   </Layout>
 )
