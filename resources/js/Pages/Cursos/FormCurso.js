@@ -81,8 +81,8 @@ const FormCurso = ({capacitaciones}) => {
                     ... values,
                     fecha_inicio : document.getElementById("fecha_inicio").value,
                     fecha_final : document.getElementById("fecha_final").value,
-                    inscIni : document.getElementById("inscIni").value,
-                    inscFin : document.getElementById("inscFin").value,
+                    inicio_inscripciones : document.getElementById("inicio_inscripciones").value,
+                    final_inscripciones : document.getElementById("final_inscripciones").value,
                 }))
             },
           };
@@ -108,8 +108,8 @@ const FormCurso = ({capacitaciones}) => {
         vc:true,
         tipos_de_capacitacion: [],
         active: true,
-        inscIni:"",
-        inscFin: "",
+        inicio_inscripciones:"",
+        final_inscripciones: "",
         tipo_inscripcion: "",
         descripcion: "",
         imgs: "",
@@ -126,9 +126,10 @@ const FormCurso = ({capacitaciones}) => {
     }
 
     function onValueChange(e) {
+        var tipo = e.target.value
         setValues (values =>({
             ... values,
-            tipo_inscripcion: e.target.value,
+            tipo_inscripcion: tipo
         }))
     }
 
