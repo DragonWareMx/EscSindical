@@ -107,11 +107,68 @@ const Crear = ({ cursos }) => {
         tipo: "",
         titulo: "",
         contenido: "",
+        archivos: null,
         visible: "",
         notificacion: "",
         link: "",
-        link_del_examen: ""
     })
+
+    function ocultarTodos() {
+
+        var input = document.getElementById("fecha-a-div");
+        input.style.display = "none";
+        var input = document.getElementById("fecha-e-div");
+        input.style.display = "none";
+        // var input = document.getElementById("switch-visible-div");
+        // input.style.display = "none";
+        // var input = document.getElementById("switch-notif-div");
+        // input.style.display = "none";
+        // var input = document.getElementById("switch-envios-div");
+        // input.style.display = "none";
+    }
+
+    function mostrarAsignacion() {
+        ocultarTodos();
+        var input = document.getElementById("fecha-a-div");
+        input.style.display = "block";
+        var input = document.getElementById("fecha-e-div");
+        input.style.display = "block";
+        // var input = document.getElementById("switch-visible-div");
+        // input.style.display = "block";
+        // var input = document.getElementById("switch-notif-div");
+        // input.style.display = "block";
+        // var input = document.getElementById("switch-envios-div");
+        // input.style.display = "block";
+    }
+
+    function mostrarExamen() {
+        ocultarTodos();
+        var input = document.getElementById("fecha-a-div");
+        input.style.display = "block";
+        var input = document.getElementById("fecha-e-div");
+        input.style.display = "block";
+        // var input = document.getElementById("switch-visible-div");
+        // input.style.display = "block";
+        // var input = document.getElementById("switch-notif-div");
+        // input.style.display = "block";
+        // var input = document.getElementById("switch-envios-div");
+        // input.style.display = "block";
+    }
+
+    function cambiarForm(e) {
+        handleChange(e);
+        var tipo = document.getElementById("tipo").value;
+        switch (tipo) {
+            case "Asignacion":
+                mostrarAsignacion();
+                break;
+            case "Examen":
+                mostrarExamen();
+                break;
+            default:
+                break;
+        }
+    }
 
     //actualiza los hooks cada vez que se modifica un input
     function handleChange(e) {
@@ -121,122 +178,6 @@ const Crear = ({ cursos }) => {
             ...values,
             [key]: value,
         }))
-    }
-
-    function ocultarTodos() {
-        var input = document.getElementById("link-div");
-        input.style.display = "none";
-        // var input = document.getElementById("link-examen-div");
-        // input.style.display = "none";
-        var input = document.getElementById("ckeditor-div");
-        input.style.display = "none";
-        var input = document.getElementById("file-div");
-        input.style.display = "none";
-        var input = document.getElementById("fecha-a-div");
-        input.style.display = "none";
-        var input = document.getElementById("fecha-e-div");
-        input.style.display = "none";
-        var input = document.getElementById("switch-visible-div");
-        input.style.display = "none";
-        var input = document.getElementById("switch-notif-div");
-        input.style.display = "none";
-        var input = document.getElementById("switch-envios-div");
-        input.style.display = "none";
-    }
-
-    function mostrarAviso() {
-        ocultarTodos();
-        var input = document.getElementById("ckeditor-div");
-        input.style.display = "block";
-        var input = document.getElementById("file-div");
-        input.style.display = "block";
-        var input = document.getElementById("switch-visible-div");
-        input.style.display = "block";
-        var input = document.getElementById("switch-notif-div");
-        input.style.display = "block";
-    }
-
-    function mostrarEnlace() {
-        ocultarTodos();
-        var input = document.getElementById("link-div");
-        input.style.display = "block";
-        var input = document.getElementById("switch-visible-div");
-        input.style.display = "block";
-        var input = document.getElementById("switch-notif-div");
-        input.style.display = "block";
-    }
-
-    function mostrarArchivo() {
-        ocultarTodos();
-        var input = document.getElementById("file-div");
-        input.style.display = "block";
-        var input = document.getElementById("switch-visible-div");
-        input.style.display = "block";
-        var input = document.getElementById("switch-notif-div");
-        input.style.display = "block";
-    }
-
-    function mostrarAsignacion() {
-        ocultarTodos();
-        var input = document.getElementById("ckeditor-div");
-        input.style.display = "block";
-        var input = document.getElementById("file-div");
-        input.style.display = "block";
-        var input = document.getElementById("fecha-a-div");
-        input.style.display = "block";
-        var input = document.getElementById("fecha-e-div");
-        input.style.display = "block";
-        var input = document.getElementById("switch-visible-div");
-        input.style.display = "block";
-        var input = document.getElementById("switch-notif-div");
-        input.style.display = "block";
-        var input = document.getElementById("switch-envios-div");
-        input.style.display = "block";
-    }
-
-    function mostrarExamen() {
-        ocultarTodos();
-        var input = document.getElementById("link-examen-div");
-        input.style.display = "block";
-        var input = document.getElementById("ckeditor-div");
-        input.style.display = "block";
-        var input = document.getElementById("fecha-a-div");
-        input.style.display = "block";
-        var input = document.getElementById("fecha-e-div");
-        input.style.display = "block";
-        var input = document.getElementById("switch-visible-div");
-        input.style.display = "block";
-        var input = document.getElementById("switch-notif-div");
-        input.style.display = "block";
-        var input = document.getElementById("switch-envios-div");
-        input.style.display = "block";
-    }
-
-    function cambiarForm(e) {
-        handleChange(e);
-        var tipo = document.getElementById("tipo").value;
-        switch (tipo) {
-            case "Aviso":
-                mostrarAviso();
-                break;
-            case "Informacion":
-                mostrarAviso();
-                break;
-            case "Enlace":
-                mostrarEnlace();
-                break;
-            case "Archivo":
-                mostrarArchivo();
-                break;
-            case "Asignacion":
-                mostrarAsignacion();
-                break;
-            case "Examen":
-                //mostrarExamen();
-                break;
-            default:
-                break;
-        }
     }
 
     function changeModulos(e) {
@@ -258,6 +199,18 @@ const Crear = ({ cursos }) => {
         }))
         var elems = document.querySelectorAll('select');
         var instances = M.FormSelect.init(elems);
+    }
+
+    function changeArchivos(e) {
+        var inputArchivos = document.getElementById('archivos');
+        console.log(inputArchivos.files);
+        if (inputArchivos.files && inputArchivos.files.length > 0) {
+            setValues(values => ({
+                ...values,
+                archivos: inputArchivos.files,
+            }))
+        }
+
     }
 
     return (
@@ -305,53 +258,184 @@ const Crear = ({ cursos }) => {
                                             <input id="titulo" name="titulo" type="text" className="validate" value={values.titulo} onChange={handleChange} />
                                             <label htmlFor="titulo">Título de la entrada</label>
                                         </div>
-                                        {/* Aqui va el input del link */}
-                                        <div id="link-div" className="input-field col s12" style={{ display: "none" }}>
-                                            <input id="link" name="link" type="text" className="validate" value={values.link} onChange={handleChange} />
-                                            <label htmlFor="link">Link de la entrada</label>
-                                        </div>
-                                        {/* Aqui va el input del link del examen */}
-                                        {values.tipo == "Examen" &&
+                                        {/* Aqui va el input del link normal y del examen */}
+                                        {values.tipo == "Examen" ?
                                             <div id="link-examen-div" className="input-field col s12" >
-                                                <input id="link_del_examen" name="link_del_examen" type="text" className="validate" value={values.link_del_examen} onChange={handleChange} required />
+                                                <input id="link" name="link" type="text" className="validate" value={values.link} onChange={handleChange} required />
                                                 <label htmlFor="link">Link del examen</label>
+                                            </div>
+                                            : values.tipo == "Enlace" &&
+                                            <div id="link-examen-div" className="input-field col s12" >
+                                                <input id="link" name="link" type="text" className="validate" value={values.link} onChange={handleChange} required />
+                                                <label htmlFor="link">Link de la entrada</label>
                                             </div>
                                         }
                                         {/* Aqui va el CKeditor */}
-                                        <div id="ckeditor-div" className="col s12" style={{ display: "none" }}>
-                                            <h2 className="ck-titulo">Contenido</h2>
-                                            <CKEditor
-                                                editor={ClassicEditor}
-                                                data=""
-                                                onReady={editor => {
-                                                    // You can store the "editor" and use when it is needed.
-                                                    console.log('Editor is ready to use!', editor);
-                                                }}
-                                                onChange={(event, editor) => {
-                                                    const data = editor.getData();
-                                                    console.log({ event, editor, data });
-                                                }}
-                                                onBlur={(event, editor) => {
-                                                    console.log('Blur.', editor);
-                                                }}
-                                                onFocus={(event, editor) => {
-                                                    console.log('Focus.', editor);
-                                                }}
-                                            />
-                                        </div>
-                                        {/* -- INPUT FILE -- */}
-                                        <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%", display: "none" }}>
-                                            <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)</p>
-                                            <div className="file-field input-field" style={{ "border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px" }}>
-                                                <div className="col s12">
-                                                    <span style={{ fontSize: "12px", textAlign: "center", paddingTop: "10px" }} className="col s12">Arrastre aquí los archivos o <b>clic</b> para seleccionarlos</span>
-                                                    <input type="file" multiple className="form-control" id="archivos" name="archivos" />
+                                        {values.tipo == "Aviso" ?
+                                            <div id="ckeditor-div" className="col s12">
+                                                <h2 className="ck-titulo">Contenido</h2>
+                                                <CKEditor
+                                                    editor={ClassicEditor}
+                                                    data=""
+                                                    onReady={editor => {
+
+                                                    }}
+                                                    onChange={(event, editor) => {
+                                                        const data = editor.getData();
+                                                        setValues(values => ({
+                                                            ...values,
+                                                            contenido: data,
+                                                        }))
+                                                    }}
+                                                    onBlur={(event, editor) => {
+
+                                                    }}
+                                                    onFocus={(event, editor) => {
+
+                                                    }}
+                                                />
+                                            </div>
+                                            : values.tipo == "Informacion" ?
+                                                <div id="ckeditor-div" className="col s12" >
+                                                    <h2 className="ck-titulo">Contenido</h2>
+                                                    <CKEditor
+                                                        editor={ClassicEditor}
+                                                        data=""
+                                                        onReady={editor => {
+
+                                                        }}
+                                                        onChange={(event, editor) => {
+                                                            const data = editor.getData();
+                                                            setValues(values => ({
+                                                                ...values,
+                                                                contenido: data,
+                                                            }))
+                                                        }}
+                                                        onBlur={(event, editor) => {
+
+                                                        }}
+                                                        onFocus={(event, editor) => {
+
+                                                        }}
+                                                    />
                                                 </div>
-                                                <div className="file-path-wrapper">
-                                                    <input className="file-path validate" type="text" />
+                                                : values.tipo == "Asignacion" ?
+                                                    <div id="ckeditor-div" className="col s12" >
+                                                        <h2 className="ck-titulo">Contenido</h2>
+                                                        <CKEditor
+                                                            editor={ClassicEditor}
+                                                            data=""
+                                                            onReady={editor => {
+
+                                                            }}
+                                                            onChange={(event, editor) => {
+                                                                const data = editor.getData();
+                                                                setValues(values => ({
+                                                                    ...values,
+                                                                    contenido: data,
+                                                                }))
+                                                            }}
+                                                            onBlur={(event, editor) => {
+
+                                                            }}
+                                                            onFocus={(event, editor) => {
+
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    : values.tipo == "Examen" &&
+                                                    <div id="ckeditor-div" className="col s12" >
+                                                        <h2 className="ck-titulo">Información (Opcional)</h2>
+                                                        <CKEditor
+                                                            editor={ClassicEditor}
+                                                            data=""
+                                                            onReady={editor => {
+
+                                                            }}
+                                                            onChange={(event, editor) => {
+                                                                const data = editor.getData();
+                                                                setValues(values => ({
+                                                                    ...values,
+                                                                    contenido: data,
+                                                                }))
+                                                            }}
+                                                            onBlur={(event, editor) => {
+
+                                                            }}
+                                                            onFocus={(event, editor) => {
+
+                                                            }}
+                                                        />
+                                                    </div>
+                                        }
+                                        {/* -- INPUT FILE -- */}
+                                        {values.tipo == "Aviso" ?
+                                            <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
+                                                <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)</p>
+                                                <div className="file-field input-field" style={{ "border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px" }}>
+                                                    <div className="col s12">
+                                                        <span style={{ fontSize: "12px", textAlign: "center", paddingTop: "10px" }} className="col s12">Arrastre aquí los archivos o <b>clic</b> para seleccionarlos</span>
+                                                        <input type="file" multiple className="form-control" id="archivos" name="archivos" onChange={changeArchivos} />
+                                                    </div>
+                                                    <div className="file-path-wrapper">
+                                                        <input className="file-path validate" type="text" />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                            : values.tipo == "Informacion" ?
+                                                <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
+                                                    <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)</p>
+                                                    <div className="file-field input-field" style={{ "border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px" }}>
+                                                        <div className="col s12">
+                                                            <span style={{ fontSize: "12px", textAlign: "center", paddingTop: "10px" }} className="col s12">Arrastre aquí los archivos o <b>clic</b> para seleccionarlos</span>
+                                                            <input type="file" multiple className="form-control" id="archivos" name="archivos" onChange={changeArchivos} />
+                                                        </div>
+                                                        <div className="file-path-wrapper">
+                                                            <input className="file-path validate" type="text" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                : values.tipo == "Recurso" ?
+                                                    <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
+                                                        <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)</p>
+                                                        <div className="file-field input-field" style={{ "border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px" }}>
+                                                            <div className="col s12">
+                                                                <span style={{ fontSize: "12px", textAlign: "center", paddingTop: "10px" }} className="col s12">Arrastre aquí los archivos o <b>clic</b> para seleccionarlos</span>
+                                                                <input type="file" multiple className="form-control" id="archivos" name="archivos" onChange={changeArchivos} />
+                                                            </div>
+                                                            <div className="file-path-wrapper">
+                                                                <input className="file-path validate" type="text" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    : values.tipo == "Archivo" ?
+                                                        <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
+                                                            <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)</p>
+                                                            <div className="file-field input-field" style={{ "border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px" }}>
+                                                                <div className="col s12">
+                                                                    <span style={{ fontSize: "12px", textAlign: "center", paddingTop: "10px" }} className="col s12">Arrastre aquí los archivos o <b>clic</b> para seleccionarlos</span>
+                                                                    <input type="file" multiple className="form-control" id="archivos" name="archivos" onChange={changeArchivos} />
+                                                                </div>
+                                                                <div className="file-path-wrapper">
+                                                                    <input className="file-path validate" type="text" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        : values.tipo == "Asignacion" &&
+                                                        <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
+                                                            <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)</p>
+                                                            <div className="file-field input-field" style={{ "border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px" }}>
+                                                                <div className="col s12">
+                                                                    <span style={{ fontSize: "12px", textAlign: "center", paddingTop: "10px" }} className="col s12">Arrastre aquí los archivos o <b>clic</b> para seleccionarlos</span>
+                                                                    <input type="file" multiple className="form-control" id="archivos" name="archivos" onChange={changeArchivos} />
+                                                                </div>
+                                                                <div className="file-path-wrapper">
+                                                                    <input className="file-path validate" type="text" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                        }
+
                                         {/* fecha de apertura */}
                                         <div id="fecha-a-div" className="col s12 m6" style={{ display: "none", marginBottom: "1%" }}>
                                             <h2 className="ck-titulo">Fecha de apertura</h2>
@@ -373,41 +457,59 @@ const Crear = ({ cursos }) => {
                                             </div>
                                         </div>
                                         {/* primer switch */}
-                                        <div id="switch-visible-div" className="col s12 m4 l3" style={{ display: "none" }}>
-                                            <h2 className="ck-titulo">Visible dentro del curso</h2>
-                                            <div className="switch">
-                                                <label>
-                                                    No
+                                        {values.tipo != "" &&
+                                            <div id="switch-visible-div" className="col s12 m4 l3">
+                                                <h2 className="ck-titulo">Visible dentro del curso</h2>
+                                                <div className="switch">
+                                                    <label>
+                                                        No
                                                 <input type="checkbox" />
-                                                    <span className="lever" />
+                                                        <span className="lever" />
                                                     Si
                                             </label>
+                                                </div>
                                             </div>
-                                        </div>
+                                        }
                                         {/* segundo switch */}
-                                        <div id="switch-notif-div" className="col s12 m4 l3" style={{ display: "none" }}>
-                                            <h2 className="ck-titulo">Notificar a los participantes</h2>
-                                            <div className="switch">
-                                                <label>
-                                                    No
+                                        {values.tipo != "" &&
+                                            <div id="switch-notif-div" className="col s12 m4 l3" >
+                                                <h2 className="ck-titulo">Notificar a los participantes</h2>
+                                                <div className="switch">
+                                                    <label>
+                                                        No
                                                 <input type="checkbox" />
-                                                    <span className="lever" />
+                                                        <span className="lever" />
                                                     Si
                                             </label>
+                                                </div>
                                             </div>
-                                        </div>
+                                        }
                                         {/* tercer switch envios retrasados */}
-                                        <div id="switch-envios-div" className="col s12 m4 l3" style={{ display: "none" }}>
-                                            <h2 className="ck-titulo">Permitir envios retrasados</h2>
-                                            <div className="switch">
-                                                <label>
-                                                    No
+                                        {values.tipo == "Asignacion" ?
+                                            <div id="switch-envios-div" className="col s12 m4 l3">
+                                                <h2 className="ck-titulo">Permitir envios retrasados</h2>
+                                                <div className="switch">
+                                                    <label>
+                                                        No
                                                 <input type="checkbox" />
-                                                    <span className="lever" />
+                                                        <span className="lever" />
                                                     Si
                                             </label>
+                                                </div>
                                             </div>
-                                        </div>
+                                            : values.tipo == "Examen" &&
+                                            <div id="switch-envios-div" className="col s12 m4 l3" >
+                                                <h2 className="ck-titulo">Permitir envios retrasados</h2>
+                                                <div className="switch">
+                                                    <label>
+                                                        No
+                                            <input type="checkbox" />
+                                                        <span className="lever" />
+                                                Si
+                                        </label>
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
                                     {/* Aqui empieza el div flex donde esta el boton que submitea el form */}
                                     <div className="row" style={{ marginBottom: "0px" }}>
