@@ -70,3 +70,6 @@ Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->
 Route::get('/perfil/publico/{id}', [App\Http\Controllers\PerfilController::class, 'verPerfil'])->name('perfil.public');
 Route::get('/perfil/configuracion', [App\Http\Controllers\PerfilController::class, 'edit'])->name('perfil.edit');
 Route::patch('/perfil/configuracion', [App\Http\Controllers\PerfilController::class, 'update'])->name('perfil.update');
+
+//----------RECURSOS------------
+Route::get('/entrada/crear', [App\Http\Controllers\EntryController::class, 'index'])->name('entrada.crear');
