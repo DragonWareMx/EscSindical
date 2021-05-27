@@ -55,6 +55,10 @@ const Crear = () => {
         input.style.display = "none";
         var input = document.getElementById("fecha-e-div");
         input.style.display = "none";
+        var input = document.getElementById("switch-visible-div");
+        input.style.display = "none";
+        var input = document.getElementById("switch-notif-div");
+        input.style.display = "none";
         var input = document.getElementById("switch-envios-div");
         input.style.display = "none";
     }
@@ -65,17 +69,29 @@ const Crear = () => {
         input.style.display = "block";
         var input = document.getElementById("file-div");
         input.style.display = "block";
+        var input = document.getElementById("switch-visible-div");
+        input.style.display = "block";
+        var input = document.getElementById("switch-notif-div");
+        input.style.display = "block";
     }
 
     function mostrarEnlace() {
         ocultarTodos();
         var input = document.getElementById("link-div");
         input.style.display = "block";
+        var input = document.getElementById("switch-visible-div");
+        input.style.display = "block";
+        var input = document.getElementById("switch-notif-div");
+        input.style.display = "block";
     }
 
     function mostrarArchivo() {
         ocultarTodos();
         var input = document.getElementById("file-div");
+        input.style.display = "block";
+        var input = document.getElementById("switch-visible-div");
+        input.style.display = "block";
+        var input = document.getElementById("switch-notif-div");
         input.style.display = "block";
     }
 
@@ -88,6 +104,10 @@ const Crear = () => {
         var input = document.getElementById("fecha-a-div");
         input.style.display = "block";
         var input = document.getElementById("fecha-e-div");
+        input.style.display = "block";
+        var input = document.getElementById("switch-visible-div");
+        input.style.display = "block";
+        var input = document.getElementById("switch-notif-div");
         input.style.display = "block";
         var input = document.getElementById("switch-envios-div");
         input.style.display = "block";
@@ -102,6 +122,10 @@ const Crear = () => {
         var input = document.getElementById("fecha-a-div");
         input.style.display = "block";
         var input = document.getElementById("fecha-e-div");
+        input.style.display = "block";
+        var input = document.getElementById("switch-visible-div");
+        input.style.display = "block";
+        var input = document.getElementById("switch-notif-div");
         input.style.display = "block";
         var input = document.getElementById("switch-envios-div");
         input.style.display = "block";
@@ -215,7 +239,7 @@ const Crear = () => {
                                             aqui va el input
                                         </div>
                                         {/* primer switch */}
-                                        <div className="col s12 m4 l3" style={{ display: "none" }}>
+                                        <div id="switch-visible-div" className="col s12 m4 l3" style={{ display: "none" }}>
                                             <h2 className="ck-titulo">Visible dentro del curso</h2>
                                             <div className="switch">
                                                 <label>
@@ -227,7 +251,7 @@ const Crear = () => {
                                             </div>
                                         </div>
                                         {/* segundo switch */}
-                                        <div className="col s12 m4 l3" style={{ display: "none" }}>
+                                        <div id="switch-notif-div" className="col s12 m4 l3" style={{ display: "none" }}>
                                             <h2 className="ck-titulo">Notificar a los participantes</h2>
                                             <div className="switch">
                                                 <label>
