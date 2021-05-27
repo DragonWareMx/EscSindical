@@ -1,60 +1,75 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
+import { InertiaLink, useRemember } from '@inertiajs/inertia-react';
 
 import '/css/participantes.css'
 import '/css/modulos.css'
 
 const Participantes = ({curso}) => {
+
+    function initializeMaterialize(){
+        var elems = document.querySelectorAll('.dropdown-trigger');
+        var instances = M.Dropdown.init(elems);
+    }
+
+    useEffect(() => {
+        initializeMaterialize();
+      }, [])
+
+
   return (
     <>
         <div className="row">
-            <div className="col s12 titulo-modulo" style={{marginTop:"15px"}}>PARTICIPANTES</div>
+            <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>PARTICIPANTES</div>
+            <div className="col s12 m3 l2 xl2 right" style={{"textAlign":"right"}}><InertiaLink href={route('cursos.solicitudes', curso.id)} className="link-solicitudes">Solicitudes<i class="material-icons tiny" style={{"marginLeft":"10px","marginRight":"5px"}}>mail</i>3</InertiaLink></div>
             <div className="col s12 P_sub" style={{marginTop:"15px"}}>Ponente</div>
-            <div className="col s12">
-                <div className=" P_collection_item">
-                    <img className="P_collection_image" width="50" height="50" src="https://pbs.twimg.com/media/EeQNlGqX0AUgHYD?format=jpg&name=900x900"></img>
+            
+            {/* Row de ponente */}
+            <div className="col s12 div-collection-item ">
+                {/* Información del usuario */}
+                <div className=" P_collection_item col s12 m11 l11 xl11 left">
+                    <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src={"/storage/fotos_perfil/"+curso.teacher.foto}></img></InertiaLink>
                     <div>
-                        <span className="P_collection_title">José Agustín Aguilar Solórzano</span>
-                        <div className="P_collection_subtitle">Doctor en ciencias de la computación</div>
+                        <InertiaLink  href="" className="P_collection_title">{curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m} </InertiaLink>
+                        <div className="P_collection_subtitle">Ponente</div>
                     </div>
                 </div>
             </div>
+
             <div className="col s12 P_sub" style={{marginTop:"15px"}}>Compañeros de clase</div>
-            <div className="col s12">
-                <div className=" P_collection_item">
-                    <img className="P_collection_image" width="50" height="50" src="https://pm1.narvii.com/6417/9b21a494d74d84ff21064f2fa0b72d294bd7a96f_hq.jpg"></img>
-                    <div>
-                        <span className="P_collection_title">Óscar André Huerta García</span>
-                        <div className="P_collection_subtitle">Estudiante</div>
+            
+            {/* Rows de estudiantes */}
+            {curso.users && curso.users.length>0 && curso.users.map((user, index) =>
+                <div className="col s12 div-collection-item" key={index}>
+                    {/* btn de opciones */}
+                    <div className="col s12 m1 l1 xl1 right "><a className='dropdown-trigger right' href='#' data-target={'dropdown-option-student'+index}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
+                    <ul id={'dropdown-option-student'+index} className='dropdown-content dropdown_LC'>
+                        <li><a className="dropdown-text" href={"mailto:"+user.email}><i className="material-icons">mail</i>Enviar mensaje</a></li>
+                        <li className="divider" tabIndex="-1"></li>
+                        {/* Opción exclusiva para el ponente */}
+                        <li><a className="dropdown-text modal-trigger" href="#modalEliminar"><i className="material-icons">error_outline</i>Dar de baja del curso</a></li>
+                        
+                        <li className="divider" tabIndex="-1"></li>
+                        <li><a className="dropdown-text modal-trigger" href="#modalReportar"><i className="material-icons">report_problem</i>Reportar</a></li>
+                    </ul>
+                    {/* Información del usuario */}
+                    <div className=" P_collection_item col s12 m11 l11 xl11 left">
+                        <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src={"/storage/fotos_perfil/"+user.foto}></img></InertiaLink>
+                        <div>
+                            <InertiaLink  href="#!" className="P_collection_title">{user.nombre} {user.apellido_p} {user.apellido_m}</InertiaLink>
+                            <div className="P_collection_subtitle">Estudiante</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="col s12">
-                <div className=" P_collection_item">
-                    <img className="P_collection_image" width="50" height="50" src="https://images5.fanpop.com/image/photos/30800000/The-Rev-the-rev-30875864-335-440.jpg"></img>
-                    <div>
-                        <span className="P_collection_title">Fernando Adrián García Sánchez</span>
-                        <div className="P_collection_subtitle">Estudiante</div>
-                    </div>
-                </div>
-            </div>
-            <div className="col s12">
-                <div className=" P_collection_item">
-                    <img className="P_collection_image" width="50" height="50" src="https://rocknvivo.com/wp-content/uploads/2011/03/a7x.jpg"></img>
-                    <div>
-                        <span className="P_collection_title">Leonardo Daniel López López</span>
-                        <div className="P_collection_subtitle">Estudiante</div>
-                    </div>
-                </div>
-            </div>
+            )}
         </div>
     </>
   )
 }
 
 Participantes.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="Curso Nombre del curso">
+  <Layout title="Escuela sindical - Curso" pageTitle="PARTICIPANTES">
     <LayoutCursos children={page} />
   </Layout>
 )

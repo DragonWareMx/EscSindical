@@ -445,14 +445,14 @@ const Usuarios = ({ users, request }) => {
                                         <ul id="dropdown-filter" className="dropdown-content" style={{ top: "0px" }}>
                                             <li><a onClick={() => { filter("matricula") }} className={request.filter == "matricula" ? "selected" : ""}>Matrícula</a></li>
                                             <li><a onClick={() => { filter("rol") }} className={request.filter == "rol" ? "selected" : ""}>Rol</a></li>
-                                            <li><a onClick={() => { filter("nombre") }} className={request.filter == "nombre" ? "selected" : ""}>Nombre</a></li>
+                                            <li><a onClick={() => { filter("nombre") }} className={request.hasOwnProperty('filter') ? request.filter == "nombre" ? "selected" : "" : "selected"}>Nombre</a></li>
                                             <li><a onClick={() => { filter("unidad") }} className={request.filter == "unidad" ? "selected" : ""}>Unidad</a></li>
                                             <li><a onClick={() => { filter("categoria") }} className={request.filter == "categoria" ? "selected" : ""}>Categoría</a></li>
                                             <li><a onClick={() => { filter("eliminado") }} className={request.filter == "eliminado" ? "selected" : ""}>Eliminado</a></li>
                                         </ul>
                                     </div>
                                     <div className="input-field col s11" style={{ marginLeft: "0px" }}>
-                                        <input id="user_search" type="search" onChange={changeName} />
+                                        <input id="user_search" type="search" onChange={changeName} autoComplete="off" />
                                         <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                                         <i className="material-icons">close</i>
                                     </div>

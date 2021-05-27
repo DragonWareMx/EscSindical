@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class HomeController extends Controller
 {
@@ -24,6 +25,12 @@ class HomeController extends Controller
     public function index()
     {
         //return view('home');
-        return redirect('/usuarios');
+        return redirect('/ejemplo');
+    }
+
+    public function ejemplo()
+    {
+        //$users = User::factory()->count(80)->create();
+        return Inertia::render('Ejemplo');
     }
 }

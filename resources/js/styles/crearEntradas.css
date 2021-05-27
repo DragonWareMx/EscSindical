@@ -1,0 +1,23 @@
+.card-entradas .card-title{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    color: #134E39;
+}
+
+.card-entradas .btn-submit{
+    background: #108058;
+    box-shadow: 0px 4px 4px rgba(186, 186, 186, 0.55);
+    border-radius: 5px;
+    margin: 0px 0px 0px auto !important;
+}
+
+.ck-titulo{
+    font-size: 1rem;
+    font-family: Montserrat;
+    color: #9E9E9E;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
