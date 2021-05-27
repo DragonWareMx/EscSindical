@@ -1,6 +1,6 @@
-import React from 'react'
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
+import React, { useState, useEffect } from 'react'
 import { InertiaLink } from '@inertiajs/inertia-react';
 
 import '/css/participantes.css'
@@ -12,22 +12,34 @@ function tooltip(){
     var instances = M.Tooltip.init(elems);
 }
 
+function seleccionar_todo(){
+    for (i=0;i<document.form_solicitudes.elements.length;i++)
+       if(document.form_solicitudes.elements[i].type == "checkbox")
+        document.form_solicitudes.elements[i].checked=1
+       
+          
+ }
+
 const Solicitudes = ({curso}) => {
-  return (
+    useEffect(() => {
+        tooltip();
+    }, [])
+    return (
     <>
         <div className="row">
+        <form name="form_solicitudes">
             <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
                 {/* regresar */}
-                <InertiaLink  href={route('cursos.participantes', curso.id)} className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i class="material-icons">keyboard_backspace</i></InertiaLink>
+                <InertiaLink  href={route('cursos.participantes', curso.id)}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i class="material-icons">keyboard_backspace</i></InertiaLink>
                 SOLICITUDES
             </div>
             {/* <div className="col s12 m3 l2 xl2 right" style={{"textAlign":"right"}}><InertiaLink  className="link-solicitudes">Solicitudes<i class="material-icons tiny" style={{"marginLeft":"10px","marginRight":"5px"}}>mail</i>3</InertiaLink></div> */}
-            <a className="col s12 a-select-all" href="#!">Seleccionar todos</a>
+            <a className="col s12 a-select-all" onClick={seleccionar_todo}>Seleccionar todos</a>
 
             {/* Row de estudiante item*/}
             <div className="col s12 div-collection-item div-item-solicitudes">
                 <label className="pink">
-                    <input type="checkbox" />
+                    <input type="checkbox" name="solicitud" />
                     <span className="P_collection_item col s12" style={{"display":"flex"}}>
                         <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
                         <div style={{"width":"max-content","paddingBottom":"0px"}}>
@@ -41,7 +53,7 @@ const Solicitudes = ({curso}) => {
             {/* Row de estudiante item*/}
             <div className="col s12 div-collection-item div-item-solicitudes">
                 <label className="pink">
-                    <input type="checkbox" />
+                    <input type="checkbox"  name="solicitud" />
                     <span className="P_collection_item col s12" style={{"display":"flex"}}>
                         <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
                         <div style={{"width":"max-content","paddingBottom":"0px"}}>
@@ -105,7 +117,7 @@ const Solicitudes = ({curso}) => {
                     <i className="material-icons right">highlight_off</i>
                 </button>
             </div>
-
+        </form>
         </div>
     </>
   )
