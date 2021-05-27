@@ -43,7 +43,7 @@ const Solicitudes = ({curso}) => {
         <form name="form_solicitudes">
             <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
                 {/* regresar */}
-                <InertiaLink  href={route('cursos.participantes', curso.id)}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i class="material-icons">keyboard_backspace</i></InertiaLink>
+                <InertiaLink  href={route('cursos.participantes', curso.id)}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
                 SOLICITUDES
             </div>
             <div className="col s12">
@@ -51,76 +51,21 @@ const Solicitudes = ({curso}) => {
                 <a className="a-select-all" id="txt-select-all-not" onClick={seleccionar_todo_not} style={{"display":"none"}}>Descartar selección</a>
             </div>
             
-
-            {/* Row de estudiante item*/}
-            <div className="col s12 div-collection-item div-item-solicitudes">
-                <label className="pink">
-                    <input type="checkbox" name="solicitud" id="optionCheck" />
-                    <span className="P_collection_item col s12" style={{"display":"flex"}}>
-                        <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
-                        <div style={{"width":"max-content","paddingBottom":"0px"}}>
-                            <InertiaLink  href="#!" className="P_collection_title">José Agustín Aguilar Solórzano</InertiaLink>
-                            <div className="P_collection_subtitle">26/05/2021</div>
-                        </div>
-                    </span>
-                </label>
-            </div>
-
-            {/* Row de estudiante item*/}
-            <div className="col s12 div-collection-item div-item-solicitudes">
-                <label className="pink">
-                    <input type="checkbox"  name="solicitud" id="optionCheck" />
-                    <span className="P_collection_item col s12" style={{"display":"flex"}}>
-                        <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
-                        <div style={{"width":"max-content","paddingBottom":"0px"}}>
-                            <InertiaLink  href="#!" className="P_collection_title">José Agustín Aguilar Solórzano</InertiaLink>
-                            <div className="P_collection_subtitle">26/05/2021</div>
-                        </div>
-                    </span>
-                </label>
-            </div>
-
-            {/* Row de estudiante item*/}
-            <div className="col s12 div-collection-item div-item-solicitudes">
-                <label className="pink">
-                    <input type="checkbox" />
-                    <span className="P_collection_item col s12" style={{"display":"flex"}}>
-                        <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
-                        <div style={{"width":"max-content","paddingBottom":"0px"}}>
-                            <InertiaLink  href="#!" className="P_collection_title">José Agustín Aguilar Solórzano</InertiaLink>
-                            <div className="P_collection_subtitle">26/05/2021</div>
-                        </div>
-                    </span>
-                </label>
-            </div>
-
-            {/* Row de estudiante item*/}
-            <div className="col s12 div-collection-item div-item-solicitudes">
-                <label className="pink">
-                    <input type="checkbox" />
-                    <span className="P_collection_item col s12" style={{"display":"flex"}}>
-                        <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
-                        <div style={{"width":"max-content","paddingBottom":"0px"}}>
-                            <InertiaLink  href="#!" className="P_collection_title">José Agustín Aguilar Solórzano</InertiaLink>
-                            <div className="P_collection_subtitle">26/05/2021</div>
-                        </div>
-                    </span>
-                </label>
-            </div>
-
-            {/* Row de estudiante item*/}
-            <div className="col s12 div-collection-item div-item-solicitudes">
-                <label className="pink">
-                    <input type="checkbox" />
-                    <span className="P_collection_item col s12" style={{"display":"flex"}}>
-                        <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
-                        <div style={{"width":"max-content","paddingBottom":"0px"}}>
-                            <InertiaLink  href="#!" className="P_collection_title">José Agustín Aguilar Solórzano</InertiaLink>
-                            <div className="P_collection_subtitle">26/05/2021</div>
-                        </div>
-                    </span>
-                </label>
-            </div>
+            {curso.requests && curso.requests.length > 0 &&  curso.requests.map(usuario => (
+                <div className="col s12 div-collection-item div-item-solicitudes" key={usuario.id}>
+                    <label className="pink">
+                        <input type="checkbox" name="solicitud" id="optionCheck" />
+                        <span className="P_collection_item col s12" style={{"display":"flex"}}>
+                            <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
+                            <div style={{"width":"max-content","paddingBottom":"0px"}}>
+                                <InertiaLink  href="#!" className="P_collection_title">{usuario.nombre} {usuario.apellido_p} {usuario.apellido_m}</InertiaLink>
+                                <div className="P_collection_subtitle">26/05/2021</div>
+                            </div>
+                        </span>
+                    </label>
+                </div>
+            ))  
+            }
 
             <div className="col s12  right">
                 <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
