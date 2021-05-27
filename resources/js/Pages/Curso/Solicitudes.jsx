@@ -20,23 +20,21 @@ const Solicitudes = ({curso}) => {
     }, [])
 
     function seleccionar_todo(){
-        // for (i=0;i<document.form_solicitudes.elements.length;i++)
-        //    if(document.form_solicitudes.elements[i].type == "checkbox")
-        //     document.form_solicitudes.elements[i].checked=1
-        textOn = document.getElementById('txt-select-all');
-        textOff = document.getElementById('txt-select-all-not');
-        textOn.style.display = 'none';
-        textOn.style.display = 'block';
+        for (var i=0;i<document.form_solicitudes.elements.length;i++)
+            if(document.form_solicitudes.elements[i].type == "checkbox")
+                document.form_solicitudes.elements[i].checked=true;
+
+        document.getElementById("txt-select-all").style.display = "none";
+        document.getElementById("txt-select-all-not").style.display = "block";
      }
     
      function seleccionar_todo_not(){
-        // for (i=0;i<document.form_solicitudes.elements.length;i++)
-        //    if(document.form_solicitudes.elements[i].type == "checkbox")
-        //     document.form_solicitudes.elements[i].checked=1
-        textOn = document.getElementById('txt-select-all');
-        textOff = document.getElementById('txt-select-all-not');
-        textOn.style.display = 'block';
-        textOn.style.display = 'none';
+        for (var i=0;i<document.form_solicitudes.elements.length;i++)
+            if(document.form_solicitudes.elements[i].type == "checkbox")
+                document.form_solicitudes.elements[i].checked=false;
+
+        document.getElementById("txt-select-all").style.display = "block";
+        document.getElementById("txt-select-all-not").style.display = "none";
      }
 
     return (
@@ -57,7 +55,7 @@ const Solicitudes = ({curso}) => {
             {/* Row de estudiante item*/}
             <div className="col s12 div-collection-item div-item-solicitudes">
                 <label className="pink">
-                    <input type="checkbox" name="solicitud" />
+                    <input type="checkbox" name="solicitud" id="optionCheck" />
                     <span className="P_collection_item col s12" style={{"display":"flex"}}>
                         <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
                         <div style={{"width":"max-content","paddingBottom":"0px"}}>
@@ -71,7 +69,7 @@ const Solicitudes = ({curso}) => {
             {/* Row de estudiante item*/}
             <div className="col s12 div-collection-item div-item-solicitudes">
                 <label className="pink">
-                    <input type="checkbox"  name="solicitud" />
+                    <input type="checkbox"  name="solicitud" id="optionCheck" />
                     <span className="P_collection_item col s12" style={{"display":"flex"}}>
                         <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
                         <div style={{"width":"max-content","paddingBottom":"0px"}}>
