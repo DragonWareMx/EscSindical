@@ -376,7 +376,7 @@ class CourseController extends Controller
     }
 
     public function modulos($id){
-        return 'holiwis kiwis la ruta que buscas es /curso/1/modulo/1   , si quieres hacer la vista de modulos en general ve a CourseController.php y el return cambialo por el que debe de ser y ya ';
+        return 'holiwis kiwis la ruta que buscas es /cursos/1/modulo/1   , si quieres hacer la vista de modulos en general ve a CourseController.php y en modulos el return cambialo por el que debe de ser y ya ';
     }
 
     public function modulo($id,$mid)
@@ -386,10 +386,10 @@ class CourseController extends Controller
         if(!$modulo){
             return abort(404);
         }
-        dd($modulo);
 
-        return Inertia::render('Curso/Modulos', [
-            'curso' => Course::findOrFail($id), 
+        return Inertia::render('Curso/Modulo', [
+            'curso' => Course::findOrFail($id),
+            'modulo' => $modulo,
         ]);
     }
 

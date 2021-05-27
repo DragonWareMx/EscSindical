@@ -4,14 +4,14 @@ import LayoutCursos from '../../layouts/LayoutCursos';
 
 import '/css/modulos.css'
 
-const Informacion = ({curso}) => {
+const Informacion = ({curso , modulo}) => {
   return (
     <>
       <div className="row default-text">
         {/* seccion 1 */}
         <div className="col s12" style={{"borderBottom":"1px solid #DDDDDD"}}>
           <div className="col s11 titulo-modulo">
-            MÓDULO 1. Nombre completo del modulo.
+            Modulo: {modulo.nombre}
           </div>
           <div className="col s1 center-align">
             <i className="material-icons tiny">navigate_next</i>
@@ -26,7 +26,7 @@ const Informacion = ({curso}) => {
             {/* duracion */}
             <div className="col s6 l12 pull-s6">
               <div className="subtitulo-modulo">DURACIÓN</div>
-              3 semanas
+              {modulo.duracion} semanas
             </div>
             
           </div>
@@ -35,27 +35,17 @@ const Informacion = ({curso}) => {
             {/* objetivo */}
             <div className="col s12">
               <div className="subtitulo-modulo">OBJETIVO</div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non eligendi vitae nemo, incidunt repellendus consequatur doloribus quae. Nobis rem enim culpa, porro, magni doloremque nihil ab quos facere aliquid modi!
+                {modulo.objetivo}
             </div>
             {/* criterios de evaluacion */}
             <div className="col s12">
               <div className="subtitulo-modulo">CRITERIOS DE EVALUACION</div>
-                Asistencia, tareas, examne y proyecto final.
+                {modulo.criterios}
             </div>
             {/* temario del modulo */}
             <div className="col s12">
               <div className="subtitulo-modulo">TEMARIO DEL MÓDULO</div>
-                <ol className="">
-                  <li>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis fugit tempora sapiente
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis fugit tempora sapiente
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis fugit tempora sapiente
-                  </li>
-                </ol>
+                <div dangerouslySetInnerHTML={{__html: modulo.temario}}>{/*Aquí va el temario pero se pone el dangerous*/}</div>
             </div>
           </div>
         </div>
@@ -213,7 +203,7 @@ const Informacion = ({curso}) => {
 }
 
 Informacion.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="Curso">
+  <Layout title="Escuela sindical - Modulo" pageTitle="Modulo">
     <LayoutCursos children={page} />
   </Layout>
 )
