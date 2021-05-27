@@ -17,20 +17,26 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
     })
     
     function addTime() { 
-        //i++;
-        var elemento = document.getElementById("div_time"); //obtiene el elemento a clonar
-        var newElemento = elemento.cloneNode(true); //clona el elemeno
-        var btnLess = newElemento.getElementsByClassName("days")[0];//obtiene el icono de borrar 
-        btnLess.onclick = function(){deleteTime()}; //le agrega la función de borrar
-        
-        var dias = newElemento.getElementsByClassName("group1"); //seleccionamos el grupo de radios 
-        var valueDays = ['Lu', 'Ma', 'Mi', 'Jue', 'Vie', 'Sa', 'Do'];
-        for (let index = 0; index < dias.length; index++) {//les agregamos el evento
-            dias[index].addEventListener("click", onDayChange);        
+        if(valores.Lu ==true && valores.Ma ==true && valores.Mi ==true 
+            && valores.Jue ==true && valores.Vie ==true && valores.Sa ==true && valores.Do ==true){
+            alert("Ya has seleccionado todos los días disponibles")
+        }
+        else {
+            var elemento = document.getElementById("div_time"); //obtiene el elemento a clonar
+            var newElemento = elemento.cloneNode(true); //clona el elemeno
+            var btnLess = newElemento.getElementsByClassName("days")[0];//obtiene el icono de borrar 
+            btnLess.onclick = function(){deleteTime()}; //le agrega la función de borrar
+            
+            var dias = newElemento.getElementsByClassName("group1"); //seleccionamos el grupo de radios 
+            var valueDays = ['Lu', 'Ma', 'Mi', 'Jue', 'Vie', 'Sa', 'Do'];
+            for (let index = 0; index < dias.length; index++) {//les agregamos el evento
+                dias[index].addEventListener("click", onDayChange);        
+            }
+            
+            var contenedor = document.getElementById("div_contenedor");//obtiene el div padre
+            contenedor.appendChild(newElemento);  //inserta elemento en div padre
         }
         
-        var contenedor = document.getElementById("div_contenedor");//obtiene el div padre
-        contenedor.appendChild(newElemento);  //inserta elemento en div padre
     }
 
     function deleteTime(){
@@ -44,8 +50,8 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
     }
 
     function onDayChange(e){
-        console.log(e.target.value);
         var dia = e.target.value;
+
         switch (dia) {
             case "Lu":
                 if (valores.Lu){
@@ -56,11 +62,7 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
                     setValues (valores =>({
                         ... valores,
                         Lu : true,
-                    }))
-
-                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
-                    document.getElementById("btnAdd").style.display = "none";
-                    }
+                    }));
                 }
                 break;
             
@@ -72,17 +74,14 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
                     setValues (valores =>({
                         ... valores,
                         Ma : true,
-                    }))
-
-                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
-                    document.getElementById("btnAdd").style.display = "none";
-                    }
+                    }));
                 }
                 
                 break;
             case "Mi":
                 if (valores.Mi){
                     alert("Ya elegiste ese día");
+                    console.log("Ya elegiste ese día");
                     e.target.disabled = true;
                 }
                 else {
@@ -90,10 +89,6 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
                         ... valores,
                         Mi : true,
                     }))
-
-                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
-                    document.getElementById("btnAdd").style.display = "none";
-                    }
                 }
                 
                 break;
@@ -108,9 +103,6 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
                         Jue : true,
                     }))
 
-                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
-                    document.getElementById("btnAdd").style.display = "none";
-                    }
                 }
                 
                 break;
@@ -123,10 +115,6 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
                         ... valores,
                         Vie : true,
                     }))
-
-                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
-                    document.getElementById("btnAdd").style.display = "none";
-                    }
                 }
                 
                 break;
@@ -140,9 +128,6 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
                         Sa : true,
                     }))
 
-                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
-                    document.getElementById("btnAdd").style.display = "none";
-                    }
                 }
                 
                 break;
@@ -155,10 +140,6 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
                         ... valores,
                         Do : true,
                     }))
-
-                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
-                    document.getElementById("btnAdd").style.display = "none";
-                    }
                 }
                 
                 break;
