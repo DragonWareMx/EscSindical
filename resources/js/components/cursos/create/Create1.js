@@ -1,28 +1,36 @@
 import { first, functionsIn } from 'lodash'
 import React from 'react'
-import { useEffect } from 'react'
+import {useState, useEffect } from 'react'
 
 var i=0;
 
 const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
     
+    const [valores, setValues] = useState({
+        Lu:false,
+        Ma:false,
+        Mi:false,
+        Jue:false,
+        Vie:false,
+        Sa:false,
+        Do:false,
+    })
+    
     function addTime() { 
-        i++;
-        if (i==6){
-           var elemento = document.getElementById("div_time");
-           var newElemento = elemento.cloneNode(true);
-           var contenedor = document.getElementById("div_contenedor");
-           contenedor.appendChild(newElemento);
-           document.getElementById("btnAdd").style.display = "none";
+        //i++;
+        var elemento = document.getElementById("div_time"); //obtiene el elemento a clonar
+        var newElemento = elemento.cloneNode(true); //clona el elemeno
+        var btnLess = newElemento.getElementsByClassName("days")[0];//obtiene el icono de borrar 
+        btnLess.onclick = function(){deleteTime()}; //le agrega la función de borrar
+        
+        var dias = newElemento.getElementsByClassName("group1"); //seleccionamos el grupo de radios 
+        var valueDays = ['Lu', 'Ma', 'Mi', 'Jue', 'Vie', 'Sa', 'Do'];
+        for (let index = 0; index < dias.length; index++) {//les agregamos el evento
+            dias[index].addEventListener("click", onDayChange);        
         }
-        else {
-            var elemento = document.getElementById("div_time");
-            var newElemento = elemento.cloneNode(true);
-            var btnLess = newElemento.getElementsByClassName("days")[0];
-            btnLess.onclick = function(){deleteTime()};
-            var contenedor = document.getElementById("div_contenedor");
-            contenedor.appendChild(newElemento); 
-        }   
+        
+        var contenedor = document.getElementById("div_contenedor");//obtiene el div padre
+        contenedor.appendChild(newElemento);  //inserta elemento en div padre
     }
 
     function deleteTime(){
@@ -35,10 +43,133 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
         }  
     }
 
+    function onDayChange(e){
+        console.log(e.target.value);
+        var dia = e.target.value;
+        switch (dia) {
+            case "Lu":
+                if (valores.Lu){
+                    alert("Ya elegiste ese día");
+                    e.target.disabled = true;
+                }
+                else {
+                    setValues (valores =>({
+                        ... valores,
+                        Lu : true,
+                    }))
+
+                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
+                    document.getElementById("btnAdd").style.display = "none";
+                    }
+                }
+                break;
+            
+            case "Ma":
+                if (valores.Ma){
+                    alert("Ya elegiste ese día");
+                }
+                else {
+                    setValues (valores =>({
+                        ... valores,
+                        Ma : true,
+                    }))
+
+                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
+                    document.getElementById("btnAdd").style.display = "none";
+                    }
+                }
+                
+                break;
+            case "Mi":
+                if (valores.Mi){
+                    alert("Ya elegiste ese día");
+                    e.target.disabled = true;
+                }
+                else {
+                    setValues (valores =>({
+                        ... valores,
+                        Mi : true,
+                    }))
+
+                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
+                    document.getElementById("btnAdd").style.display = "none";
+                    }
+                }
+                
+                break;
+        
+            case "Jue":
+                if (valores.Jue){
+                    alert("Ya elegiste ese día");
+                }
+                else {
+                    setValues (valores =>({
+                        ... valores,
+                        Jue : true,
+                    }))
+
+                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
+                    document.getElementById("btnAdd").style.display = "none";
+                    }
+                }
+                
+                break;
+            case "Vie":
+                if (valores.Vie){
+                    alert("Ya elegiste ese día");
+                }
+                else {
+                    setValues (valores =>({
+                        ... valores,
+                        Vie : true,
+                    }))
+
+                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
+                    document.getElementById("btnAdd").style.display = "none";
+                    }
+                }
+                
+                break;
+            case "Sa":
+                if (valores.Sa){
+                    alert("Ya elegiste ese día");
+                }
+                else {
+                    setValues (valores =>({
+                        ... valores,
+                        Sa : true,
+                    }))
+
+                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
+                    document.getElementById("btnAdd").style.display = "none";
+                    }
+                }
+                
+                break;
+            case "Do":
+                if (valores.Do){
+                    alert("Ya elegiste ese día");
+                }
+                else {
+                    setValues (valores =>({
+                        ... valores,
+                        Do : true,
+                    }))
+
+                    if (valores.Lu && valores.Ma && valores.Mi && valores.Jue && valores.Vie && valores.Sa && valores.Do){
+                    document.getElementById("btnAdd").style.display = "none";
+                    }
+                }
+                
+                break;
+        }
+        
+    }
+
     return (
         <div className="row" style={{"marginLeft": "-1.5rem", "marginRight": "-1.5rem"}}>
             <div className="input-field col s12" >
-                <input  id="nombre" value={values.nombre} onChange={change} type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} required maxLength = "255"/>
+            <input disabled={false} id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={values.nombre} onChange={change} autoFocus maxLength="255" />
                 <label htmlFor="nombre">Nombre del curso</label>
                 {
                     errors.nombre &&
@@ -103,34 +234,43 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
                 <div id="div_time" className="div-row-horario" style={{"marginTop":"5px"}}>
                     <i onClick={deleteTime} className="days material-icons" style={{"color":"#D3766A", "cursor":"pointer", "marginRight":"13px"}}>do_not_disturb_on</i>
                     <label>
-                        <input className="group1" type="radio" />
+                        <input className="group1" type="radio" value = "Lu" onClick={onDayChange}/>
                         <span className="span-radio-courses">Lu</span>
                     </label>
                     <label>
-                        <input className="group1" type="radio" />
+                        <input className="group1" type="radio" value = "Ma" onClick={onDayChange}/>
                         <span className="span-radio-courses">Ma</span>
                     </label>
                     <label>
-                        <input className="group1" type="radio" />
+                        <input className="group1" type="radio" value = "Mi" onClick={onDayChange}/>
                         <span className="span-radio-courses">Mi</span>
                     </label>
                     <label>
-                        <input className="group1" type="radio" />
+                        <input className="group1" type="radio" value = "Jue" onClick={onDayChange}/>
                         <span className="span-radio-courses">Jue</span>
                     </label>
                     <label>
-                        <input className="group1" type="radio" />
+                        <input className="group1" type="radio" value = "Vie" onClick={onDayChange}/>
                         <span className="span-radio-courses">Vi</span>
                     </label>
                     <label>
-                        <input className="group1" type="radio" />
+                        <input className="group1" type="radio" value = "Sa" onClick={onDayChange}/>
                         <span className="span-radio-courses">Sa</span>
                     </label>
                     <label>
-                        <input className="group1" type="radio" />
+                        <input className="group1" type="radio" value = "Do" onClick={onDayChange}/>
                         <span className="span-radio-courses">Do</span>
                     </label>
-                    <input type="text" className="timepicker input-hora" style={{"width":"100px"}} />
+                   
+                    <div className="input-field col s6 m3 l3 xl3">
+                        <input type="text" className="timepicker input-hora" style={{"width":"100px"}} />
+                        <label htmlFor="">Hr inicio</label>
+                    </div>
+                    <div className="input-field col s6 m3 l3 xl3">
+                        <input type="text" className="timepicker input-hora" style={{"width":"100px"}} />
+                        <label htmlFor="">Hr fin</label>
+                    </div>
+                    
                 </div>
             </div>
             

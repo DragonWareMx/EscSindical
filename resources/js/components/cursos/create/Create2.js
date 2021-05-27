@@ -9,8 +9,18 @@ const Create2 = ({ change, values, onValueChange, errors, capacitaciones, change
     })
 
     function onViewChange (){
-        valores.dates ? (valores.dates = false,  document.getElementById("div_fechas_insc").style.display = "none") : (valores.dates = true, document.getElementById("div_fechas_insc").style.display = "block") 
-
+        valores.dates ? (
+            setValues(valores => ({
+                ...valores,
+                dates: false,
+            })),
+            document.getElementById("div_fechas_insc").style.display = "none")
+            : 
+            (setValues(valores => ({
+                ...valores,
+                dates: true,
+            })),
+            document.getElementById("div_fechas_insc").style.display = "block") 
     }
 
     return (
