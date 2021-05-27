@@ -5,12 +5,22 @@ import { InertiaLink } from '@inertiajs/inertia-react';
 
 import '/css/participantes.css'
 import '/css/modulos.css'
+import route from 'ziggy-js';
+
+function tooltip(){
+    var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems);
+}
 
 const Solicitudes = ({curso}) => {
   return (
     <>
         <div className="row">
-            <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>SOLICITUDES</div>
+            <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
+                {/* regresar */}
+                <InertiaLink  href={route('cursos.participantes', curso.id)} className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i class="material-icons">keyboard_backspace</i></InertiaLink>
+                SOLICITUDES
+            </div>
             {/* <div className="col s12 m3 l2 xl2 right" style={{"textAlign":"right"}}><InertiaLink  className="link-solicitudes">Solicitudes<i class="material-icons tiny" style={{"marginLeft":"10px","marginRight":"5px"}}>mail</i>3</InertiaLink></div> */}
             <a className="col s12 a-select-all" href="#!">Seleccionar todos</a>
 
