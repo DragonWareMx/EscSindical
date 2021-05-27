@@ -384,4 +384,11 @@ class CourseController extends Controller
             'curso' => Course::findOrFail($id),
         ]);
     }
+
+    public function solicitudes($id)
+    {
+        return Inertia::render('Curso/Solicitudes', [
+            'curso' => Course::findOrFail($id),
+        ]);
+    }
 }

@@ -36,7 +36,27 @@
     font-size: 14px;
 }
 
-/* Solicitudes */
+
+/* SOLICITUDES */
+.div-item-solicitudes{
+    height: 65px;
+}
+[type="checkbox"]+span:not(.lever):before, [type="checkbox"]:not(.filled-in)+span:not(.lever):after{
+    border: 2px solid #b4b4b4;
+}
+[type="checkbox"]:checked+span:not(.lever):before{
+    border-bottom:2px solid #108058;
+    border-right:2px solid #108058;
+}
+.a-select-all{
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    text-decoration-line: underline;
+    color:#108058;
+    transition: all ease-in-out 0.25s;
+    margin-bottom: 15px;
+}
 .link-solicitudes{
     font-style: normal;
     font-weight: 500;
@@ -44,8 +64,28 @@
     line-height: 16px;
     color: #8A8A8A;
     transition: all ease-in-out 0.25s;
+    display:flex;
+    align-items: center !important;
 }
-.link-solicitudes:hover{
+.link-solicitudes:hover, .a-select-all{
     transition: all ease-in-out 0.25s;
     color: #134E39;
+}
+
+
+
+@media(max-width:500px){
+    .div-item-solicitudes{
+        height: 115px;
+    }
+}
+@media(max-width:400px){
+    .div-item-solicitudes{
+        height: 135px;
+    }
+}
+@media(max-width:395px){
+    .btn-rejacted-soli{
+        margin-right:0px !important;
+    }
 }
