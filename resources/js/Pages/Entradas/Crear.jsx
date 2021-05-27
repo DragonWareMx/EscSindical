@@ -6,14 +6,93 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import '../../styles/crearEntradas.css'
 
+var optionsDate = {
+    format: "yyyy-mm-dd",
+    i18n: {
+        months:
+            [
+                'Enero',
+                'Febrero',
+                'Marzo',
+                'Abril',
+                'Mayo',
+                'Junio',
+                'Julio',
+                'Agosto',
+                'Septiembre',
+                'Octubre',
+                'Noviembre',
+                'Diciembre'
+            ],
+        monthsShort: [
+            'Ene',
+            'Feb',
+            'Mar',
+            'Abr',
+            'May',
+            'Jun',
+            'Jul',
+            'Ago',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dic'
+        ],
+        weekdays: [
+            'Domingo',
+            'Lunes',
+            'Martes',
+            'Miércoles',
+            'Jueves',
+            'Viernes',
+            'Sábado'
+        ],
+        weekdaysShort: [
+            'Dom',
+            'Lun',
+            'Mar',
+            'Mie',
+            'Jue',
+            'Vie',
+            'Sab'
+        ],
+        weekdaysAbbrev: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+        selectMonths: true,
+        selectYears: 5, // Puedes cambiarlo para mostrar más o menos años
+        today: 'Hoy',
+        clear: 'Limpiar',
+        close: 'Ok',
+        cancel: 'Cancelar',
+        labelMonthNext: 'Siguiente mes',
+        labelMonthPrev: 'Mes anterior',
+        labelMonthSelect: 'Selecciona un mes',
+        labelYearSelect: 'Selecciona un año',
+    },
+    setDefaultDate: false,
+    defaultDate: new Date(2021, 0, 1),
+};
+
+var optionsTime = {
+    twelveHour: false,
+    i18n: {
+        clear: 'Limpiar',
+        close: 'Ok',
+        done: 'Ok',
+        cancel: 'Cancelar',
+    },
+};
+
 function initializeMat() {
     M.updateTextFields();
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
-
+    var elems = document.querySelectorAll('.datepicker');
+    var instances = M.Datepicker.init(elems, optionsDate);
+    var elems = document.querySelectorAll('.timepicker');
+    var instances = M.Timepicker.init(elems, optionsTime);
 }
 
-const Crear = () => {
+const Crear = ({ cursos }) => {
     useEffect(() => {
         initializeMat();
     }, [])
@@ -23,6 +102,8 @@ const Crear = () => {
 
     //valores para formulario
     const [values, setValues] = useState({
+        curso: "",
+        modulo: "",
         tipo: "",
         titulo: "",
         contenido: "",
@@ -45,8 +126,8 @@ const Crear = () => {
     function ocultarTodos() {
         var input = document.getElementById("link-div");
         input.style.display = "none";
-        var input = document.getElementById("link-examen-div");
-        input.style.display = "none";
+        // var input = document.getElementById("link-examen-div");
+        // input.style.display = "none";
         var input = document.getElementById("ckeditor-div");
         input.style.display = "none";
         var input = document.getElementById("file-div");
@@ -131,7 +212,8 @@ const Crear = () => {
         input.style.display = "block";
     }
 
-    function cambiarForm() {
+    function cambiarForm(e) {
+        handleChange(e);
         var tipo = document.getElementById("tipo").value;
         switch (tipo) {
             case "Aviso":
@@ -150,11 +232,32 @@ const Crear = () => {
                 mostrarAsignacion();
                 break;
             case "Examen":
-                mostrarExamen();
+                //mostrarExamen();
                 break;
             default:
                 break;
         }
+    }
+
+    function changeModulos(e) {
+        handleChange(e);
+        var curso = document.getElementById("curso").value;
+        var modulos = cursos[curso - 1].modules;
+        var arrOptions = [];
+        arrOptions.push(" <option value disabled value=''>Elige una opción</option>");
+        if (modulos.length > 0) {
+            modulos.forEach(function (modulo, indice, array) {
+                arrOptions.push("<option value='" + modulo.id + "' key='" + indice + "'>Modulo " + modulo.nombre + "</option>");
+            });
+        }
+        document.getElementById("modulo").innerHTML = arrOptions.join();
+        document.getElementById("modulo").value = "";
+        setValues(values => ({
+            ...values,
+            modulo: "",
+        }))
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
     }
 
     return (
@@ -167,9 +270,26 @@ const Crear = () => {
                                 <span className="card-title">AGREGAR ENTRADA</span>
                                 <form action="">
                                     <div className="row">
+                                        {/* aqui va el input del select del curso */}
+                                        <div className="input-field col s12 m6">
+                                            <select id="curso" name="curso" value={values.curso} onChange={changeModulos} required>
+                                                <option value disabled value={""}>Elige una opción</option>
+                                                {cursos && cursos.length > 0 && cursos.map((curso, index) =>
+                                                    <option value={curso.id} key={index}>{curso.nombre}</option>
+                                                )}
+                                            </select>
+                                            <label>Selecciona el curso</label>
+                                        </div>
+                                        {/* aqui va el input del modulo */}
+                                        <div className="input-field col s12 m6">
+                                            <select id="modulo" name="modulo" value={values.modulo} onChange={handleChange} required>
+                                                <option value disabled value={""}>Elige una opción</option>
+                                            </select>
+                                            <label>Selecciona el modulo</label>
+                                        </div>
                                         {/* aqui va el input del select tipo */}
                                         <div className="input-field col s12 m6">
-                                            <select id="tipo" name="tipo" value={values.tipo} onChange={handleChange, cambiarForm}>
+                                            <select id="tipo" name="tipo" value={values.tipo} onChange={cambiarForm} required>
                                                 <option value disabled value={""}>Elige una opción</option>
                                                 <option value={"Aviso"}>Aviso</option>
                                                 <option value={"Informacion"}>Información</option>
@@ -181,7 +301,7 @@ const Crear = () => {
                                             <label>Tipo de recurso</label>
                                         </div>
                                         {/* Aqui va el input del titulo */}
-                                        <div className="input-field col s12 m6">
+                                        <div className="input-field col s12 m6" required>
                                             <input id="titulo" name="titulo" type="text" className="validate" value={values.titulo} onChange={handleChange} />
                                             <label htmlFor="titulo">Título de la entrada</label>
                                         </div>
@@ -191,10 +311,12 @@ const Crear = () => {
                                             <label htmlFor="link">Link de la entrada</label>
                                         </div>
                                         {/* Aqui va el input del link del examen */}
-                                        <div id="link-examen-div" className="input-field col s12" style={{ display: "none" }}>
-                                            <input id="link_del_examen" name="link_del_examen" type="text" className="validate" value={values.link} onChange={handleChange} />
-                                            <label htmlFor="link">Link del examen</label>
-                                        </div>
+                                        {values.tipo == "Examen" &&
+                                            <div id="link-examen-div" className="input-field col s12" >
+                                                <input id="link_del_examen" name="link_del_examen" type="text" className="validate" value={values.link_del_examen} onChange={handleChange} required />
+                                                <label htmlFor="link">Link del examen</label>
+                                            </div>
+                                        }
                                         {/* Aqui va el CKeditor */}
                                         <div id="ckeditor-div" className="col s12" style={{ display: "none" }}>
                                             <h2 className="ck-titulo">Contenido</h2>
@@ -231,12 +353,24 @@ const Crear = () => {
                                             </div>
                                         </div>
                                         {/* fecha de apertura */}
-                                        <div id="fecha-a-div" className="col s12 m6" style={{ display: "none" }}>
-                                            aqui va el input
+                                        <div id="fecha-a-div" className="col s12 m6" style={{ display: "none", marginBottom: "1%" }}>
+                                            <h2 className="ck-titulo">Fecha de apertura</h2>
+                                            <div className="col s6" style={{ paddingLeft: "0px" }}>
+                                                <input type="text" className="datepicker" placeholder="Fecha"></input>
+                                            </div>
+                                            <div className="col s6" style={{ paddingLeft: "0px" }}>
+                                                <input type="text" className="timepicker" placeholder="Hora"></input>
+                                            </div>
                                         </div>
                                         {/* fecha de entrega */}
-                                        <div id="fecha-e-div" className="col s12 m6" style={{ display: "none" }}>
-                                            aqui va el input
+                                        <div id="fecha-e-div" className="col s12 m6" style={{ display: "none", marginBottom: "1%" }}>
+                                            <h2 className="ck-titulo">Fecha de entrega</h2>
+                                            <div className="col s6" style={{ paddingLeft: "0px" }}>
+                                                <input type="text" className="datepicker" placeholder="Fecha"></input>
+                                            </div>
+                                            <div className="col s6" style={{ paddingLeft: "0px" }}>
+                                                <input type="text" className="timepicker" placeholder="Hora"></input>
+                                            </div>
                                         </div>
                                         {/* primer switch */}
                                         <div id="switch-visible-div" className="col s12 m4 l3" style={{ display: "none" }}>
