@@ -34,6 +34,16 @@
     color: #383838;
 }
 
+.default-text-2
+{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+
+    color: #575757;
+}
+
 .advice-text
 {
     font-style: normal;
@@ -135,4 +145,10 @@
     line-height: 12px;
     
     color: #D14747;   
+}
+
+.formato-iconos
+{
+    color: #134E39;
+    font-size: 16px;
 }
