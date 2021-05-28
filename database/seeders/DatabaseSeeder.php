@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             CourseSeeder::class,
             ImageSeeder::class,
+            ModuleSeeder::class,
+            EntrySeeder::class,
         ]);
     }
 }

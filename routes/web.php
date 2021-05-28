@@ -33,7 +33,7 @@ Route::get('/inicio', function () {
 Auth::routes();
 
 //--------RUTAS DE EJEMPLO
-Route::get('/ejemplo', [App\Http\Controllers\UserController::class, 'ejemplo'])->name('ejemplo1');
+Route::get('/ejemplo', [App\Http\Controllers\HomeController::class, 'ejemplo'])->name('ejemplo1');
 //--------RUTAS DE EJEMPLO
 
 //--------USUARIOS--------
@@ -57,6 +57,7 @@ Route::get('/cursos/module/edit/{id}', [App\Http\Controllers\CourseController::c
 //------Rutas del layout cursos
 Route::get('/cursos/{id}/informacion', [App\Http\Controllers\CourseController::class, 'informacion'])->name('cursos.informacion');
 Route::get('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class, 'modulos'])->name('cursos.modulos');
+Route::get('/cursos/{id}/modulo/{mid}', [App\Http\Controllers\CourseController::class, 'modulo'])->name('cursos.modulo');
 Route::get('/cursos/{id}/participantes', [App\Http\Controllers\CourseController::class, 'participantes'])->name('cursos.participantes');
 Route::get('/cursos/{id}/mochila', [App\Http\Controllers\CourseController::class, 'mochila'])->name('cursos.mochila');
 
@@ -68,5 +69,9 @@ Route::get('/layoutCursos', [App\Http\Controllers\CourseController::class, 'layo
 
 //--------PERFIL--------
 Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil');
+Route::get('/perfil/publico/{id}', [App\Http\Controllers\PerfilController::class, 'verPerfil'])->name('perfil.public');
 Route::get('/perfil/configuracion', [App\Http\Controllers\PerfilController::class, 'edit'])->name('perfil.edit');
 Route::patch('/perfil/configuracion', [App\Http\Controllers\PerfilController::class, 'update'])->name('perfil.update');
+
+//----------RECURSOS------------
+Route::get('/entrada/crear', [App\Http\Controllers\EntryController::class, 'index'])->name('entrada.crear');

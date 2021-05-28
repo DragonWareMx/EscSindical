@@ -9,8 +9,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Module;
 use App\Models\Tag;
 use App\Models\Log;
+use App\Models\Entry;
 use App\Models\Image;
 use App\Models\Training_type;
 
@@ -31,11 +33,11 @@ class CourseController extends Controller
         $user = User::find(Auth::id());
 
         if ($user->roles[0]->name == 'Ponente') {
-            $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users','images')->get();
+            $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users', 'images')->get();
 
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
-                    'roles', 'activeCourses', 'activeCourses.images'  
+                    'roles', 'activeCourses', 'activeCourses.images'
                 ])->where('id', Auth::id())->first(),
                 'cursos' => fn () => $cursos,
             ]);
@@ -45,7 +47,7 @@ class CourseController extends Controller
             $tags = $curso_actual->tags;
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
-                    'roles', 'activeCourses' ,'activeCourses.images'
+                    'roles', 'activeCourses', 'activeCourses.images'
                 ])->where('id', Auth::id())->first(),
                 'profesor' => $profesor,
                 'tags' => $tags,
@@ -55,8 +57,8 @@ class CourseController extends Controller
 
     public function create()
     {
-        return Inertia::render('Cursos/FormCurso', [ 
-        'capacitaciones'=> Training_type::get(),
+        return Inertia::render('Cursos/FormCurso', [
+            'capacitaciones' => Training_type::get(),
         ]);
     }
 
@@ -86,12 +88,12 @@ class CourseController extends Controller
             'tipo_inscripcion' => 'required',
             'descripcion' => 'required',
             'imgs' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
-            'maximo' =>'required|digits_between:1,3|numeric' //cuál sería el máximo permitido
+            'maximo' => 'required|digits_between:1,3|numeric' //cuál sería el máximo permitido
         ]);
 
         //COMIENZA TRANSACCIÓN
         DB::beginTransaction();
-        
+
         $imagen = null;
         try {
             //SE CREA EL NUEVO CURSO
@@ -128,7 +130,7 @@ class CourseController extends Controller
             }
 
             $newCourse->tags()->sync($tags_ids);
-            
+
             //TIPO DE CAPACITACIONES
             $tipos = $request->tipos_de_capacitacion;
 
@@ -136,12 +138,12 @@ class CourseController extends Controller
 
             //IMÁGENES
             $newImagen = new Image;
-            $newImagen->course_id =$newCourse->id;
+            $newImagen->course_id = $newCourse->id;
             $imagen = $request->file('imgs')->store('/public/imagenes_curso');
             $newImagen->imagen = $request->file('imgs')->hashName();
-            
+
             $newImagen->save();
-                   
+
             //SE CREA EL LOG
             // $newLog = new Log;
 
@@ -155,7 +157,7 @@ class CourseController extends Controller
             //         'fecha_final: ' . $request->fecha_final .
             //         'max: ' . $request->max .
             //         'valor_curricular: '. $request->vc.
-                    
+
             //         'tipo_acceso: ' . $request->tipo_inscripcion .
             //         'descripcion: '.$request->descripcion.
             //         'teacher_id: ' . Auth::id() .
@@ -166,7 +168,7 @@ class CourseController extends Controller
             // }';
 
             // $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha creado el curso: '. $myCourse->nombre;
-                
+
             // //SE GUARDA EL LOG
             // $newLog->save();
 
@@ -174,9 +176,9 @@ class CourseController extends Controller
             return \Redirect::route('cursos')->with('success', 'El curso se ha creado exitosamente');
         } catch (\Exception $e) {
             DB::rollBack();
-            //return \Redirect::route('cursos')->with('error','Hubo un problema con tu solicitud, inténtalo más tarde');
-            return response()->json(["status" => $e]);
-        }    
+            return \Redirect::route('cursos')->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
+            //return response()->json(["status" => $e]);
+        }
     }
 
     public function editCourse($id)
@@ -184,8 +186,8 @@ class CourseController extends Controller
         //\Gate::authorize('haveaccess', 'ponent.perm');
         return Inertia::render('Cursos/FormCursoEdit', [
             'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id),
-            'capacitaciones'=> Training_type::get(),
-        ]); 
+            'capacitaciones' => Training_type::get(),
+        ]);
     }
 
     public function update($id, Request $request)
@@ -257,16 +259,16 @@ class CourseController extends Controller
                 '{
                 courses: {
                     nombre: ' . $request->nombre .
-                    'fecha_inicio: ' . $request->fecha_inicio .
-                    'fecha_final: ' . $request->fecha_final .
-                    'max: ' . $request->max .
-                    'valor_curricular: '. $request->vc.
-                    
-                    'tipo_acceso: ' . $request->tipo_inscripcion .
-                    'descripcion: '.$request->descripcion.
-                    'teacher_id: ' . Auth::id() .
-                    
-                    'link: ' . $request->link .
+                'fecha_inicio: ' . $request->fecha_inicio .
+                'fecha_final: ' . $request->fecha_final .
+                'max: ' . $request->max .
+                'valor_curricular: ' . $request->vc .
+
+                'tipo_acceso: ' . $request->tipo_inscripcion .
+                'descripcion: ' . $request->descripcion .
+                'teacher_id: ' . Auth::id() .
+
+                'link: ' . $request->link .
                 '}
 
             }';
@@ -337,7 +339,9 @@ class CourseController extends Controller
         $cursosParaTi = Course::with(['teacher:nombre,apellido_p,apellido_m,foto,id', 'tags:nombre', 'images:imagen,course_id', 'training_types'])
             ->whereHas('training_types', function ($query) {
                 $query->whereHas('categories', function ($query2) {
-                    $query2->where('categories.id', Auth::User()->category->id);
+                    if (isset(Auth::User()->category)) {
+                        $query2->where('categories.id', Auth::User()->category->id);
+                    }
                 });
             })
             ->select('courses.nombre', 'courses.fecha_inicio', 'courses.fecha_final', 'courses.id', 'courses.teacher_id', 'courses.inicio_inscripciones', 'courses.fecha_limite')
@@ -374,10 +378,39 @@ class CourseController extends Controller
         ]);
     }
 
-    public function modulos($id)
+    public function modulos($id){
+        return 'holiwis kiwis la ruta que buscas es /cursos/1/modulo/1   , si quieres hacer la vista de modulos en general ve a CourseController.php y en modulos el return cambialo por el que debe de ser y ya ';
+    }
+
+    public function modulo($id,$mid)
     {
-        return Inertia::render('Curso/Modulos', [
+        //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
+        $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
+        //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
+        if(!$modulo){
+            return abort(404);
+        }
+
+        //Se obtienen todos los avisos, el primer where obtiene todas las entradas pertenecientes al módulo y el segundo filtra esas entradas en todas las 
+        //que son de tipo Aviso, después se hace otro filtrado donde se obtienen los que son visibles, los que no son visibles (1) no hay por que mandarlos a la vista
+        $avisos=Entry::where('module_id',$mid)->where('tipo','Aviso')->where('visible',1)->orderBy('id','DESC')->get();
+
+        //Se obtenienen todas las demás entradas que no sean de tipo aviso, tarea ni examen pero que también sean visibles y pertenezcarn al módulo
+        $entradas=Entry::where('module_id',$mid)->where('tipo','!=','Aviso')->where('tipo','!=','Asignacion')->where('tipo','!=','Examen')
+            ->where('visible',1)->orderBy('id','DESC')->get();
+
+        //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
+        $actividades=Entry::where('module_id',$mid)->where('tipo','Asignacion')->where('tipo','Examen')->orderBy('id','DESC')->get();
+
+        return Inertia::render('Curso/Modulo', [
+            //Aquí adentro se mandan las variables (JSONS) a la vista, en este caso curso se hace la consulta aquí mismo, pero las demás variables se igualan a las que 
+            //sacamos anteriormente
             'curso' => Course::findOrFail($id),
+            'modulo' => $modulo,
+            'avisos' => $avisos,
+            'entradas' => $entradas,
+            'actividades' =>$actividades,
+            //Ahora en el archivo de la vista recuerda que debe recibir todas las variables que le estamos mandando para poder usarlas, en este caso las recibe en la linea 7
         ]);
     }
 

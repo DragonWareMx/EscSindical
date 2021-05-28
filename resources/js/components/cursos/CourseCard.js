@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { usePage } from '@inertiajs/inertia-react'
+import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 
 import '../../styles/cursos.css'
 import '/css/courseCard.css'
 import Tag from '../common/Tag'
+import route from 'ziggy-js'
 
 export default function InfoAlumno({ curso, actuales }) {
 
@@ -50,7 +51,9 @@ export default function InfoAlumno({ curso, actuales }) {
                             <div className="col s10 truncate" style={{ "height": "30px", "display": "flex", "alignItems": "center" }}>
                                 {curso.teacher ? 
                                 <>
-                                    {curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}
+                                    <InertiaLink href={route('usuarios.edit',curso.teacher.id)} style={{color: "#A6A6A6"}}>
+                                        {curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m}
+                                    </InertiaLink>
                                 </>
                                 :
                                 <>

@@ -4,14 +4,29 @@ import LayoutCursos from '../../layouts/LayoutCursos';
 
 import '/css/modulos.css'
 
-const Informacion = ({curso}) => {
+
+function transformaFechaModulo(fecha) {
+  const dob = new Date(fecha);
+  const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+      'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+  const day = dob.getDate();
+  const monthIndex = dob.getMonth();
+  const year = dob.getFullYear();
+  const hour = ("0" + dob.getHours()).slice(-2);
+  const minutes = ("0" + dob.getMinutes()).slice(-2);
+  return `${day} ${monthNames[monthIndex]} ${year} a las ${hour}:${minutes}`;
+}
+
+const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
   return (
     <>
       <div className="row default-text">
         {/* seccion 1 */}
         <div className="col s12" style={{"borderBottom":"1px solid #DDDDDD"}}>
           <div className="col s11 titulo-modulo">
-            MÓDULO 1. Nombre completo del modulo.
+            Modulo: {modulo.nombre}
           </div>
           <div className="col s1 center-align">
             <i className="material-icons tiny">navigate_next</i>
@@ -26,7 +41,7 @@ const Informacion = ({curso}) => {
             {/* duracion */}
             <div className="col s6 l12 pull-s6">
               <div className="subtitulo-modulo">DURACIÓN</div>
-              3 semanas
+              {modulo.duracion} semanas
             </div>
             
           </div>
@@ -35,27 +50,17 @@ const Informacion = ({curso}) => {
             {/* objetivo */}
             <div className="col s12">
               <div className="subtitulo-modulo">OBJETIVO</div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non eligendi vitae nemo, incidunt repellendus consequatur doloribus quae. Nobis rem enim culpa, porro, magni doloremque nihil ab quos facere aliquid modi!
+                {modulo.objetivo}
             </div>
             {/* criterios de evaluacion */}
             <div className="col s12">
               <div className="subtitulo-modulo">CRITERIOS DE EVALUACION</div>
-                Asistencia, tareas, examne y proyecto final.
+                {modulo.criterios}
             </div>
             {/* temario del modulo */}
             <div className="col s12">
               <div className="subtitulo-modulo">TEMARIO DEL MÓDULO</div>
-                <ol className="">
-                  <li>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis fugit tempora sapiente
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis fugit tempora sapiente
-                  </li>
-                  <li>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis fugit tempora sapiente
-                  </li>
-                </ol>
+                <div dangerouslySetInnerHTML={{__html: modulo.temario}}>{/*Aquí va el temario pero se pone el dangerous*/}</div>
             </div>
           </div>
         </div>
@@ -65,44 +70,56 @@ const Informacion = ({curso}) => {
             RECURSOS
           </div>
           <div>
-            {/* ejemplo de aviso */}
-            <div className="col s12" style={{"margin":"5px"}}>
-              {/* icono */}
-              <div className="col s2 l1 center-align">
-                <i className="material-icons" style={{"color":"#D14747"}}>announcement</i>
-              </div>
-              {/* informacion */}
-              <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                {/* titulo */}
-                <div className="col s12 advice-text">
-                  TITULO DEL AVISO
-                </div>
-                {/* fecha de publicacion */}
-                <div className="col s12 posted-date">
-                  Publicado el "fecha"
-                </div>
-              </div>
-            </div>
+            {/* avisos */}
+            {avisos && avisos.length>0 && 
+               avisos.map( (aviso , index) => (
+                <div key={index} className="col s12" style={{"margin":"5px"}}>
+                  {/* icono */}
+                  <div className="col s2 l1 center-align">
+                    <i className="material-icons" style={{"color":"#D14747"}}>announcement</i>
+                  </div>
+                  {/* informacion */}
+                  <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
+                    {/* titulo */}
+                    <div className="col s12 advice-text">
+                      {aviso.titulo}
+                    </div>
+                    {/* fecha de publicacion */}
+                    <div className="col s12 posted-date">
+                      Publicado el {transformaFechaModulo(aviso.created_at)} 
+                    </div>
+                  </div>
+                </div>  
+                ))
+               }
 
-            {/* ejemplo de documento pdf */}
-            <div className="col s12" style={{"margin":"5px"}}>
-              {/* icono */}
-              <div className="col s2 l1 center-align">
-                <i className="material-icons" style={{"color":"#134E39"}}>description</i>
-              </div>
-              {/* informacion */}
-              <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                {/* titulo */}
-                <div className="col s12">
-                  <span className="nombre-subrayado">Nombre del archivo.pdf</span> <span className="size-archivo">soy el peso del archivo</span>
-                </div>
-                {/* fecha de publicacion */}
-                <div className="col s12 posted-date">
-                  Publicado el "fecha"
-                </div>
-              </div>
-            </div>
+            {/* Recursos */}
 
+            {entradas && entradas.length > 0 &&
+              entradas.map((entrada, index) =>(
+                <div key={index} className="col s12" style={{"margin":"5px"}}>
+                  {entrada.tipo == 'Archivo' &&
+                    <div>
+                      {/* icono */}
+                      <div className="col s2 l1 center-align">
+                        <i className="material-icons" style={{"color":"#134E39"}}>description</i>
+                      </div>
+                      {/* informacion */}
+                      <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
+                        {/* titulo */}
+                        <div className="col s12">
+                          <span className="nombre-subrayado">{entrada.titulo}</span> <span className="size-archivo">soy el peso del archivo</span>
+                        </div>
+                        {/* fecha de publicacion */}
+                        <div className="col s12 posted-date">
+                          Publicado el {transformaFechaModulo(entrada.created_at)} 
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              ))
+            }
             {/* ejemplo de enlace */}
             <div className="col s12" style={{"margin":"5px"}}>
               {/* icono */}
@@ -213,7 +230,7 @@ const Informacion = ({curso}) => {
 }
 
 Informacion.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="Curso">
+  <Layout title="Escuela sindical - Modulo" pageTitle="Modulo">
     <LayoutCursos children={page} />
   </Layout>
 )
