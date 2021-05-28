@@ -6,97 +6,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import '../../styles/crearEntradas.css'
 
-var optionsDate = {
-    format: "yyyy-mm-dd",
-    i18n: {
-        months:
-            [
-                'Enero',
-                'Febrero',
-                'Marzo',
-                'Abril',
-                'Mayo',
-                'Junio',
-                'Julio',
-                'Agosto',
-                'Septiembre',
-                'Octubre',
-                'Noviembre',
-                'Diciembre'
-            ],
-        monthsShort: [
-            'Ene',
-            'Feb',
-            'Mar',
-            'Abr',
-            'May',
-            'Jun',
-            'Jul',
-            'Ago',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dic'
-        ],
-        weekdays: [
-            'Domingo',
-            'Lunes',
-            'Martes',
-            'Miércoles',
-            'Jueves',
-            'Viernes',
-            'Sábado'
-        ],
-        weekdaysShort: [
-            'Dom',
-            'Lun',
-            'Mar',
-            'Mie',
-            'Jue',
-            'Vie',
-            'Sab'
-        ],
-        weekdaysAbbrev: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
-        selectMonths: true,
-        selectYears: 5, // Puedes cambiarlo para mostrar más o menos años
-        today: 'Hoy',
-        clear: 'Limpiar',
-        close: 'Ok',
-        cancel: 'Cancelar',
-        labelMonthNext: 'Siguiente mes',
-        labelMonthPrev: 'Mes anterior',
-        labelMonthSelect: 'Selecciona un mes',
-        labelYearSelect: 'Selecciona un año',
-    },
-    setDefaultDate: false,
-    defaultDate: new Date(2021, 0, 1),
-};
-
-var optionsTime = {
-    twelveHour: false,
-    i18n: {
-        clear: 'Limpiar',
-        close: 'Ok',
-        done: 'Ok',
-        cancel: 'Cancelar',
-    },
-};
-
-function initializeMat() {
-    M.updateTextFields();
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems);
-    var elems = document.querySelectorAll('.datepicker');
-    var instances = M.Datepicker.init(elems, optionsDate);
-    var elems = document.querySelectorAll('.timepicker');
-    var instances = M.Timepicker.init(elems, optionsTime);
-}
-
 const Crear = ({ cursos }) => {
-    useEffect(() => {
-        initializeMat();
-    }, [])
-
     //errores de la validacion de laravel
     const { errors } = usePage().props
 
@@ -108,23 +18,216 @@ const Crear = ({ cursos }) => {
         titulo: "",
         contenido: "",
         archivos: null,
-        visible: "",
-        notificacion: "",
+        visible: false,
+        notificacion: false,
+        permitir_envios_retrasados: false,
         link: "",
+        fecha_de_apertura: "",
+        fecha_de_entrega: "",
+        hora_de_apertura: "",
+        hora_de_entrega: "",
     })
 
-    function ocultarTodos() {
+    var optionsDate = {
+        format: "yyyy-mm-dd",
+        i18n: {
+            months:
+                [
+                    'Enero',
+                    'Febrero',
+                    'Marzo',
+                    'Abril',
+                    'Mayo',
+                    'Junio',
+                    'Julio',
+                    'Agosto',
+                    'Septiembre',
+                    'Octubre',
+                    'Noviembre',
+                    'Diciembre'
+                ],
+            monthsShort: [
+                'Ene',
+                'Feb',
+                'Mar',
+                'Abr',
+                'May',
+                'Jun',
+                'Jul',
+                'Ago',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dic'
+            ],
+            weekdays: [
+                'Domingo',
+                'Lunes',
+                'Martes',
+                'Miércoles',
+                'Jueves',
+                'Viernes',
+                'Sábado'
+            ],
+            weekdaysShort: [
+                'Dom',
+                'Lun',
+                'Mar',
+                'Mie',
+                'Jue',
+                'Vie',
+                'Sab'
+            ],
+            weekdaysAbbrev: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+            selectMonths: true,
+            selectYears: 5, // Puedes cambiarlo para mostrar más o menos años
+            today: 'Hoy',
+            clear: 'Limpiar',
+            close: 'Ok',
+            cancel: 'Cancelar',
+            labelMonthNext: 'Siguiente mes',
+            labelMonthPrev: 'Mes anterior',
+            labelMonthSelect: 'Selecciona un mes',
+            labelYearSelect: 'Selecciona un año',
+        },
+        setDefaultDate: false,
+        defaultDate: new Date(),
+        onClose: () => {
+            setValues(values => ({
+                ...values,
+                fecha_de_apertura: document.getElementById("fecha_de_apertura").value,
+            }))
+        },
+    };
 
+    var optionsDate2 = {
+        format: "yyyy-mm-dd",
+        i18n: {
+            months:
+                [
+                    'Enero',
+                    'Febrero',
+                    'Marzo',
+                    'Abril',
+                    'Mayo',
+                    'Junio',
+                    'Julio',
+                    'Agosto',
+                    'Septiembre',
+                    'Octubre',
+                    'Noviembre',
+                    'Diciembre'
+                ],
+            monthsShort: [
+                'Ene',
+                'Feb',
+                'Mar',
+                'Abr',
+                'May',
+                'Jun',
+                'Jul',
+                'Ago',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dic'
+            ],
+            weekdays: [
+                'Domingo',
+                'Lunes',
+                'Martes',
+                'Miércoles',
+                'Jueves',
+                'Viernes',
+                'Sábado'
+            ],
+            weekdaysShort: [
+                'Dom',
+                'Lun',
+                'Mar',
+                'Mie',
+                'Jue',
+                'Vie',
+                'Sab'
+            ],
+            weekdaysAbbrev: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+            selectMonths: true,
+            selectYears: 5, // Puedes cambiarlo para mostrar más o menos años
+            today: 'Hoy',
+            clear: 'Limpiar',
+            close: 'Ok',
+            cancel: 'Cancelar',
+            labelMonthNext: 'Siguiente mes',
+            labelMonthPrev: 'Mes anterior',
+            labelMonthSelect: 'Selecciona un mes',
+            labelYearSelect: 'Selecciona un año',
+        },
+        setDefaultDate: false,
+        defaultDate: new Date(),
+        onClose: () => {
+            setValues(values => ({
+                ...values,
+                fecha_de_entrega: document.getElementById("fecha_de_entrega").value,
+            }))
+        },
+    };
+
+    var optionsTime = {
+        twelveHour: false,
+        i18n: {
+            clear: 'Limpiar',
+            close: 'Ok',
+            done: 'Ok',
+            cancel: 'Cancelar',
+        },
+        onCloseEnd: () => {
+            setValues(values => ({
+                ...values,
+                hora_de_apertura: document.getElementById("hora_de_apertura").value,
+            }))
+        },
+    };
+
+    var optionsTime2 = {
+        twelveHour: false,
+        i18n: {
+            clear: 'Limpiar',
+            close: 'Ok',
+            done: 'Ok',
+            cancel: 'Cancelar',
+        },
+        onCloseEnd: () => {
+            setValues(values => ({
+                ...values,
+                hora_de_entrega: document.getElementById("hora_de_entrega").value,
+            }))
+        },
+    };
+
+    function initializeMat() {
+        M.updateTextFields();
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+        var date1 = document.getElementById("fecha_de_apertura");
+        var date2 = document.getElementById("fecha_de_entrega");
+        var instances = M.Datepicker.init(date1, optionsDate);
+        var instances = M.Datepicker.init(date2, optionsDate2);
+        var hora1 = document.getElementById("hora_de_apertura");
+        var hora2 = document.getElementById("hora_de_entrega");
+        var instances = M.Timepicker.init(hora1, optionsTime);
+        var instances = M.Timepicker.init(hora2, optionsTime2);
+    }
+
+    useEffect(() => {
+        initializeMat();
+    }, [])
+
+
+    function ocultarTodos() {
         var input = document.getElementById("fecha-a-div");
         input.style.display = "none";
         var input = document.getElementById("fecha-e-div");
         input.style.display = "none";
-        // var input = document.getElementById("switch-visible-div");
-        // input.style.display = "none";
-        // var input = document.getElementById("switch-notif-div");
-        // input.style.display = "none";
-        // var input = document.getElementById("switch-envios-div");
-        // input.style.display = "none";
     }
 
     function mostrarAsignacion() {
@@ -133,12 +236,6 @@ const Crear = ({ cursos }) => {
         input.style.display = "block";
         var input = document.getElementById("fecha-e-div");
         input.style.display = "block";
-        // var input = document.getElementById("switch-visible-div");
-        // input.style.display = "block";
-        // var input = document.getElementById("switch-notif-div");
-        // input.style.display = "block";
-        // var input = document.getElementById("switch-envios-div");
-        // input.style.display = "block";
     }
 
     function mostrarExamen() {
@@ -147,12 +244,6 @@ const Crear = ({ cursos }) => {
         input.style.display = "block";
         var input = document.getElementById("fecha-e-div");
         input.style.display = "block";
-        // var input = document.getElementById("switch-visible-div");
-        // input.style.display = "block";
-        // var input = document.getElementById("switch-notif-div");
-        // input.style.display = "block";
-        // var input = document.getElementById("switch-envios-div");
-        // input.style.display = "block";
     }
 
     function cambiarForm(e) {
@@ -177,6 +268,27 @@ const Crear = ({ cursos }) => {
         setValues(values => ({
             ...values,
             [key]: value,
+        }))
+    }
+
+    function handleVisible() {
+        setValues(values => ({
+            ...values,
+            visible: !values.visible,
+        }))
+    }
+
+    function handleNotificacion() {
+        setValues(values => ({
+            ...values,
+            notificacion: !values.notificacion,
+        }))
+    }
+
+    function handleEnvio() {
+        setValues(values => ({
+            ...values,
+            permitir_envios_retrasados: !values.permitir_envios_retrasados,
         }))
     }
 
@@ -276,7 +388,7 @@ const Crear = ({ cursos }) => {
                                                 <h2 className="ck-titulo">Contenido</h2>
                                                 <CKEditor
                                                     editor={ClassicEditor}
-                                                    data=""
+                                                    data={values.contenido}
                                                     onReady={editor => {
 
                                                     }}
@@ -300,7 +412,7 @@ const Crear = ({ cursos }) => {
                                                     <h2 className="ck-titulo">Contenido</h2>
                                                     <CKEditor
                                                         editor={ClassicEditor}
-                                                        data=""
+                                                        data={values.contenido}
                                                         onReady={editor => {
 
                                                         }}
@@ -324,7 +436,7 @@ const Crear = ({ cursos }) => {
                                                         <h2 className="ck-titulo">Contenido</h2>
                                                         <CKEditor
                                                             editor={ClassicEditor}
-                                                            data=""
+                                                            data={values.contenido}
                                                             onReady={editor => {
 
                                                             }}
@@ -348,7 +460,7 @@ const Crear = ({ cursos }) => {
                                                         <h2 className="ck-titulo">Información (Opcional)</h2>
                                                         <CKEditor
                                                             editor={ClassicEditor}
-                                                            data=""
+                                                            data={values.contenido}
                                                             onReady={editor => {
 
                                                             }}
@@ -440,20 +552,20 @@ const Crear = ({ cursos }) => {
                                         <div id="fecha-a-div" className="col s12 m6" style={{ display: "none", marginBottom: "1%" }}>
                                             <h2 className="ck-titulo">Fecha de apertura</h2>
                                             <div className="col s6" style={{ paddingLeft: "0px" }}>
-                                                <input type="text" className="datepicker" placeholder="Fecha"></input>
+                                                <input type="text" className="datepicker" placeholder="Fecha" id="fecha_de_apertura" name="fecha_de_apertura"></input>
                                             </div>
                                             <div className="col s6" style={{ paddingLeft: "0px" }}>
-                                                <input type="text" className="timepicker" placeholder="Hora"></input>
+                                                <input type="text" className="timepicker" placeholder="Hora" id="hora_de_apertura" name="hora_de_apertura"></input>
                                             </div>
                                         </div>
                                         {/* fecha de entrega */}
                                         <div id="fecha-e-div" className="col s12 m6" style={{ display: "none", marginBottom: "1%" }}>
                                             <h2 className="ck-titulo">Fecha de entrega</h2>
                                             <div className="col s6" style={{ paddingLeft: "0px" }}>
-                                                <input type="text" className="datepicker" placeholder="Fecha"></input>
+                                                <input type="text" className="datepicker" placeholder="Fecha" id="fecha_de_entrega" name="fecha_de_entrega"></input>
                                             </div>
                                             <div className="col s6" style={{ paddingLeft: "0px" }}>
-                                                <input type="text" className="timepicker" placeholder="Hora"></input>
+                                                <input type="text" className="timepicker" placeholder="Hora" id="hora_de_entrega" name="hora_de_entrega"></input>
                                             </div>
                                         </div>
                                         {/* primer switch */}
@@ -463,13 +575,14 @@ const Crear = ({ cursos }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                                <input type="checkbox" />
+                                            <input type="checkbox" value={values.visible} onChange={handleVisible} />
                                                         <span className="lever" />
-                                                    Si
-                                            </label>
+                                                Si
+                                        </label>
                                                 </div>
                                             </div>
                                         }
+
                                         {/* segundo switch */}
                                         {values.tipo != "" &&
                                             <div id="switch-notif-div" className="col s12 m4 l3" >
@@ -477,7 +590,7 @@ const Crear = ({ cursos }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                                <input type="checkbox" />
+                                                <input type="checkbox" value={values.notificacion} onChange={handleNotificacion} />
                                                         <span className="lever" />
                                                     Si
                                             </label>
@@ -491,7 +604,7 @@ const Crear = ({ cursos }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                                <input type="checkbox" />
+                                                <input type="checkbox" value={values.permitir_envios_retrasados} onChange={handleEnvio} />
                                                         <span className="lever" />
                                                     Si
                                             </label>
@@ -503,7 +616,7 @@ const Crear = ({ cursos }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                            <input type="checkbox" />
+                                            <input type="checkbox" value={values.permitir_envios_retrasados} onChange={handleEnvio} />
                                                         <span className="lever" />
                                                 Si
                                         </label>
