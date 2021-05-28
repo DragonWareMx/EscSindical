@@ -11,28 +11,27 @@ import Alertas from '../../components/common/Alertas';
 
 const Cursos = ({user, cursos, profesor, tags}) => {
   
-  return (
+  if (user.roles['0'].name == 'Ponente'){
+    return (
+      <>
+      <Alertas />
+      <CursoActualPonente cursos = {cursos} />,
+      <HistorialCursosPonente />
+      </>
+    )
+  }
+  else {
+    return (
     <>
-    
-    {/* Componente para el historial de cursos de estudiantes y solicitudes............. */}
-    {/* <HistorialCursos /> */}
     <Alertas />
-    {user.roles['0'].name == 'Ponente' ? <CursoActualPonente cursos = {cursos}/> 
-    : <CursoActual 
+    <CursoActual 
     cursos = {user.active_courses['0']}
     profesor = {profesor}
     tags = {tags}
-    />}
-    {/* Componente para cursos actuales de ponentes */}
-    {/* <CursoActualPonente /> */}
-    {/* Componente modal para crear curso */}
-    {/* <FormCurso /> */}
-
-    {/* Componente para el historial de cursos de ponentes .......................*/}
-    {/* <HistorialCursosPonente /> */}
-    
-    </>
-  )
+    />,
+    <HistorialCursos />
+    </>)
+  }
 }
 
 Cursos.layout = page => <Layout children={page} title="Mis cursos" pageTitle="MIS CURSOS"/>
