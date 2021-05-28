@@ -37,7 +37,7 @@ class EntryController extends Controller
                 'contenido' => 'required',
                 'visible' => 'required|boolean',
                 'notificacion' => 'required|boolean',
-                'archivos' => 'file'
+                'archivos' => 'nullable|file'
             ]);
         }
         if ($tipo == "Informacion") {
@@ -48,7 +48,7 @@ class EntryController extends Controller
                 'contenido' => 'required',
                 'visible' => 'required|boolean',
                 'notificacion' => 'required|boolean',
-                'archivos' => 'file'
+                'archivos' => 'nullable|file'
             ]);
 
             //comprobar curso y modulo
@@ -59,6 +59,18 @@ class EntryController extends Controller
                 'modulo' => 'required|numeric|exists:modules,id',
                 'titulo' =>  ['required', 'max:255', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
                 'link' => 'required|url',
+                'visible' => 'required|boolean',
+                'notificacion' => 'required|boolean',
+            ]);
+
+            //comprobar curso y modulo
+        }
+        if ($tipo == "Archivo") {
+            $validated = $request->validate([
+                'curso' => 'required|numeric|exists:courses,id',
+                'modulo' => 'required|numeric|exists:modules,id',
+                'titulo' =>  ['required', 'max:255', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+                'archivos' => 'required|file',
                 'visible' => 'required|boolean',
                 'notificacion' => 'required|boolean',
             ]);

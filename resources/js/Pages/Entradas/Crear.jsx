@@ -592,7 +592,7 @@ const Crear = ({ cursos }) => {
                                                     </div>
                                                     : values.tipo == "Archivo" ?
                                                         <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
-                                                            <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)
+                                                            <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos
                                                             {
                                                                     errors.archivos &&
                                                                     <span className="helper-text" data-error={errors.arrchivos} style={{ marginBottom: "10px", fontSize: "12px", color: "rgb(244, 67, 54)", marginLeft: "5px" }}>{errors.archivos}</span>
