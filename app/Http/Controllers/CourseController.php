@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Module;
 use App\Models\Tag;
 use App\Models\Log;
 use App\Models\Image;
@@ -366,23 +367,44 @@ class CourseController extends Controller
     {
         $cursosCount=Course::with('teacher:id')->find($id);
         $cursosCount=Course::where('teacher_id',$cursosCount->teacher->id)->count();
+        $participantesCount=Course::with('users:id')->findOrFail($id);
+        $participantesCount=$participantesCount['users']->count();
 
         return Inertia::render('Curso/Informacion', [
             'curso' => Course::with('images:imagen,course_id', 'tags:nombre','teacher:nombre,apellido_p,apellido_m,foto,id')->findOrFail($id),
-            'cursos_count'=> $cursosCount
+            'cursos_count'=> $cursosCount,
+            'participantes_count'=>$participantesCount,
         ]);
     }
 
-    public function modulos($id)
+    public function modulos($id){
+        return 'holiwis kiwis la ruta que buscas es /cursos/1/modulo/1   , si quieres hacer la vista de modulos en general ve a CourseController.php y en modulos el return cambialo por el que debe de ser y ya ';
+    }
+
+    public function modulo($id,$mid)
     {
-        return Inertia::render('Curso/Modulos', [
+        //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
+        $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
+        if(!$modulo){
+            return abort(404);
+        }
+
+        return Inertia::render('Curso/Modulo', [
             'curso' => Course::findOrFail($id),
+            'modulo' => $modulo,
         ]);
     }
 
     public function participantes($id)
     {
         return Inertia::render('Curso/Participantes', [
+            'curso' => Course::with('users:id,nombre,foto,apellido_p,apellido_m,email','teacher:nombre,apellido_p,apellido_m,foto,id,email')->findOrFail($id),
+        ]);
+    }
+
+    public function mochila($id)
+    {
+        return Inertia::render('Curso/Mochila', [
             'curso' => Course::findOrFail($id),
         ]);
     }
