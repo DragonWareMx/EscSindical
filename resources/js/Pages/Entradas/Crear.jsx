@@ -3,6 +3,8 @@ import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 import Layout from '../../layouts/Layout';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import route from 'ziggy-js';
+import { Inertia } from '@inertiajs/inertia';
 
 import '../../styles/crearEntradas.css'
 
@@ -325,6 +327,18 @@ const Crear = ({ cursos }) => {
 
     }
 
+    //manda el forumulario
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.post(route('entrada.create'), values,
+            {
+                onError: () => {
+                    // Inertia.reload({ only: ['cursos'], data: { regime: values.regimen } })
+                }
+            }
+        )
+    }
+
     return (
         <>
             <div className="container">
@@ -333,28 +347,36 @@ const Crear = ({ cursos }) => {
                         <div className="card">
                             <div className="card-content card-entradas">
                                 <span className="card-title">AGREGAR ENTRADA</span>
-                                <form action="">
+                                <form onSubmit={handleSubmit}>
                                     <div className="row">
                                         {/* aqui va el input del select del curso */}
                                         <div className="input-field col s12 m6">
-                                            <select id="curso" name="curso" value={values.curso} onChange={changeModulos} required>
+                                            <select id="curso" name="curso" value={values.curso} onChange={changeModulos} required className={errors.curso ? "input-field invalid" : "input-field"}>
                                                 <option value disabled value={""}>Elige una opción</option>
                                                 {cursos && cursos.length > 0 && cursos.map((curso, index) =>
                                                     <option value={curso.id} key={index}>{curso.nombre}</option>
                                                 )}
                                             </select>
                                             <label>Selecciona el curso</label>
+                                            {
+                                                errors.curso &&
+                                                <span className="helper-text" data-error={errors.curso} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.curso}</span>
+                                            }
                                         </div>
                                         {/* aqui va el input del modulo */}
                                         <div className="input-field col s12 m6">
-                                            <select id="modulo" name="modulo" value={values.modulo} onChange={handleChange} required>
+                                            <select id="modulo" name="modulo" value={values.modulo} onChange={handleChange} required className={errors.modulo ? "input-field invalid" : "input-field"}>
                                                 <option value disabled value={""}>Elige una opción</option>
                                             </select>
                                             <label>Selecciona el modulo</label>
+                                            {
+                                                errors.modulo &&
+                                                <span className="helper-text" data-error={errors.modulo} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.modulo}</span>
+                                            }
                                         </div>
                                         {/* aqui va el input del select tipo */}
                                         <div className="input-field col s12 m6">
-                                            <select id="tipo" name="tipo" value={values.tipo} onChange={cambiarForm} required>
+                                            <select id="tipo" name="tipo" value={values.tipo} onChange={cambiarForm} required className={errors.tipo ? "input-field invalid" : "input-field"}>
                                                 <option value disabled value={""}>Elige una opción</option>
                                                 <option value={"Aviso"}>Aviso</option>
                                                 <option value={"Informacion"}>Información</option>
@@ -364,6 +386,10 @@ const Crear = ({ cursos }) => {
                                                 <option value={"Examen"}>Examen</option>
                                             </select>
                                             <label>Tipo de recurso</label>
+                                            {
+                                                errors.tipo &&
+                                                <span className="helper-text" data-error={errors.tipo} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.tipo}</span>
+                                            }
                                         </div>
                                         {/* Aqui va el input del titulo */}
                                         <div className="input-field col s12 m6" required>
