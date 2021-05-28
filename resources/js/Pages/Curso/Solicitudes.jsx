@@ -44,7 +44,7 @@ const Solicitudes = ({curso}) => {
             <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
                 {/* regresar */}
                 <InertiaLink  href={route('cursos.participantes', curso.id)}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i class="material-icons">keyboard_backspace</i></InertiaLink>
-                SOLICITUDES
+                AGREGAR PARTICIPANTES
             </div>
             <div className="col s12">
                 <a className="a-select-all" id="txt-select-all" onClick={seleccionar_todo}>Seleccionar todos</a>
@@ -54,7 +54,7 @@ const Solicitudes = ({curso}) => {
 
             {/* Row de estudiante item*/}
             <div className="col s12 div-collection-item div-item-solicitudes">
-                <label className="pink">
+                <label>
                     <input type="checkbox" name="solicitud" id="optionCheck" />
                     <span className="P_collection_item col s12" style={{"display":"flex"}}>
                         <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
@@ -68,7 +68,7 @@ const Solicitudes = ({curso}) => {
 
             {/* Row de estudiante item*/}
             <div className="col s12 div-collection-item div-item-solicitudes">
-                <label className="pink">
+                <label>
                     <input type="checkbox"  name="solicitud" id="optionCheck" />
                     <span className="P_collection_item col s12" style={{"display":"flex"}}>
                         <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
@@ -82,7 +82,7 @@ const Solicitudes = ({curso}) => {
 
             {/* Row de estudiante item*/}
             <div className="col s12 div-collection-item div-item-solicitudes">
-                <label className="pink">
+                <label>
                     <input type="checkbox" />
                     <span className="P_collection_item col s12" style={{"display":"flex"}}>
                         <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
@@ -96,7 +96,7 @@ const Solicitudes = ({curso}) => {
 
             {/* Row de estudiante item*/}
             <div className="col s12 div-collection-item div-item-solicitudes">
-                <label className="pink">
+                <label>
                     <input type="checkbox" />
                     <span className="P_collection_item col s12" style={{"display":"flex"}}>
                         <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
@@ -110,7 +110,7 @@ const Solicitudes = ({curso}) => {
 
             {/* Row de estudiante item*/}
             <div className="col s12 div-collection-item div-item-solicitudes">
-                <label className="pink">
+                <label>
                     <input type="checkbox" />
                     <span className="P_collection_item col s12" style={{"display":"flex"}}>
                         <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
@@ -140,7 +140,7 @@ const Solicitudes = ({curso}) => {
 }
 
 Solicitudes.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="SOLICITUDES">
+  <Layout title="Escuela sindical - Curso" pageTitle="PARTICIPANTES">
     <LayoutCursos children={page} />
   </Layout>
 )

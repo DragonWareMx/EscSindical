@@ -391,4 +391,10 @@ class CourseController extends Controller
             'curso' => Course::findOrFail($id),
         ]);
     }
+
+    public function agregarParticipante($id){
+        return Inertia::render('Curso/AgregarParticipante', [
+            'curso' => Course::findOrFail($id),
+        ]);
+    }
 }
