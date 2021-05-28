@@ -49,7 +49,7 @@ class Course extends Model
 
     public function requests()
     {
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsToMany('App\Models\User', 'requests')->withTimestamps();
     }
 
     public function delete_request()

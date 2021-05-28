@@ -444,8 +444,9 @@ class CourseController extends Controller
 
     public function solicitudes($id)
     {
+        $curso = Course::with('requests:nombre,apellido_p,apellido_m,id,foto')->select('nombre','id')->findOrFail($id);
         return Inertia::render('Curso/Solicitudes', [
-            'curso' => Course::findOrFail($id),
+            'curso' => $curso,
         ]);
     }
 }
