@@ -53,9 +53,11 @@ class HandleInertiaRequests extends Middleware
                 : null,
 
             // Lazily
-            'auth.roles' => fn () => $request->user()->roles()->get()
+            'auth.roles' => fn () => $request->user() ? 
+            $request->user()->roles()->get()
                 ? $request->user()->roles()->get()
-                : null,
+                : null
+            :null,
             // 'flash' => [
             //     'message' => $request->session()->get('message'),
             //     'error' => $request->session()->get('error'),
