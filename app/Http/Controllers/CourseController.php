@@ -414,7 +414,7 @@ class CourseController extends Controller
             ->where('visible',1)->orderBy('id','DESC')->get();
 
         //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
-        $actividades=Entry::where('module_id',$mid)->where('tipo','Asignacion')->where('tipo','Examen')->orderBy('id','DESC')->get();
+        $actividades=Entry::where('module_id',$mid)->where('tipo','!=','Aviso')->where('tipo','!=','Informacion')->where('tipo','!=','Enlace')->where('tipo','!=','Archivo')->orderBy('id','ASC')->get();
 
         return Inertia::render('Curso/Modulo', [
             //Aquí adentro se mandan las variables (JSONS) a la vista, en este caso curso se hace la consulta aquí mismo, pero las demás variables se igualan a las que 
@@ -437,8 +437,19 @@ class CourseController extends Controller
 
     public function mochila($id)
     {
+        //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
+        //y se obtienen solamente las actividades visibles
+        $actividades=Entry::where('tipo','!=','Aviso')
+                            ->where('tipo','!=','Informacion')
+                            ->where('tipo','!=','Enlace')
+                            ->where('tipo','!=','Archivo')
+                            ->where('visible',1)
+                            ->orderBy('id','ASC')
+                            ->get();
+
         return Inertia::render('Curso/Mochila', [
             'curso' => Course::findOrFail($id),
+            'actividades' =>$actividades,
         ]);
     }
 
