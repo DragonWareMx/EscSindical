@@ -34,12 +34,13 @@ class CourseController extends Controller
         if ($user->roles[0]->name == 'Ponente') {
             \Gate::authorize('haveaccess', 'ponente.perm');
             $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users','images')->get();
-
+            $OldCourses = Course::where('teacher_id', Auth::id())->where('estatus', 'Terminado')->with('users','images','tags',)->get();
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
                     'roles', 'activeCourses', 'activeCourses.images'
                 ])->where('id', Auth::id())->first(),
                 'cursos' => fn () => $cursos,
+                'finishedCourses' =>$OldCourses,
             ]);
         } else {
             \Gate::authorize('haveaccess', 'alumno.perm');
@@ -48,7 +49,7 @@ class CourseController extends Controller
             $tags = $curso_actual->tags;
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
-                    'roles', 'activeCourses', 'activeCourses.images'
+                    'roles', 'requests', 'requests.course.images', 'requests.course.teacher', 'requests.course.tags', 'activeCourses', 'activeCourses.images', 'finishedCourses', 'finishedCourses.images', 'finishedCourses.teacher' , 'finishedCourses.tags'
                 ])->where('id', Auth::id())->first(),
                 'profesor' => $profesor,
                 'tags' => $tags,

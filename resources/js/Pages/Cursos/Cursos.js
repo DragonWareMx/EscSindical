@@ -9,14 +9,14 @@ import HistorialCursosPonente from '../../components/cursos/HistorialCursosPonen
 //COMPONENTS
 import Alertas from '../../components/common/Alertas'; 
 
-const Cursos = ({user, cursos, profesor, tags}) => {
-  
+const Cursos = ({user, cursos, profesor, tags, finishedCourses}) => {
+  console.log(user.requests['0'].course)
   if (user.roles['0'].name == 'Ponente'){
     return (
       <>
       <Alertas />
       <CursoActualPonente cursos = {cursos} />,
-      <HistorialCursosPonente />
+      <HistorialCursosPonente finishedCourses = {finishedCourses}/>
       </>
     )
   }
@@ -29,7 +29,9 @@ const Cursos = ({user, cursos, profesor, tags}) => {
     profesor = {profesor}
     tags = {tags}
     />,
-    <HistorialCursos />
+    <HistorialCursos 
+    cursos = {user.finished_courses}
+    solicitudes ={user.requests}/>
     </>)
   }
 }
