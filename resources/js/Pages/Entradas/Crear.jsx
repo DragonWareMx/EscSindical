@@ -627,25 +627,43 @@ const Crear = ({ cursos }) => {
                                                             </div>
                                                         </div>
                                         }
-
-                                        {/* fecha de apertura */}
-                                        <div id="fecha-a-div" className="col s12 m6" style={{ display: "none", marginBottom: "1%" }}>
-                                            <h2 className="ck-titulo">Fecha de apertura</h2>
-                                            <div className="col s6" style={{ paddingLeft: "0px" }}>
-                                                <input type="text" className="datepicker" placeholder="Fecha" id="fecha_de_apertura" name="fecha_de_apertura"></input>
+                                        {/* Div que contiene los campos de fechas */}
+                                        <div>
+                                            {/* fecha de apertura */}
+                                            <div id="fecha-a-div" className="col s12 m6" style={{ display: "none", marginBottom: "1%" }}>
+                                                <h2 className="ck-titulo">Fecha de apertura</h2>
+                                                <div className="col s6" style={{ paddingLeft: "0px" }}>
+                                                    <input type="text" className={errors.fecha_de_apertura ? "datepicker invalid" : "datepicker"} placeholder="Fecha" id="fecha_de_apertura" name="fecha_de_apertura"></input>
+                                                    {
+                                                        errors.fecha_de_apertura &&
+                                                        <span className="helper-text" style={{ "marginBottom": "10px", color: "#F44336", fontSize: "12px" }}>{errors.fecha_de_apertura}</span>
+                                                    }
+                                                </div>
+                                                <div className="col s6" style={{ paddingLeft: "0px" }}>
+                                                    <input type="text" className={errors.hora_de_apertura ? "timepicker invalid" : "timepicker"} placeholder="Hora" id="hora_de_apertura" name="hora_de_apertura"></input>
+                                                    {
+                                                        errors.hora_de_apertura &&
+                                                        <span className="helper-text" style={{ "marginBottom": "10px", color: "#F44336", fontSize: "12px" }}>{errors.hora_de_apertura}</span>
+                                                    }
+                                                </div>
                                             </div>
-                                            <div className="col s6" style={{ paddingLeft: "0px" }}>
-                                                <input type="text" className="timepicker" placeholder="Hora" id="hora_de_apertura" name="hora_de_apertura"></input>
-                                            </div>
-                                        </div>
-                                        {/* fecha de entrega */}
-                                        <div id="fecha-e-div" className="col s12 m6" style={{ display: "none", marginBottom: "1%" }}>
-                                            <h2 className="ck-titulo">Fecha de entrega</h2>
-                                            <div className="col s6" style={{ paddingLeft: "0px" }}>
-                                                <input type="text" className="datepicker" placeholder="Fecha" id="fecha_de_entrega" name="fecha_de_entrega"></input>
-                                            </div>
-                                            <div className="col s6" style={{ paddingLeft: "0px" }}>
-                                                <input type="text" className="timepicker" placeholder="Hora" id="hora_de_entrega" name="hora_de_entrega"></input>
+                                            {/* fecha de entrega */}
+                                            <div id="fecha-e-div" className="col s12 m6" style={{ display: "none", marginBottom: "1%" }}>
+                                                <h2 className="ck-titulo">Fecha de entrega</h2>
+                                                <div className="col s6" style={{ paddingLeft: "0px" }}>
+                                                    <input type="text" className={errors.fecha_de_entrega ? "datepicker invalid" : "datepicker"} placeholder="Fecha" id="fecha_de_entrega" name="fecha_de_entrega"></input>
+                                                    {
+                                                        errors.fecha_de_entrega &&
+                                                        <span className="helper-text" style={{ "marginBottom": "10px", color: "#F44336", fontSize: "12px" }}>{errors.fecha_de_entrega}</span>
+                                                    }
+                                                </div>
+                                                <div className="col s6" style={{ paddingLeft: "0px" }}>
+                                                    <input type="text" className={errors.hora_de_entrega ? "timepicker invalid" : "timepicker"} placeholder="Hora" id="hora_de_entrega" name="hora_de_entrega"></input>
+                                                    {
+                                                        errors.hora_de_entrega &&
+                                                        <span className="helper-text" style={{ "marginBottom": "10px", color: "#F44336", fontSize: "12px" }}>{errors.hora_de_entrega}</span>
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
                                         {/* primer switch */}

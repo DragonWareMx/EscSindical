@@ -77,6 +77,24 @@ class EntryController extends Controller
 
             //comprobar curso y modulo
         }
+        if ($tipo == "Asignacion") {
+            $validated = $request->validate([
+                'curso' => 'required|numeric|exists:courses,id',
+                'modulo' => 'required|numeric|exists:modules,id',
+                'titulo' =>  ['required', 'max:255', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+                'contenido' => 'required',
+                'archivos' => 'nullable|file',
+                'visible' => 'required|boolean',
+                'notificacion' => 'required|boolean',
+                'permitir_envios_retrasados' => 'required|boolean',
+                'fecha_de_apertura' => 'required|date',
+                'fecha_de_entrega' => 'required|date',
+                'hora_de_apertura' => 'required|date_format:H:i',
+                'hora_de_entrega' => 'required|date_format:H:i',
+            ]);
+
+            //comprobar curso y modulo
+        }
         dd($request);
     }
 }
