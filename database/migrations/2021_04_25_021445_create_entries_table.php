@@ -18,15 +18,13 @@ class CreateEntriesTable extends Migration
             $table->timestamps();
             $table->string('titulo', 255);
             $table->enum('tipo', ['Aviso', 'Informacion', 'Enlace', 'Archivo', 'Asignacion', 'Examen']);
-            $table->text('contenido');
+            $table->text('contenido')->nullable();
             $table->unsignedBigInteger('module_id');
-            $table->dateTime('fecha_act');
-            $table->dateTime('fecha_limite');
             $table->tinyInteger('visible');
-            $table->tinyInteger('permitir_envios_retrasados');
-            $table->text('link');
-            $table->dateTime('fecha_de_apertura');
-            $table->dateTime('fecha_de_entrega');
+            $table->tinyInteger('permitir_envios_retrasados')->nullable();
+            $table->text('link')->nullable();
+            $table->dateTime('fecha_de_apertura')->nullable();
+            $table->dateTime('fecha_de_entrega')->nullable();
 
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('cascade');
 
