@@ -79,3 +79,4 @@ Route::patch('/perfil/configuracion', [App\Http\Controllers\PerfilController::cl
 
 //----------RECURSOS------------
 Route::get('/entrada/crear', [App\Http\Controllers\EntryController::class, 'index'])->name('entrada.crear');
+Route::post('/entrada/crear', [App\Http\Controllers\EntryController::class, 'create'])->name('entrada.create');
