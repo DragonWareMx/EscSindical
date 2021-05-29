@@ -13,7 +13,7 @@ class RequestController extends Controller
 {
     public function aprobar($id, Request $request)
     {
-        //\Gate::authorize('haveaccess', 'ponente.perm');
+        \Gate::authorize('haveaccess', 'ponente.perm');
         //VALIDAMOS DATOS
         $validated = $request->validate([
             "solicitud"    => "required|array|min:1",
