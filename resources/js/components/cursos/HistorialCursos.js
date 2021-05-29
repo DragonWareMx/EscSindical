@@ -120,7 +120,7 @@ export default function HistorialCursos({cursos, solicitudes}) {
                                                     <a href="#!"><img src={solicitud.course.images && solicitud.course.images.length>0 && "/storage/imagenes_curso/"+solicitud.course.images['0'].imagen} className="img-course" style={{"width":"100%"}} /></a>
                                                 </div>  
                                                 <div className="col s12 l7 m7 xl7">
-                                                    <div className="txt-grade-course" div style={{"width":"max-content", "display":"flex", "alignItems":"center"}}>Estatus:&nbsp;<div className="course-status" style={{"color":"#D14747"}}>{solicitud.estatus}</div></div>
+                                                    <div className="txt-grade-course" div style={{"width":"max-content", "display":"flex", "alignItems":"center"}}>Estatus:&nbsp;<div className="course-status" style={solicitud.estatus == 'Rechazado' ? {"color":"#D14747"}:{"color":"#1d7456"}}>{solicitud.estatus}</div></div>
                                                     {/* Datos del profesor */}
                                                     <div className="" style={{"display": "flex", "alignItems": "center", "marginTop": "0px"}}>
                                                         <div style={{"width": "max-content", "marginRight": "8px"}}><img src={"storage/fotos_perfil/"+solicitud.course.teacher.foto} style={{"width": "20px", "height": "20px", "borderRadius": "50%", "objectFit": "cover", "marginTop":"5px"}} /></div>
