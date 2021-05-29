@@ -29,7 +29,7 @@ const PerfilPublico = ({ user, cursos, participantes }) => {
     return (
         <>
             <div className="row">
-                <div className="col s12 m4">
+                <div className="col s12 m8 l5 xl5">
                     <div className="row">
                         <div className="col s12" style={{ "marginTop": "30px" }}>
                             <div className="card">
@@ -64,7 +64,7 @@ const PerfilPublico = ({ user, cursos, participantes }) => {
                                             <div className="profile-txt-email valign-wrapper truncate"><i className="material-icons profile-icon-email">mail_outline</i>{user.email}</div>
                                         </div>
                                         {/* Boton de enviar mensaje */}
-                                        <div className="col s12 center-align" style={{ "padding": "0%" }}>
+                                        <div className="col s12 center-align" style={{ "padding": "0%"}}>
                                             <a className="waves-effect waves-light btn boton-verde" href={"mailto:"+user.email}><i className="material-icons right" style={{ "fontSize": "18px" }}>send</i>Mensaje</a>
                                         </div>
                                     </div>
