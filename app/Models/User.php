@@ -71,6 +71,11 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($token));
     }
 
+    public function teacherCourses()
+    {
+        return $this->hasMany('App\Models\Course', 'teacher_id', 'id');
+    }
+
     public function courses()
     {
         return $this->belongsToMany('App\Models\Course');

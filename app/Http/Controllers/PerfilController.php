@@ -19,26 +19,40 @@ class PerfilController extends Controller
 
     public function index()
     {
-        $usuario = User::with('category')
+        $usuario = User::with('category:nombre,id')
                     ->where('users.id',Auth::id())
                     ->first();
-        //return $usuario;
 
         return Inertia::render('Perfil/Perfil',['user'=>$usuario]);
     }
 
-    public function edit(Request $request)
+    //vista donde se puede ver el perfil público de otros estudiantes y profesores
+    public function verPerfil($id)
     {
+        $usuario = User::with('roles:name','teacherCourses')
+                    ->select('nombre','apellido_p','apellido_m','created_at','email','foto','id')
+                    ->findOrFail($id);
+                
+        $cursos = $usuario->teacherCourses->count();
 
+        $participantes = 0;
+
+        foreach ($usuario->teacherCourses as $curso) {
+            $participantes += $curso->users()->get()->count();
+        }
+
+        return Inertia::render('Perfil/PerfilPublico',['user'=>$usuario, 'cursos' => $cursos, 'participantes' => $participantes]);
+    }
+
+    public function edit()
+    {
         return Inertia::render('Perfil/Configuracion', [
             'user' => User::findOrFail(Auth::User()->id),
         ]);
-        
     }
 
     public function update(Request $request)
     {
-
         $validated = $request->validate([
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
 
@@ -88,7 +102,7 @@ class PerfilController extends Controller
 
         try {
 
-            //SE CREA EL NUEVO USUARIO
+            //SE ENCUENTRA EL USUARIO LOGGEADO
             $user = User::find(Auth::User()->id);
 
             //guarda la foto

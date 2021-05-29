@@ -80,7 +80,9 @@ class UserController extends Controller
                                 break;
                         }
                     } else
-                        return $query->where('users.nombre', 'LIKE', '%' . $search . '%');
+                        return $query->WhereRaw(
+                            "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                        );
                 })
                 ->when($request->sort, function ($query, $sort) use ($request) {
                     switch ($sort) {
@@ -135,12 +137,6 @@ class UserController extends Controller
                 ->withQueryString(),
             'request' => $request
         ]);
-    }
-
-    public function ejemplo()
-    {
-        //$users = User::factory()->count(80)->create();
-        return Inertia::render('Ejemplo');
     }
 
     /**
