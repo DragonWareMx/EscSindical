@@ -27,5 +27,12 @@ class TagSeeder extends Seeder
         DB::table('tags')->insert([
             'nombre' => 'Matemática',
         ]);
+
+        DB::table('tags')->insert([
+            'nombre' => 'Anime',
+        ]);
+        DB::table('tags')->insert([
+            'nombre' => 'Artes marciales',
+        ]);
     }
 }

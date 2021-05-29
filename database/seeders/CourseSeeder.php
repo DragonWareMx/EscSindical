@@ -46,6 +46,36 @@ class CourseSeeder extends Seeder
             'teacher_id' =>'3',
         ]);
 
+        DB::table('courses')->insert([
+            'nombre' => 'Curso facilito de Django',
+            'fecha_inicio' =>'2021/05/20',
+            'fecha_final' =>'2021/05/27',
+            'inicio_inscripciones' => '2021/05/01',           
+            'fecha_limite'=>'2021/05/15',
+            'link'=>'https://facebook.com',
+            'max'=>'100',
+            'valor_curricular'=>'1',
+            'tipo_acceso' => 'Automática',
+            'estatus'=>'Terminado',
+            'descripcion' =>'Django es un framework muy potente en la actualidad, además de ser el favorito de los fanáticos de Python. Entra a este curso y descúbrelo',   
+            'teacher_id' =>'3',
+        ]);
+
+        DB::table('courses')->insert([
+            'nombre' => 'Aprende a hacer un kamehameha, la técnica de Gokú',
+            'fecha_inicio' =>'2021/05/20',
+            'fecha_final' =>'2021/06/30',
+            'inicio_inscripciones' => '2021/05/01',           
+            'fecha_limite'=>'2021/05/15',
+            'link'=>'https://facebook.com',
+            'max'=>'10',
+            'valor_curricular'=>'1',
+            'tipo_acceso' => 'Automática',
+            'estatus'=>'Activo',
+            'descripcion' =>'¿Te gustaría conocer los secretos del saiyajin más fuerte del universo?, este es tu curso',   
+            'teacher_id' =>'3',
+        ]);
+
         DB::table('course_user')->insert([
             'course_id'=>1,
             'user_id'=>4
@@ -54,6 +84,12 @@ class CourseSeeder extends Seeder
         DB::table('course_user')->insert([
             'course_id'=>2,
             'user_id'=>4
+        ]);
+        
+        DB::table('course_user')->insert([
+            'course_id'=>3,
+            'user_id'=>4,
+            'calificacion_final'=>92,
         ]);
 
         DB::table('course_tag')->insert([
@@ -72,6 +108,22 @@ class CourseSeeder extends Seeder
             'tag_id'=>1,
             'course_id'=>2
         ]);
-
+        DB::table('course_tag')->insert([
+            'tag_id'=>1,
+            'course_id'=>3
+        ]);
+        DB::table('course_tag')->insert([
+            'tag_id'=>3,
+            'course_id' =>3
+        ]);
+        DB::table('course_tag')->insert([
+            'tag_id'=>4,
+            'course_id' =>4
+        ]);
+        
+        DB::table('course_tag')->insert([
+            'tag_id'=>5,
+            'course_id' =>4
+        ]);
     }
 }

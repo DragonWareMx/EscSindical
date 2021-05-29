@@ -24,7 +24,26 @@ export default function HistorialCursosPonente({finishedCourses}) {
     useEffect(() => {
         initializeDROP();
     }, [])
-        return (
+
+    var totales = [];
+    var porcentajes =[];
+
+    finishedCourses.forEach(curso => {
+        var total = 0;
+        var aprobados =0;
+        curso.users.forEach(usuario => {
+            if(usuario.pivot.calificacion_final >70){
+                aprobados++;
+            }
+            total+= usuario.pivot.calificacion_final;
+        });
+        totales.push(total/curso.users.length);
+        porcentajes.push((aprobados/curso.users.length)*100);
+        porcentajes.push((aprobados/curso.users.length)*100);
+    });
+
+    
+    return (
             <div className="row">                
                 <div className="col s12">
                     <div className="card ">
@@ -67,17 +86,17 @@ export default function HistorialCursosPonente({finishedCourses}) {
                                                             <p style={{"marginLeft": "5px", "color": "#585858 !important"}}>{course.users.length}</p>
                                                         </div>
 
-                                                        <div className="txt-grade-course" style={{"fontSize":"11px", "marginTop":"5px"}}>Calificación grupal: 100</div>
-                                                        <div className="txt-grade-course" style={{"fontSize":"11px", "marginTop":"3px"}}>Porcentaje de aprobación</div>
+                                                        <div className="txt-grade-course" style={{"fontSize":"11px", "marginTop":"5px"}}>Calificación grupal: {totales.pop()}</div>
+                                                        <div className="txt-grade-course" style={{"fontSize":"11px", "marginTop":"3px"}}>Porcentaje de aprobación: </div>
                                                         {/* DIV progress bar del curso */}
                                                         <div className="row" style={{"display":"flex", "alignItems": "center", "marginBottom": "0px"}}>
                                                             <div className="col s9">
                                                                 <div className="progress" style={{"margin": "0px"}}>
-                                                                    <div className="determinate" style={{"width": "85%"}}></div>
+                                                                    <div className="determinate" style={{"width": porcentajes.pop()+'%'}}></div>
                                                                 </div>
                                                             </div>
                                                             <div className="col s3">
-                                                                <div className="txt-progress-course">85%</div>
+                                                                <div className="txt-progress-course">{porcentajes.pop()} %</div>
                                                             </div>
                                                         </div>
                                                         

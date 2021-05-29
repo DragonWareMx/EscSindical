@@ -10,7 +10,6 @@ import HistorialCursosPonente from '../../components/cursos/HistorialCursosPonen
 import Alertas from '../../components/common/Alertas'; 
 
 const Cursos = ({user, cursos, profesor, tags, finishedCourses}) => {
-  console.log(user.requests['0'].course)
   if (user.roles['0'].name == 'Ponente'){
     return (
       <>

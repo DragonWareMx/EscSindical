@@ -13,6 +13,15 @@ class RequestSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('requests')->insert([
+            'course_id'=>4,
+            'user_id'=>4,
+            'estatus'=>'En espera',
+        ]);
+        DB::table('requests')->insert([
+            'course_id'=>3,
+            'user_id'=>4,
+            'estatus'=>'Rechazado',
+        ]);
     }
 }
