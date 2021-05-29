@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -15,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call([
-            RequestSeeder::class,
+            
             CategorySeeder::class,
             RegimeSeeder::class,
             UnitSeeder::class,
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             TagSeeder::class,
             CourseSeeder::class,
+            RequestSeeder::class,
             ImageSeeder::class,
             ModuleSeeder::class,
             EntrySeeder::class,
