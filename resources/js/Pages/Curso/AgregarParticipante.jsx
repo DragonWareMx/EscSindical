@@ -15,8 +15,6 @@ function tooltip(){
     var instances = M.Tooltip.init(elems);
 }
 
-
-
 const AgregarParticipante = ({curso}) => {
     useEffect(() => {
         tooltip();
@@ -29,7 +27,7 @@ const AgregarParticipante = ({curso}) => {
 
         document.getElementById("txt-select-all").style.display = "none";
         document.getElementById("txt-select-all-not").style.display = "block";
-     }
+    }
     
      function seleccionar_todo_not(){
         for (var i=0;i<document.form_solicitudes.elements.length;i++)
@@ -38,7 +36,7 @@ const AgregarParticipante = ({curso}) => {
 
         document.getElementById("txt-select-all").style.display = "block";
         document.getElementById("txt-select-all-not").style.display = "none";
-     }
+    }
 
     return (
     <>
@@ -49,7 +47,6 @@ const AgregarParticipante = ({curso}) => {
                 <InertiaLink  href={route('cursos.participantes', curso.id)}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i class="material-icons">keyboard_backspace</i></InertiaLink>
                 AGREGAR PARTICIPANTES
             </div>
-
 
             <div className="col s12">
                 <nav className="searchUsers" style={{"marginTop":"0px !important"}}>
@@ -67,20 +64,18 @@ const AgregarParticipante = ({curso}) => {
                             </ul>
                         </div>
                         <div className="input-field col s11" style={{ marginLeft: "0px" }}>
-                            <input id="user_search" type="search" placeholder="Buscar usuario" />
+                            <input id="user_search" className="input-search-user" type="search" placeholder="Buscar usuario" />
                             <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                             <i className="material-icons">close</i>
                         </div>
                     </div>
                 </nav>
             </div>
-            
 
             <div className="col s12" style={{"marginTop":"15px"}}>
                 <a className="a-select-all" id="txt-select-all" onClick={seleccionar_todo}>Seleccionar todos</a>
                 <a className="a-select-all" id="txt-select-all-not" onClick={seleccionar_todo_not} style={{"display":"none"}}>Descartar selección</a>
             </div>
-            
 
             {/* Row de estudiante item*/}
             <div className="col s12 div-collection-item div-item-solicitudes">
@@ -108,7 +103,6 @@ const AgregarParticipante = ({curso}) => {
                     </span>
                 </label>
             </div>
-            
 
             <div className="col s12  right">
                 <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>

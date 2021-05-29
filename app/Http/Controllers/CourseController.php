@@ -393,7 +393,9 @@ class CourseController extends Controller
     }
 
     public function modulos($id){
-        return 'holiwis kiwis la ruta que buscas es /cursos/1/modulo/1   , si quieres hacer la vista de modulos en general ve a CourseController.php y en modulos el return cambialo por el que debe de ser y ya ';
+        return Inertia::render('Curso/ModulosConfig', [
+            'curso' => Course::findOrFail($id),
+        ]);
     }
 
     public function modulo($id,$mid)
