@@ -20,6 +20,7 @@ class EntrySeeder extends Seeder
             'tipo' => 'Aviso',
             'contenido' => 'Debido a que se festejará el cumpleaños de mi gatito',
             'visible'=>1,
+            'created_at'=>'2021-05-18 02:23:23.000000',
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
@@ -27,6 +28,7 @@ class EntrySeeder extends Seeder
             'tipo' => 'Aviso',
             'contenido' => 'Favor de asistir a la junta del lunes 31 de mayo, se pasará lista.',
             'visible'=>1,
+            'created_at'=>'2021-05-17 16:00:00.000000',
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
@@ -34,6 +36,7 @@ class EntrySeeder extends Seeder
             'tipo' => 'Aviso',
             'contenido' => 'Este aviso no debe ser visible por que aún no está listo.',
             'visible'=>0,
+            'created_at'=>'2021-04-22 08:30:00.000000',
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
@@ -41,6 +44,7 @@ class EntrySeeder extends Seeder
             'tipo' => 'Informacion',
             'contenido' => 'Chicos miren estos ejercicios de repaso, son opcionales pero muy útiles.',
             'visible'=>1,
+            'created_at'=>'2021-03-25 02:00:00.000000',
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
@@ -48,6 +52,7 @@ class EntrySeeder extends Seeder
             'tipo' => 'Enlace',
             'link' => 'https://www.youtube.com/watch?v=DlphYPc_HKk',
             'visible'=>1,
+            'created_at'=>'2021-05-26 08:00:00.000000',
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
@@ -55,18 +60,21 @@ class EntrySeeder extends Seeder
             'tipo' => 'Enlace',
             'link' => 'https://www.youtube.com/watch?v=SA0VNwx21m8&ab_channel=Matem%C3%A1ticasprofeAlexMatem%C3%A1ticasprofeAlexVerificada',
             'visible'=>1,
+            'created_at'=>'2021-01-18 13:45:52.000000',
             'module_id'=>2,
         ]);
         DB::table('entries')->insert([
             'titulo' => 'Archivo necesario',
             'tipo' => 'Archivo',
             'visible'=>1,
+            'created_at'=>'2021-02-22 22:22:22.000000',
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
             'titulo' => 'Archivo necesario 2',
             'tipo' => 'Archivo',
             'visible'=>1,
+            'created_at'=>'2021-05-27 19:15:32.000000',
             'module_id'=>2,
         ]);
         DB::table('entries')->insert([
@@ -77,6 +85,8 @@ class EntrySeeder extends Seeder
             'fecha_de_apertura'=>'2021-05-11 23:35:46.000000',
             'fecha_de_entrega'=>'2021-05-31 23:59:59.000000',
             'permitir_envios_retrasados'=>1,
+            'max_calif'=>100,
+            'created_at'=>'2021-05-22 18:00:00.000000',
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
@@ -87,16 +97,20 @@ class EntrySeeder extends Seeder
             'fecha_de_apertura'=>'2021-05-27 08:00:00.000000',
             'fecha_de_entrega'=>'2021-06-10 23:59:59.000000',
             'permitir_envios_retrasados'=>1,
+            'max_calif'=>50,
+            'created_at'=>'2021-05-27 10:23:23.000000',
             'module_id'=>2,
         ]);
         DB::table('entries')->insert([
-            'titulo' => 'Actividad 1 pero de la otra clase',
+            'titulo' => 'Actividad 2 pero de la otra clase',
             'tipo' => 'Asignacion',
             'contenido' => 'Realizar esta asignación por favorsito pero dos.',
             'visible'=>1,
             'fecha_de_apertura'=>'2021-06-27 08:00:00.000000',
             'fecha_de_entrega'=>'2021-07-30 23:59:59.000000',
             'permitir_envios_retrasados'=>1,
+            'max_calif'=>20,
+            'created_at'=>'2021-05-27 11:00:00.000000',
             'module_id'=>2,
         ]);
         DB::table('entries')->insert([
@@ -108,6 +122,8 @@ class EntrySeeder extends Seeder
             'fecha_de_apertura'=>'2021-05-27 08:00:00.000000',
             'fecha_de_entrega'=>'2021-05-27 09:00:00.000000',
             'permitir_envios_retrasados'=>0,
+            'max_calif'=>100,
+            'created_at'=>'2021-05-18 02:23:23.000000',
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
@@ -119,7 +135,9 @@ class EntrySeeder extends Seeder
             'fecha_de_apertura'=>'2021-05-27 08:00:00.000000',
             'fecha_de_entrega'=>'2021-05-27 23:59:59.000000',
             'permitir_envios_retrasados'=>1,
-            'module_id'=>1,
+            'max_calif'=>80,
+            'created_at'=>'2021-05-18 02:23:23.000000',
+            'module_id'=>2,
         ]);
     }
 }
