@@ -1,40 +1,129 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
-import { Inertia } from '@inertiajs/inertia'
+import { Inertia} from '@inertiajs/inertia'
+import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 import Layout from '../../layouts/Layout';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import '../../styles/cursos.css'
+import { Alert } from 'bootstrap';
+//COMPONENTS
 
-const ModuleCreate = () => {
-  return (
+
+
+function initializeSelect() {
+        var elems = document.querySelectorAll('select');
+        var options;
+        var instances = M.FormSelect.init(elems, options);
+}
+
+const ModuleCreate = ({cursos}) => {
+    //errores de validación 
+    const { errors } = usePage().props
+
+    useEffect (() => {
+        initializeSelect();
+    }, [])
+    
+    const [values, setValues] = useState({
+        curso : "",
+        nombre : "",
+        objetivo : "",
+        criterios_de_evaluacion : "",
+        duracion : "",
+        temario : "",
+    })
+
+    function handleChange(e) {
+        const key = e.target.id;
+        const value = e.target.value
+        setValues(values => ({
+            ...values,
+            [key]: value,
+        }))
+    }
+
+    function onChangeValue(e) {
+        var valor = e.target.value
+        setValues(values => ({
+            ...values,
+            curso: valor,
+        }))
+    }
+
+    function onChangeCK(description) {
+        setValues(values => ({
+            ...values,
+            temario: description,
+        }))
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.post('/cursos/module/store', values)
+    }
+
+
+    return (
     <>
     
     <div className="row">                
         <div className="col s12">
             <div className="card ">
                 <div className="card-content">
-                    <form >
+                    <form onSubmit={handleSubmit}>
                         <div className="modal-content">
+                    
                             <div className="row">
+                                
                                 <div className="input-field col s12">
-                                    <input  id="nombre" type="text" required className="validate"/>
-                                    <label for="nombre">Nombre del módulo</label>
+                                    <select  onChange={onChangeValue} className={errors.curso ? "validate invalid" : "validate "}>
+                                    <option value="" disabled selected>Curso al que agregarás el módulo</option>
+                                    {cursos.map ((curso)=>
+                                        <option key={curso.id} value={curso.id}>{curso.nombre}</option>
+                                    )}
+                                    </select>
+                                    <label>Selecciona el curso</label>
+                                    {
+                                    errors.curso &&
+                                    <span className="helper-text" data-error={errors.curso} style={{ "marginBottom": "10px" }}>{errors.curso}</span>
+                                    }
                                 </div>
 
                                 <div className="input-field col s12">
-                                    <textarea id="objetivo" className="materialize-textarea"></textarea>
-                                    <label for="objetivo">Objetivo</label>
+                                    <input  id="nombre" type="text" required onChange={handleChange} maxLength="255" className={errors.nombre ? "validate invalid" : "validate "}/>
+                                    <label htmlFor="nombre">Nombre del módulo</label>
+                                    {
+                                    errors.nombre &&
+                                    <span className="helper-text" data-error={errors.nombre} style={{ "marginBottom": "10px" }}>{errors.nombre}</span>
+                                    }
+                                </div>
+
+                                <div className="input-field col s12">
+                                    <textarea id="objetivo" onChange={handleChange} className={errors.objetivo ? "validate materialize-textarea invalid" : "validate materialize-textarea"}></textarea>
+                                    <label htmlFor="objetivo">Objetivo</label>
+                                    {
+                                    errors.objetivo &&
+                                    <span className="helper-text" data-error={errors.objetivo} style={{ "marginBottom": "10px" }}>{errors.objetivo}</span>
+                                    }
                                 </div>
 
                                 <div className="input-field col s12 m6 l6 xl6">
-                                    <input  id="criterios_de_evaluacion" type="text" required className="validate"/>
-                                    <label for="criterios_de_evaluacion">Criterios de evaluación<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Información acerca de los puntos que serán involucrados para la calificación" style={{"color":"rgb(159, 157, 157)", "cursor":"pointer"}}>help_outline</i></label>
+                                    <input  id="criterios_de_evaluacion" type="text" required onChange={handleChange} className={errors.criterios_de_evaluacion ? "validate invalid" : "validate"}/>
+                                    <label htmlFor="criterios_de_evaluacion">Criterios de evaluación<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Información acerca de los puntos que serán involucrados para la calificación" style={{"color":"rgb(159, 157, 157)", "cursor":"pointer"}}>help_outline</i></label>
+                                    {
+                                    errors.criterios_de_evaluacion &&
+                                    <span className="helper-text" data-error={errors.criterios_de_evaluacion} style={{ "marginBottom": "10px" }}>{errors.criterios_de_evaluacion}</span>
+                                    }
                                 </div>
 
                                 <div className="input-field col s12 m6 l6 xl6">
-                                    <input  id="duracion_en_semanas" type="number"  className="validate"/>
-                                    <label for="duracion_en_semanas">Duración en semanas</label>
+                                    <input  id="duracion" type="number" onChange={handleChange} min="1" className={errors.duracion ? "validate invalid" : "validate"}/>
+                                    <label htmlFor="duracion">Duración en semanas</label>
+                                    {
+                                    errors.duracion &&
+                                    <span className="helper-text" data-error={errors.duracion} style={{ "marginBottom": "10px" }}>{errors.duracion}</span>
+                                    }
                                 </div>
 
                                 <div className="input-field col s12" >
@@ -49,7 +138,7 @@ const ModuleCreate = () => {
                                             // console.log( 'Editor is ready to use!', editor );
                                         } }
                                         onChange={ ( event, editor ) => {
-                                            const data = editor.getData();
+                                            onChangeCK(editor.getData());
                                             // console.log( { event, editor, data } );
                                         } }
                                         onBlur={ ( event, editor ) => {
@@ -59,6 +148,10 @@ const ModuleCreate = () => {
                                             // console.log( 'Focus.', editor );
                                         } }
                                     />
+                                    {
+                                    errors.temario &&
+                                    <span className="helper-text" data-error={errors.temario} style={{ "marginBottom": "10px" }}>{errors.temario}</span>
+                                    }
                                 </div>
                                 
                                 <div className="col s12 ">

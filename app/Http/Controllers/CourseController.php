@@ -33,21 +33,24 @@ class CourseController extends Controller
         $user = User::find(Auth::id());
 
         if ($user->roles[0]->name == 'Ponente') {
-            $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users', 'images')->get();
-
+            \Gate::authorize('haveaccess', 'ponente.perm');
+            $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users','images')->get();
+            $OldCourses = Course::where('teacher_id', Auth::id())->where('estatus', 'Terminado')->with('users','images','tags',)->get();
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
                     'roles', 'activeCourses', 'activeCourses.images'
                 ])->where('id', Auth::id())->first(),
                 'cursos' => fn () => $cursos,
+                'finishedCourses' =>$OldCourses,
             ]);
         } else {
+            \Gate::authorize('haveaccess', 'alumno.perm');
             $curso_actual = $user->courses[0];
             $profesor = $curso_actual->teacher;
             $tags = $curso_actual->tags;
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
-                    'roles', 'activeCourses', 'activeCourses.images'
+                    'roles', 'requests', 'requests.course.images', 'requests.course.teacher', 'requests.course.tags', 'activeCourses', 'activeCourses.images', 'finishedCourses', 'finishedCourses.images', 'finishedCourses.teacher' , 'finishedCourses.tags'
                 ])->where('id', Auth::id())->first(),
                 'profesor' => $profesor,
                 'tags' => $tags,
@@ -57,14 +60,77 @@ class CourseController extends Controller
 
     public function create()
     {
-        return Inertia::render('Cursos/FormCurso', [
-            'capacitaciones' => Training_type::get(),
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        
+        return Inertia::render('Cursos/FormCurso', [ 
+        'capacitaciones'=> Training_type::get(),
         ]);
     }
 
     public function moduleCreate()
     {
-        return Inertia::render('Cursos/ModuleCreate');
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        return Inertia::render('Cursos/ModuleCreate', [
+            'cursos' => Course::where('teacher_id', Auth::id())->get()
+        ]);
+    }
+
+    public function storeModule(Request $request){
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        $validated = $request->validate([
+            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'curso' => 'required|exists:courses,id',
+            'objetivo' => "required",
+            'criterios_de_evaluacion' => 'required',
+            'duracion' => 'required|numeric',
+            'temario' => 'required',
+        ]);
+        
+        //COMIENZA TRANSACCIÓN
+        DB::beginTransaction();
+        
+        try {
+            $newModule = new Module;
+
+            $newModule->nombre = $request->nombre;
+            $newModule->objetivo = $request->objetivo;
+            $newModule->duracion = $request->duracion;
+            $newModule->criterios = $request->criterios_de_evaluacion;
+            $newModule->temario = $request->temario;
+            $newModule->course_id = $request->curso;
+
+            $newModule->save();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'create';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                modules: {
+                    nombre: ' . $request->nombre .
+                    'objetivo: ' . $request->objetivo .
+                    'duracion: ' . $request->duracion .
+                    'criterios: '. $request->criterios_de_evaluacion.                    
+                    'temario: ' . $request->temario .
+                    'course_id: '.$request->curso.
+                '},
+            }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha creado el módulo: '. $newModule->nombre;
+                
+            // //SE GUARDA EL LOG
+            $newLog->save();
+
+            DB::commit();
+            return \Redirect::route('cursos.informacion', $request->curso)->with('success', 'El módulo de este curso se ha creado exitosamente');
+        }
+        catch (\Exception $e) {
+            dd($e);
+            DB::rollBack();
+            return \Redirect::route('cursos.informacion', $request->curso)->with('error', 'No se pudo crear un módulo para este curso');
+        }
     }
 
     public function moduleEdit($id)
@@ -74,21 +140,24 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
-        //\Gate::authorize('haveaccess', 'ponent.perm');
+        \Gate::authorize('haveaccess', 'ponente.perm');
         //dd($request);
         //VALIDAMOS DATOS
         $validated = $request->validate([
-            'nombre' => 'required|max:255',
+            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'tags' => 'required',
-            'fecha_inicio' => 'required',
-            'fecha_final' => 'required',
-            'link' => 'required',
-            'vc' => 'required',
+            'fecha_inicio' => 'required|date|after:today',
+            'fecha_final' => 'required|date|after:fecha_inicio',
+            'link' => 'required|url',
+            'vc' => 'required|boolean',
             'tipos_de_capacitacion' => 'required',
-            'tipo_inscripcion' => 'required',
+            'tipo_inscripcion' => 'required|exists:courses,tipo_acceso',
             'descripcion' => 'required',
             'imgs' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
-            'maximo' => 'required|digits_between:1,3|numeric' //cuál sería el máximo permitido
+            'maximo' =>'required|digits_between:1,3|numeric',
+            'inicio_inscripciones' =>'nullable|date|after:today|before:fecha_inicio',
+            'final_inscripciones' =>'nullable|date|after:inicio_inscripciones|before:fecha_inicio',
+            //las inscripciones podrán seguir después de iniciado el curso?
         ]);
 
         //COMIENZA TRANSACCIÓN
@@ -108,6 +177,10 @@ class CourseController extends Controller
             $newCourse->descripcion = $request->descripcion;
             $newCourse->teacher_id = Auth::id();
             $newCourse->link = $request->link;
+
+            if ($request->inicio_inscripciones) $newCourse->inicio_inscripciones = $request->inicio_inscripciones;
+            if ($request->final_inscripciones) $newCourse->fecha_limite = $request->final_inscripciones;
+                 
 
             $newCourse->save();
             //SE AGREGAN REGISTROS A SUS RELACIONES
@@ -145,36 +218,38 @@ class CourseController extends Controller
             $newImagen->save();
 
             //SE CREA EL LOG
-            // $newLog = new Log;
+            $newLog = new Log;
 
-            // $newLog->categoria = 'create';
-            // $newLog->user_id = Auth::id();
-            // $newLog->accion =
-            // '{
-            //     courses: {
-            //         nombre: ' . $request->nombre .
-            //         'fecha_inicio: ' . $request->fecha_inicio .
-            //         'fecha_final: ' . $request->fecha_final .
-            //         'max: ' . $request->max .
-            //         'valor_curricular: '. $request->vc.
+            $newLog->categoria = 'create';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                courses: {
+                    nombre: ' . $request->nombre .
+                    'fecha_inicio: ' . $request->fecha_inicio .
+                    'fecha_final: ' . $request->fecha_final .
+                    'valor_curricular: '. $request->vc.                    
+                    'tipo_acceso: ' . $request->tipo_inscripcion .
+                    'descripcion: '.$request->descripcion.
+                    'teacher_id: ' . Auth::id() .
+                    'max: ' .$request->maximo.
+                    'link: ' . $request->link .
+                '},
+                tags: ' .\json_encode($tags) .
+                'tipos_capacitacion: ' . \json_encode($tipos) .
+                'imgs: ' .$request->file('imgs')->hashName() .
+                '
+            }';
 
-            //         'tipo_acceso: ' . $request->tipo_inscripcion .
-            //         'descripcion: '.$request->descripcion.
-            //         'teacher_id: ' . Auth::id() .
-            //         'max: ' .$request->maximo.
-            //         'link: ' . $request->link .
-            //     '}
-
-            // }';
-
-            // $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha creado el curso: '. $myCourse->nombre;
-
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha creado el curso: '. $newCourse->nombre;
+                
             // //SE GUARDA EL LOG
-            // $newLog->save();
+            $newLog->save();
 
             DB::commit();
             return \Redirect::route('cursos')->with('success', 'El curso se ha creado exitosamente');
         } catch (\Exception $e) {
+            
             DB::rollBack();
             return \Redirect::route('cursos')->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
             //return response()->json(["status" => $e]);
@@ -183,7 +258,7 @@ class CourseController extends Controller
 
     public function editCourse($id)
     {
-        //\Gate::authorize('haveaccess', 'ponent.perm');
+        \Gate::authorize('haveaccess', 'ponente.perm');
         return Inertia::render('Cursos/FormCursoEdit', [
             'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id),
             'capacitaciones' => Training_type::get(),
@@ -192,7 +267,7 @@ class CourseController extends Controller
 
     public function update($id, Request $request)
     {
-        //\Gate::authorize('haveaccess', 'ponent.perm');
+        \Gate::authorize('haveaccess', 'ponente.perm');
         //VALIDAMOS DATOS
         $validated = $request->validate([
             'nombre' => 'required|max:255',
@@ -290,7 +365,7 @@ class CourseController extends Controller
     public function delete($id)
     {
 
-        //\Gate::authorize('haveaccess', 'ponent.perm');
+        \Gate::authorize('haveaccess', 'admin.perm');
         DB::beginTransaction();
         try {
             $course = User::find($id);
@@ -436,6 +511,14 @@ class CourseController extends Controller
         return Inertia::render('Curso/Mochila', [
             'curso' => Course::findOrFail($id),
             'actividades' =>$actividades,
+        ]);
+    }
+
+    public function solicitudes($id)
+    {
+        $curso = Course::with('requests:nombre,apellido_p,apellido_m,id,foto')->select('nombre','id')->findOrFail($id);
+        return Inertia::render('Curso/Solicitudes', [
+            'curso' => $curso,
         ]);
     }
 }

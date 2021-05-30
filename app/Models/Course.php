@@ -39,7 +39,7 @@ class Course extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsToMany('App\Models\User')->withPivot('calificacion_final');
     }
 
     public function teacher()
@@ -49,7 +49,7 @@ class Course extends Model
 
     public function requests()
     {
-        return $this->belongsToMany('App\Models\User');
+        return $this->belongsToMany('App\Models\User', 'requests')->withTimestamps();
     }
 
     public function delete_request()
