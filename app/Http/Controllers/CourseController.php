@@ -12,6 +12,7 @@ use App\Models\Course;
 use App\Models\Module;
 use App\Models\Tag;
 use App\Models\Log;
+use App\Models\Entry;
 use App\Models\Image;
 use App\Models\Training_type;
 
@@ -34,12 +35,13 @@ class CourseController extends Controller
         if ($user->roles[0]->name == 'Ponente') {
             \Gate::authorize('haveaccess', 'ponente.perm');
             $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users','images')->get();
-
+            $OldCourses = Course::where('teacher_id', Auth::id())->where('estatus', 'Terminado')->with('users','images','tags',)->get();
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
                     'roles', 'activeCourses', 'activeCourses.images'
                 ])->where('id', Auth::id())->first(),
                 'cursos' => fn () => $cursos,
+                'finishedCourses' =>$OldCourses,
             ]);
         } else {
             \Gate::authorize('haveaccess', 'alumno.perm');
@@ -48,7 +50,7 @@ class CourseController extends Controller
             $tags = $curso_actual->tags;
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
-                    'roles', 'activeCourses', 'activeCourses.images'
+                    'roles', 'requests', 'requests.course.images', 'requests.course.teacher', 'requests.course.tags', 'activeCourses', 'activeCourses.images', 'finishedCourses', 'finishedCourses.images', 'finishedCourses.teacher' , 'finishedCourses.tags'
                 ])->where('id', Auth::id())->first(),
                 'profesor' => $profesor,
                 'tags' => $tags,
@@ -391,20 +393,40 @@ class CourseController extends Controller
     }
 
     public function modulos($id){
-        return 'holiwis kiwis la ruta que buscas es /cursos/1/modulo/1   , si quieres hacer la vista de modulos en general ve a CourseController.php y en modulos el return cambialo por el que debe de ser y ya ';
+        return Inertia::render('Curso/ModulosConfig', [
+            'curso' => Course::findOrFail($id),
+        ]);
     }
 
     public function modulo($id,$mid)
     {
         //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
         $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
+        //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
         if(!$modulo){
             return abort(404);
         }
 
+        //Se obtienen todos los avisos, el primer where obtiene todas las entradas pertenecientes al módulo y el segundo filtra esas entradas en todas las 
+        //que son de tipo Aviso, después se hace otro filtrado donde se obtienen los que son visibles, los que no son visibles (1) no hay por que mandarlos a la vista
+        $avisos=Entry::where('module_id',$mid)->where('tipo','Aviso')->where('visible',1)->orderBy('id','DESC')->get();
+
+        //Se obtenienen todas las demás entradas que no sean de tipo aviso, tarea ni examen pero que también sean visibles y pertenezcarn al módulo
+        $entradas=Entry::where('module_id',$mid)->where('tipo','!=','Aviso')->where('tipo','!=','Asignacion')->where('tipo','!=','Examen')
+            ->where('visible',1)->orderBy('id','DESC')->get();
+
+        //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
+        $actividades=Entry::where('module_id',$mid)->where('tipo','!=','Aviso')->where('tipo','!=','Informacion')->where('tipo','!=','Enlace')->where('tipo','!=','Archivo')->orderBy('id','ASC')->get();
+
         return Inertia::render('Curso/Modulo', [
+            //Aquí adentro se mandan las variables (JSONS) a la vista, en este caso curso se hace la consulta aquí mismo, pero las demás variables se igualan a las que 
+            //sacamos anteriormente
             'curso' => Course::findOrFail($id),
             'modulo' => $modulo,
+            'avisos' => $avisos,
+            'entradas' => $entradas,
+            'actividades' =>$actividades,
+            //Ahora en el archivo de la vista recuerda que debe recibir todas las variables que le estamos mandando para poder usarlas, en este caso las recibe en la linea 7
         ]);
     }
 
@@ -417,8 +439,19 @@ class CourseController extends Controller
 
     public function mochila($id)
     {
+        //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
+        //y se obtienen solamente las actividades visibles
+        $actividades=Entry::where('tipo','!=','Aviso')
+                            ->where('tipo','!=','Informacion')
+                            ->where('tipo','!=','Enlace')
+                            ->where('tipo','!=','Archivo')
+                            ->where('visible',1)
+                            ->orderBy('id','ASC')
+                            ->get();
+
         return Inertia::render('Curso/Mochila', [
             'curso' => Course::findOrFail($id),
+            'actividades' =>$actividades,
         ]);
     }
 
@@ -429,6 +462,12 @@ class CourseController extends Controller
                         ->findOrFail($id);
         return Inertia::render('Curso/Solicitudes', [
             'curso' => $curso,
+        ]);
+    }
+
+    public function agregarParticipante($id){
+        return Inertia::render('Curso/AgregarParticipante', [
+            'curso' => Course::findOrFail($id),
         ]);
     }
 }

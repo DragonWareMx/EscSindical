@@ -216,7 +216,7 @@ const Solicitudes = ({curso}) => {
 }
 
 Solicitudes.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="SOLICITUDES">
+  <Layout title="Escuela sindical - Curso" pageTitle="PARTICIPANTES">
     <LayoutCursos children={page} />
   </Layout>
 )
