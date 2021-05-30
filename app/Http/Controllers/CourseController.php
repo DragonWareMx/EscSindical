@@ -393,15 +393,15 @@ class CourseController extends Controller
 
         //Se obtienen todos los avisos, el primer where obtiene todas las entradas pertenecientes al módulo y el segundo filtra esas entradas en todas las 
         //que son de tipo Aviso, después se hace otro filtrado donde se obtienen los que son visibles, los que no son visibles (1) no hay por que mandarlos a la vista
-        $avisos=Entry::where('module_id',$mid)->where('tipo','Aviso')->where('visible',1)->orderBy('id','DESC')->get();
+        $avisos=Entry::with('files:archivo,entry_id')->where('module_id',$mid)->where('tipo','Aviso')->where('visible',1)->orderBy('id','DESC')->get();
 
         //Se obtenienen todas las demás entradas que no sean de tipo aviso, tarea ni examen pero que también sean visibles y pertenezcarn al módulo
-        $entradas=Entry::where('module_id',$mid)->where('tipo','!=','Aviso')->where('tipo','!=','Asignacion')->where('tipo','!=','Examen')
+        $entradas=Entry::with('files:archivo,entry_id')->where('module_id',$mid)->where('tipo','!=','Aviso')->where('tipo','!=','Asignacion')->where('tipo','!=','Examen')
             ->where('visible',1)->orderBy('id','DESC')->get();
 
         //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
-        $actividades=Entry::where('module_id',$mid)->where('tipo','!=','Aviso')->where('tipo','!=','Informacion')->where('tipo','!=','Enlace')->where('tipo','!=','Archivo')->orderBy('id','ASC')->get();
-
+        $actividades=Entry::with('files:archivo,entry_id')->where('module_id',$mid)->where('tipo','!=','Aviso')->where('tipo','!=','Informacion')->where('tipo','!=','Enlace')->where('tipo','!=','Archivo')->orderBy('id','ASC')->get();
+        
         return Inertia::render('Curso/Modulo', [
             //Aquí adentro se mandan las variables (JSONS) a la vista, en este caso curso se hace la consulta aquí mismo, pero las demás variables se igualan a las que 
             //sacamos anteriormente

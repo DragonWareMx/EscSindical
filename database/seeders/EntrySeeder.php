@@ -85,6 +85,7 @@ class EntrySeeder extends Seeder
             'fecha_de_apertura'=>'2021-05-11 23:35:46.000000',
             'fecha_de_entrega'=>'2021-05-31 23:59:59.000000',
             'permitir_envios_retrasados'=>1,
+            'max_calif'=>100,
             'created_at'=>'2021-05-22 18:00:00.000000',
             'module_id'=>1,
         ]);
@@ -96,17 +97,19 @@ class EntrySeeder extends Seeder
             'fecha_de_apertura'=>'2021-05-27 08:00:00.000000',
             'fecha_de_entrega'=>'2021-06-10 23:59:59.000000',
             'permitir_envios_retrasados'=>1,
+            'max_calif'=>50,
             'created_at'=>'2021-05-27 10:23:23.000000',
             'module_id'=>2,
         ]);
         DB::table('entries')->insert([
-            'titulo' => 'Actividad 1 pero de la otra clase',
+            'titulo' => 'Actividad 2 pero de la otra clase',
             'tipo' => 'Asignacion',
             'contenido' => 'Realizar esta asignación por favorsito pero dos.',
             'visible'=>1,
             'fecha_de_apertura'=>'2021-06-27 08:00:00.000000',
             'fecha_de_entrega'=>'2021-07-30 23:59:59.000000',
             'permitir_envios_retrasados'=>1,
+            'max_calif'=>20,
             'created_at'=>'2021-05-27 11:00:00.000000',
             'module_id'=>2,
         ]);
@@ -119,6 +122,7 @@ class EntrySeeder extends Seeder
             'fecha_de_apertura'=>'2021-05-27 08:00:00.000000',
             'fecha_de_entrega'=>'2021-05-27 09:00:00.000000',
             'permitir_envios_retrasados'=>0,
+            'max_calif'=>100,
             'created_at'=>'2021-05-18 02:23:23.000000',
             'module_id'=>1,
         ]);
@@ -131,8 +135,9 @@ class EntrySeeder extends Seeder
             'fecha_de_apertura'=>'2021-05-27 08:00:00.000000',
             'fecha_de_entrega'=>'2021-05-27 23:59:59.000000',
             'permitir_envios_retrasados'=>1,
+            'max_calif'=>80,
             'created_at'=>'2021-05-18 02:23:23.000000',
-            'module_id'=>1,
+            'module_id'=>2,
         ]);
     }
 }

@@ -19,6 +19,7 @@ class CreateFilesTable extends Migration
             $table->unsignedBigInteger('entry_id');
             $table->foreign('entry_id')->references('id')->on('entries')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

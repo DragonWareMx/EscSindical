@@ -33,7 +33,7 @@ class FileSeeder extends Seeder
         ]);
         DB::table('files')->insert([
             'archivo' => 'asignacion.pdf',
-            'entry_id' => 8,
-        ]);
+            'entry_id' => 10,
+        ]); 
     }
 }
