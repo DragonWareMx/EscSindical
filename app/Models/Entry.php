@@ -21,6 +21,10 @@ class Entry extends Model
     public function users(){
         return $this->belongsToMany('App\Models\User');
     }
-    
+
+    public function files(){
+        return $this->hasMany('App\Models\File');
+    }
+
     use SoftDeletes;
 }

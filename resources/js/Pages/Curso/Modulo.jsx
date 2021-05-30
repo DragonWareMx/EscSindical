@@ -1,3 +1,5 @@
+import { Inertia } from '@inertiajs/inertia';
+import { InertiaLink } from '@inertiajs/inertia-react';
 import React from 'react'
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
@@ -17,6 +19,11 @@ function transformaFechaModulo(fecha) {
   const hour = ("0" + dob.getHours()).slice(-2);
   const minutes = ("0" + dob.getMinutes()).slice(-2);
   return `${day} ${monthNames[monthIndex]} ${year} a las ${hour}:${minutes}`;
+}
+
+function getFileSize(archivo){
+  alert(archivo.size)
+  return 0
 }
 
 const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
@@ -70,21 +77,18 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
             RECURSOS
           </div>
           <div>
+            
             {/* avisos */}
             {avisos && avisos.length>0 && 
                avisos.map( (aviso , index) => (
                 <div key={index} className="col s12" style={{"margin":"5px"}}>
-                  {/* icono */}
                   <div className="col s2 l1 center-align">
                     <i className="material-icons" style={{"color":"#D14747"}}>announcement</i>
                   </div>
-                  {/* informacion */}
                   <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                    {/* titulo */}
-                    <div className="col s12 advice-text">
+                    <InertiaLink href="#" className="col s12 advice-text">
                       {aviso.titulo}
-                    </div>
-                    {/* fecha de publicacion */}
+                    </InertiaLink>
                     <div className="col s12 posted-date">
                       Publicado el {transformaFechaModulo(aviso.created_at)} 
                     </div>
@@ -100,17 +104,43 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
                 <div key={index} className="col s12" style={{"margin":"5px"}}>
                   {entrada.tipo == 'Archivo' &&
                     <div>
-                      {/* icono */}
                       <div className="col s2 l1 center-align">
                         <i className="material-icons" style={{"color":"#134E39"}}>description</i>
                       </div>
-                      {/* informacion */}
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                        {/* titulo */}
                         <div className="col s12">
-                          <span className="nombre-subrayado">{entrada.titulo}</span> <span className="size-archivo">soy el peso del archivo</span>
+                          <a href={entrada.files && entrada.files.length > 0 && "/storage/archivos_cursos/"+entrada.files[0].archivo} target="_blank" className="nombre-subrayado">{entrada.titulo}</a>
                         </div>
-                        {/* fecha de publicacion */}
+                        <div className="col s12 posted-date">
+                          Publicado el {transformaFechaModulo(entrada.created_at)} 
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  {entrada.tipo == 'Enlace' &&
+                    <div>
+                      <div className="col s2 l1 center-align">
+                        <i className="material-icons" style={{"color":"#134E39"}}>link</i>
+                      </div>
+                      <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
+                        <a href={entrada.link} target="_blank" className="col s12 advice-text nombre-subrayado">
+                          {entrada.titulo}
+                        </a>
+                        <div className="col s12 posted-date">
+                          Publicado el {transformaFechaModulo(entrada.created_at)} 
+                        </div>
+                      </div>
+                    </div>
+                  }
+                  {entrada.tipo == 'Informacion' && 
+                    <div>
+                      <div className="col s2 l1 center-align">
+                        <i className="material-icons" style={{"color":"#134E39"}}>assignment</i>
+                      </div>
+                      <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
+                        <InertiaLink href="#" className="col s12 publicacion">
+                          {entrada.titulo}
+                        </InertiaLink>
                         <div className="col s12 posted-date">
                           Publicado el {transformaFechaModulo(entrada.created_at)} 
                         </div>
@@ -120,47 +150,10 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
                 </div>
               ))
             }
-            {/* ejemplo de enlace */}
-            <div className="col s12" style={{"margin":"5px"}}>
-              {/* icono */}
-              <div className="col s2 l1 center-align">
-              <i className="material-icons" style={{"color":"#134E39"}}>link</i>
-              </div>
-              {/* informacion */}
-              <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                {/* titulo */}
-                <div className="col s12 advice-text nombre-subrayado">
-                  Soy un enlace a otra pagina web
-                </div>
-                {/* fecha de publicacion */}
-                <div className="col s12 posted-date">
-                  Publicado el "fecha"
-                </div>
-              </div>
-            </div>
-
-            {/* ejemplo de publicacion */}
-            <div className="col s12" style={{"margin":"5px"}}>
-              {/* icono */}
-              <div className="col s2 l1 center-align">
-                <i className="material-icons" style={{"color":"#134E39"}}>assignment</i>
-              </div>
-              {/* informacion */}
-              <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                {/* titulo */}
-                <div className="col s12 publicacion">
-                  Soy el nobre de la publicacion
-                </div>
-                {/* fecha de publicacion */}
-                <div className="col s12 posted-date">
-                  Publicado el "fecha"
-                </div>
-              </div>
-            </div>
-          
           </div>
         </div>
-        {/* seccion 3 - ACTIVIDADES A DESARROLLAR */}
+
+
         <div className="col s12" style={{"marginTop":"5px"}}>
           <div className="titulo-modulo">
             ACTIVIDADES A DESARROLLAR
@@ -168,68 +161,47 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
           <div>
 
             {/* asignacion */}
-
             {actividades && actividades.length >0 &&
               actividades.map((actividad, index) => (
                 <div key={index} className="card">
                   {actividad.tipo == 'Asignacion' &&
                     <div className="card-content" style={{"paddingBottom":"5px"}}>
                       <div className="row valign-wrapper">
-                        {/* icono */}
                         <div className="col s2 l1 center-align">
                           <i className="material-icons" style={{"color":"#134E39"}}>edit_note</i>
                         </div>
-                        {/* informacion */}
                         <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
-                          {/* titulo de la asignacion y calificacion */}
                           <div className="col s12 publicacion">
                             <span className="publicacion">{actividad.titulo}</span> 
                             <span className="calificacion">0/100</span>
                           </div>
-                          {/* nombre del modulo y fecha de vencimiento*/}
                           <div className="col s12 posted-date">
-                            <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo N "Nombre completo del modulo"</span>
+                            <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo N "{modulo.nombre}"</span>
                             <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el {transformaFechaModulo(actividad.fecha_de_entrega)}</span>
                           </div>
                         </div>
-                        {/* estatus */}
                         <div className="col s2 l1 center-align">
                           <span className="texto-enviado">ENVIADO</span>
                         </div>
                       </div>
                     </div>
                   }
-                </div>
-
-              ))
-            }
-
-            {/* examenes */}
-            
-            {actividades && actividades.length >0 &&
-              actividades.map((actividad, index) => (
-                <div key={index} className="card">
                   {actividad.tipo == 'Examen' &&
                     <div className="card-content" style={{"paddingBottom":"5px"}}>
                       <div className="row valign-wrapper">
-                        {/* icono */}
                         <div className="col s2 l1 center-align">
                           <i className="material-icons" style={{"color":"#134E39"}}>quiz</i>
                         </div>
-                        {/* informacion */}
                         <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
-                          {/* titulo de la asignacion y calificacion */}
                           <div className="col s12 publicacion">
                             <span className="publicacion">{actividad.titulo}</span> 
                             <span className="calificacion">Sin calificar</span>
                           </div>
-                          {/* nombre del modulo y fecha de vencimiento*/}
                           <div className="col s12 posted-date">
                             <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo N {modulo.nombre}</span>
                             <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el {transformaFechaModulo(actividad.fecha_de_entrega)}</span>
                           </div>
                         </div>
-                        {/* estatus */}
                         <div className="col s2 l1 center-align">
                           <span className="texto-cerrado">CERRADO</span>
                         </div>
@@ -239,7 +211,6 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
                 </div>
               ))
             }
-
           </div>
         </div>
 
