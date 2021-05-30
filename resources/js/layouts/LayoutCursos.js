@@ -5,6 +5,7 @@ import route from 'ziggy-js'
 import { InertiaLink } from '@inertiajs/inertia-react'
 import { usePage } from '@inertiajs/inertia-react'
 import '../styles/cursos.css'
+import Alertas from '../components/common/Alertas'; 
 
 function initializeMat() {
     var elems = document.querySelectorAll('.dropdown-trigger');
@@ -52,7 +53,8 @@ const LayoutCursos = ({children}) => {
     }, [])
 
     return (
-        <>
+        <>  
+        <Alertas />
             <div className="row contenedor">
                <div className="card darken-1" style={{"padding":"5px 25px"}}>
                    <div className="card-content row valign-wrapper" style={{"padding":"10px","marginBottom":"0px"}}>

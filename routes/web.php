@@ -50,9 +50,12 @@ Route::get('/cursos', [App\Http\Controllers\CourseController::class, 'index'])->
 Route::get('/cursos/create', [App\Http\Controllers\CourseController::class, 'create'])->name('cursos.create');
 Route::get('/cursos/edit/{id}', [App\Http\Controllers\CourseController::class, 'editCourse'])->name('cursos.edit');
 Route::post('/storeCourse', [App\Http\Controllers\CourseController::class, 'store'])->name('storeCourse');
+
+
 // ------Modulos del curso------
 Route::get('/cursos/module/create', [App\Http\Controllers\CourseController::class, 'moduleCreate'])->name('module.create');
 Route::get('/cursos/module/edit/{id}', [App\Http\Controllers\CourseController::class, 'moduleEdit'])->name('module.edit');
+Route::post('/cursos/module/store', [App\Http\Controllers\CourseController::class, 'storeModule'])->name('module.store');
 
 //------Rutas del layout cursos
 Route::get('/cursos/{id}/informacion', [App\Http\Controllers\CourseController::class, 'informacion'])->name('cursos.informacion');

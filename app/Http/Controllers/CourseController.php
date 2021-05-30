@@ -69,7 +69,68 @@ class CourseController extends Controller
 
     public function moduleCreate()
     {
-        return Inertia::render('Cursos/ModuleCreate');
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        return Inertia::render('Cursos/ModuleCreate', [
+            'cursos' => Course::where('teacher_id', Auth::id())->get()
+        ]);
+    }
+
+    public function storeModule(Request $request){
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        $validated = $request->validate([
+            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'curso' => 'required|exists:courses,id',
+            'objetivo' => "required",
+            'criterios_de_evaluacion' => 'required',
+            'duracion' => 'required|numeric',
+            'temario' => 'required',
+        ]);
+        
+        //COMIENZA TRANSACCIÓN
+        DB::beginTransaction();
+        
+        try {
+            $newModule = new Module;
+
+            $newModule->nombre = $request->nombre;
+            $newModule->objetivo = $request->objetivo;
+            $newModule->duracion = $request->duracion;
+            $newModule->criterios = $request->criterios_de_evaluacion;
+            $newModule->temario = $request->temario;
+            $newModule->course_id = $request->curso;
+
+            $newModule->save();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'create';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                modules: {
+                    nombre: ' . $request->nombre .
+                    'objetivo: ' . $request->objetivo .
+                    'duracion: ' . $request->duracion .
+                    'criterios: '. $request->criterios_de_evaluacion.                    
+                    'temario: ' . $request->temario .
+                    'course_id: '.$request->curso.
+                '},
+            }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha creado el módulo: '. $newModule->nombre;
+                
+            // //SE GUARDA EL LOG
+            $newLog->save();
+
+            DB::commit();
+            return \Redirect::route('cursos.informacion', $request->curso)->with('success', 'El módulo de este curso se ha creado exitosamente');
+        }
+        catch (\Exception $e) {
+            dd($e);
+            DB::rollBack();
+            return \Redirect::route('cursos.informacion', $request->curso)->with('error', 'No se pudo crear un módulo para este curso');
+        }
     }
 
     public function moduleEdit($id)
@@ -188,7 +249,7 @@ class CourseController extends Controller
             DB::commit();
             return \Redirect::route('cursos')->with('success', 'El curso se ha creado exitosamente');
         } catch (\Exception $e) {
-            dd($e);
+            
             DB::rollBack();
             return \Redirect::route('cursos')->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
             //return response()->json(["status" => $e]);
