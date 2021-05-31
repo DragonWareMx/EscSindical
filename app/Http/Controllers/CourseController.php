@@ -454,7 +454,9 @@ class CourseController extends Controller
     }
 
     public function modulos($id){
-        return 'holiwis kiwis la ruta que buscas es /cursos/1/modulo/1   , si quieres hacer la vista de modulos en general ve a CourseController.php y en modulos el return cambialo por el que debe de ser y ya ';
+        return Inertia::render('Curso/ModulosConfig', [
+            'curso' => Course::findOrFail($id),
+        ]);
     }
 
     public function modulo($id,$mid)
@@ -533,9 +535,61 @@ class CourseController extends Controller
 
     public function solicitudes($id)
     {
-        $curso = Course::with('requests:nombre,apellido_p,apellido_m,id,foto')->select('nombre','id')->findOrFail($id);
+        $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto')
+                        ->select('nombre','id')
+                        ->findOrFail($id);
         return Inertia::render('Curso/Solicitudes', [
             'curso' => $curso,
+        ]);
+    }
+
+    public function agregarParticipante($id, Request $request){
+        return Inertia::render('Curso/AgregarParticipante', [
+            'curso' => Course::findOrFail($id),
+            'users' =>
+                fn () => User::with('activeCourses:id')->select('users.id','nombre','apellido_p', 'apellido_m', 'email')
+                            ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
+                            ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
+                            ->where('roles.name','Alumno')
+                            ->when($request->user_search, function ($query, $search) use ($request) {
+                                if ($request->filter) {
+                                    switch ($request->filter) {
+                                        case 'matricula':
+                                            return $query->where('users.matricula', 'LIKE', '%' . $search . '%')->where('roles.name','Alumno');
+                                            break;
+                                        case 'nombre':
+                                            return $query->WhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                            )->orWhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                            )->where('roles.name','Alumno');
+                                            break;
+                                        case 'email':
+                                            return $query->where('users.email', 'LIKE', '%' . $search . '%')->where('roles.name','Alumno');
+                                            break;
+                                        default:
+                                        return $query->WhereRaw(
+                                            "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                        )->orWhereRaw(
+                                            "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                        )->where('roles.name','Alumno');
+                                            break;
+                                    }
+                                } else
+                                return $query->WhereRaw(
+                                    "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                )->orWhereRaw(
+                                    "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                )->where('roles.name','Alumno');
+                            })
+                            ->when(!$request->user_search, function ($query, $search) use ($request) {
+                                return $query->where('users.id',0);
+                            })
+                            ->orderBy('users.created_at','desc')
+                            ->paginate(20)
+                            ->withQueryString()
+                ,
+                'request' => $request
         ]);
     }
 }
