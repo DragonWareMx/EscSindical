@@ -430,15 +430,40 @@ class CourseController extends Controller
             return abort(404);
         }
 
-        $pendientes=Entry::get();
-        $pendientesArr=[];
-        foreach($pendientes as $pendiente){
-            if($pendiente->users()->where('user_id',$user->id)->first()){
-                dd('tencontré');
+        $entradas=Course::where('courses.id',$id)->leftJoin('modules','courses.id','=','modules.course_id')
+            ->leftJoin('entries','modules.id','=','entries.module_id')
+            ->where('entries.visible',1)
+            ->whereIn('entries.tipo',['Asignacion','Examen'])
+            ->select('entries.*','modules.nombre as modulo')
+            ->get();
+
+        $realizadas=Course::where('courses.id',$id)->leftJoin('modules','courses.id','=','modules.course_id')
+            ->leftJoin('entries','modules.id','=','entries.module_id')
+            ->where('entries.visible',1)
+            ->whereIn('entries.tipo',['Asignacion','Examen'])
+            ->join('entry_user','entries.id','=','entry_id')
+            ->where('entry_user.user_id',$user->id)
+            ->select('entries.id as id','entries.tipo as tipo','entries.titulo as titulo','modules.nombre as modulo', 'entries.fecha_de_apertura as fecha_de_apertura', 
+                'entries.fecha_de_entrega as fecha_de_entrega', 'entry_user.fecha as fecha', 'entry_user.calificacion as calificacion', 'entries.max_calif as max_calif')
+            ->get();
+
+        $pendientes=[];
+        $i=0;
+        foreach($entradas as $entrada){
+            $found=false;
+            foreach($realizadas as $realizada){
+                if($entrada->id == $realizada->id){
+                    $found=true;
+                    break;
+                }
+            }    
+            if($found == false){
+                $pendientes[$i]=$entrada;
+                $i++;
             }
-            dd('chale no :c');
         }
-        $realizadas= true;
+
+        dd($pendientes,$realizadas);
 
         //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
         //y se obtienen solamente las actividades visibles
