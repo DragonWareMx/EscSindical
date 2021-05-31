@@ -5,6 +5,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import route from 'ziggy-js';
 import { Inertia } from '@inertiajs/inertia';
+import Alertas from '../../components/common/Alertas';
 
 import '../../styles/crearEntradas.css'
 
@@ -348,6 +349,7 @@ const Crear = ({ cursos }) => {
                         <div className="card">
                             <div className="card-content card-entradas">
                                 <span className="card-title">AGREGAR ENTRADA</span>
+                                <Alertas />
                                 <form onSubmit={handleSubmit}>
                                     <div className="row">
                                         {/* aqui va el input del select del curso */}
@@ -592,7 +594,7 @@ const Crear = ({ cursos }) => {
                                                     </div>
                                                     : values.tipo == "Archivo" ?
                                                         <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
-                                                            <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos
+                                                            <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivo
                                                             {
                                                                     errors.archivos &&
                                                                     <span className="helper-text" data-error={errors.arrchivos} style={{ marginBottom: "10px", fontSize: "12px", color: "rgb(244, 67, 54)", marginLeft: "5px" }}>{errors.archivos}</span>
@@ -600,8 +602,8 @@ const Crear = ({ cursos }) => {
                                                             </p>
                                                             <div className="file-field input-field" style={{ "border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px" }}>
                                                                 <div className="col s12">
-                                                                    <span style={{ fontSize: "12px", textAlign: "center", paddingTop: "10px" }} className="col s12">Arrastre aquí los archivos o <b>clic</b> para seleccionarlos</span>
-                                                                    <input type="file" multiple className="form-control" id="archivos" name="archivos" onChange={changeArchivos} />
+                                                                    <span style={{ fontSize: "12px", textAlign: "center", paddingTop: "10px" }} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
+                                                                    <input type="file" className="form-control" id="archivos" name="archivos" onChange={changeArchivos} />
                                                                 </div>
                                                                 <div className="file-path-wrapper">
                                                                     <input className="file-path validate" type="text" />
