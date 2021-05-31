@@ -59,10 +59,17 @@ Route::post('/cursos/module/store', [App\Http\Controllers\CourseController::clas
 
 //------Rutas del layout cursos
 Route::get('/cursos/{id}/informacion', [App\Http\Controllers\CourseController::class, 'informacion'])->name('cursos.informacion');
+
 Route::get('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class, 'modulos'])->name('cursos.modulos');
 Route::get('/cursos/{id}/modulo/{mid}', [App\Http\Controllers\CourseController::class, 'modulo'])->name('cursos.modulo');
+
+
+
+
+
 Route::get('/cursos/{id}/participantes', [App\Http\Controllers\CourseController::class, 'participantes'])->name('cursos.participantes');
 Route::get('/cursos/{id}/solicitudes', [App\Http\Controllers\CourseController::class, 'solicitudes'])->name('cursos.solicitudes');
+Route::get('/cursos/{id}/agregar-participante', [App\Http\Controllers\CourseController::class, 'agregarParticipante'])->name('cursos.agregarParticipante');
 Route::get('/cursos/{id}/mochila', [App\Http\Controllers\CourseController::class, 'mochila'])->name('cursos.mochila');
 
 //----Solicitudes

@@ -23,6 +23,7 @@ class CreateEntriesTable extends Migration
             $table->tinyInteger('visible');
             $table->tinyInteger('permitir_envios_retrasados')->nullable();
             $table->text('link')->nullable();
+            $table->integer('max_calif')->nullable();
             $table->dateTime('fecha_de_apertura')->nullable();
             $table->dateTime('fecha_de_entrega')->nullable();
 
