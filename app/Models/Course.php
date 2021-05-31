@@ -54,7 +54,7 @@ class Course extends Model
 
     // results in a "problem", se examples below
     public function waitingRequests() {
-        return $this->requests()->where('status', 'En espera');
+        return $this->requests()->where('estatus', 'En espera');
     }
 
     public function delete_request()

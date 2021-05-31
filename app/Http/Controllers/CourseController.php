@@ -526,9 +526,53 @@ class CourseController extends Controller
         ]);
     }
 
-    public function agregarParticipante($id){
+    public function agregarParticipante($id, Request $request){
         return Inertia::render('Curso/AgregarParticipante', [
             'curso' => Course::findOrFail($id),
+            'users' =>
+                fn () => User::with('activeCourses:id')->select('users.id','nombre','apellido_p', 'apellido_m', 'email')
+                            ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
+                            ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
+                            ->where('roles.name','Alumno')
+                            ->when($request->user_search, function ($query, $search) use ($request) {
+                                if ($request->filter) {
+                                    switch ($request->filter) {
+                                        case 'matricula':
+                                            return $query->where('users.matricula', 'LIKE', '%' . $search . '%')->where('roles.name','Alumno');
+                                            break;
+                                        case 'nombre':
+                                            return $query->WhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                            )->orWhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                            )->where('roles.name','Alumno');
+                                            break;
+                                        case 'email':
+                                            return $query->where('users.email', 'LIKE', '%' . $search . '%')->where('roles.name','Alumno');
+                                            break;
+                                        default:
+                                        return $query->WhereRaw(
+                                            "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                        )->orWhereRaw(
+                                            "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                        )->where('roles.name','Alumno');
+                                            break;
+                                    }
+                                } else
+                                return $query->WhereRaw(
+                                    "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                )->orWhereRaw(
+                                    "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                )->where('roles.name','Alumno');
+                            })
+                            ->when(!$request->user_search, function ($query, $search) use ($request) {
+                                return $query->where('users.id',0);
+                            })
+                            ->orderBy('users.created_at','desc')
+                            ->paginate(20)
+                            ->withQueryString()
+                ,
+                'request' => $request
         ]);
     }
 }

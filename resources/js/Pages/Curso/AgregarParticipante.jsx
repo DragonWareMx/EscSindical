@@ -2,6 +2,7 @@ import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
 import React, { useState, useEffect } from 'react'
 import { InertiaLink } from '@inertiajs/inertia-react';
+import { Inertia } from '@inertiajs/inertia'
 
 import '/css/participantes.css'
 import '/css/modulos.css'
@@ -9,15 +10,30 @@ import '../../styles/usersStyle.css'
 
 import Alertas from '../../components/common/Alertas';
 import route from 'ziggy-js';
+import Paginacion from '../../components/common/Paginacion';
 
 function tooltip(){
     var elems = document.querySelectorAll('.tooltipped');
     var instances = M.Tooltip.init(elems);
+
+    var elems = document.querySelectorAll('.dropdown-trigger');
+        var instances = M.Dropdown.init(elems);
 }
 
-const AgregarParticipante = ({curso}) => {
+const AgregarParticipante = ({curso, users, request}) => {
+    const [state, setState] = useState({
+        typingTimeout: 0,
+        filter: "nombre"
+    })
+
     useEffect(() => {
         tooltip();
+
+        //si hay una busqueda en el url se pone en el input
+        if (request.user_search) {
+            const elem = document.getElementById('user_search');
+            elem.value = request.user_search;
+        }
     }, [])
 
     function seleccionar_todo(){
@@ -38,6 +54,93 @@ const AgregarParticipante = ({curso}) => {
         document.getElementById("txt-select-all-not").style.display = "none";
     }
 
+    function handleCheckboxChange(event){
+        const value = event.target.value
+        const checked = event.target.checked
+        if (checked) {
+            if (!values.solicitud.includes(value)) {
+                setValues(values => ({ solicitud: [...values.solicitud, value]}))
+            }
+        } else {
+            setValues(values => ({ solicitud: values.solicitud.filter(id => id !== value) }));
+        }
+    }
+
+    //realiza la búsqueda cada vez que se escribe en el input
+    function changeName(event) {
+        if (state.typingTimeout) {
+            clearTimeout(state.typingTimeout);
+        }
+        
+        let search = event.target.value
+        let data;
+        
+        setState({
+            typingTimeout: setTimeout(function () {
+                data = {
+                    user_search: search
+                }
+                data.filter = state.filter
+                Inertia.reload({ data: data, only: ['users'] })
+            }, 250)
+        });
+    }
+
+    //filtros de busqueda
+    function filter(filtro) {
+        state.filter = filtro
+        let data
+        switch (filtro) {
+            case "matricula":
+                //se inicializan los datos del request
+                data = {
+                    filter: "matricula"
+                }
+
+                if (request.user_search)
+                    data.user_search = request.user_search
+
+                Inertia.reload(
+                    {
+                        data: data,
+                        only: ['users']
+                    })
+                break;
+            case "nombre":
+                //se inicializan los datos del request
+                data = {
+                    filter: "nombre"
+                }
+
+                if (request.user_search)
+                    data.user_search = request.user_search
+
+                    Inertia.reload(
+                        {
+                            data: data,
+                            only: ['users']
+                        })
+                break;
+            case "email":
+                //se inicializan los datos del request
+                data = {
+                    filter: "email"
+                }
+
+                if (request.user_search)
+                    data.user_search = request.user_search
+
+                    Inertia.reload(
+                        {
+                            data: data,
+                            only: ['users']
+                        })
+                break;
+            default:
+                break;
+        }
+    }
+
     return (
     <>
         <div className="row"> 
@@ -55,16 +158,13 @@ const AgregarParticipante = ({curso}) => {
                             {/* Dropdown Structure */}
                             <a className="dropdown-trigger" href="#!" data-target="dropdown-filter"><i className="material-icons">filter_alt</i></a>
                             <ul id="dropdown-filter" className="dropdown-content" style={{ top: "0px" }}>
-                                <li><a >Matrícula</a></li>
-                                {/* <li><a onClick={() => { filter("rol") }} className={request.filter == "rol" ? "selected" : ""}>Rol</a></li>
-                                <li><a onClick={() => { filter("nombre") }} className={request.filter == "nombre" ? "selected" : ""}>Nombre</a></li>
-                                <li><a onClick={() => { filter("unidad") }} className={request.filter == "unidad" ? "selected" : ""}>Unidad</a></li>
-                                <li><a onClick={() => { filter("categoria") }} className={request.filter == "categoria" ? "selected" : ""}>Categoría</a></li>
-                                <li><a onClick={() => { filter("eliminado") }} className={request.filter == "eliminado" ? "selected" : ""}>Eliminado</a></li> */}
+                                <li><a onClick={() => { filter("matricula") }} className={request.filter == "matricula" ? "selected" : ""}>Matrícula</a></li>
+                                <li><a onClick={() => { filter("nombre") }} className={request.hasOwnProperty('filter') ? request.filter == "nombre" ? "selected" : "" : "selected"}>Nombre</a></li>
+                                <li><a onClick={() => { filter("email") }} className={request.filter == "email" ? "selected" : ""}>Email</a></li>
                             </ul>
                         </div>
                         <div className="input-field col s11" style={{ marginLeft: "0px" }}>
-                            <input id="user_search" className="input-search-user" type="search" placeholder="Buscar usuario" />
+                            <input id="user_search" className="input-search-user" type="search" placeholder="Buscar usuario" onChange={changeName} autoComplete="off"/>
                             <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                             <i className="material-icons">close</i>
                         </div>
@@ -77,32 +177,48 @@ const AgregarParticipante = ({curso}) => {
                 <a className="a-select-all" id="txt-select-all-not" onClick={seleccionar_todo_not} style={{"display":"none"}}>Descartar selección</a>
             </div>
 
-            {/* Row de estudiante item*/}
-            <div className="col s12 div-collection-item div-item-solicitudes">
-                <label>
-                    <input type="checkbox" name="solicitud" id="optionCheck" />
+            {users && users.data && users.data.length > 0 && users.data.map(usuario => (
+                <div className="col s12 div-collection-item div-item-solicitudes" key={usuario.id}>
+                    <label className="pink">
+                        <input type="checkbox" name="solicitud[]" id={usuario.id} value={usuario.id} onChange={handleCheckboxChange} disabled={usuario.active_courses && usuario.active_courses.length == 0 ? "" : "disabled"} />
+                        <span className="P_collection_item col s12" style={{"display":"flex"}}>
+                            <InertiaLink  href={route("perfil.public",usuario.id)}><img className="P_collection_image" width="50" height="50" src={usuario.foto ? "/storage/fotos_perfil/"+usuario.foto : "/storage/fotos_perfil/avatar1.jpg"}></img></InertiaLink>
+                            <div style={{"width":"max-content","paddingBottom":"0px"}}>
+                                <InertiaLink  href={route("perfil.public",usuario.id)} className="P_collection_title">{usuario.nombre} {usuario.apellido_p} {usuario.apellido_m}</InertiaLink>
+                                <div className="P_collection_subtitle">{usuario.active_courses && usuario.active_courses.length == 0 ? "Disponible" : "No disponible"}</div>
+                            </div>
+                        </span>
+                    </label>
+                </div>
+            ))  
+            }
+            {
+                !users ? 
+                <div className="col s12 div-collection-item div-item-solicitudes">
+                <label className="pink">
                     <span className="P_collection_item col s12" style={{"display":"flex"}}>
-                        <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
                         <div style={{"width":"max-content","paddingBottom":"0px"}}>
-                            <InertiaLink  href="#!" className="P_collection_title">José Agustín Aguilar Solórzano</InertiaLink>
-                            <div className="P_collection_subtitle">Disponible</div>
+                        Inserte una búsqueda
+                        </div>
+                    </span>
+                </label>
+            </div> 
+            : 
+            !users.data || users.data.length == 0 && 
+            <div className="col s12 div-collection-item div-item-solicitudes">
+                <label className="pink">
+                    <span className="P_collection_item col s12" style={{"display":"flex"}}>
+                        <div style={{"width":"max-content","paddingBottom":"0px"}}>
+                        No se han encontrado resultados
                         </div>
                     </span>
                 </label>
             </div>
+            }
 
-            <div className="col s12 div-collection-item div-item-solicitudes">
-                <label>
-                    <input type="checkbox" name="solicitud" id="optionCheck" disabled="disabled" />
-                    <span className="P_collection_item col s12" style={{"display":"flex"}}>
-                        <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src="https://video.cults3d.com/NTOOSWjt0RP8ONd9xBbt1cN_rFk=/https://files.cults3d.com/uploaders/13521183/illustration-file/e8e4f30f-68b7-4cbf-a8b1-af89deb868a6/GIF.gif"></img></InertiaLink>
-                        <div style={{"width":"max-content","paddingBottom":"0px"}}>
-                            <InertiaLink  href="#!" className="P_collection_title">José Agustín Aguilar Solórzano</InertiaLink>
-                            <div className="P_collection_subtitle">No disponible</div>
-                        </div>
-                    </span>
-                </label>
-            </div>
+                <div className="col s12 center-align">
+                    <Paginacion links={users.links} />
+                </div>
 
             <div className="col s12  right">
                 <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>

@@ -63,6 +63,8 @@ class UserController extends Controller
                             case 'nombre':
                                 return $query->WhereRaw(
                                                 "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                            )->orWhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
                                             );
                                 break;
                             case 'categoria':
@@ -71,6 +73,8 @@ class UserController extends Controller
                             case 'eliminado':
                                 return $query->WhereRaw(
                                                 "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                            )->orWhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
                                             )
                                             ->onlyTrashed();
                                 break;
@@ -82,6 +86,8 @@ class UserController extends Controller
                     } else
                         return $query->WhereRaw(
                             "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                        )->orWhereRaw(
+                            "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
                         );
                 })
                 ->when($request->sort, function ($query, $sort) use ($request) {

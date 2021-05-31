@@ -63,12 +63,12 @@ class RequestController extends Controller
                     }
 
                     //se actualiza el status de la solicitud
-                    $curso->requests()->sync([$usuarioSolicitud->id => ['status' => $status]]);
+                    $curso->requests()->sync([$usuarioSolicitud->id => ['estatus' => $status]]);
 
                     $cadenaLog =$cadenaLog . $contador.': {
                         user_id: '.$usuarioSolicitud->id.',
                         course_id: '.$id.',
-                        status: '.$status.'
+                        estatus: '.$status.'
                     },';
                 }
                 $contador++;
@@ -118,7 +118,7 @@ class RequestController extends Controller
                         $usuarioSolicitud->courses()->detach($id);
                     }
                 }
-                $curso->requests()->sync([$usuarioSolicitud->id => ['status' => 'En espera']]);
+                $curso->requests()->sync([$usuarioSolicitud->id => ['estatus' => 'En espera']]);
             }
             DB::rollback();
 
