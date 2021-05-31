@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Entry;
 use App\Models\File;
 use App\Models\Module;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -276,6 +277,13 @@ class EntryController extends Controller
             if (!$modulo) {
                 return Redirect::back()->with('error', 'Ha ocurrido un error al intentar crear la entrada, inténtelo más tarde.');
             }
+            //comprobar fechas de apertura y de entrega
+            $fechaAp = new DateTime($request->fecha_de_apertura . '' . $request->hora_de_apertura);
+            $fechaEn = new DateTime($request->fecha_de_entrega . '' . $request->hora_de_entrega);
+            if ($fechaAp >= $fechaEn) {
+                return Redirect::back()->with('error', 'La fecha de entrega no puede ser menor a la fecha de apertura.');
+            }
+
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
@@ -342,6 +350,14 @@ class EntryController extends Controller
             if (!$modulo) {
                 return Redirect::back()->with('error', 'Ha ocurrido un error al intentar crear la entrada, inténtelo más tarde.');
             }
+
+            //comprobar fechas de apertura y de entrega
+            $fechaAp = new DateTime($request->fecha_de_apertura . '' . $request->hora_de_apertura);
+            $fechaEn = new DateTime($request->fecha_de_entrega . '' . $request->hora_de_entrega);
+            if ($fechaAp >= $fechaEn) {
+                return Redirect::back()->with('error', 'La fecha de entrega no puede ser menor a la fecha de apertura.');
+            }
+
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
