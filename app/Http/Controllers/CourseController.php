@@ -270,94 +270,134 @@ class CourseController extends Controller
         \Gate::authorize('haveaccess', 'ponente.perm');
         //VALIDAMOS DATOS
         $validated = $request->validate([
-            'nombre' => 'required|max:255',
-            'tags' => 'required',
-            'fecha_inicio' => 'required',
-            'fecha_final' => 'required',
-            'link' => 'required',
-            'vc' => 'required',
-            'tipos_de_capacitacion' => 'required',
-            'tipo_inscripcion' => 'required',
+            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'tags' => 'nullable',
+            'fecha_inicio' => 'required|date|after:today',
+            'fecha_final' => 'required|date|after:fecha_inicio',
+            'link' => 'required|url',
+            'vc' => 'required|boolean',
+            'tipos_de_capacitacion' => 'nullable',
+            'tipo_inscripcion' => 'required|exists:courses,tipo_acceso',
             'descripcion' => 'required',
-            'imgs' => 'required',
+            'imgs' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
+            'maximo' =>'required|digits_between:1,3|numeric',
+            'inicio_inscripciones' =>'nullable|date|after:today|before:fecha_inicio',
+            'final_inscripciones' =>'nullable|date|after:inicio_inscripciones|before:fecha_inicio',
+            //las inscripciones podrán seguir después de iniciado el curso?
         ]);
 
         //COMIENZA TRANSACCIÓN
         DB::beginTransaction();
 
+        $imagen = null;
         try {
-            //Se busca curso a editar con id
-            $myCourse = Course::findOrFail($id);
+            //SE CREA EL NUEVO CURSO
+            $myCourse = Course::find($id);
 
             $myCourse->nombre = $request->nombre;
             $myCourse->fecha_inicio = $request->fecha_inicio;
             $myCourse->fecha_final = $request->fecha_final;
-            $myCourse->max = 100;
+            $myCourse->max = $request->maximo;
             $myCourse->valor_curricular = $request->vc;
             $myCourse->tipo_acceso = $request->tipo_inscripcion;
             $myCourse->descripcion = $request->descripcion;
             $myCourse->teacher_id = Auth::id();
             $myCourse->link = $request->link;
 
+            if ($request->inicio_inscripciones) $myCourse->inicio_inscripciones = $request->inicio_inscripciones;
+            if ($request->final_inscripciones) $myCourse->fecha_limite = $request->final_inscripciones;
+                 
+
             $myCourse->save();
             //SE AGREGAN REGISTROS A SUS RELACIONES
             //TAGS
-            $tags = $request->tags;
-            $tags_ids = [];
-            $i = 0;
-            foreach ($tags as $tag) {
-                if (Tag::where('nombre', $tag['tag'])->first() != null) {
-                    $oldTag = Tag::where('nombre', $tag['tag'])->first();
-                    $tags_ids[$i] = $oldTag->id;
-                } else {
-                    $newTag = new Tag;
-                    $newTag->nombre = $tag['tag'];
-                    $newTag->save();
+            $tagsLog = "Sin cambios";
+            if($request->tags){
+                $tags = $request->tags;
+                $tags_ids = [];
+                $i = 0;
+                foreach ($tags as $tag) {
+                    if (Tag::where('nombre', $tag['tag'])->first() != null) {
+                        $oldTag = Tag::where('nombre', $tag['tag'])->first();
+                        $tags_ids[$i] = $oldTag->id;
+                    } else {
+                        $newTag = new Tag;
+                        $newTag->nombre = $tag['tag'];
+                        $newTag->save();
 
-                    $tags_ids[$i] = $newTag->id;
+                        $tags_ids[$i] = $newTag->id;
+                    }
+                    $i++;
                 }
-                $i++;
+
+                $myCourse->tags()->sync($tags_ids);
+
+                $tagsLog = \json_encode($tags);
             }
+            
+            //TIPO DE CAPACITACIONES
+            
+            $capacitaciones = 'no hubo cambios';
+            
+            if($request->tipos_de_capacitacion){
+                //Eliminamos las capacitaciones que ya existen
+                
+                foreach ($myCourse->training_types as $tipo) {
+                    $myCourse->training_types()->detach($tipo->id);
+                }
 
-            $myCourse->tags()->sync($tags_ids);
-            //tipos_de_capacitacion
-
-
+                $tipos = $request->tipos_de_capacitacion;
+                $myCourse->training_types()->sync($tipos);
+                $capacitaciones = \json_encode($tipos);
+            }
+            
             //IMÁGENES
+            $imagenes = "No hubo cambios";
+            if($request->imgs){
+                $newImagen = new Image;
+                $newImagen->course_id = $myCourse->id;
+                $imagen = $request->file('imgs')->store('/public/imagenes_curso');
+                $newImagen->imagen = $request->file('imgs')->hashName();
 
+                $newImagen->save();
+                $imagenes = $request->file('imgs')->hashName();
+            }
+            
             //SE CREA EL LOG
             $newLog = new Log;
 
             $newLog->categoria = 'update';
             $newLog->user_id = Auth::id();
             $newLog->accion =
-                '{
+            '{
                 courses: {
-                    nombre: ' . $request->nombre .
-                'fecha_inicio: ' . $request->fecha_inicio .
-                'fecha_final: ' . $request->fecha_final .
-                'max: ' . $request->max .
-                'valor_curricular: ' . $request->vc .
-
-                'tipo_acceso: ' . $request->tipo_inscripcion .
-                'descripcion: ' . $request->descripcion .
-                'teacher_id: ' . Auth::id() .
-
-                'link: ' . $request->link .
-                '}
-
+                    nombre: ' . $request->nombre . ',\n
+                    fecha_inicio: ' . $request->fecha_inicio . ',\n
+                    fecha_final: ' . $request->fecha_final . ',\n
+                    valor_curricular: '. $request->vc. ',\n                    
+                    tipo_acceso: ' . $request->tipo_inscripcion . ',\n
+                    descripcion: '.$request->descripcion. ',\n
+                    teacher_id: ' . Auth::id() . ',\n
+                    max: ' .$request->maximo. ',\n
+                    link: ' . $request->link . ',\n
+                },
+                tags:'. $tagsLog .',\n
+                tipos_capacitacion: ' . $capacitaciones  . ',\n
+                imgs: ' . $imagenes . ',\n
             }';
 
-            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha editado el curso: ' . $myCourse->nombre;
-
-            //SE GUARDA EL LOG
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha editado el curso: '. $myCourse->nombre;
+                
+            // //SE GUARDA EL LOG
             $newLog->save();
 
             DB::commit();
-            return \Redirect::route('cursos')->with('success', 'El curso se ha actualizado exitosamente');
+            return \Redirect::route('cursos.informacion', $id)->with('success', 'El curso se ha editado exitosamente');
         } catch (\Exception $e) {
+            
             DB::rollBack();
-            return \Redirect::route('cursos')->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
+            dd($e);
+            return \Redirect::route('cursos.informacion', $id)->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
             //return response()->json(["status" => $e]);
         }
     }
