@@ -435,6 +435,7 @@ class CourseController extends Controller
             ->where('entries.visible',1)
             ->whereIn('entries.tipo',['Asignacion','Examen'])
             ->select('entries.*','modules.nombre as modulo')
+            ->orderBy('fecha_de_entrega','ASC')
             ->get();
 
         $realizadas=Course::where('courses.id',$id)->leftJoin('modules','courses.id','=','modules.course_id')
@@ -445,6 +446,7 @@ class CourseController extends Controller
             ->where('entry_user.user_id',$user->id)
             ->select('entries.id as id','entries.tipo as tipo','entries.titulo as titulo','modules.nombre as modulo', 'entries.fecha_de_apertura as fecha_de_apertura', 
                 'entries.fecha_de_entrega as fecha_de_entrega', 'entry_user.fecha as fecha', 'entry_user.calificacion as calificacion', 'entries.max_calif as max_calif')
+            ->orderBy('fecha_de_entrega','ASC')
             ->get();
 
         $pendientes=[];
@@ -463,21 +465,10 @@ class CourseController extends Controller
             }
         }
 
-        dd($pendientes,$realizadas);
-
-        //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
-        //y se obtienen solamente las actividades visibles
-        $actividades=Entry::where('tipo','!=','Aviso')
-                            ->where('tipo','!=','Informacion')
-                            ->where('tipo','!=','Enlace')
-                            ->where('tipo','!=','Archivo')
-                            ->where('visible',1)
-                            ->orderBy('id','ASC')
-                            ->get();
-
         return Inertia::render('Curso/Mochila', [
             'curso' => $curso,
-            'actividades' =>$actividades,
+            'realizadas' =>$realizadas,
+            'pendientes'=>$pendientes,
         ]);
     }
 }
