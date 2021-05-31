@@ -521,4 +521,14 @@ class CourseController extends Controller
             'curso' => $curso,
         ]);
     }
+
+    public function verPublicacion($id,$pid)
+    {
+        //Se obtiene la entrada que se desea mostrar en la vista
+        $entrada=Entry::with('files:archivo,entry_id')->findOrFail($pid);
+        return Inertia::render('Curso/VerPublicacion', [
+            'curso' => Course::findOrFail($id),
+            'entrada' => $entrada,
+        ]);
+    }
 }
