@@ -498,6 +498,23 @@ class CourseController extends Controller
 
     public function mochila($id)
     {
+        \Gate::authorize('haveaccess', 'alumno.perm');
+        $user = User::find(Auth::id());
+        $curso=$user->courses()->where('course_id',$id)->first();
+        if(!$curso){
+            return abort(404);
+        }
+
+        $pendientes=Entry::get();
+        $pendientesArr=[];
+        foreach($pendientes as $pendiente){
+            if($pendiente->users()->where('user_id',$user->id)->first()){
+                dd('tencontré');
+            }
+            dd('chale no :c');
+        }
+        $realizadas= true;
+
         //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
         //y se obtienen solamente las actividades visibles
         $actividades=Entry::where('tipo','!=','Aviso')
@@ -509,7 +526,7 @@ class CourseController extends Controller
                             ->get();
 
         return Inertia::render('Curso/Mochila', [
-            'curso' => Course::findOrFail($id),
+            'curso' => $curso,
             'actividades' =>$actividades,
         ]);
     }
