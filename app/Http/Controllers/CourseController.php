@@ -555,12 +555,19 @@ class CourseController extends Controller
         ]);
     }
 
-    public function verPublicacion($id,$pid)
+    public function verPublicacion($id,$mid,$pid)
     {
+        //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
+        $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
+        //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
+        if(!$modulo){
+            return abort(404);
+        }
         //Se obtiene la entrada que se desea mostrar en la vista
         $entrada=Entry::with('files:archivo,entry_id')->findOrFail($pid);
         return Inertia::render('Curso/VerPublicacion', [
             'curso' => Course::findOrFail($id),
+            'modulo' => $modulo,
             'entrada' => $entrada,
         ]);
     }

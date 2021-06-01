@@ -86,7 +86,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
                     <i className="material-icons" style={{"color":"#D14747"}}>announcement</i>
                   </div>
                   <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                    <InertiaLink href={route('cursos.publicacion',[curso.id,aviso.id])} className="col s12 advice-text">
+                    <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,aviso.id])} className="col s12 advice-text">
                       {aviso.titulo}
                     </InertiaLink>
                     <div className="col s12 posted-date">
@@ -138,7 +138,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
                         <i className="material-icons" style={{"color":"#134E39"}}>assignment</i>
                       </div>
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                        <InertiaLink href="#" className="col s12 publicacion">
+                        <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,entrada.id])} className="col s12 publicacion">
                           {entrada.titulo}
                         </InertiaLink>
                         <div className="col s12 posted-date">
