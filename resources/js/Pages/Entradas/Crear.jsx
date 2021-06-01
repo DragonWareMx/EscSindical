@@ -29,6 +29,7 @@ const Crear = ({ cursos }) => {
         fecha_de_entrega: "",
         hora_de_apertura: "",
         hora_de_entrega: "",
+        max_calif: "",
     })
 
     var optionsDate = {
@@ -396,7 +397,7 @@ const Crear = ({ cursos }) => {
                                         </div>
                                         {/* Aqui va el input del titulo */}
                                         <div className="input-field col s12 m6" required>
-                                            <input id="titulo" name="titulo" type="text" className={errors.link ? "validate form-control invalid" : "validate form-control"} value={values.titulo} onChange={handleChange} />
+                                            <input id="titulo" name="titulo" type="text" className={errors.titulo ? "validate form-control invalid" : "validate form-control"} value={values.titulo} onChange={handleChange} />
                                             <label htmlFor="titulo">Título de la entrada</label>
                                             {
                                                 errors.titulo &&
@@ -420,6 +421,26 @@ const Crear = ({ cursos }) => {
                                                 {
                                                     errors.link &&
                                                     <span className="helper-text" data-error={errors.link} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.link}</span>
+                                                }
+                                            </div>
+                                        }
+                                        {/* Aqui va el input de max calif */}
+                                        {values.tipo == "Examen" ?
+                                            <div className="input-field col s12 m6">
+                                                <input id="max_calif" name="max_calif" type="number" className={errors.max_calif ? "validate form-control invalid" : "validate form-control"} value={values.max_calif} onChange={handleChange} required />
+                                                <label htmlFor="max_calif">Calificación máxima</label>
+                                                {
+                                                    errors.max_calif &&
+                                                    <span className="helper-text" data-error={errors.max_calif} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.max_calif}</span>
+                                                }
+                                            </div>
+                                            : values.tipo == "Asignacion" &&
+                                            <div className="input-field col s12 m6">
+                                                <input id="max_calif" name="max_calif" type="number" className={errors.max_calif ? "validate form-control invalid" : "validate form-control"} value={values.max_calif} onChange={handleChange} required />
+                                                <label htmlFor="max_calif">Calificación máxima</label>
+                                                {
+                                                    errors.max_calif &&
+                                                    <span className="helper-text" data-error={errors.max_calif} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.max_calif}</span>
                                                 }
                                             </div>
                                         }
