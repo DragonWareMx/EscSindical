@@ -445,7 +445,8 @@ class CourseController extends Controller
             ->join('entry_user','entries.id','=','entry_id')
             ->where('entry_user.user_id',$user->id)
             ->select('entries.id as id','entries.tipo as tipo','entries.titulo as titulo','modules.nombre as modulo', 'entries.fecha_de_apertura as fecha_de_apertura', 
-                'entries.fecha_de_entrega as fecha_de_entrega', 'entry_user.fecha as fecha', 'entry_user.calificacion as calificacion', 'entries.max_calif as max_calif')
+                'entries.fecha_de_entrega as fecha_de_entrega', 'entry_user.fecha as fecha', 'entry_user.calificacion as calificacion', 'entries.max_calif as max_calif',
+                'entries.permitir_envios_retrasados as permitir_envios_retrasados')
             ->orderBy('fecha_de_entrega','ASC')
             ->get();
 
