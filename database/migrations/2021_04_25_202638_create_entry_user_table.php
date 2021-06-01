@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEntrieUserTable extends Migration
+class CreateEntryUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateEntrieUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('entrie_user', function (Blueprint $table) {
+        Schema::create('entry_user', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('entrie_id');
-            $table->foreign('entrie_id')->references('id')->on('entries')->onDelete('cascade');
+            $table->unsignedBigInteger('entry_id');
+            $table->foreign('entry_id')->references('id')->on('entries')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('calificacion')->nullable();

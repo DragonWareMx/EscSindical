@@ -498,19 +498,52 @@ class CourseController extends Controller
 
     public function mochila($id)
     {
-        //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
-        //y se obtienen solamente las actividades visibles
-        $actividades=Entry::where('tipo','!=','Aviso')
-                            ->where('tipo','!=','Informacion')
-                            ->where('tipo','!=','Enlace')
-                            ->where('tipo','!=','Archivo')
-                            ->where('visible',1)
-                            ->orderBy('id','ASC')
-                            ->get();
+        \Gate::authorize('haveaccess', 'alumno.perm');
+        $user = User::find(Auth::id());
+        $curso=$user->courses()->where('course_id',$id)->first();
+        if(!$curso){
+            return abort(404);
+        }
+
+        $entradas=Course::where('courses.id',$id)->leftJoin('modules','courses.id','=','modules.course_id')
+            ->leftJoin('entries','modules.id','=','entries.module_id')
+            ->where('entries.visible',1)
+            ->whereIn('entries.tipo',['Asignacion','Examen'])
+            ->select('entries.*','modules.nombre as modulo')
+            ->orderBy('fecha_de_entrega','ASC')
+            ->get();
+
+        $realizadas=Course::where('courses.id',$id)->leftJoin('modules','courses.id','=','modules.course_id')
+            ->leftJoin('entries','modules.id','=','entries.module_id')
+            ->where('entries.visible',1)
+            ->whereIn('entries.tipo',['Asignacion','Examen'])
+            ->join('entry_user','entries.id','=','entry_id')
+            ->where('entry_user.user_id',$user->id)
+            ->select('entries.id as id','entries.tipo as tipo','entries.titulo as titulo','modules.nombre as modulo', 'entries.fecha_de_apertura as fecha_de_apertura', 
+                'entries.fecha_de_entrega as fecha_de_entrega', 'entry_user.fecha as fecha', 'entry_user.calificacion as calificacion', 'entries.max_calif as max_calif')
+            ->orderBy('fecha_de_entrega','ASC')
+            ->get();
+
+        $pendientes=[];
+        $i=0;
+        foreach($entradas as $entrada){
+            $found=false;
+            foreach($realizadas as $realizada){
+                if($entrada->id == $realizada->id){
+                    $found=true;
+                    break;
+                }
+            }    
+            if($found == false){
+                $pendientes[$i]=$entrada;
+                $i++;
+            }
+        }
 
         return Inertia::render('Curso/Mochila', [
-            'curso' => Course::findOrFail($id),
-            'actividades' =>$actividades,
+            'curso' => $curso,
+            'realizadas' =>$realizadas,
+            'pendientes'=>$pendientes,
         ]);
     }
 
