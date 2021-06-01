@@ -1,7 +1,7 @@
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
 import React, { useState, useEffect } from 'react'
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia'
 
 import '/css/participantes.css'
@@ -21,6 +21,11 @@ function tooltip(){
 }
 
 const AgregarParticipante = ({curso, users, request}) => {
+    //errores de la validacion de laravel
+    const { errors } = usePage().props
+    //errores de la validacion de laravel
+    const { flash } = usePage().props
+
     const [state, setState] = useState({
         typingTimeout: 0,
         filter: request.filter ?? "nombre"
@@ -40,6 +45,10 @@ const AgregarParticipante = ({curso, users, request}) => {
             elem.value = request.user_search;
         }
     }, [])
+
+    useEffect(() => {
+        openAlert('alert_error');
+    }, [errors])
 
     function seleccionar_todo(){
         for (var i=0;i<document.form_solicitudes.elements.length;i++)
@@ -165,15 +174,56 @@ const AgregarParticipante = ({curso, users, request}) => {
         }
         return false
     }
+
+    function handleSubmit(e){
+        e.preventDefault()
+        Inertia.post(route('cursos.addStudent', curso.id), values
+        , {onFinish: () => {Inertia.get(route('cursos.agregarParticipante',curso.id),{preserveState: false, data: {errors: errors, flash: flash}})}}
+        )
+    }
+
+    function closeAlert(type){
+        var divsToHide = document.getElementsByClassName(type); //divsToHide is an array
+        for(var i = 0; i < divsToHide.length; i++){
+            divsToHide[i].style.visibility = "hidden"; // or
+            divsToHide[i].style.display = "none"; // depending on what you're doing
+        }
+    }
+
+    function openAlert(type){
+        var divsToHide = document.getElementsByClassName(type); //divsToHide is an array
+        for(var i = 0; i < divsToHide.length; i++){
+            divsToHide[i].style.visibility = "visible"; // or
+            divsToHide[i].style.display = "flex"; // depending on what you're doing
+        }
+    }
+
     return (
     <>
         <div className="row"> 
-        <form name="form_solicitudes">
+        <form name="form_solicitudes"  onSubmit={handleSubmit}>
             <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
                 {/* regresar */}
                 <InertiaLink  href={route('cursos.participantes', curso.id)}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
                 AGREGAR PARTICIPANTES
             </div>
+
+            <div className="col s12">
+                <Alertas />
+            </div>
+
+            {errors.solicitud &&
+                <div className="col s12">
+                    <div className="errores">
+                        <ul>
+                            <li className="alert_error">
+                                <div className="col s11">No se ha seleccionado ningún usuario.</div>
+                                <div onClick={() => {closeAlert('alert_error')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
+                            </li>
+                        </ul>  
+                    </div>
+                </div>
+            }
 
             <div className="col s12">
                 <nav className="searchUsers" style={{"marginTop":"0px !important"}}>
