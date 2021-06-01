@@ -9,7 +9,7 @@ function initializeMat() {
     var instances = M.Modal.init(elems);
 }
 
-const PerfilPublico = ({ user }) => {
+const PerfilPublico = ({ user, cursos, participantes }) => {
     useEffect(() => {
         initializeMat();
     }, [])
@@ -29,7 +29,7 @@ const PerfilPublico = ({ user }) => {
     return (
         <>
             <div className="row">
-                <div className="col s12 m4">
+                <div className="col s12 m8 l5 xl5">
                     <div className="row">
                         <div className="col s12" style={{ "marginTop": "30px" }}>
                             <div className="card">
@@ -42,7 +42,7 @@ const PerfilPublico = ({ user }) => {
                                         </div>
                                         <div className="col s12 center-align">
                                             <div className="profile-txt-category">
-                                                {user.category ? user.category.nombre : "Sin categoría"}
+                                                {user.roles ? user.roles.length > 0 ? user.roles[0].name : "Sin rol" : "Sin rol"}
                                             </div>
                                             <div className="profile-txt-name">
                                                 {user.nombre} {user.apellido_p} {user.apellido_m}
@@ -50,10 +50,21 @@ const PerfilPublico = ({ user }) => {
                                             <div className="profile-txt-active-since">
                                                 Activo desde {user.created_at ? transformaFecha(user.created_at) : "el inicio de los tiempos"}
                                             </div>
+
+                                            {user.roles && user.roles.length > 0 && user.roles[0].name == "Ponente" && cursos > 0 &&
+                                                <div className="profile-txt-name">
+                                                    <i className="material-icons profile-icon-email">play_circle_filled</i> {cursos} cursos
+                                                </div>
+                                            }
+                                            {user.roles && user.roles.length > 0 && user.roles[0].name == "Ponente" && participantes > 0 &&
+                                                <div className="profile-txt-name">
+                                                    <i className="material-icons profile-icon-email">people</i>{participantes} participantes
+                                                </div>
+                                            }
                                             <div className="profile-txt-email valign-wrapper truncate"><i className="material-icons profile-icon-email">mail_outline</i>{user.email}</div>
                                         </div>
                                         {/* Boton de enviar mensaje */}
-                                        <div className="col s12 center-align" style={{ "padding": "0%" }}>
+                                        <div className="col s12 center-align" style={{ "padding": "0%"}}>
                                             <a className="waves-effect waves-light btn boton-verde" href={"mailto:"+user.email}><i className="material-icons right" style={{ "fontSize": "18px" }}>send</i>Mensaje</a>
                                         </div>
                                     </div>

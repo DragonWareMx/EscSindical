@@ -9,6 +9,9 @@
 
     margin-top: 15px;
     margin-bottom: 5px;
+
+    display: flex;
+    align-items: center !important;
 }
 
 .subtitulo-modulo
@@ -167,4 +170,32 @@
 {
     color: #134E39;
     font-size: 16px;
+}
+
+/* CONFIGURACIÓN DE LOS MÓDULOS */
+.txt-titulo-modulo-card{
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 18px;
+    color: #108058;
+}
+.txt-titulo-objetivo{
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+    color: #848484;
+}
+.txt-objetivo{
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    color: #383838;
+}
+.div-modulo-config{
+    border: 1px solid #D8D8D8;
+    box-sizing: border-box;
+    border-radius: 2px;
+    padding-top:10px !important;
+    padding-bottom:10px !important;
+    margin-bottom:15px;
 }

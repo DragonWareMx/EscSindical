@@ -5,6 +5,7 @@ import route from 'ziggy-js'
 import { InertiaLink } from '@inertiajs/inertia-react'
 import { usePage } from '@inertiajs/inertia-react'
 import '../styles/cursos.css'
+import Alertas from '../components/common/Alertas'; 
 
 function initializeMat() {
     var elems = document.querySelectorAll('.dropdown-trigger');
@@ -13,6 +14,8 @@ function initializeMat() {
     var instance = M.Tabs.init(el);
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
+    var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems);
 }
 
 function isUrl(...urls) {
@@ -50,11 +53,12 @@ const LayoutCursos = ({children}) => {
     }, [])
 
     return (
-        <>
+        <>  
+        <Alertas />
             <div className="row contenedor">
                <div className="card darken-1" style={{"padding":"5px 25px"}}>
                    <div className="card-content row valign-wrapper" style={{"padding":"10px","marginBottom":"0px"}}>
-                        <div className="col s11 valign-wrapper LC_title">Programación orientada a objetos&nbsp; <i className="material-icons">verified</i></div>
+                        <div className="col s11 valign-wrapper LC_title">Programación orientada a objetos&nbsp; <i className="material-icons tooltipped" data-position="top" data-tooltip="Curso con valor curricular">verified</i></div>
                         <div className="col s1 LC_more"><a className='dropdown-trigger' href='#' data-target='dropdown_LC'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                         <ul id='dropdown_LC' className='dropdown-content'>
                             <li><InertiaLink className="dropdown-text" href="#"><i className="material-icons">error_outline</i>Solicitar baja del curso</InertiaLink></li>

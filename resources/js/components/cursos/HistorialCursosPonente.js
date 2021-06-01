@@ -1,6 +1,8 @@
+import { map } from 'jquery';
 import React from 'react'
 import { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
+import route from 'ziggy-js';
 import '../../styles/cursos.css'
 
 function initializeDROP() {
@@ -18,11 +20,30 @@ function initializeDROP() {
 }
 
 
-export default function HistorialCursosPonente() {
+export default function HistorialCursosPonente({finishedCourses}) {
     useEffect(() => {
         initializeDROP();
     }, [])
-        return (
+
+    var totales = [];
+    var porcentajes =[];
+
+    finishedCourses.forEach(curso => {
+        var total = 0;
+        var aprobados =0;
+        curso.users.forEach(usuario => {
+            if(usuario.pivot.calificacion_final >70){
+                aprobados++;
+            }
+            total+= usuario.pivot.calificacion_final;
+        });
+        totales.push(total/curso.users.length);
+        porcentajes.push((aprobados/curso.users.length)*100);
+        porcentajes.push((aprobados/curso.users.length)*100);
+    });
+
+    
+    return (
             <div className="row">                
                 <div className="col s12">
                     <div className="card ">
@@ -38,8 +59,8 @@ export default function HistorialCursosPonente() {
                                 {/* DIV CURSO */}
 
                                 <div className="row">
-                                    {/* CARD HISTORIAL */}
-                                    <div className="col s12 m6 l6 xl6">
+                                    {finishedCourses.map ((course) => 
+                                    <div key={course.id} className="col s12 m6 l6 xl6">
                                         <div className="card">
                                             <div className="card-content">
                                                 <a className="dropdown-trigger"  data-target='download-report'>
@@ -51,112 +72,50 @@ export default function HistorialCursosPonente() {
                                                 </ul>
 
                                                 <div className="txt-title-course-history">
-                                                    <a href="#!" className="a-mini-course-hover">Nombre completo del curso terminado, lorem ipsum dolor</a>
+                                                    <a href={route('cursos.informacion',course.id)} className="a-mini-course-hover">{course.nombre}</a>
                                                 </div>
                                                 <div className="row" style={{"marginTop":"15px", "marginBottom":"5px"}}>
                                                     <div className="col s5">
-                                                        <a href="#!"><img src="img/imagenes/Teacher-cuate.svg" className=""/></a>
+                                                        <a href="#!"><img src={course.images && course.images.length>0 && "/storage/imagenes_curso/"+course.images['0'].imagen} className="img-course" style={{"width":"100%"}} /></a>
                                                     </div>  
                                                     <div className="col s12 l7 m7 xl7">
 
                                                         <div className="txt-video-course">
                                                             <i className="material-icons tiny">people
                                                             </i>
-                                                            <p style={{"marginLeft": "5px", "color": "#585858 !important"}}>125 participantes</p>
+                                                            <p style={{"marginLeft": "5px", "color": "#585858 !important"}}>{course.users.length}</p>
                                                         </div>
 
-                                                        <div className="txt-grade-course" style={{"fontSize":"11px", "marginTop":"5px"}}>Calificación grupal: 100</div>
-                                                        <div className="txt-grade-course" style={{"fontSize":"11px", "marginTop":"3px"}}>Porcentaje de aprobación</div>
+                                                        <div className="txt-grade-course" style={{"fontSize":"11px", "marginTop":"5px"}}>Calificación grupal: {totales.pop()}</div>
+                                                        <div className="txt-grade-course" style={{"fontSize":"11px", "marginTop":"3px"}}>Porcentaje de aprobación: </div>
                                                         {/* DIV progress bar del curso */}
                                                         <div className="row" style={{"display":"flex", "alignItems": "center", "marginBottom": "0px"}}>
                                                             <div className="col s9">
                                                                 <div className="progress" style={{"margin": "0px"}}>
-                                                                    <div className="determinate" style={{"width": "85%"}}></div>
+                                                                    <div className="determinate" style={{"width": porcentajes.pop()+'%'}}></div>
                                                                 </div>
                                                             </div>
                                                             <div className="col s3">
-                                                                <div className="txt-progress-course">85%</div>
+                                                                <div className="txt-progress-course">{porcentajes.pop()} %</div>
                                                             </div>
                                                         </div>
                                                         
                                                         {/* Tags del curso */}
-                                                        <div className="container-tags">
-                                                            <a className="div-tag" href="#!">
-                                                                course tag&nbsp;<i className="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
-                                                            </a>
-                                                            <a className="div-tag" href="#!">
-                                                                course tag&nbsp;<i className="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
-                                                            </a>
-                                                            ...
-                                                        </div>
-                                                    </div>
-                                                </div> 
-                                                <div className="right date-course-history">14 Abril 2020 - 14 Agosto 2020</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    {/* CARD HISTORIAL */}
-                                    <div className="col s12 m6 l6 xl6">
-                                        <div className="card">
-                                            <div className="card-content">
-                                                <a className="dropdown-trigger"  data-target='download-report'>
-                                                    <i className="material-icons right">more_vert</i>
-                                                </a>
-                                                {/* DROPDOWN CON OPCIONES */}
-                                                <ul id='download-report' className='dropdown-content'>
-                                                    <li className="options-course-dropdown"><a href="#!"><i className="material-icons tiny" style={{"marginRight":"0px"}}>file_download</i>Descargar reporte</a></li>
-                                                </ul>
-
-                                                <div className="txt-title-course-history">
-                                                    <a href="#!" className="a-mini-course-hover">Nombre completo del curso terminado, lorem ipsum dolor</a>
-                                                </div>
-                                                <div className="row" style={{"marginTop":"15px", "marginBottom":"5px"}}>
-                                                    <div className="col s5">
-                                                        <a href="#!"><img src="img/imagenes/Teacher-cuate.svg" className=""/></a>
-                                                    </div>  
-                                                    <div className="col s12 l7 m7 xl7">
-
-                                                        <div className="txt-video-course">
-                                                            <i className="material-icons tiny">people
-                                                            </i>
-                                                            <p style={{"marginLeft": "5px", "color": "#585858 !important"}}>125 participantes</p>
-                                                        </div>
-
-                                                        <div className="txt-grade-course" style={{"fontSize":"11px", "marginTop":"5px"}}>Calificación grupal: 100</div>
-                                                        <div className="txt-grade-course" style={{"fontSize":"11px", "marginTop":"3px"}}>Porcentaje de aprobación</div>
-                                                        {/* DIV progress bar del curso */}
-                                                        <div className="row" style={{"display":"flex", "alignItems": "center", "marginBottom": "0px"}}>
-                                                            <div className="col s9">
-                                                                <div className="progress" style={{"margin": "0px"}}>
-                                                                    <div className="determinate" style={{"width": "85%"}}></div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col s3">
-                                                                <div className="txt-progress-course">85%</div>
-                                                            </div>
-                                                        </div>
                                                         
-                                                        {/* Tags del curso */}
                                                         <div className="container-tags">
-                                                            <a className="div-tag" href="#!">
-                                                                course tag&nbsp;<i className="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
+                                                            {course.tags.map((tag) =>
+                                                            <a key={tag.id} className="div-tag" href="#!">
+                                                            {tag.nombre}&nbsp;<i className="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
                                                             </a>
-                                                            <a className="div-tag" href="#!">
-                                                                course tag&nbsp;<i className="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
-                                                            </a>
-                                                            ...
+                                                            )}
                                                         </div>
                                                     </div>
                                                 </div> 
-                                                <div className="right date-course-history">14 Abril 2020 - 14 Agosto 2020</div>
+                                                <div className="right date-course-history">{course.fecha_inicio} - {course.fecha_final}</div>
                                             </div>
                                         </div>
                                     </div>
-
-
-
+                                    )}
                                 </div>
                             </div>
                         </div>
