@@ -320,14 +320,22 @@ const Crear = ({ cursos }) => {
 
     function changeArchivos(e) {
         var inputArchivos = document.getElementById('archivos');
-        console.log(inputArchivos.files);
         if (inputArchivos.files && inputArchivos.files.length > 0) {
             setValues(values => ({
                 ...values,
                 archivos: inputArchivos.files,
             }))
         }
+    }
 
+    function changeArchivo(e) {
+        var inputArchivos = document.getElementById('archivos');
+        if (inputArchivos.files && inputArchivos.files[0]) {
+            setValues(values => ({
+                ...values,
+                archivos: inputArchivos.files[0],
+            }))
+        }
     }
 
     //manda el forumulario
@@ -624,7 +632,7 @@ const Crear = ({ cursos }) => {
                                                             <div className="file-field input-field" style={{ "border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px" }}>
                                                                 <div className="col s12">
                                                                     <span style={{ fontSize: "12px", textAlign: "center", paddingTop: "10px" }} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
-                                                                    <input type="file" className="form-control" id="archivos" name="archivos" onChange={changeArchivos} />
+                                                                    <input type="file" className="form-control" id="archivos" name="archivos" onChange={changeArchivo} />
                                                                 </div>
                                                                 <div className="file-path-wrapper">
                                                                     <input className="file-path validate" type="text" />
