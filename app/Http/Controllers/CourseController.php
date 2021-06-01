@@ -15,7 +15,7 @@ use App\Models\Log;
 use App\Models\Entry;
 use App\Models\Image;
 use App\Models\Training_type;
-
+use App\Models\Drop_requests;
 
 
 class CourseController extends Controller
@@ -291,7 +291,7 @@ class CourseController extends Controller
 
         $imagen = null;
         try {
-            //SE CREA EL NUEVO CURSO
+            //SE OBTIENE y edita el curso
             $myCourse = Course::find($id);
 
             $myCourse->nombre = $request->nombre;
@@ -399,6 +399,59 @@ class CourseController extends Controller
             dd($e);
             return \Redirect::route('cursos.informacion', $id)->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
             //return response()->json(["status" => $e]);
+        }
+    }
+
+    public function deleteRequest($id, Request $request)
+    {
+        //metodo para que alumno solicite baja de curso
+        
+        \Gate::authorize('haveaccess', 'alumno.perm');
+        //VALIDAMOS DATOS
+        $validated = $request->validate([
+            'descripcion' => 'required',
+        ]);
+        
+        DB::beginTransaction();
+        try {
+
+            if (Drop_requests::where('course_id', $id)->where('user_id',Auth::id())->first()){
+                return \Redirect::route('cursos')->with('message', 'Ya solicitaste tu baja a este curso');
+            }
+            else {
+                $newRequest = new Drop_requests;
+                $newRequest->course_id = $id;
+                $newRequest->user_id =Auth::id();
+                $newRequest->descripcion = $request->descripcion;
+
+                $newRequest->save();
+                //SE CREA EL LOG
+
+                $newLog = new Log;
+
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                '{
+                    drop_requests: {
+                        course_id: ' . $id . ',\n
+                        user_id: ' . Auth::id() . ',\n
+                        descripcion: '.$request->descripcion. ',\n
+                    },
+                }';
+
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado su baja del curso';
+                
+                //SE GUARDA EL LOG
+                $newLog->save();
+            
+                DB::commit();
+                return \Redirect::route('cursos')->with('success', 'Se solicitó tu baja de curso');
+            }
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
         }
     }
 
@@ -547,29 +600,45 @@ class CourseController extends Controller
             return abort(404);
         }
 
-        $pendientes=Entry::get();
-        $pendientesArr=[];
-        foreach($pendientes as $pendiente){
-            if($pendiente->users()->where('user_id',$user->id)->first()){
-                dd('tencontré');
-            }
-            dd('chale no :c');
-        }
-        $realizadas= true;
+        $entradas=Course::where('courses.id',$id)->leftJoin('modules','courses.id','=','modules.course_id')
+            ->leftJoin('entries','modules.id','=','entries.module_id')
+            ->where('entries.visible',1)
+            ->whereIn('entries.tipo',['Asignacion','Examen'])
+            ->select('entries.*','modules.nombre as modulo')
+            ->orderBy('fecha_de_entrega','ASC')
+            ->get();
 
-        //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
-        //y se obtienen solamente las actividades visibles
-        $actividades=Entry::where('tipo','!=','Aviso')
-                            ->where('tipo','!=','Informacion')
-                            ->where('tipo','!=','Enlace')
-                            ->where('tipo','!=','Archivo')
-                            ->where('visible',1)
-                            ->orderBy('id','ASC')
-                            ->get();
+        $realizadas=Course::where('courses.id',$id)->leftJoin('modules','courses.id','=','modules.course_id')
+            ->leftJoin('entries','modules.id','=','entries.module_id')
+            ->where('entries.visible',1)
+            ->whereIn('entries.tipo',['Asignacion','Examen'])
+            ->join('entry_user','entries.id','=','entry_id')
+            ->where('entry_user.user_id',$user->id)
+            ->select('entries.id as id','entries.tipo as tipo','entries.titulo as titulo','modules.nombre as modulo', 'entries.fecha_de_apertura as fecha_de_apertura', 
+                'entries.fecha_de_entrega as fecha_de_entrega', 'entry_user.fecha as fecha', 'entry_user.calificacion as calificacion', 'entries.max_calif as max_calif')
+            ->orderBy('fecha_de_entrega','ASC')
+            ->get();
+
+        $pendientes=[];
+        $i=0;
+        foreach($entradas as $entrada){
+            $found=false;
+            foreach($realizadas as $realizada){
+                if($entrada->id == $realizada->id){
+                    $found=true;
+                    break;
+                }
+            }    
+            if($found == false){
+                $pendientes[$i]=$entrada;
+                $i++;
+            }
+        }
 
         return Inertia::render('Curso/Mochila', [
             'curso' => $curso,
-            'actividades' =>$actividades,
+            'realizadas' =>$realizadas,
+            'pendientes'=>$pendientes,
         ]);
     }
 

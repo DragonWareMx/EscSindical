@@ -6,7 +6,17 @@ import '../../styles/cursos.css'
 
 
 export default function CursoActualPonente({cursos}) {
-
+    function calculaAvance(ini, fin) {
+        var start = new Date(ini),
+            end = new Date(fin),
+            today = new Date(),
+            porcentaje = Math.round(((today - start) / (end - start)) * 100)
+        if (porcentaje < 0)
+            return 0
+        else if (porcentaje > 100)
+            return 100
+        else return porcentaje
+      }
     
         return (
             <div className="row">                
@@ -38,11 +48,11 @@ export default function CursoActualPonente({cursos}) {
                                             <div className="row" style={{"display":"flex", "alignItems": "center", "marginBottom": "0px"}}>
                                                 <div className="col s5">
                                                     <div className="progress" style={{"margin": "0px"}}>
-                                                        <div className="determinate" style={{"width": "70%"}}></div>
+                                                        <div className="determinate" style={{"width": calculaAvance(curso.fecha_inicio, curso.fecha_final)+"%"}}></div>
                                                     </div>
                                                 </div>
                                                 <div className="col s7">
-                                                    <div className="txt-progress-course">Avance 15%</div>
+                                                    <div className="txt-progress-course">{calculaAvance(curso.fecha_inicio, curso.fecha_final)}%</div>
                                                 </div>
                                             </div>
                                             
