@@ -145,6 +145,8 @@
     font-weight: 600;
     font-size: 10px;
     line-height: 12px;
+    
+    text-transform: uppercase;
 }
 
 .texto-estatus.Retrasada{
@@ -155,6 +157,15 @@
     color:#727272;
 }
 
+.texto-estatus.Cerrado{
+    color: #D14747; 
+}
+
+.texto-estatus.Enviado{
+    color: #108058;
+}
+
+
 .texto-cerrado
 {
     font-family: Montserrat;
@@ -162,7 +173,6 @@
     font-weight: 600;
     font-size: 10px;
     line-height: 12px;
-    
     color: #D14747;   
 }
 

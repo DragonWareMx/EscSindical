@@ -67,6 +67,23 @@ const Informacion = ({curso, realizadas, pendientes}) => {
     else if(hoy > fecha_entrega && permitir){
       return 'Retrasada'
     }
+    else{
+      return 'Cerrado'
+    }
+  }
+
+
+  // / funcion para calcular el estatus de la entrega realizada o algo así
+  function realizadaEstatus(fecha_entrega,entregado){
+    const entrega=new Date(fecha_entrega);
+    const fecha = new Date(entregado);
+
+    if(fecha < entrega){
+      return 'Enviado'
+    }
+    else{
+      return 'Retrasada'
+    }
   }
 
   return (
@@ -94,7 +111,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
                 <div className="row valign-wrapper">
                   {/* icono */}
                   <div className="col s2 l1 center-align">
-                    <i className="material-icons" style={{"color":"#134E39"}}>edit_note</i>
+                    <i className="material-icons" style={{"color":"#134E39"}}>{pendiente.tipo == 'Examen' ? 'quiz' : 'edit_note'}</i>
                   </div>
                   {/* informacion */}
                   <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
@@ -111,7 +128,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
                   </div>
                   {/* estatus */}
                   <div className="col s2 l1 center-align">
-                    <span id={'pendiente'+ pendiente.id} className={'texto-estatus '+pendienteEstatus(pendiente.fecha_de_entrega, pendiente.permitir_envios_retrasados)}>{pendienteEstatus(pendiente.fecha_de_entrega, pendiente.permitir_envios_retrasados)}</span>
+                    <span className={'texto-estatus '+pendienteEstatus(pendiente.fecha_de_entrega, pendiente.permitir_envios_retrasados)}>{pendienteEstatus(pendiente.fecha_de_entrega, pendiente.permitir_envios_retrasados)}</span>
                   </div>
                 </div>
               </div>
@@ -132,65 +149,36 @@ const Informacion = ({curso, realizadas, pendientes}) => {
         <div id="completado" className="col s12 hide" style={{"marginTop":"5px"}}>
           
           {/* ejemplo de asignacion */}
-          <div className="card">
-            <div className="card-content" style={{"paddingBottom":"5px"}}>
-              <div className="row valign-wrapper">
-                {/* icono */}
-                <div className="col s2 l1 center-align">
-                  <i className="material-icons" style={{"color":"#134E39"}}>edit_note</i>
-                </div>
-                {/* informacion */}
-                <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
-                  {/* titulo de la asignacion y calificacion */}
-                  <div className="col s12 publicacion">
-                    <span className="publicacion">Nombre completo de la asignacion</span> 
-                    <span className="calificacion">0/100</span>
+          {realizadas && realizadas.length > 0 && realizadas.map((realizada, index)=>
+            <div className="card" key={index}>
+              <div className="card-content" style={{"paddingBottom":"5px"}}>
+                <div className="row valign-wrapper">
+                  {/* icono */}
+                  <div className="col s2 l1 center-align">
+                    <i className="material-icons" style={{"color":"#134E39"}}>{realizada.tipo == 'Examen' ? 'quiz' : 'edit_note'}</i>
                   </div>
-                  {/* nombre del modulo y fecha de vencimiento*/}
-                  <div className="col s12 posted-date">
-                    <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo N "Nombre completo del modulo"</span>
-                    <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el "fecha" a las "hora"</span>
+                  {/* informacion */}
+                  <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
+                    {/* titulo de la asignacion y calificacion */}
+                    <div className="col s12 publicacion">
+                      <span className="publicacion">{realizada.titulo}</span> 
+                      <span className="calificacion">{realizada.calificacion ? realizada.calificacion : 'Sin calificar'}/100</span>
+                    </div>
+                    {/* nombre del modulo y fecha de vencimiento*/}
+                    <div className="col s12 posted-date">
+                      <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo N "{realizada.modulo}"</span>
+                      <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Entregada el {transformaFechaMochila(realizada.fecha)}</span>
+                    </div>
                   </div>
-                </div>
-                {/* estatus */}
-                <div className="col s2 l1 center-align">
-                  <span className="texto-enviado">ENVIADO</span>
+                  {/* estatus */}
+                  <div className="col s2 l1 center-align">
+                    <span className={'texto-estatus '+realizadaEstatus(realizada.fecha_de_entrega, realizada.fecha)}>{realizadaEstatus(realizada.fecha_de_entrega, realizada.fecha)}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* ejemplo de examen */}
-          <div className="card">
-            <div className="card-content" style={{"paddingBottom":"5px"}}>
-              <div className="row valign-wrapper">
-                {/* icono */}
-                <div className="col s2 l1 center-align">
-                  <i className="material-icons" style={{"color":"#134E39"}}>quiz</i>
-                </div>
-                {/* informacion */}
-                <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
-                  {/* titulo de la asignacion y calificacion */}
-                  <div className="col s12 publicacion">
-                    <span className="publicacion">Exámen final del modulo ("soy el nombre del examen")</span> 
-                    <span className="calificacion">Sin calificar</span>
-                  </div>
-                  {/* nombre del modulo y fecha de vencimiento*/}
-                  <div className="col s12 posted-date">
-                    <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo N "Nombre completo del modulo"</span>
-                    <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el "fecha" a las "hora"</span>
-                  </div>
-                </div>
-                {/* estatus */}
-                <div className="col s2 l1 center-align">
-                  <span className="texto-cerrado">CERRADO</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
+          )}
         </div>
-
       </div>
     </>
   )
