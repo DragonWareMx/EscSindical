@@ -48,28 +48,31 @@ class RequestController extends Controller
 
                 //verifica que el usuario exista
                 if($usuarioSolicitud){
-                    if($request->aprobado){
-                        $status = 'Aceptado';
+                    //verifica que el usuario sea un alumno
+                    if ($usuarioSolicitud->roles && $usuarioSolicitud->roles[0]->name == 'Alumno') {
+                        if($request->aprobado){
+                            $status = 'Aceptado';
 
-                        //agrega el usuario al curso
-                        $usuarioSolicitud->courses()->sync($id, false);
+                            //agrega el usuario al curso
+                            $usuarioSolicitud->courses()->sync($id, false);
 
-                        //mandar notificacion al usuario
+                            //mandar notificacion al usuario
+                        }
+                        else{
+                            $status = 'Rechazado';
+
+                            //mandar notificacion al usuario
+                        }
+
+                        //se actualiza el status de la solicitud
+                        $curso->requests()->sync([$usuarioSolicitud->id => ['estatus' => $status]]);
+
+                        $cadenaLog =$cadenaLog . $contador.': {
+                            user_id: '.$usuarioSolicitud->id.',
+                            course_id: '.$id.',
+                            estatus: '.$status.'
+                        },';
                     }
-                    else{
-                        $status = 'Rechazado';
-
-                        //mandar notificacion al usuario
-                    }
-
-                    //se actualiza el status de la solicitud
-                    $curso->requests()->sync([$usuarioSolicitud->id => ['estatus' => $status]]);
-
-                    $cadenaLog =$cadenaLog . $contador.': {
-                        user_id: '.$usuarioSolicitud->id.',
-                        course_id: '.$id.',
-                        estatus: '.$status.'
-                    },';
                 }
                 $contador++;
             }
@@ -83,7 +86,7 @@ class RequestController extends Controller
             '{
                 requests: {
                    '.$cadenaLog.'
-
+                }
             }';
 
             $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha '.$status.' '.$contador.' usuarios en el curso de id: ' . $id;
@@ -137,8 +140,6 @@ class RequestController extends Controller
         ]);
         //la solicitud es valida...
 
-        dd($request);
-
         //COMIENZA TRANSACCIÓN
         DB::beginTransaction();
 
@@ -165,28 +166,24 @@ class RequestController extends Controller
 
                 //verifica que el usuario exista
                 if($usuarioSolicitud){
-                    if($request->aprobado){
-                        $status = 'Aceptado';
-
+                    //verifica que el usuario sea un alumno
+                    if($usuarioSolicitud->roles && $usuarioSolicitud->roles[0]->name == 'Alumno') {
                         //agrega el usuario al curso
                         $usuarioSolicitud->courses()->sync($id, false);
-
+    
+                        //si existe una solicitud se actualiza el status de la solicitud
+                        if ($curso->requests->contains($usuarioSolicitud->id)) {
+                            $curso->requests()->sync([$usuarioSolicitud->id => ['estatus' => 'Aceptado']]);
+                        }
+                        
                         //mandar notificacion al usuario
+    
+                        $cadenaLog =$cadenaLog . $contador.': {
+                            user_id: '.$usuarioSolicitud->id.',
+                            course_id: '.$id.',
+                        },';
                     }
-                    else{
-                        $status = 'Rechazado';
 
-                        //mandar notificacion al usuario
-                    }
-
-                    //se actualiza el status de la solicitud
-                    $curso->requests()->sync([$usuarioSolicitud->id => ['estatus' => $status]]);
-
-                    $cadenaLog =$cadenaLog . $contador.': {
-                        user_id: '.$usuarioSolicitud->id.',
-                        course_id: '.$id.',
-                        estatus: '.$status.'
-                    },';
                 }
                 $contador++;
             }
@@ -200,10 +197,11 @@ class RequestController extends Controller
             '{
                 requests: {
                    '.$cadenaLog.'
+                }
 
             }';
 
-            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha '.$status.' '.$contador.' usuarios en el curso de id: ' . $id;
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha agregado '.$contador.' usuarios en el curso de id: ' . $id;
 
             //SE GUARDA EL LOG
             $newLog->save();
@@ -231,15 +229,17 @@ class RequestController extends Controller
             foreach ($request->solicitud as $usuario) {
                 $usuarioSolicitud = User::find($usuario);
                 if($usuarioSolicitud){
-                    if($request->aprobado){
+                    if($usuarioSolicitud->roles && $usuarioSolicitud->roles[0]->name == 'Alumno') {
                         $usuarioSolicitud->courses()->detach($id);
+
+                        if ($curso->requests->contains($usuarioSolicitud->id)) {
+                            $curso->requests()->sync([$usuarioSolicitud->id => ['estatus' => 'En espera']]);
+                        }
                     }
                 }
-                $curso->requests()->sync([$usuarioSolicitud->id => ['estatus' => 'En espera']]);
             }
             DB::rollback();
 
-            dd($e);
             return \Redirect::back()->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde.');
         }
     }
