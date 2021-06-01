@@ -23,7 +23,12 @@ function tooltip(){
 const AgregarParticipante = ({curso, users, request}) => {
     const [state, setState] = useState({
         typingTimeout: 0,
-        filter: "nombre"
+        filter: request.filter ?? "nombre"
+    })
+
+    //valores para formulario
+    const [values, setValues] = useState({
+        solicitud: []
     })
 
     useEffect(() => {
@@ -75,7 +80,8 @@ const AgregarParticipante = ({curso, users, request}) => {
         let search = event.target.value
         let data;
         
-        setState({
+        setState(state => ({
+            ...state,
             typingTimeout: setTimeout(function () {
                 data = {
                     user_search: search
@@ -83,7 +89,7 @@ const AgregarParticipante = ({curso, users, request}) => {
                 data.filter = state.filter
                 Inertia.reload({ data: data, only: ['users'] })
             }, 250)
-        });
+        }));
     }
 
     //filtros de busqueda
@@ -100,10 +106,12 @@ const AgregarParticipante = ({curso, users, request}) => {
                 if (request.user_search)
                     data.user_search = request.user_search
 
-                Inertia.reload(
+                Inertia.replace(route('cursos.agregarParticipante',curso.id).url(),
                     {
                         data: data,
-                        only: ['users']
+                        only: ['users'],
+                        preserveScroll: true,
+                        preserveState: true,
                     })
                 break;
             case "nombre":
@@ -115,10 +123,12 @@ const AgregarParticipante = ({curso, users, request}) => {
                 if (request.user_search)
                     data.user_search = request.user_search
 
-                    Inertia.reload(
+                    Inertia.replace(route('cursos.agregarParticipante',curso.id).url(),
                         {
                             data: data,
-                            only: ['users']
+                            only: ['users'],
+                            preserveScroll: true,
+                            preserveState: true,
                         })
                 break;
             case "email":
@@ -130,10 +140,12 @@ const AgregarParticipante = ({curso, users, request}) => {
                 if (request.user_search)
                     data.user_search = request.user_search
 
-                    Inertia.reload(
+                    Inertia.replace(route('cursos.agregarParticipante',curso.id).url(),
                         {
                             data: data,
-                            only: ['users']
+                            only: ['users'],
+                            preserveScroll: true,
+                            preserveState: true,
                         })
                 break;
             default:
@@ -141,13 +153,25 @@ const AgregarParticipante = ({curso, users, request}) => {
         }
     }
 
+    //checa si el usuario ya está en el curso o no
+    function enElCurso(cursos){
+        let enCurso = false
+        if(cursos.length > 0){
+            cursos.forEach(cursoF => {
+                if(cursoF.id == curso.id)
+                    enCurso = true
+            });
+            return enCurso
+        }
+        return false
+    }
     return (
     <>
         <div className="row"> 
         <form name="form_solicitudes">
             <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
                 {/* regresar */}
-                <InertiaLink  href={route('cursos.participantes', curso.id)}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i class="material-icons">keyboard_backspace</i></InertiaLink>
+                <InertiaLink  href={route('cursos.participantes', curso.id)}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
                 AGREGAR PARTICIPANTES
             </div>
 
@@ -158,9 +182,9 @@ const AgregarParticipante = ({curso, users, request}) => {
                             {/* Dropdown Structure */}
                             <a className="dropdown-trigger" href="#!" data-target="dropdown-filter"><i className="material-icons">filter_alt</i></a>
                             <ul id="dropdown-filter" className="dropdown-content" style={{ top: "0px" }}>
-                                <li><a onClick={() => { filter("matricula") }} className={request.filter == "matricula" ? "selected" : ""}>Matrícula</a></li>
-                                <li><a onClick={() => { filter("nombre") }} className={request.hasOwnProperty('filter') ? request.filter == "nombre" ? "selected" : "" : "selected"}>Nombre</a></li>
-                                <li><a onClick={() => { filter("email") }} className={request.filter == "email" ? "selected" : ""}>Email</a></li>
+                                <li><a onClick={() => { filter("matricula") }} className={state.filter == "matricula" ? "selected" : ""}>Matrícula</a></li>
+                                <li><a onClick={() => { filter("nombre") }} className={request.hasOwnProperty('filter') ? state.filter == "nombre" ? "selected" : "" : "selected"}>Nombre</a></li>
+                                <li><a onClick={() => { filter("email") }} className={state.filter == "email" ? "selected" : ""}>Email</a></li>
                             </ul>
                         </div>
                         <div className="input-field col s11" style={{ marginLeft: "0px" }}>
@@ -180,12 +204,14 @@ const AgregarParticipante = ({curso, users, request}) => {
             {users && users.data && users.data.length > 0 && users.data.map(usuario => (
                 <div className="col s12 div-collection-item div-item-solicitudes" key={usuario.id}>
                     <label className="pink">
-                        <input type="checkbox" name="solicitud[]" id={usuario.id} value={usuario.id} onChange={handleCheckboxChange} disabled={usuario.active_courses && usuario.active_courses.length == 0 ? "" : "disabled"} />
+                        <input type="checkbox" name="solicitud[]" id={usuario.id} value={usuario.id} onChange={handleCheckboxChange} disabled={enElCurso(usuario.courses) ? "disabled" : usuario.active_courses && usuario.active_courses.length == 0 ? "" : "disabled"} />
                         <span className="P_collection_item col s12" style={{"display":"flex"}}>
                             <InertiaLink  href={route("perfil.public",usuario.id)}><img className="P_collection_image" width="50" height="50" src={usuario.foto ? "/storage/fotos_perfil/"+usuario.foto : "/storage/fotos_perfil/avatar1.jpg"}></img></InertiaLink>
                             <div style={{"width":"max-content","paddingBottom":"0px"}}>
-                                <InertiaLink  href={route("perfil.public",usuario.id)} className="P_collection_title">{usuario.nombre} {usuario.apellido_p} {usuario.apellido_m}</InertiaLink>
-                                <div className="P_collection_subtitle">{usuario.active_courses && usuario.active_courses.length == 0 ? "Disponible" : "No disponible"}</div>
+                                <InertiaLink  href={route("perfil.public",usuario.id)} className="P_collection_title">{state.filter == "email" && usuario.email + " - "}{state.filter == "matricula" && usuario.matricula + " - "}{usuario.nombre} {usuario.apellido_p} {usuario.apellido_m}</InertiaLink>
+                                <div className="P_collection_subtitle">
+                                    {enElCurso(usuario.courses) ? "Alumno ya agregado en el curso" : usuario.active_courses && usuario.active_courses.length == 0 ? "Disponible" : "No disponible"}
+                                    </div>
                             </div>
                         </span>
                     </label>
