@@ -6,6 +6,7 @@ import { InertiaLink } from '@inertiajs/inertia-react'
 //import emptyImg from '../images/empty.png'
 import '../../styles/cursos.css'
 import route from 'ziggy-js'
+import ModalSolicitudBaja from '../common/ModalSolicitudBaja.jsx'
 
 function initializeDROP() {
     var elems = document.querySelectorAll('.dropdown-trigger');
@@ -29,7 +30,7 @@ export default function CursoActual({cursos, profesor, tags}) {
                                     <div className="col s11 txt-title-card">CURSOS ACTUALES</div>
                                     <div className="col s1"><a className='dropdown-trigger' href='#' data-target='dropdown-option-student'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                                     <ul id='dropdown-option-student' className='dropdown-content dropdown_LC'>
-                                        <li><a className="dropdown-text modal-trigger" href="#modalSolicitud"><i className="material-icons">error_outline</i>Solicitar baja del curso</a></li>
+                                        <li><a className="dropdown-text modal-trigger" data-target="modalSolicitudBaja"><i className="material-icons">error_outline</i>Solicitar baja del curso</a></li>
                                     </ul>
                                 </div>
 
@@ -64,6 +65,7 @@ export default function CursoActual({cursos, profesor, tags}) {
                         
                     </div>
                 </div>
+                <ModalSolicitudBaja curso = {cursos} url = {'/cursos/deleteRequest/'+cursos.id}/>
             </div>
         )
     }
