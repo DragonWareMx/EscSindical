@@ -158,7 +158,7 @@ const Informacion = ({curso, cursos_count, participantes_count}) => {
           </div>
         </div>
         {/* Descripcion del curso */}
-        <div className="col s12 description-text" style={{"marginTop":"15px"}} dangerouslySetInnerHTML={{__html: curso.descripcion}}>
+        <div className="col s12 description-text" style={{"marginTop":"15px"}} dangerouslySetInnerHTML={{__html: curso.contenido}}>
           {/* Aquí va la descripcion pero se pone en el dangerouslySetInnerHTML */}
         </div>
         {/* Evaluacion y bibliografia */}
