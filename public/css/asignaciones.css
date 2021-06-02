@@ -1,4 +1,94 @@
 .div_asignacion_mod{
     box-shadow: 0px 0px 6px rgba(188, 188, 188, 0.25);
     border-radius: 4px;
+    padding:15px !important;
+}
+.div_cabecera{
+    display:flex;
+    padding:0px 0px 0px 0px !important;
+    flex-wrap:wrap-reverse;
+}
+.text-name-as{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    color: #575757;
+    display:flex;
+    align-items:center !important;
+    padding:0px 0px 0px 0px !important;
+}
+.text-name-as i{
+    font-size:30px;
+}
+.link-edit-as{
+    font-size:13px !important;
+    display:flex;
+    align-items:center;
+    color:#108058;
+    margin-left:10px;
+}
+.div-comments{
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    display:flex;
+    align-items:center !important;
+    color: #575757;
+    cursor:pointer;
+    transition:all ease-in-out 0.25s;
+    justify-content:flex-end !important;
+}
+.div-comments i{
+    font-size:16px;
+    margin-right:5px;
+}
+.div-comments:hover, .div-comments:focus, .div-comments:active{
+    color:#108058 !important;
+    transition:all ease-in-out 0.25s;
+}
+.txt-date-as{
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #7D7D7D;
+    padding-left:40px !important;
+}
+.txt-ejm-as{
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+    color: #383838;
+    padding-left:40px !important;
+}
+.txt-status-as{
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+    color: #848484;
+    padding-left:40px !important;
+    margin-top:30px;
+    margin-bottom:10px;
+}
+.padding-40px{
+    padding-left:40px !important;
+}
+.row-extatus{
+    padding-top:10px !important;
+    padding-bottom:10px !important;
+    border-bottom:1px solid #DDDDDD;
+    display:flex;
+    align-items:center;
+}
+.txt-title-estatus{
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: #134E39;
+    padding:0px 0px 0px 0px !important;
+}
+.txt-content-estatus{
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #2E2E2E;
 }
