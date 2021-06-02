@@ -75,6 +75,7 @@ Route::get('/cursos/{id}/solicitudes', [App\Http\Controllers\CourseController::c
 Route::get('/cursos/{id}/agregar-participante', [App\Http\Controllers\CourseController::class, 'agregarParticipante'])->name('cursos.agregarParticipante');
 Route::post('/cursos/{id}/agregar-participante', [App\Http\Controllers\RequestController::class, 'agregar'])->name('cursos.addStudent');
 Route::get('/cursos/{id}/mochila', [App\Http\Controllers\CourseController::class, 'mochila'])->name('cursos.mochila');
+Route::get('/cursos/{id}/modulo/{mid}/publicacion/{pid}', [App\Http\Controllers\CourseController::class, 'verPublicacion'])->name('cursos.publicacion');
 
 //----Solicitudes
 Route::post('/cursos/{id}/solicitudes', [App\Http\Controllers\RequestController::class, 'aprobar'])->name('solicitudes.aprobar');

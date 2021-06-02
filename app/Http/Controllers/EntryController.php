@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Entry;
 use App\Models\File;
+use App\Models\Log;
 use App\Models\Module;
 use DateTime;
 use Illuminate\Http\Request;
@@ -63,6 +64,7 @@ class EntryController extends Controller
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
+                //SE GUARDA LA ENTRADA
                 $entrada = new Entry();
                 $entrada->titulo = $request->titulo;
                 $entrada->tipo = $request->tipo;
@@ -70,6 +72,26 @@ class EntryController extends Controller
                 $entrada->module_id = $request->modulo;
                 $entrada->visible = $request->visible;
                 $entrada->save();
+
+                //SE CREA EL LOG
+                $newLog = new Log();
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                    '{
+                    entries: {
+                        titulo: ' . $request->titulo . ',\n
+                        tipo: ' . $request->tipo . ',\n
+                        contenido: ' . $request->contenido . ',\n
+                        module_id: ' . $request->modulo . ',\n
+                        visible: ' . $request->visible .
+                    '}
+                }';
+                $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado una nueva entrada de tipo ' . $entrada->tipo . ' para el modulo ' . $modulo->nombre . ' en el curso ' . $curso->nombre;
+                //SE GUARDA EL LOG
+                $newLog->save();
+
+
                 //aqui va lo de los archivos
                 if ($request->file('archivos')) {
                     foreach ($request->file('archivos') as $file) {
@@ -119,6 +141,7 @@ class EntryController extends Controller
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
+                //SE CREA LA ENTRADA
                 $entrada = new Entry();
                 $entrada->titulo = $request->titulo;
                 $entrada->tipo = $request->tipo;
@@ -126,6 +149,25 @@ class EntryController extends Controller
                 $entrada->module_id = $request->modulo;
                 $entrada->visible = $request->visible;
                 $entrada->save();
+
+                //SE CREA EL LOG
+                $newLog = new Log();
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                    '{
+                    entries: {
+                        titulo: ' . $request->titulo . ',\n
+                        tipo: ' . $request->tipo . ',\n
+                        contenido: ' . $request->contenido . ',\n
+                        module_id: ' . $request->modulo . ',\n
+                        visible: ' . $request->visible .
+                    '}
+                }';
+                $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado una nueva entrada de tipo ' . $entrada->tipo . ' para el modulo ' . $modulo->nombre . ' en el curso ' . $curso->nombre;
+                //SE GUARDA EL LOG
+                $newLog->save();
+
                 //aqui va lo de los archivos
                 if ($request->file('archivos')) {
                     foreach ($request->file('archivos') as $file) {
@@ -174,6 +216,7 @@ class EntryController extends Controller
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
+                //se crea la entrada
                 $entrada = new Entry();
                 $entrada->titulo = $request->titulo;
                 $entrada->tipo = $request->tipo;
@@ -181,6 +224,24 @@ class EntryController extends Controller
                 $entrada->module_id = $request->modulo;
                 $entrada->visible = $request->visible;
                 $entrada->save();
+
+                //SE CREA EL LOG
+                $newLog = new Log();
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                    '{
+                    entries: {
+                        titulo: ' . $request->titulo . ',\n
+                        tipo: ' . $request->tipo . ',\n
+                        link: ' . $request->link . ',\n
+                        module_id: ' . $request->modulo . ',\n
+                        visible: ' . $request->visible .
+                    '}
+                }';
+                $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado una nueva entrada de tipo ' . $entrada->tipo . ' para el modulo ' . $modulo->nombre . ' en el curso ' . $curso->nombre;
+                //SE GUARDA EL LOG
+                $newLog->save();
 
                 DB::commit();
                 // all good
@@ -196,11 +257,10 @@ class EntryController extends Controller
                 'curso' => 'required|numeric|exists:courses,id',
                 'modulo' => 'required|numeric|exists:modules,id',
                 'titulo' =>  ['required', 'max:255'],
-                'archivos.*' => 'required|file',
+                'archivos' => 'required|file',
                 'visible' => 'required|boolean',
                 'notificacion' => 'required|boolean',
             ]);
-
             //comprobar curso y modulo
             $curso = Course::with('modules')->where([
                 ['teacher_id', Auth::user()->id,],
@@ -219,12 +279,31 @@ class EntryController extends Controller
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
+                //se crea la entrada
                 $entrada = new Entry();
                 $entrada->titulo = $request->titulo;
                 $entrada->tipo = $request->tipo;
                 $entrada->module_id = $request->modulo;
                 $entrada->visible = $request->visible;
                 $entrada->save();
+
+                //SE CREA EL LOG
+                $newLog = new Log();
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                    '{
+                    entries: {
+                        titulo: ' . $request->titulo . ',\n
+                        tipo: ' . $request->tipo . ',\n
+                        module_id: ' . $request->modulo . ',\n
+                        visible: ' . $request->visible .
+                    '}
+                }';
+                $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado una nueva entrada de tipo ' . $entrada->tipo . ' para el modulo ' . $modulo->nombre . ' en el curso ' . $curso->nombre;
+                //SE GUARDA EL LOG
+                $newLog->save();
+
                 //aqui va lo de los archivos
                 if ($request->file('archivos')) {
                     foreach ($request->file('archivos') as $file) {
@@ -287,6 +366,7 @@ class EntryController extends Controller
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
+                //se crea la entrada
                 $entrada = new Entry();
                 $entrada->titulo = $request->titulo;
                 $entrada->tipo = $request->tipo;
@@ -298,6 +378,29 @@ class EntryController extends Controller
                 $entrada->visible = $request->visible;
                 $entrada->permitir_envios_retrasados = $request->permitir_envios_retrasados;
                 $entrada->save();
+
+                //SE CREA EL LOG
+                $newLog = new Log();
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                    '{
+                    entries: {
+                        titulo: ' . $request->titulo . ',\n
+                        tipo: ' . $request->tipo . ',\n
+                        max_calif: ' . $request->max_calif . ',\n
+                        contenido: ' . $request->contenido . ',\n
+                        module_id: ' . $request->modulo . ',\n
+                        fecha_de_apertura: ' . $request->fecha_de_apertura . ' ' . $request->hora_de_apertura . ',\n
+                        fecha_de_entrega: ' .  $request->fecha_de_entrega . ' ' . $request->hora_de_entrega . ',\n
+                        permitir_envios_retrasados: ' . $request->permitir_envios_retrasados . ',\n
+                        visible: ' . $request->visible .
+                    '}
+                }';
+                $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado una nueva entrada de tipo ' . $entrada->tipo . ' para el modulo ' . $modulo->nombre . ' en el curso ' . $curso->nombre;
+                //SE GUARDA EL LOG
+                $newLog->save();
+
                 //aqui va lo de los archivos
                 if ($request->file('archivos')) {
                     foreach ($request->file('archivos') as $file) {
@@ -361,6 +464,7 @@ class EntryController extends Controller
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
+                //se crea la entrada
                 $entrada = new Entry();
                 $entrada->titulo = $request->titulo;
                 $entrada->tipo = $request->tipo;
@@ -373,6 +477,29 @@ class EntryController extends Controller
                 $entrada->visible = $request->visible;
                 $entrada->permitir_envios_retrasados = $request->permitir_envios_retrasados;
                 $entrada->save();
+
+                //SE CREA EL LOG
+                $newLog = new Log();
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                    '{
+                    entries: {
+                        titulo: ' . $request->titulo . ',\n
+                        tipo: ' . $request->tipo . ',\n
+                        link: ' . $request->link . ',\n
+                        max_calif: ' . $request->max_calif . ',\n
+                        contenido: ' . $request->contenido . ',\n
+                        module_id: ' . $request->modulo . ',\n
+                        fecha_de_apertura: ' . $request->fecha_de_apertura . ' ' . $request->hora_de_apertura . ',\n
+                        fecha_de_entrega: ' .  $request->fecha_de_entrega . ' ' . $request->hora_de_entrega . ',\n
+                        permitir_envios_retrasados: ' . $request->permitir_envios_retrasados . ',\n
+                        visible: ' . $request->visible .
+                    '}
+                }';
+                $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado una nueva entrada de tipo ' . $entrada->tipo . ' para el modulo ' . $modulo->nombre . ' en el curso ' . $curso->nombre;
+                //SE GUARDA EL LOG
+                $newLog->save();
 
                 DB::commit();
                 // all good
