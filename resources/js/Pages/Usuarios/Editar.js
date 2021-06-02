@@ -302,7 +302,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s6 input-50-re">
-                                            <select  id="sexo" name="sexo" required autoComplete="sexo" value={values.sexo} onChange={handleChange} className={errors.sexo ? "input-field invalid" : "input-field"}>
+                                            <select  id="sexo" name="sexo" autoComplete="sexo" value={values.sexo} onChange={handleChange} className={errors.sexo ? "input-field invalid" : "input-field"}>
                                                 <option value="" disabled>Selecciona una opción</option>
                                                 <option value="m">Femenino</option>
                                                 <option value="h">Masculino</option>
@@ -395,7 +395,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s12">
-                                            <select  id="regimen" name="regimen" value={values.regimen} onChange={handleChange} required>
+                                            <select  id="regimen" name="regimen" value={values.regimen} onChange={handleChange}>
                                                 <option value="" disabled>Selecciona una opción</option>
                                                 {regimes && regimes.length > 0 &&
                                                     regimes.map(regime => (
