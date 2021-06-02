@@ -486,7 +486,6 @@ class CourseController extends Controller
         $participantesCount=Course::with('users:id')->findOrFail($id);
         $participantesCount=$participantesCount['users']->count();
         $calificacion=Course::where('courses.id',$id)->leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.user_id',Auth::id())->get();
-        dd($calificacion);
 
         return Inertia::render('Curso/Informacion', [
             'curso' => Course::with('images:imagen,course_id', 'tags:nombre','teacher:nombre,apellido_p,apellido_m,foto,id')->findOrFail($id),
