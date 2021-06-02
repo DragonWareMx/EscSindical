@@ -338,7 +338,7 @@ class EntryController extends Controller
                 'fecha_de_entrega' => 'required|date',
                 'hora_de_apertura' => 'required|date_format:H:i',
                 'hora_de_entrega' => 'required|date_format:H:i',
-                'max_calif' => 'required|numeric',
+                'max_calif' => 'required|numeric|min:1|max:100',
             ]);
 
             //comprobar curso y modulo
@@ -435,7 +435,7 @@ class EntryController extends Controller
                 'fecha_de_entrega' => 'required|date',
                 'hora_de_apertura' => 'required|date_format:H:i',
                 'hora_de_entrega' => 'required|date_format:H:i',
-                'max_calif' => 'required|numeric',
+                'max_calif' => 'required|numeric|min:1|max:100',
             ]);
 
             //comprobar curso y modulo
