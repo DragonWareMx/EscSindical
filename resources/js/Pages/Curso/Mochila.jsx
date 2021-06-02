@@ -122,7 +122,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
                     </div>
                     {/* nombre del modulo y fecha de vencimiento*/}
                     <div className="col s12 posted-date">
-                      <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo N "{pendiente.modulo}"</span>
+                      <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {pendiente.numero} "{pendiente.modulo}"</span>
                       <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el {transformaFechaMochila(pendiente.fecha_de_entrega)}</span>
                     </div>
                   </div>
@@ -166,7 +166,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
                     </div>
                     {/* nombre del modulo y fecha de vencimiento*/}
                     <div className="col s12 posted-date">
-                      <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo N "{realizada.modulo}"</span>
+                      <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {pendiente.numero} "{realizada.modulo}"</span>
                       <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Entregada el {transformaFechaMochila(realizada.fecha)}</span>
                     </div>
                   </div>

@@ -485,6 +485,8 @@ class CourseController extends Controller
         $cursosCount=Course::where('teacher_id',$cursosCount->teacher->id)->count();
         $participantesCount=Course::with('users:id')->findOrFail($id);
         $participantesCount=$participantesCount['users']->count();
+        $calificacion=Course::where('courses.id',$id)->leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.user_id',Auth::id())->get();
+        dd($calificacion);
 
         return Inertia::render('Curso/Informacion', [
             'curso' => Course::with('images:imagen,course_id', 'tags:nombre','teacher:nombre,apellido_p,apellido_m,foto,id')->findOrFail($id),
@@ -551,7 +553,7 @@ class CourseController extends Controller
             ->leftJoin('entries','modules.id','=','entries.module_id')
             ->where('entries.visible',1)
             ->whereIn('entries.tipo',['Asignacion','Examen'])
-            ->select('entries.*','modules.nombre as modulo')
+            ->select('entries.*','modules.nombre as modulo','modules.numero as numero')
             ->orderBy('fecha_de_entrega','ASC')
             ->get();
 
@@ -563,7 +565,7 @@ class CourseController extends Controller
             ->where('entry_user.user_id',$user->id)
             ->select('entries.id as id','entries.tipo as tipo','entries.titulo as titulo','modules.nombre as modulo', 'entries.fecha_de_apertura as fecha_de_apertura', 
                 'entries.fecha_de_entrega as fecha_de_entrega', 'entry_user.fecha as fecha', 'entry_user.calificacion as calificacion', 'entries.max_calif as max_calif',
-                'entries.permitir_envios_retrasados as permitir_envios_retrasados')
+                'entries.permitir_envios_retrasados as permitir_envios_retrasados','modules.numero as numero')
             ->orderBy('fecha_de_entrega','ASC')
             ->get();
 
