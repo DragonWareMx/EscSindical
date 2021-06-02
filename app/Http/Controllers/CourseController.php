@@ -556,33 +556,24 @@ class CourseController extends Controller
 
     public function modulo($id,$mid)
     {
-        //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
-        $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
-        //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
-        if(!$modulo){
+        $modulo=Module::with('users')->where('id',$mid)->where('course_id',$id)->first();
+         if(!$modulo){
             return abort(404);
         }
 
-        //Se obtienen todos los avisos, el primer where obtiene todas las entradas pertenecientes al módulo y el segundo filtra esas entradas en todas las 
-        //que son de tipo Aviso, después se hace otro filtrado donde se obtienen los que son visibles, los que no son visibles (1) no hay por que mandarlos a la vista
         $avisos=Entry::with('files:archivo,entry_id')->where('module_id',$mid)->where('tipo','Aviso')->where('visible',1)->orderBy('id','DESC')->get();
-
-        //Se obtenienen todas las demás entradas que no sean de tipo aviso, tarea ni examen pero que también sean visibles y pertenezcarn al módulo
         $entradas=Entry::with('files:archivo,entry_id')->where('module_id',$mid)->where('tipo','!=','Aviso')->where('tipo','!=','Asignacion')->where('tipo','!=','Examen')
             ->where('visible',1)->orderBy('id','DESC')->get();
-
-        //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
         $actividades=Entry::with('files:archivo,entry_id')->where('module_id',$mid)->where('tipo','!=','Aviso')->where('tipo','!=','Informacion')->where('tipo','!=','Enlace')->where('tipo','!=','Archivo')->orderBy('id','ASC')->get();
-        
+        $calificacion=Module::where('modules.id',$mid)->leftJoin('module_user','modules.id','=','module_user.module_id')->where('module_user.user_id',Auth::id())->first('calificacion');
+
         return Inertia::render('Curso/Modulo', [
-            //Aquí adentro se mandan las variables (JSONS) a la vista, en este caso curso se hace la consulta aquí mismo, pero las demás variables se igualan a las que 
-            //sacamos anteriormente
             'curso' => Course::findOrFail($id),
             'modulo' => $modulo,
             'avisos' => $avisos,
             'entradas' => $entradas,
             'actividades' =>$actividades,
-            //Ahora en el archivo de la vista recuerda que debe recibir todas las variables que le estamos mandando para poder usarlas, en este caso las recibe en la linea 7
+            'calificacion' => $calificacion,
         ]);
     }
 
