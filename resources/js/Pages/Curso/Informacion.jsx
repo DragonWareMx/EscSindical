@@ -31,7 +31,7 @@ function calculaAvance(ini, fin) {
   else return porcentaje
 }
 
-const Informacion = ({curso, cursos_count, participantes_count}) => {
+const Informacion = ({curso, cursos_count, participantes_count, calificacion}) => {
   function initializeMaterialize(){
     var elems = document.querySelectorAll('.slider');
     var options = { 
@@ -74,7 +74,7 @@ const Informacion = ({curso, cursos_count, participantes_count}) => {
               {/* Calificacion */}
               <div className="col s12">
                 <div className="info-title">CALIFICACIÓN</div>
-                Sin evaluar
+                {calificacion ? calificacion : 'Sin evaluar'}
               </div>
               {/* Videoconferencias */}
               <div className="col s12 default-text">
