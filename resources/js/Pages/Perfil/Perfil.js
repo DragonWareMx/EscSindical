@@ -45,7 +45,7 @@ const Perfil = ({ user }) => {
                                         </div>
                                         <div className="col s12 center-align">
                                             <div className="profile-txt-category">
-                                                {user.category ? user.category.nombre : "Sin categoría"}
+                                                {user.roles ? user.roles.length > 0 ? user.roles[0].name : "Sin rol" : "Sin rol"}
                                             </div>
                                             <div className="profile-txt-name">
                                                 {user.nombre} {user.apellido_p} {user.apellido_m}

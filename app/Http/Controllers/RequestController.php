@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Course;
 use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Notification;
 
 class RequestController extends Controller
 {
@@ -57,11 +58,21 @@ class RequestController extends Controller
                             $usuarioSolicitud->courses()->sync($id, false);
 
                             //mandar notificacion al usuario
+                            $notificacion = new Notification();
+                            $notificacion->user_id = $usuarioSolicitud->id;
+                            $notificacion->titulo = "Has sido aceptado en el curso: ".$curso->nombre;
+                            $notificacion->visto = false;
+                            $notificacion->save();
                         }
                         else{
                             $status = 'Rechazado';
 
                             //mandar notificacion al usuario
+                            $notificacion = new Notification();
+                            $notificacion->user_id = $usuarioSolicitud->id;
+                            $notificacion->titulo = "Tu solicitud ha sido rechazada para el curso: ".$curso->nombre;
+                            $notificacion->visto = false;
+                            $notificacion->save();
                         }
 
                         //se actualiza el status de la solicitud
@@ -177,6 +188,11 @@ class RequestController extends Controller
                         }
                         
                         //mandar notificacion al usuario
+                        $notificacion = new Notification();
+                        $notificacion->user_id = $usuarioSolicitud->id;
+                        $notificacion->titulo = "Has sido aceptado en el curso: ".$curso->nombre;
+                        $notificacion->visto = false;
+                        $notificacion->save();
     
                         $cadenaLog =$cadenaLog . $contador.': {
                             user_id: '.$usuarioSolicitud->id.',
