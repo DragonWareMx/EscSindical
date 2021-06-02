@@ -713,7 +713,19 @@ const Crear = ({ cursos }) => {
                                         }
 
                                         {/* segundo switch */}
-                                        {values.tipo != "" &&
+                                        {values.tipo == "Asignacion" ?
+                                            <div id="switch-notif-div" className="col s12 m4 l3" >
+                                                <h2 className="ck-titulo">Notificar a los participantes</h2>
+                                                <div className="switch">
+                                                    <label>
+                                                        No
+                                                <input type="checkbox" value={values.notificacion} onChange={handleNotificacion} />
+                                                        <span className="lever" />
+                                                    Si
+                                            </label>
+                                                </div>
+                                            </div>
+                                            : values.tipo == "Examen" &&
                                             <div id="switch-notif-div" className="col s12 m4 l3" >
                                                 <h2 className="ck-titulo">Notificar a los participantes</h2>
                                                 <div className="switch">

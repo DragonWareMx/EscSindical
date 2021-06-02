@@ -33,6 +33,7 @@ class EntryController extends Controller
 
     public function create(Request $request)
     {
+        Gate::authorize('haveaccess', 'ponente.perm');
         $validated = $request->validate([
             'tipo' => 'required|in:Aviso,Informacion,Enlace,Archivo,Asignacion,Examen'
         ]);
@@ -44,7 +45,6 @@ class EntryController extends Controller
                 'titulo' =>  ['required', 'max:255'],
                 'contenido' => 'required',
                 'visible' => 'required|boolean',
-                'notificacion' => 'required|boolean',
                 'archivos.*' => 'nullable|file'
             ]);
             //comprobar curso y modulo
@@ -119,7 +119,6 @@ class EntryController extends Controller
                 'titulo' =>  ['required', 'max:255'],
                 'contenido' => 'required',
                 'visible' => 'required|boolean',
-                'notificacion' => 'required|boolean',
                 'archivos.*' => 'nullable|file'
             ]);
 
@@ -195,7 +194,6 @@ class EntryController extends Controller
                 'titulo' =>  ['required', 'max:255'],
                 'link' => 'required|url',
                 'visible' => 'required|boolean',
-                'notificacion' => 'required|boolean',
             ]);
 
             //comprobar curso y modulo
@@ -259,7 +257,6 @@ class EntryController extends Controller
                 'titulo' =>  ['required', 'max:255'],
                 'archivos' => 'required|file',
                 'visible' => 'required|boolean',
-                'notificacion' => 'required|boolean',
             ]);
             //comprobar curso y modulo
             $curso = Course::with('modules')->where([
@@ -533,5 +530,13 @@ class EntryController extends Controller
             }
         }
         dd($request);
+    }
+
+    public function edit($id)
+    {
+        Gate::authorize('haveaccess', 'ponente.perm');
+        $entry = Entry::findOrFail($id);
+        $cursos = Course::with('modules')->where('teacher_id', Auth::user()->id)->get();
+        return Inertia::render('Entradas/Editar', ['cursos' => fn () => $cursos]);
     }
 }
