@@ -614,9 +614,9 @@ class CourseController extends Controller
             'curso' => Course::findOrFail($id),
             'modulo' => $modulo,
             'entrada' => $entrada,
-            ]);
-        }
+        ]);
     }
+    
     
     public function agregarParticipante($id, Request $request){
         return Inertia::render('Curso/AgregarParticipante', [
@@ -665,3 +665,7 @@ class CourseController extends Controller
                             ->withQueryString()
                 ,
                 'request' => $request
+        ]);
+    }
+    
+}
