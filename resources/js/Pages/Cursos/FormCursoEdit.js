@@ -23,19 +23,9 @@ var instancesDate;
 var instancesDate2;
 var instances3;
 
-
-
-const FormCursoEdit = ({capacitaciones, curso}) => {
-
-    function initializeChips() {
+function initializeChips() {
     var elems = document.querySelectorAll('.chips');
     instances = M.Chips.init(elems);
-
-    curso.tags.forEach( element => { //SÓLO EN EDITAR, lleno el input de tags con los tags que ya tiene el curso
-        instances['0'].addChip({
-        tag: element.nombre, 
-        });
-    });
 
     var elems2 = document.querySelectorAll('.tooltipped');
     var instancesT = M.Tooltip.init(elems2);
@@ -43,22 +33,11 @@ const FormCursoEdit = ({capacitaciones, curso}) => {
     var elems3 = document.querySelectorAll('select');
     var options3;
     instances3 = M.FormSelect.init(elems3, options3);
-    
+}
 
-    var radio = document.getElementById(curso.tipo_acceso);
-    radio.checked = true;
 
-    var sw = document.getElementById('vc'); //activo o no el switch de valor curricular, dependiendo de lo que dice el curso a editar
-    values.vc ? sw.checked = false : sw.checked = true;     
-
-    
-    var sw2 = document.getElementById('active'); //activo o no el switch de fechas de inscripción
-    values.inicio_inscripciones == "" ? sw2.checked = true : sw2.checked = false;     
-
-    
-    }
+const FormCursoEdit = ({capacitaciones, curso}) => {
     //errores de validación 
-    
     const { errors } = usePage().props
 
     useEffect(() => {
@@ -98,13 +77,10 @@ const FormCursoEdit = ({capacitaciones, curso}) => {
                 labelYearSelect: 'Selecciona un año',
             },
             onClose: ()=>{
-                setValues (values =>({
-                    ... values,
-                    fecha_inicio : document.getElementById("fecha_inicio").value,
-                    fecha_final : document.getElementById("fecha_final").value,
-                    inicio_inscripciones : document.getElementById("inicio_inscripciones").value,
-                    final_inscripciones : document.getElementById("final_inscripciones").value,
-                }))
+                values.fecha_inicio =document.getElementById("fecha_inicio").value;
+                values.fecha_final =document.getElementById("fecha_final").value;
+                values.inscIni =document.getElementById("inscIni").value;
+                values.inscFin =document.getElementById("inscFin").value;
             },
           };
         instancesDate = M.Datepicker.init(elems, options);
@@ -121,20 +97,21 @@ const FormCursoEdit = ({capacitaciones, curso}) => {
     }
     
     const [values, setValues] = useState({
-        nombre : curso.nombre,
-        tags : "",
-        fecha_inicio : curso.fecha_inicio,
-        fecha_final : curso.fecha_final,
-        link : curso.link,
-        vc: Boolean(curso.valor_curricular),
+        
+        nombre : curso.nombre || "",
+        tags : [],
+        fecha_inicio : "",
+        fecha_final : "",
+        link : "",
+        vc:true,
         tipos_de_capacitacion: [],
         active: true,
-        inicio_inscripciones:curso.inicio_inscripciones,
-        final_inscripciones: curso.fecha_limite,
-        tipo_inscripcion: curso.tipo_acceso,
-        descripcion: curso.descripcion,
+        inscIni:"",
+        inscFin: "",
+        tipo_inscripcion: "",
+        descripcion: "",
         imgs: "",
-        maximo: curso.max,
+        maximo: "",
     })
 
     function handleChange(e) {
@@ -147,51 +124,30 @@ const FormCursoEdit = ({capacitaciones, curso}) => {
     }
 
     function onValueChange(e) {
-        var tipo = e.target.value
-        setValues (values =>({
-            ... values,
-            tipo_inscripcion: tipo
-        }))
+        values.tipo_inscripcion = e.target.value
     }
 
     function onChangeTags(){
-        setValues (values =>({
-            ... values,
-            tags : instances['0'].chipsData
-        }))
+        values.tags = instances['0'].chipsData
     }
 
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.post('/updateCourse/'+curso.id, values)
+        Inertia.post('/storeCourse', values)
     }
 
     function changeSwitch() {
-        values.vc ? 
-        setValues (values =>({
-            ... values,
-            vc : false,
-        })) 
-        : 
-        setValues (values =>({
-            ... values,
-            vc : true,
-        }))
+        values.vc ? values.vc = false : values.vc = true
     }
 
     function changeCK(description){
-        setValues (values =>({
-            ... values,
-           descripcion : description
-        }))
+        console.log(description)
+        values.descripcion = description
     }
 
     function changeSelect(){
-        setValues (values =>({
-            ... values,
-            tipos_de_capacitacion: instances3[0].getSelectedValues(),
-        }))
-   }
+        values.tipos_de_capacitacion = instances3[0].getSelectedValues();
+    }
 
     return(
         
@@ -202,6 +158,7 @@ const FormCursoEdit = ({capacitaciones, curso}) => {
                     <div className="card-content">
                         <form onSubmit={handleSubmit} noValidate>
                             <div className="modal-content">
+                                <div>{values.nombre}</div>
                                 <div className="row">
                                     <ul id="tabs-swipe-demo" className="tabs" style={{"marginBottom": "20px"}}>
                                         <li className="tab col s4"><a href="#create1" className="active" >1. Generalidades</a></li>
@@ -210,21 +167,21 @@ const FormCursoEdit = ({capacitaciones, curso}) => {
                                     </ul>
                                     <div id="create2" className="col s12"><Create2 
                                                                             change = {handleChange} 
-                                                                            values = {useState, values} 
+                                                                            values = {useState} 
                                                                             onValueChange ={onValueChange} 
                                                                             errors ={ errors }
                                                                             capacitaciones = {capacitaciones}
                                                                             changeSelect ={changeSelect}/></div>
                                     <div id="create1" className="col s12"><Create1 
                                                                             change = {handleChange} 
-                                                                            values = {useState, values} 
+                                                                            values = {useState} 
                                                                             onChangeTags ={onChangeTags} 
                                                                             // onChangeDateIni ={onChangeDateIni} 
                                                                             changeSwitch = {changeSwitch}
                                                                             errors ={ errors }/></div>
                                     <div id="create3" className="col s12"><Create3 
                                                                             change = {handleChange} 
-                                                                            values = {useState, values} 
+                                                                            values = {useState} 
                                                                             setValues ={setValues}
                                                                             errors ={ errors }
                                                                             changeCK ={changeCK}/></div>

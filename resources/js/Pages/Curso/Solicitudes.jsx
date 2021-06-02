@@ -1,15 +1,13 @@
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
 import React, { useState, useEffect } from 'react'
-import { InertiaLink, usePage } from '@inertiajs/inertia-react';
+import { InertiaLink } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia'
-import '/css/alertas.css'
 
 
 import '/css/participantes.css'
 import '/css/modulos.css'
 import route from 'ziggy-js';
-import Alertas from '../../components/common/Alertas';
 
 function tooltip(){
     var elems = document.querySelectorAll('.tooltipped');
@@ -19,18 +17,9 @@ function tooltip(){
 
 
 const Solicitudes = ({curso}) => {
-    //errores de la validacion de laravel
-    const { errors } = usePage().props
-    //errores de la validacion de laravel
-    const { flash } = usePage().props
-
     useEffect(() => {
         tooltip();
     }, [])
-
-    useEffect(() => {
-        openAlert('alert_error');
-    }, [errors])
 
     //valores para formulario
     const [values, setValues] = useState({
@@ -85,23 +74,8 @@ const Solicitudes = ({curso}) => {
 
     function handleSubmit(e){
         e.preventDefault()
-        Inertia.post(route('solicitudes.aprobar', curso.id), values, {onFinish: () => {Inertia.get(route('cursos.solicitudes',curso.id),{preserveState: false, data: {errors: errors, flash: flash}})}})
-    }
-
-    function closeAlert(type){
-        var divsToHide = document.getElementsByClassName(type); //divsToHide is an array
-        for(var i = 0; i < divsToHide.length; i++){
-            divsToHide[i].style.visibility = "hidden"; // or
-            divsToHide[i].style.display = "none"; // depending on what you're doing
-        }
-    }
-
-    function openAlert(type){
-        var divsToHide = document.getElementsByClassName(type); //divsToHide is an array
-        for(var i = 0; i < divsToHide.length; i++){
-            divsToHide[i].style.visibility = "visible"; // or
-            divsToHide[i].style.display = "flex"; // depending on what you're doing
-        }
+        console.log(values)
+        Inertia.post(route('solicitudes.aprobar', curso.id), values)
     }
 
     return (
@@ -113,41 +87,12 @@ const Solicitudes = ({curso}) => {
                 <InertiaLink  href={route('cursos.participantes', curso.id)}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
                 SOLICITUDES
             </div>
-
-            <div className="col s12">
-                <Alertas />
-            </div>
-
-            {errors.solicitud &&
-                <div className="col s12">
-                    <div className="errores">
-                        <ul>
-                            <li className="alert_error">
-                                <div className="col s11">No se ha seleccionado ningún usuario.</div>
-                                <div onClick={() => {closeAlert('alert_error')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
-                            </li>
-                        </ul>  
-                    </div>
-                </div>
-            }
-            {errors.aprobado &&
-                <div className="col s12">
-                    <div className="errores">
-                        <ul>
-                            <li className="alert_error">
-                                <div className="col s11">Ha ocurrido un error, vuelva a intentarlo.</div>
-                                <div onClick={() => {closeAlert('alert_error')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
-                            </li>
-                        </ul>  
-                    </div>
-                </div>
-            }
             <div className="col s12">
                 <a className="a-select-all" id="txt-select-all" onClick={seleccionar_todo}>Seleccionar todos</a>
                 <a className="a-select-all" id="txt-select-all-not" onClick={seleccionar_todo_not} style={{"display":"none"}}>Descartar selección</a>
             </div>
             
-            {curso.waiting_requests && curso.waiting_requests.length > 0 &&  curso.waiting_requests.map(usuario => (
+            {curso.requests && curso.requests.length > 0 &&  curso.requests.map(usuario => (
                 <div className="col s12 div-collection-item div-item-solicitudes" key={usuario.id}>
                     <label className="pink">
                         <input type="checkbox" name="solicitud[]" id={usuario.id} value={usuario.id} onChange={handleCheckboxChange} />
@@ -161,29 +106,6 @@ const Solicitudes = ({curso}) => {
                     </label>
                 </div>
             ))  
-            }
-            {
-                !curso.waiting_requests ? 
-                <div className="col s12 div-collection-item div-item-solicitudes">
-                <label className="pink">
-                    <span className="P_collection_item col s12" style={{"display":"flex"}}>
-                        <div style={{"width":"max-content","paddingBottom":"0px"}}>
-                        Sin solicitudes pendientes
-                        </div>
-                    </span>
-                </label>
-            </div> 
-            : 
-            curso.waiting_requests.length == 0 && 
-            <div className="col s12 div-collection-item div-item-solicitudes">
-            <label className="pink">
-                <span className="P_collection_item col s12" style={{"display":"flex"}}>
-                    <div style={{"width":"max-content","paddingBottom":"0px"}}>
-                    Sin solicitudes pendientes
-                    </div>
-                </span>
-            </label>
-        </div>
             }
 
             <div className="col s12  right">
@@ -216,7 +138,7 @@ const Solicitudes = ({curso}) => {
 }
 
 Solicitudes.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="PARTICIPANTES">
+  <Layout title="Escuela sindical - Curso" pageTitle="SOLICITUDES">
     <LayoutCursos children={page} />
   </Layout>
 )

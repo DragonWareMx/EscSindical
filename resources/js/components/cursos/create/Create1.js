@@ -161,7 +161,7 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
             <div className="input-field col s12">
             <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Tags de búsqueda<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Los tags ayudarán con el filtrado y búsqueda de los cursos (Enter para agregar)" style={{"color":"rgb(159, 157, 157)", "cursor":"pointer"}}>help_outline</i></p>
                 <div className="chips">
-                    <input className="custom-class" id="tags" required onChange={onChangeTags}  className={errors.tags ? "validate form-control invalid" : "validate form-control"}/>
+                    <input className="custom-class" id="tags" value={values.tags} required onChange={onChangeTags}  className={errors.tags ? "validate form-control invalid" : "validate form-control"}/>
                     {
                         errors.tags &&
                         <span className="helper-text" data-error={errors.tags} style={{ "marginBottom": "10px" }}>{errors.tags}</span>
@@ -171,7 +171,7 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
             </div>
 
             <div className="input-field col s12 m6 l6 xl6">
-                <input  id="fecha_inicio" value={values.fecha_inicio}  required type="text" autoFocus className={errors.fecha_inicio ? "validate datepicker invalid" : "validate datepicker"}/>
+                <input  id="fecha_inicio" value={values.fecha_inicio}  required type="text" className={errors.fecha_inicio ? "validate datepicker invalid" : "validate datepicker"}/>
                 <label htmlFor="fecha_inicio">Fecha de inicio de curso</label>
                 {
                 errors.fecha_inicio &&
@@ -180,7 +180,7 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
             </div>
             
             <div className="input-field col s12 m6 l6 xl6">
-                <input  id="fecha_final" value={values.fecha_final}  required type="text" autoFocus className={errors.fecha_final ? "validate datepicker invalid" : "validate datepicker"}/>
+                <input  id="fecha_final" value={values.fecha_final}  required type="text" className={errors.fecha_final ? "validate datepicker invalid" : "validate datepicker"}/>
                 <label htmlFor="fecha_final">Fecha de término de curso</label>
                 {
                 errors.fecha_final &&
@@ -190,7 +190,7 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
             
 
             <div className="input-field col s12 m6 l6 xl6">
-                <input  id="link" value={values.link} onChange={change} autoFocus required type="url" className={errors.tags ? "validate form-control invalid" : "validate form-control"}/>
+                <input  id="link" value={values.link} onChange={change} required type="url" className={errors.tags ? "validate form-control invalid" : "validate form-control"}/>
                 <label htmlFor="link">Link de videoconferencias</label>
                 {
                 errors.link &&
@@ -202,9 +202,9 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
                 <p style={{"marginTop":"0px", "marginBottom":"8px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Valor curricular</p>
                 <div className="switch">
                     <label>
-                    Sí
+                    Si
                     <input id="vc" value={values.vc} onClick={changeSwitch} type="checkbox"/>
-                    <span className="lever"></span>
+                    <span className="lever" ></span>
                     No
                     </label>
                 </div>

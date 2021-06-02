@@ -52,11 +52,6 @@ class Course extends Model
         return $this->belongsToMany('App\Models\User', 'requests')->withTimestamps();
     }
 
-    // results in a "problem", se examples below
-    public function waitingRequests() {
-        return $this->requests()->where('estatus', 'En espera');
-    }
-
     public function delete_request()
     {
         return $this->belongsToMany('App\Models\User', 'delete_requests')->withPivot("comentario", "status");

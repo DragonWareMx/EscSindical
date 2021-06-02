@@ -24,7 +24,7 @@ const Create3 = ({ change, values,changeCK, errors, setValues}) => {
                 <CKEditor
                     editor={ ClassicEditor }
                     id="editorCK"
-                    data={values.descripcion}
+                    data="<p>Ingresa aquí una descripción acerca del curso, los estudiantes podrán leerla antes de convertirse en participantes</p>"
                     onReady={ editor => {
                         // You can store the "editor" and use when it is needed.
                         // console.log( 'Editor is ready to use!', editor );
@@ -68,7 +68,7 @@ const Create3 = ({ change, values,changeCK, errors, setValues}) => {
            
             <div className="col s12 ">
                 <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
-                    Editar
+                    Agregar
                     <i className="material-icons right">save</i>
                 </button>
             </div>

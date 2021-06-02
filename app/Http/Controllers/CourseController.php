@@ -270,134 +270,94 @@ class CourseController extends Controller
         \Gate::authorize('haveaccess', 'ponente.perm');
         //VALIDAMOS DATOS
         $validated = $request->validate([
-            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
-            'tags' => 'nullable',
-            'fecha_inicio' => 'required|date|after:today',
-            'fecha_final' => 'required|date|after:fecha_inicio',
-            'link' => 'required|url',
-            'vc' => 'required|boolean',
-            'tipos_de_capacitacion' => 'nullable',
-            'tipo_inscripcion' => 'required|exists:courses,tipo_acceso',
+            'nombre' => 'required|max:255',
+            'tags' => 'required',
+            'fecha_inicio' => 'required',
+            'fecha_final' => 'required',
+            'link' => 'required',
+            'vc' => 'required',
+            'tipos_de_capacitacion' => 'required',
+            'tipo_inscripcion' => 'required',
             'descripcion' => 'required',
-            'imgs' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
-            'maximo' =>'required|digits_between:1,3|numeric',
-            'inicio_inscripciones' =>'nullable|date|after:today|before:fecha_inicio',
-            'final_inscripciones' =>'nullable|date|after:inicio_inscripciones|before:fecha_inicio',
-            //las inscripciones podrán seguir después de iniciado el curso?
+            'imgs' => 'required',
         ]);
 
         //COMIENZA TRANSACCIÓN
         DB::beginTransaction();
 
-        $imagen = null;
         try {
-            //SE CREA EL NUEVO CURSO
-            $myCourse = Course::find($id);
+            //Se busca curso a editar con id
+            $myCourse = Course::findOrFail($id);
 
             $myCourse->nombre = $request->nombre;
             $myCourse->fecha_inicio = $request->fecha_inicio;
             $myCourse->fecha_final = $request->fecha_final;
-            $myCourse->max = $request->maximo;
+            $myCourse->max = 100;
             $myCourse->valor_curricular = $request->vc;
             $myCourse->tipo_acceso = $request->tipo_inscripcion;
             $myCourse->descripcion = $request->descripcion;
             $myCourse->teacher_id = Auth::id();
             $myCourse->link = $request->link;
 
-            if ($request->inicio_inscripciones) $myCourse->inicio_inscripciones = $request->inicio_inscripciones;
-            if ($request->final_inscripciones) $myCourse->fecha_limite = $request->final_inscripciones;
-                 
-
             $myCourse->save();
             //SE AGREGAN REGISTROS A SUS RELACIONES
             //TAGS
-            $tagsLog = "Sin cambios";
-            if($request->tags){
-                $tags = $request->tags;
-                $tags_ids = [];
-                $i = 0;
-                foreach ($tags as $tag) {
-                    if (Tag::where('nombre', $tag['tag'])->first() != null) {
-                        $oldTag = Tag::where('nombre', $tag['tag'])->first();
-                        $tags_ids[$i] = $oldTag->id;
-                    } else {
-                        $newTag = new Tag;
-                        $newTag->nombre = $tag['tag'];
-                        $newTag->save();
+            $tags = $request->tags;
+            $tags_ids = [];
+            $i = 0;
+            foreach ($tags as $tag) {
+                if (Tag::where('nombre', $tag['tag'])->first() != null) {
+                    $oldTag = Tag::where('nombre', $tag['tag'])->first();
+                    $tags_ids[$i] = $oldTag->id;
+                } else {
+                    $newTag = new Tag;
+                    $newTag->nombre = $tag['tag'];
+                    $newTag->save();
 
-                        $tags_ids[$i] = $newTag->id;
-                    }
-                    $i++;
+                    $tags_ids[$i] = $newTag->id;
                 }
-
-                $myCourse->tags()->sync($tags_ids);
-
-                $tagsLog = \json_encode($tags);
+                $i++;
             }
-            
-            //TIPO DE CAPACITACIONES
-            
-            $capacitaciones = 'no hubo cambios';
-            
-            if($request->tipos_de_capacitacion){
-                //Eliminamos las capacitaciones que ya existen
-                
-                foreach ($myCourse->training_types as $tipo) {
-                    $myCourse->training_types()->detach($tipo->id);
-                }
 
-                $tipos = $request->tipos_de_capacitacion;
-                $myCourse->training_types()->sync($tipos);
-                $capacitaciones = \json_encode($tipos);
-            }
-            
+            $myCourse->tags()->sync($tags_ids);
+            //tipos_de_capacitacion
+
+
             //IMÁGENES
-            $imagenes = "No hubo cambios";
-            if($request->imgs){
-                $newImagen = new Image;
-                $newImagen->course_id = $myCourse->id;
-                $imagen = $request->file('imgs')->store('/public/imagenes_curso');
-                $newImagen->imagen = $request->file('imgs')->hashName();
 
-                $newImagen->save();
-                $imagenes = $request->file('imgs')->hashName();
-            }
-            
             //SE CREA EL LOG
             $newLog = new Log;
 
             $newLog->categoria = 'update';
             $newLog->user_id = Auth::id();
             $newLog->accion =
-            '{
+                '{
                 courses: {
-                    nombre: ' . $request->nombre . ',\n
-                    fecha_inicio: ' . $request->fecha_inicio . ',\n
-                    fecha_final: ' . $request->fecha_final . ',\n
-                    valor_curricular: '. $request->vc. ',\n                    
-                    tipo_acceso: ' . $request->tipo_inscripcion . ',\n
-                    descripcion: '.$request->descripcion. ',\n
-                    teacher_id: ' . Auth::id() . ',\n
-                    max: ' .$request->maximo. ',\n
-                    link: ' . $request->link . ',\n
-                },
-                tags:'. $tagsLog .',\n
-                tipos_capacitacion: ' . $capacitaciones  . ',\n
-                imgs: ' . $imagenes . ',\n
+                    nombre: ' . $request->nombre .
+                'fecha_inicio: ' . $request->fecha_inicio .
+                'fecha_final: ' . $request->fecha_final .
+                'max: ' . $request->max .
+                'valor_curricular: ' . $request->vc .
+
+                'tipo_acceso: ' . $request->tipo_inscripcion .
+                'descripcion: ' . $request->descripcion .
+                'teacher_id: ' . Auth::id() .
+
+                'link: ' . $request->link .
+                '}
+
             }';
 
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha editado el curso: '. $myCourse->nombre;
-                
-            // //SE GUARDA EL LOG
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha editado el curso: ' . $myCourse->nombre;
+
+            //SE GUARDA EL LOG
             $newLog->save();
 
             DB::commit();
-            return \Redirect::route('cursos.informacion', $id)->with('success', 'El curso se ha editado exitosamente');
+            return \Redirect::route('cursos')->with('success', 'El curso se ha actualizado exitosamente');
         } catch (\Exception $e) {
-            
             DB::rollBack();
-            dd($e);
-            return \Redirect::route('cursos.informacion', $id)->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
+            return \Redirect::route('cursos')->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
             //return response()->json(["status" => $e]);
         }
     }
@@ -494,9 +454,7 @@ class CourseController extends Controller
     }
 
     public function modulos($id){
-        return Inertia::render('Curso/ModulosConfig', [
-            'curso' => Course::findOrFail($id),
-        ]);
+        return 'holiwis kiwis la ruta que buscas es /cursos/1/modulo/1   , si quieres hacer la vista de modulos en general ve a CourseController.php y en modulos el return cambialo por el que debe de ser y ya ';
     }
 
     public function modulo($id,$mid)
@@ -562,8 +520,7 @@ class CourseController extends Controller
             ->join('entry_user','entries.id','=','entry_id')
             ->where('entry_user.user_id',$user->id)
             ->select('entries.id as id','entries.tipo as tipo','entries.titulo as titulo','modules.nombre as modulo', 'entries.fecha_de_apertura as fecha_de_apertura', 
-                'entries.fecha_de_entrega as fecha_de_entrega', 'entry_user.fecha as fecha', 'entry_user.calificacion as calificacion', 'entries.max_calif as max_calif',
-                'entries.permitir_envios_retrasados as permitir_envios_retrasados')
+                'entries.fecha_de_entrega as fecha_de_entrega', 'entry_user.fecha as fecha', 'entry_user.calificacion as calificacion', 'entries.max_calif as max_calif')
             ->orderBy('fecha_de_entrega','ASC')
             ->get();
 
@@ -592,9 +549,7 @@ class CourseController extends Controller
 
     public function solicitudes($id)
     {
-        $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto')
-                        ->select('nombre','id')
-                        ->findOrFail($id);
+        $curso = Course::with('requests:nombre,apellido_p,apellido_m,id,foto')->select('nombre','id')->findOrFail($id);
         return Inertia::render('Curso/Solicitudes', [
             'curso' => $curso,
         ]);
@@ -614,54 +569,6 @@ class CourseController extends Controller
             'curso' => Course::findOrFail($id),
             'modulo' => $modulo,
             'entrada' => $entrada,
-            ]);
-        }
+        ]);
     }
-    
-    public function agregarParticipante($id, Request $request){
-        return Inertia::render('Curso/AgregarParticipante', [
-            'curso' => Course::findOrFail($id),
-            'users' =>
-                fn () => User::with('activeCourses:id')->select('users.id','nombre','apellido_p', 'apellido_m', 'email')
-                            ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
-                            ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
-                            ->where('roles.name','Alumno')
-                            ->when($request->user_search, function ($query, $search) use ($request) {
-                                if ($request->filter) {
-                                    switch ($request->filter) {
-                                        case 'matricula':
-                                            return $query->where('users.matricula', 'LIKE', '%' . $search . '%')->where('roles.name','Alumno');
-                                            break;
-                                        case 'nombre':
-                                            return $query->WhereRaw(
-                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
-                                            )->orWhereRaw(
-                                                "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
-                                            )->where('roles.name','Alumno');
-                                            break;
-                                        case 'email':
-                                            return $query->where('users.email', 'LIKE', '%' . $search . '%')->where('roles.name','Alumno');
-                                            break;
-                                        default:
-                                        return $query->WhereRaw(
-                                            "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
-                                        )->orWhereRaw(
-                                            "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
-                                        )->where('roles.name','Alumno');
-                                            break;
-                                    }
-                                } else
-                                return $query->WhereRaw(
-                                    "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
-                                )->orWhereRaw(
-                                    "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
-                                )->where('roles.name','Alumno');
-                            })
-                            ->when(!$request->user_search, function ($query, $search) use ($request) {
-                                return $query->where('users.id',0);
-                            })
-                            ->orderBy('users.created_at','desc')
-                            ->paginate(20)
-                            ->withQueryString()
-                ,
-                'request' => $request
+}

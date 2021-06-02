@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import ReactDom from 'react-dom'
 import '/css/alertas.css'
 import { usePage } from '@inertiajs/inertia-react'
 
