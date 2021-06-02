@@ -33,7 +33,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
         {/* seccion 1 */}
         <div className="col s12" style={{"borderBottom":"1px solid #DDDDDD"}}>
           <div className="col s11 titulo-modulo">
-            Modulo {modulo.numero}: {modulo.nombre}
+            Modulo {modulo.numero}. {modulo.nombre}
           </div>
           <div className="col s1 center-align">
             <i className="material-icons tiny">navigate_next</i>
@@ -176,7 +176,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
                             <span className="calificacion">0/100</span>
                           </div>
                           <div className="col s12 posted-date">
-                            <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {modulo.numero} "{modulo.nombre}"</span>
+                            <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {modulo.numero}. "{modulo.nombre}"</span>
                             <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el {transformaFechaModulo(actividad.fecha_de_entrega)}</span>
                           </div>
                         </div>
@@ -198,7 +198,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
                             <span className="calificacion">Sin calificar</span>
                           </div>
                           <div className="col s12 posted-date">
-                            <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {modulo.numero} {modulo.nombre}</span>
+                            <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {modulo.numero}. {modulo.nombre}</span>
                             <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el {transformaFechaModulo(actividad.fecha_de_entrega)}</span>
                           </div>
                         </div>

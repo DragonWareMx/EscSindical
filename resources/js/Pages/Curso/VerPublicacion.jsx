@@ -31,7 +31,7 @@ const Informacion = ({curso,modulo,entrada}) => {
     <>
       <div className="row">
         <div className="col s12 titulo-modulo">
-          Modulo N. {modulo.nombre}
+          Modulo {modulo.numero}. {modulo.nombre}
         </div>
         <div className="col s12">
           <div className="card">
