@@ -33,7 +33,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
         {/* seccion 1 */}
         <div className="col s12" style={{"borderBottom":"1px solid #DDDDDD"}}>
           <div className="col s11 titulo-modulo">
-            Modulo: {modulo.nombre}
+            Modulo {modulo.numero}: {modulo.nombre}
           </div>
           <div className="col s1 center-align">
             <i className="material-icons tiny">navigate_next</i>
@@ -86,7 +86,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
                     <i className="material-icons" style={{"color":"#D14747"}}>announcement</i>
                   </div>
                   <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                    <InertiaLink href="#" className="col s12 advice-text">
+                    <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,aviso.id])} className="col s12 advice-text">
                       {aviso.titulo}
                     </InertiaLink>
                     <div className="col s12 posted-date">
@@ -138,7 +138,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
                         <i className="material-icons" style={{"color":"#134E39"}}>assignment</i>
                       </div>
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                        <InertiaLink href="#" className="col s12 publicacion">
+                        <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,entrada.id])} className="col s12 publicacion">
                           {entrada.titulo}
                         </InertiaLink>
                         <div className="col s12 posted-date">
@@ -176,7 +176,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
                             <span className="calificacion">0/100</span>
                           </div>
                           <div className="col s12 posted-date">
-                            <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo N "{modulo.nombre}"</span>
+                            <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {modulo.numero} "{modulo.nombre}"</span>
                             <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el {transformaFechaModulo(actividad.fecha_de_entrega)}</span>
                           </div>
                         </div>
@@ -198,7 +198,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
                             <span className="calificacion">Sin calificar</span>
                           </div>
                           <div className="col s12 posted-date">
-                            <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo N {modulo.nombre}</span>
+                            <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {modulo.numero} {modulo.nombre}</span>
                             <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el {transformaFechaModulo(actividad.fecha_de_entrega)}</span>
                           </div>
                         </div>

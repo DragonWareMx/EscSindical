@@ -31,7 +31,7 @@ function calculaAvance(ini, fin) {
   else return porcentaje
 }
 
-const Informacion = ({curso, cursos_count, participantes_count}) => {
+const Informacion = ({curso, cursos_count, participantes_count, calificacion}) => {
   function initializeMaterialize(){
     var elems = document.querySelectorAll('.slider');
     var options = { 
@@ -74,7 +74,7 @@ const Informacion = ({curso, cursos_count, participantes_count}) => {
               {/* Calificacion */}
               <div className="col s12">
                 <div className="info-title">CALIFICACIÓN</div>
-                Sin evaluar
+                {calificacion ? calificacion : 'Sin evaluar'}
               </div>
               {/* Videoconferencias */}
               <div className="col s12 default-text">
@@ -158,7 +158,7 @@ const Informacion = ({curso, cursos_count, participantes_count}) => {
           </div>
         </div>
         {/* Descripcion del curso */}
-        <div className="col s12 description-text" style={{"marginTop":"15px"}} dangerouslySetInnerHTML={{__html: curso.descripcion}}>
+        <div className="col s12 description-text" style={{"marginTop":"15px"}} dangerouslySetInnerHTML={{__html: curso.contenido}}>
           {/* Aquí va la descripcion pero se pone en el dangerouslySetInnerHTML */}
         </div>
         {/* Evaluacion y bibliografia */}

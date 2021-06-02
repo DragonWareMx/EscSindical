@@ -538,11 +538,14 @@ class CourseController extends Controller
         $cursosCount=Course::where('teacher_id',$cursosCount->teacher->id)->count();
         $participantesCount=Course::with('users:id')->findOrFail($id);
         $participantesCount=$participantesCount['users']->count();
+        $calificacion=Course::where('courses.id',$id)->leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.user_id',Auth::id())->first('calificacion_final');
+        $calificacion=$calificacion->calificacion_final;
 
         return Inertia::render('Curso/Informacion', [
             'curso' => Course::with('images:imagen,course_id', 'tags:nombre','teacher:nombre,apellido_p,apellido_m,foto,id')->findOrFail($id),
             'cursos_count'=> $cursosCount,
             'participantes_count'=>$participantesCount,
+            'calificacion'=>$calificacion,
         ]);
     }
 
@@ -600,29 +603,46 @@ class CourseController extends Controller
             return abort(404);
         }
 
-        $pendientes=Entry::get();
-        $pendientesArr=[];
-        foreach($pendientes as $pendiente){
-            if($pendiente->users()->where('user_id',$user->id)->first()){
-                dd('tencontré');
-            }
-            dd('chale no :c');
-        }
-        $realizadas= true;
+        $entradas=Course::where('courses.id',$id)->leftJoin('modules','courses.id','=','modules.course_id')
+            ->leftJoin('entries','modules.id','=','entries.module_id')
+            ->where('entries.visible',1)
+            ->whereIn('entries.tipo',['Asignacion','Examen'])
+            ->select('entries.*','modules.nombre as modulo','modules.numero as numero')
+            ->orderBy('fecha_de_entrega','ASC')
+            ->get();
 
-        //Se obtenienen todas las tareas y todos los exámenes, se pone este orderBy para que aparezcan listados del más reciente al más viejo
-        //y se obtienen solamente las actividades visibles
-        $actividades=Entry::where('tipo','!=','Aviso')
-                            ->where('tipo','!=','Informacion')
-                            ->where('tipo','!=','Enlace')
-                            ->where('tipo','!=','Archivo')
-                            ->where('visible',1)
-                            ->orderBy('id','ASC')
-                            ->get();
+        $realizadas=Course::where('courses.id',$id)->leftJoin('modules','courses.id','=','modules.course_id')
+            ->leftJoin('entries','modules.id','=','entries.module_id')
+            ->where('entries.visible',1)
+            ->whereIn('entries.tipo',['Asignacion','Examen'])
+            ->join('entry_user','entries.id','=','entry_id')
+            ->where('entry_user.user_id',$user->id)
+            ->select('entries.id as id','entries.tipo as tipo','entries.titulo as titulo','modules.nombre as modulo', 'entries.fecha_de_apertura as fecha_de_apertura', 
+                'entries.fecha_de_entrega as fecha_de_entrega', 'entry_user.fecha as fecha', 'entry_user.calificacion as calificacion', 'entries.max_calif as max_calif',
+                'entries.permitir_envios_retrasados as permitir_envios_retrasados','modules.numero as numero')
+            ->orderBy('fecha_de_entrega','ASC')
+            ->get();
+
+        $pendientes=[];
+        $i=0;
+        foreach($entradas as $entrada){
+            $found=false;
+            foreach($realizadas as $realizada){
+                if($entrada->id == $realizada->id){
+                    $found=true;
+                    break;
+                }
+            }    
+            if($found == false){
+                $pendientes[$i]=$entrada;
+                $i++;
+            }
+        }
 
         return Inertia::render('Curso/Mochila', [
             'curso' => $curso,
-            'actividades' =>$actividades,
+            'realizadas' =>$realizadas,
+            'pendientes'=>$pendientes,
         ]);
     }
 
@@ -636,6 +656,24 @@ class CourseController extends Controller
         ]);
     }
 
+    public function verPublicacion($id,$mid,$pid)
+    {
+        //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
+        $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
+        //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
+        if(!$modulo){
+            return abort(404);
+        }
+        //Se obtiene la entrada que se desea mostrar en la vista
+        $entrada=Entry::with('files:archivo,entry_id')->findOrFail($pid);
+        return Inertia::render('Curso/VerPublicacion', [
+            'curso' => Course::findOrFail($id),
+            'modulo' => $modulo,
+            'entrada' => $entrada,
+        ]);
+    }
+    
+    
     public function agregarParticipante($id, Request $request){
         return Inertia::render('Curso/AgregarParticipante', [
             'curso' => Course::findOrFail($id),
@@ -685,4 +723,5 @@ class CourseController extends Controller
                 'request' => $request
         ]);
     }
+    
 }
