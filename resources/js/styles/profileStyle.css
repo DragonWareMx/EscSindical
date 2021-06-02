@@ -88,6 +88,10 @@
     margin-top: 15px;
 
     color: #343434;
+
+    display:flex;
+    align-items:center !important;
+    justify-content:center !important;
 }
 
 .profile-txt-active-since
@@ -109,6 +113,10 @@
 
     color: #585858;
     margin-bottom: 15px;
+
+    display:flex;
+    align-items:center !important;
+    justify-content:center;
 }
 
 .profile-icon-email

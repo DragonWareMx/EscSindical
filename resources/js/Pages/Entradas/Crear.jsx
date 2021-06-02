@@ -5,6 +5,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import route from 'ziggy-js';
 import { Inertia } from '@inertiajs/inertia';
+import Alertas from '../../components/common/Alertas';
 
 import '../../styles/crearEntradas.css'
 
@@ -28,6 +29,7 @@ const Crear = ({ cursos }) => {
         fecha_de_entrega: "",
         hora_de_apertura: "",
         hora_de_entrega: "",
+        max_calif: "",
     })
 
     var optionsDate = {
@@ -318,14 +320,22 @@ const Crear = ({ cursos }) => {
 
     function changeArchivos(e) {
         var inputArchivos = document.getElementById('archivos');
-        console.log(inputArchivos.files);
         if (inputArchivos.files && inputArchivos.files.length > 0) {
             setValues(values => ({
                 ...values,
                 archivos: inputArchivos.files,
             }))
         }
+    }
 
+    function changeArchivo(e) {
+        var inputArchivos = document.getElementById('archivos');
+        if (inputArchivos.files && inputArchivos.files[0]) {
+            setValues(values => ({
+                ...values,
+                archivos: inputArchivos.files[0],
+            }))
+        }
     }
 
     //manda el forumulario
@@ -348,6 +358,7 @@ const Crear = ({ cursos }) => {
                         <div className="card">
                             <div className="card-content card-entradas">
                                 <span className="card-title">AGREGAR ENTRADA</span>
+                                <Alertas />
                                 <form onSubmit={handleSubmit}>
                                     <div className="row">
                                         {/* aqui va el input del select del curso */}
@@ -394,7 +405,7 @@ const Crear = ({ cursos }) => {
                                         </div>
                                         {/* Aqui va el input del titulo */}
                                         <div className="input-field col s12 m6" required>
-                                            <input id="titulo" name="titulo" type="text" className={errors.link ? "validate form-control invalid" : "validate form-control"} value={values.titulo} onChange={handleChange} />
+                                            <input id="titulo" name="titulo" type="text" className={errors.titulo ? "validate form-control invalid" : "validate form-control"} value={values.titulo} onChange={handleChange} />
                                             <label htmlFor="titulo">Título de la entrada</label>
                                             {
                                                 errors.titulo &&
@@ -418,6 +429,26 @@ const Crear = ({ cursos }) => {
                                                 {
                                                     errors.link &&
                                                     <span className="helper-text" data-error={errors.link} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.link}</span>
+                                                }
+                                            </div>
+                                        }
+                                        {/* Aqui va el input de max calif */}
+                                        {values.tipo == "Examen" ?
+                                            <div className="input-field col s12 m6">
+                                                <input id="max_calif" name="max_calif" type="number" className={errors.max_calif ? "validate form-control invalid" : "validate form-control"} value={values.max_calif} onChange={handleChange} required />
+                                                <label htmlFor="max_calif">Calificación máxima</label>
+                                                {
+                                                    errors.max_calif &&
+                                                    <span className="helper-text" data-error={errors.max_calif} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.max_calif}</span>
+                                                }
+                                            </div>
+                                            : values.tipo == "Asignacion" &&
+                                            <div className="input-field col s12 m6">
+                                                <input id="max_calif" name="max_calif" type="number" className={errors.max_calif ? "validate form-control invalid" : "validate form-control"} value={values.max_calif} onChange={handleChange} required />
+                                                <label htmlFor="max_calif">Calificación máxima</label>
+                                                {
+                                                    errors.max_calif &&
+                                                    <span className="helper-text" data-error={errors.max_calif} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.max_calif}</span>
                                                 }
                                             </div>
                                         }
@@ -592,7 +623,7 @@ const Crear = ({ cursos }) => {
                                                     </div>
                                                     : values.tipo == "Archivo" ?
                                                         <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
-                                                            <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos
+                                                            <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivo
                                                             {
                                                                     errors.archivos &&
                                                                     <span className="helper-text" data-error={errors.arrchivos} style={{ marginBottom: "10px", fontSize: "12px", color: "rgb(244, 67, 54)", marginLeft: "5px" }}>{errors.archivos}</span>
@@ -600,8 +631,8 @@ const Crear = ({ cursos }) => {
                                                             </p>
                                                             <div className="file-field input-field" style={{ "border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px" }}>
                                                                 <div className="col s12">
-                                                                    <span style={{ fontSize: "12px", textAlign: "center", paddingTop: "10px" }} className="col s12">Arrastre aquí los archivos o <b>clic</b> para seleccionarlos</span>
-                                                                    <input type="file" multiple className="form-control" id="archivos" name="archivos" onChange={changeArchivos} />
+                                                                    <span style={{ fontSize: "12px", textAlign: "center", paddingTop: "10px" }} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
+                                                                    <input type="file" className="form-control" id="archivos" name="archivos" onChange={changeArchivo} />
                                                                 </div>
                                                                 <div className="file-path-wrapper">
                                                                     <input className="file-path validate" type="text" />
