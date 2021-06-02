@@ -74,7 +74,7 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion}) =
               {/* Calificacion */}
               <div className="col s12">
                 <div className="info-title">CALIFICACIÓN</div>
-                {calificacion ? calificacion : 'Sin evaluar'}
+                {calificacion && calificacion.calificacion_final ? calificacion.calificacion_final : 'Sin evaluar'}
               </div>
               {/* Videoconferencias */}
               <div className="col s12 default-text">
