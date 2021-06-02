@@ -139,6 +139,33 @@
     color: #41AB59;
 }
 
+.texto-estatus{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 12px;
+    
+    text-transform: uppercase;
+}
+
+.texto-estatus.Retrasada{
+    color: orange;
+}
+
+.texto-estatus.Pendiente{
+    color:#727272;
+}
+
+.texto-estatus.Cerrado{
+    color: #D14747; 
+}
+
+.texto-estatus.Enviado{
+    color: #108058;
+}
+
+
 .texto-cerrado
 {
     font-family: Montserrat;
@@ -146,7 +173,6 @@
     font-weight: 600;
     font-size: 10px;
     line-height: 12px;
-    
     color: #D14747;   
 }
 
@@ -154,4 +180,32 @@
 {
     color: #134E39;
     font-size: 16px;
+}
+
+/* CONFIGURACIÓN DE LOS MÓDULOS */
+.txt-titulo-modulo-card{
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 18px;
+    color: #108058;
+}
+.txt-titulo-objetivo{
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+    color: #848484;
+}
+.txt-objetivo{
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    color: #383838;
+}
+.div-modulo-config{
+    border: 1px solid #D8D8D8;
+    box-sizing: border-box;
+    border-radius: 2px;
+    padding-top:10px !important;
+    padding-bottom:10px !important;
+    margin-bottom:15px;
 }
