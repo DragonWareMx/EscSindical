@@ -7,6 +7,7 @@ use App\Models\Entry;
 use App\Models\File;
 use App\Models\Log;
 use App\Models\Module;
+use App\Models\Notification;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -90,7 +91,6 @@ class EntryController extends Controller
                 $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado una nueva entrada de tipo ' . $entrada->tipo . ' para el modulo ' . $modulo->nombre . ' en el curso ' . $curso->nombre;
                 //SE GUARDA EL LOG
                 $newLog->save();
-
 
                 //aqui va lo de los archivos
                 if ($request->file('archivos')) {
@@ -338,7 +338,7 @@ class EntryController extends Controller
                 'fecha_de_entrega' => 'required|date',
                 'hora_de_apertura' => 'required|date_format:H:i',
                 'hora_de_entrega' => 'required|date_format:H:i',
-                'max_calif' => 'required|numeric',
+                'max_calif' => 'required|numeric|min:1|max:100',
             ]);
 
             //comprobar curso y modulo
@@ -401,6 +401,17 @@ class EntryController extends Controller
                 //SE GUARDA EL LOG
                 $newLog->save();
 
+                //aqui va lo de la notificacion xd
+                if ($request->notificacion) {
+                    foreach ($curso->users()->get() as $user) {
+                        $notificacion = new Notification();
+                        $notificacion->user_id = $user->id;
+                        $notificacion->titulo = "Se te ha asignado una nueva asignación";
+                        $notificacion->visto = false;
+                        $notificacion->save();
+                    }
+                }
+
                 //aqui va lo de los archivos
                 if ($request->file('archivos')) {
                     foreach ($request->file('archivos') as $file) {
@@ -435,7 +446,7 @@ class EntryController extends Controller
                 'fecha_de_entrega' => 'required|date',
                 'hora_de_apertura' => 'required|date_format:H:i',
                 'hora_de_entrega' => 'required|date_format:H:i',
-                'max_calif' => 'required|numeric',
+                'max_calif' => 'required|numeric|min:1|max:100',
             ]);
 
             //comprobar curso y modulo
@@ -500,6 +511,17 @@ class EntryController extends Controller
                 $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado una nueva entrada de tipo ' . $entrada->tipo . ' para el modulo ' . $modulo->nombre . ' en el curso ' . $curso->nombre;
                 //SE GUARDA EL LOG
                 $newLog->save();
+
+                //aqui va lo de la notificacion xd
+                if ($request->notificacion) {
+                    foreach ($curso->users()->get() as $user) {
+                        $notificacion = new Notification();
+                        $notificacion->user_id = $user->id;
+                        $notificacion->titulo = "Se te ha asignado un nuevo examen";
+                        $notificacion->visto = false;
+                        $notificacion->save();
+                    }
+                }
 
                 DB::commit();
                 // all good
