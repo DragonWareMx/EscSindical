@@ -403,7 +403,7 @@ class EntryController extends Controller
                     foreach ($curso->users()->get() as $user) {
                         $notificacion = new Notification();
                         $notificacion->user_id = $user->id;
-                        $notificacion->titulo = "Se te ha asignado una nueva asignación";
+                        $notificacion->titulo = "Se te ha asignado una nueva actividad";
                         $notificacion->visto = false;
                         $notificacion->save();
                     }
@@ -535,8 +535,19 @@ class EntryController extends Controller
     public function edit($id)
     {
         Gate::authorize('haveaccess', 'ponente.perm');
-        $entry = Entry::findOrFail($id);
+        $entry = Entry::with(['module:id,nombre,course_id', 'module.course:id,nombre'])->findOrFail($id);
         $cursos = Course::with('modules')->where('teacher_id', Auth::user()->id)->get();
-        return Inertia::render('Entradas/Editar', ['cursos' => fn () => $cursos]);
+        $viledruid = false;
+        foreach ($cursos as $curso) {
+            foreach ($curso->modules()->get() as $modulo) {
+                if ($modulo->id == $entry->module_id) {
+                    $viledruid = true;
+                }
+            }
+        }
+        if (!$viledruid) {
+            abort(403);
+        }
+        return Inertia::render('Entradas/Editar', ['cursos' => fn () => $cursos, 'entry' => fn () => $entry]);
     }
 }

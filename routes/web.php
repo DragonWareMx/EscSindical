@@ -86,6 +86,7 @@ Route::get('/perfil/publico/{id}', [App\Http\Controllers\PerfilController::class
 Route::get('/perfil/configuracion', [App\Http\Controllers\PerfilController::class, 'edit'])->name('perfil.edit');
 Route::patch('/perfil/configuracion', [App\Http\Controllers\PerfilController::class, 'update'])->name('perfil.update');
 
-//----------RECURSOS------------
+//----------ENTRADAS/ASIGNACIONES/EXAMENES------------
 Route::get('/entrada/crear', [App\Http\Controllers\EntryController::class, 'index'])->name('entrada.crear');
 Route::post('/entrada/crear', [App\Http\Controllers\EntryController::class, 'create'])->name('entrada.create');
+Route::get('/entrada/editar/{id}', [App\Http\Controllers\EntryController::class, 'edit'])->name('entrada.editar');
