@@ -94,7 +94,7 @@ const Crear = ({ cursos }) => {
             labelMonthSelect: 'Selecciona un mes',
             labelYearSelect: 'Selecciona un año',
         },
-        setDefaultDate: false,
+        setDefaultDate: true,
         defaultDate: new Date(),
         onClose: () => {
             setValues(values => ({
@@ -166,7 +166,7 @@ const Crear = ({ cursos }) => {
             labelMonthSelect: 'Selecciona un mes',
             labelYearSelect: 'Selecciona un año',
         },
-        setDefaultDate: false,
+        setDefaultDate: true,
         defaultDate: new Date(),
         onClose: () => {
             setValues(values => ({
@@ -300,7 +300,14 @@ const Crear = ({ cursos }) => {
     function changeModulos(e) {
         handleChange(e);
         var curso = document.getElementById("curso").value;
-        var modulos = cursos[curso - 1].modules;
+        var i = 0;
+        cursos.every(cursoR => {
+            if (cursoR.id == curso) {
+                return false;
+            }
+            i++;
+        });
+        var modulos = cursos[i].modules;
         var arrOptions = [];
         arrOptions.push(" <option value disabled value=''>Elige una opción</option>");
         if (modulos.length > 0) {
