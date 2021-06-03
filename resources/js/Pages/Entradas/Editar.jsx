@@ -9,28 +9,61 @@ import Alertas from '../../components/common/Alertas';
 
 import '../../styles/crearEntradas.css'
 
-const Crear = ({ cursos }) => {
+const Editar = ({ cursos, entry }) => {
     //errores de la validacion de laravel
-    const { errors } = usePage().props
+    const { errors } = usePage().props;
+
+    const fechaAp = separaFecha(entry.fecha_de_apertura, "Fecha");
+    const horaAp = separaFecha(entry.fecha_de_apertura, "Hora");
+    const fechaEn = separaFecha(entry.fecha_de_entrega, "Fecha");
+    const horaEn = separaFecha(entry.fecha_de_entrega, "Hora");
 
     //valores para formulario
     const [values, setValues] = useState({
-        curso: "",
-        modulo: "",
-        tipo: "",
-        titulo: "",
-        contenido: "",
+        curso: entry.module.course.id,
+        modulo: entry.module.id,
+        tipo: entry.tipo,
+        titulo: entry.titulo,
+        contenido: entry.contenido,
         archivos: null,
-        visible: false,
+        visible: entry.visible,
         notificacion: false,
-        permitir_envios_retrasados: false,
-        link: "",
-        fecha_de_apertura: "",
-        fecha_de_entrega: "",
-        hora_de_apertura: "",
-        hora_de_entrega: "",
-        max_calif: "",
+        permitir_envios_retrasados: entry.permitir_envios_retrasados,
+        link: entry.link,
+        fecha_de_apertura: fechaAp,
+        fecha_de_entrega: fechaEn,
+        hora_de_apertura: horaAp,
+        hora_de_entrega: horaEn,
+        max_calif: entry.max_calif,
     })
+
+    function separaFecha(fecha, tipo) {
+        var date = new Date(fecha);
+        switch (tipo) {
+            case "Fecha":
+                let day = date.getDate()
+                let month = date.getMonth() + 1
+                let year = date.getFullYear()
+                if (month < 10) {
+                    return year + "-0" + month + "-" + day;
+                } else {
+                    return year + "-0" + month + "-" + day;
+                }
+                break;
+            case "Hora":
+                let hour = date.getHours();
+                let minutes = date.getMinutes();
+                if (minutes < 10) {
+                    return hour + ":0" + minutes;
+                }
+                else {
+                    return hour + ":" + minutes;
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
     var optionsDate = {
         format: "yyyy-mm-dd",
@@ -95,7 +128,7 @@ const Crear = ({ cursos }) => {
             labelYearSelect: 'Selecciona un año',
         },
         setDefaultDate: true,
-        defaultDate: new Date(),
+        defaultDate: new Date(entry.fecha_de_apertura),
         onClose: () => {
             setValues(values => ({
                 ...values,
@@ -167,7 +200,7 @@ const Crear = ({ cursos }) => {
             labelYearSelect: 'Selecciona un año',
         },
         setDefaultDate: true,
-        defaultDate: new Date(),
+        defaultDate: new Date(entry.fecha_de_entrega),
         onClose: () => {
             setValues(values => ({
                 ...values,
@@ -184,6 +217,7 @@ const Crear = ({ cursos }) => {
             done: 'Ok',
             cancel: 'Cancelar',
         },
+        defaultTime: horaAp,
         onCloseEnd: () => {
             setValues(values => ({
                 ...values,
@@ -200,6 +234,7 @@ const Crear = ({ cursos }) => {
             done: 'Ok',
             cancel: 'Cancelar',
         },
+        defaultTime: horaEn,
         onCloseEnd: () => {
             setValues(values => ({
                 ...values,
@@ -222,8 +257,40 @@ const Crear = ({ cursos }) => {
         var instances = M.Timepicker.init(hora2, optionsTime2);
     }
 
+    function initializeTodo() {
+        var curso = document.getElementById("curso").value;
+        var i = 0;
+        cursos.every(cursoR => {
+            if (cursoR.id == curso) {
+                return false;
+            }
+            i++;
+        });
+        var modulos = cursos[i].modules;
+        var arrOptions = [];
+        arrOptions.push(" <option value disabled value=''>Elige una opción</option>");
+        if (modulos.length > 0) {
+            modulos.forEach(function (modulo, indice, array) {
+                arrOptions.push("<option value='" + modulo.id + "' key='" + indice + "'>Modulo " + modulo.nombre + "</option>");
+            });
+        }
+        document.getElementById("modulo").innerHTML = arrOptions.join();
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems);
+
+        if (entry.tipo == "Examen" || entry.tipo == "Asignacion") {
+            ocultarTodos();
+            mostrarAsignacion();
+            document.getElementById("hora_de_entrega").value = horaEn;
+            document.getElementById("hora_de_apertura").value = horaAp;
+            document.getElementById("fecha_de_apertura").value = fechaAp;
+            document.getElementById("fecha_de_entrega").value = fechaEn;
+        }
+    }
+
     useEffect(() => {
         initializeMat();
+        initializeTodo();
     }, [])
 
 
@@ -357,6 +424,7 @@ const Crear = ({ cursos }) => {
         )
     }
 
+    console.log(entry);
     return (
         <>
             <div className="container">
@@ -711,7 +779,7 @@ const Crear = ({ cursos }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                            <input type="checkbox" value={values.visible} onChange={handleVisible} />
+                                            <input type="checkbox" value={values.visible} checked={values.visible} onChange={handleVisible} />
                                                         <span className="lever" />
                                                 Si
                                         </label>
@@ -726,7 +794,7 @@ const Crear = ({ cursos }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                                <input type="checkbox" value={values.notificacion} onChange={handleNotificacion} />
+                                                <input type="checkbox" value={values.notificacion} checked={values.notificacion} onChange={handleNotificacion} />
                                                         <span className="lever" />
                                                     Si
                                             </label>
@@ -738,7 +806,7 @@ const Crear = ({ cursos }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                                <input type="checkbox" value={values.notificacion} onChange={handleNotificacion} />
+                                                <input type="checkbox" value={values.notificacion} checked={values.notificacion} onChange={handleNotificacion} />
                                                         <span className="lever" />
                                                     Si
                                             </label>
@@ -752,7 +820,7 @@ const Crear = ({ cursos }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                                <input type="checkbox" value={values.permitir_envios_retrasados} onChange={handleEnvio} />
+                                                <input type="checkbox" value={values.permitir_envios_retrasados} checked={values.permitir_envios_retrasados} onChange={handleEnvio} />
                                                         <span className="lever" />
                                                     Si
                                             </label>
@@ -764,7 +832,7 @@ const Crear = ({ cursos }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                            <input type="checkbox" value={values.permitir_envios_retrasados} onChange={handleEnvio} />
+                                            <input type="checkbox" value={values.permitir_envios_retrasados} checked={values.permitir_envios_retrasados} onChange={handleEnvio} />
                                                         <span className="lever" />
                                                 Si
                                         </label>
@@ -790,6 +858,6 @@ const Crear = ({ cursos }) => {
     )
 }
 
-Crear.layout = page => <Layout children={page} title="Escuela Sindical - Entrada" pageTitle="AGREGAR ENTRADA" />
+Editar.layout = page => <Layout children={page} title="Escuela Sindical - Entrada" pageTitle="EDITAR ENTRADA" />
 
-export default Crear
+export default Editar

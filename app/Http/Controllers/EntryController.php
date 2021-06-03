@@ -7,6 +7,7 @@ use App\Models\Entry;
 use App\Models\File;
 use App\Models\Log;
 use App\Models\Module;
+use App\Models\Notification;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +33,7 @@ class EntryController extends Controller
 
     public function create(Request $request)
     {
+        Gate::authorize('haveaccess', 'ponente.perm');
         $validated = $request->validate([
             'tipo' => 'required|in:Aviso,Informacion,Enlace,Archivo,Asignacion,Examen'
         ]);
@@ -43,7 +45,6 @@ class EntryController extends Controller
                 'titulo' =>  ['required', 'max:255'],
                 'contenido' => 'required',
                 'visible' => 'required|boolean',
-                'notificacion' => 'required|boolean',
                 'archivos.*' => 'nullable|file'
             ]);
             //comprobar curso y modulo
@@ -91,7 +92,6 @@ class EntryController extends Controller
                 //SE GUARDA EL LOG
                 $newLog->save();
 
-
                 //aqui va lo de los archivos
                 if ($request->file('archivos')) {
                     foreach ($request->file('archivos') as $file) {
@@ -119,7 +119,6 @@ class EntryController extends Controller
                 'titulo' =>  ['required', 'max:255'],
                 'contenido' => 'required',
                 'visible' => 'required|boolean',
-                'notificacion' => 'required|boolean',
                 'archivos.*' => 'nullable|file'
             ]);
 
@@ -195,7 +194,6 @@ class EntryController extends Controller
                 'titulo' =>  ['required', 'max:255'],
                 'link' => 'required|url',
                 'visible' => 'required|boolean',
-                'notificacion' => 'required|boolean',
             ]);
 
             //comprobar curso y modulo
@@ -259,7 +257,6 @@ class EntryController extends Controller
                 'titulo' =>  ['required', 'max:255'],
                 'archivos' => 'required|file',
                 'visible' => 'required|boolean',
-                'notificacion' => 'required|boolean',
             ]);
             //comprobar curso y modulo
             $curso = Course::with('modules')->where([
@@ -338,7 +335,7 @@ class EntryController extends Controller
                 'fecha_de_entrega' => 'required|date',
                 'hora_de_apertura' => 'required|date_format:H:i',
                 'hora_de_entrega' => 'required|date_format:H:i',
-                'max_calif' => 'required|numeric',
+                'max_calif' => 'required|numeric|min:1|max:100',
             ]);
 
             //comprobar curso y modulo
@@ -401,6 +398,17 @@ class EntryController extends Controller
                 //SE GUARDA EL LOG
                 $newLog->save();
 
+                //aqui va lo de la notificacion xd
+                if ($request->notificacion) {
+                    foreach ($curso->users()->get() as $user) {
+                        $notificacion = new Notification();
+                        $notificacion->user_id = $user->id;
+                        $notificacion->titulo = "Se te ha asignado una nueva actividad";
+                        $notificacion->visto = false;
+                        $notificacion->save();
+                    }
+                }
+
                 //aqui va lo de los archivos
                 if ($request->file('archivos')) {
                     foreach ($request->file('archivos') as $file) {
@@ -435,7 +443,7 @@ class EntryController extends Controller
                 'fecha_de_entrega' => 'required|date',
                 'hora_de_apertura' => 'required|date_format:H:i',
                 'hora_de_entrega' => 'required|date_format:H:i',
-                'max_calif' => 'required|numeric',
+                'max_calif' => 'required|numeric|min:1|max:100',
             ]);
 
             //comprobar curso y modulo
@@ -501,6 +509,17 @@ class EntryController extends Controller
                 //SE GUARDA EL LOG
                 $newLog->save();
 
+                //aqui va lo de la notificacion xd
+                if ($request->notificacion) {
+                    foreach ($curso->users()->get() as $user) {
+                        $notificacion = new Notification();
+                        $notificacion->user_id = $user->id;
+                        $notificacion->titulo = "Se te ha asignado un nuevo examen";
+                        $notificacion->visto = false;
+                        $notificacion->save();
+                    }
+                }
+
                 DB::commit();
                 // all good
                 return Redirect::back()->with('success', 'La entrada se ha creado con éxito!');
@@ -511,5 +530,24 @@ class EntryController extends Controller
             }
         }
         dd($request);
+    }
+
+    public function edit($id)
+    {
+        Gate::authorize('haveaccess', 'ponente.perm');
+        $entry = Entry::with(['module:id,nombre,course_id', 'module.course:id,nombre'])->findOrFail($id);
+        $cursos = Course::with('modules')->where('teacher_id', Auth::user()->id)->get();
+        $viledruid = false;
+        foreach ($cursos as $curso) {
+            foreach ($curso->modules()->get() as $modulo) {
+                if ($modulo->id == $entry->module_id) {
+                    $viledruid = true;
+                }
+            }
+        }
+        if (!$viledruid) {
+            abort(403);
+        }
+        return Inertia::render('Entradas/Editar', ['cursos' => fn () => $cursos, 'entry' => fn () => $entry]);
     }
 }

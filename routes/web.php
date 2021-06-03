@@ -74,8 +74,10 @@ Route::get('/cursos/{id}/modulo/{mid}/asignacion/{pid}', [App\Http\Controllers\C
 Route::get('/cursos/{id}/participantes', [App\Http\Controllers\CourseController::class, 'participantes'])->name('cursos.participantes');
 Route::get('/cursos/{id}/solicitudes', [App\Http\Controllers\CourseController::class, 'solicitudes'])->name('cursos.solicitudes');
 Route::get('/cursos/{id}/agregar-participante', [App\Http\Controllers\CourseController::class, 'agregarParticipante'])->name('cursos.agregarParticipante');
+Route::post('/cursos/{id}/agregar-participante', [App\Http\Controllers\RequestController::class, 'agregar'])->name('cursos.addStudent');
 Route::get('/cursos/{id}/mochila', [App\Http\Controllers\CourseController::class, 'mochila'])->name('cursos.mochila');
 Route::get('/cursos/{id}/modulo/{mid}/publicacion/{pid}', [App\Http\Controllers\CourseController::class, 'verPublicacion'])->name('cursos.publicacion');
+Route::post('/cursos/{id}/inscribir', [App\Http\Controllers\CourseController::class, 'inscribir'])->name('cursos.inscribir');
 
 //----Solicitudes
 Route::post('/cursos/{id}/solicitudes', [App\Http\Controllers\RequestController::class, 'aprobar'])->name('solicitudes.aprobar');
@@ -91,6 +93,7 @@ Route::get('/perfil/publico/{id}', [App\Http\Controllers\PerfilController::class
 Route::get('/perfil/configuracion', [App\Http\Controllers\PerfilController::class, 'edit'])->name('perfil.edit');
 Route::patch('/perfil/configuracion', [App\Http\Controllers\PerfilController::class, 'update'])->name('perfil.update');
 
-//----------RECURSOS------------
+//----------ENTRADAS/ASIGNACIONES/EXAMENES------------
 Route::get('/entrada/crear', [App\Http\Controllers\EntryController::class, 'index'])->name('entrada.crear');
 Route::post('/entrada/crear', [App\Http\Controllers\EntryController::class, 'create'])->name('entrada.create');
+Route::get('/entrada/editar/{id}', [App\Http\Controllers\EntryController::class, 'edit'])->name('entrada.editar');

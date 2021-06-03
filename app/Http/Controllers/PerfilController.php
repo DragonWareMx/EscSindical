@@ -19,7 +19,7 @@ class PerfilController extends Controller
 
     public function index()
     {
-        $usuario = User::with('category:nombre,id')
+        $usuario = User::with('category:nombre,id','roles:name')
                     ->where('users.id',Auth::id())
                     ->first();
 

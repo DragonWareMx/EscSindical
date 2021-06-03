@@ -26,7 +26,7 @@ function getFileSize(archivo){
   return 0
 }
 
-const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
+const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacion}) => {
   return (
     <>
       <div className="row default-text">
@@ -43,7 +43,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades}) => {
             {/* calificacion */}
             <div className="col s6 l12  push-s6">
               <div className="subtitulo-modulo">CALIFICACIÓN</div>
-              Sin evaluar
+              {calificacion && calificacion.calificacion ? calificacion.calificacion : 'Sin evaluar'}
             </div>
             {/* duracion */}
             <div className="col s6 l12 pull-s6">

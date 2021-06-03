@@ -76,6 +76,16 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Course', 'teacher_id', 'id');
     }
 
+    public function teacherActiveCourses()
+    {
+        return $this->teacherCourses()->where('estatus', 'Activo');
+    }
+
+    public function teacherFinishedCourses()
+    {
+        return $this->teacherCourses()->where('estatus', 'Terminado');
+    }
+
     public function courses()
     {
         return $this->belongsToMany('App\Models\Course')->withPivot('calificacion_final');
