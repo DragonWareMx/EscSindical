@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use App\Models\User;
+use App\Models\Request as Application;
 use App\Models\Course;
 use App\Models\Module;
 use App\Models\Tag;
@@ -534,6 +535,13 @@ class CourseController extends Controller
 
     public function informacion($id)
     {
+        $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
+        if($inscrito){
+            $inscrito=true;
+        }
+        else{
+            $inscrito=false;
+        }
         $cursosCount=Course::with('teacher:id')->find($id);
         $cursosCount=Course::where('teacher_id',$cursosCount->teacher->id)->count();
         $participantesCount=Course::with('users:id')->findOrFail($id);
@@ -545,6 +553,7 @@ class CourseController extends Controller
             'cursos_count'=> $cursosCount,
             'participantes_count'=>$participantesCount,
             'calificacion'=>$calificacion,
+            'inscrito'=>$inscrito,
         ]);
     }
 
@@ -712,6 +721,44 @@ class CourseController extends Controller
                 ,
                 'request' => $request
         ]);
+    }
+
+    public function inscribir($id){
+        $oldRequest=Application::where('course_id',$id)->where('user_id',Auth::id())->first();
+        if($oldRequest){
+            return \Redirect::back()->with('message', 'Ya solicitaste inscripción a este curso.');
+        }
+        try {
+            DB::beginTransaction();
+            $newRequest= new Application();
+            $newRequest->course_id = $id;
+            $newRequest->user_id = Auth::id();
+            $newRequest->estatus = 'En espera';
+            $newRequest->save();
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'create';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                requests: {
+                    course_id: ' . $newRequest->course_id .
+                    'user_id: ' . $newRequest->user_id .
+                    'estatus: ' . $newRequest->estatus .
+                '},
+            }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado unirse al curso: '. $newRequest->course_id;
+            // //SE GUARDA EL LOG
+            $newLog->save();
+
+            DB::commit();
+            return \Redirect::back()->with('success', 'Solicitud de inscripción enviada con éxito.');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return \Redirect::back()->with('error', 'Ha ocurrido un problema, vuela a intentarlo más tarde.');
+        }
     }
     
 }
