@@ -57,9 +57,9 @@ const LayoutCursos = ({children}) => {
 
     return (
         <>  
-        <Alertas />
             <div className="row contenedor">
                <div className="card darken-1" style={{"padding":"5px 25px"}}>
+               <Alertas />
                    <div className="card-content row valign-wrapper" style={{"padding":"10px","marginBottom":"0px"}}>
                         <div className="col s11 valign-wrapper LC_title">{curso.nombre}&nbsp; 
                             {curso.valor_curricular == 1 &&
