@@ -14,6 +14,7 @@ use App\Models\Module;
 use App\Models\Tag;
 use App\Models\Log;
 use App\Models\Entry;
+use App\Models\Notification;
 use App\Models\Image;
 use App\Models\Training_type;
 use App\Models\Drop_requests;
@@ -565,6 +566,10 @@ class CourseController extends Controller
 
     public function modulo($id,$mid)
     {
+        $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
+        if(!$inscrito){
+            return \Redirect::route('cursos.informacion',$id);
+        }
         $modulo=Module::with('users')->where('id',$mid)->where('course_id',$id)->first();
          if(!$modulo){
             return abort(404);
@@ -588,6 +593,10 @@ class CourseController extends Controller
 
     public function participantes($id)
     {
+        $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
+        if(!$inscrito){
+            return \Redirect::route('cursos.informacion',$id);
+        }
         return Inertia::render('Curso/Participantes', [
             'curso' => Course::with('users:id,nombre,foto,apellido_p,apellido_m,email','teacher:nombre,apellido_p,apellido_m,foto,id,email')->findOrFail($id),
         ]);
@@ -596,6 +605,10 @@ class CourseController extends Controller
     public function mochila($id)
     {
         \Gate::authorize('haveaccess', 'alumno.perm');
+        $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
+        if(!$inscrito){
+            return \Redirect::route('cursos.informacion',$id);
+        }
         $user = User::find(Auth::id());
         $curso=$user->courses()->where('course_id',$id)->first();
         if(!$curso){
@@ -657,6 +670,10 @@ class CourseController extends Controller
 
     public function verPublicacion($id,$mid,$pid)
     {
+        $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
+        if(!$inscrito){
+            return \Redirect::route('cursos.informacion',$id);
+        }
         //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
         $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
         //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
@@ -728,6 +745,7 @@ class CourseController extends Controller
         if($oldRequest){
             return \Redirect::back()->with('message', 'Ya solicitaste inscripción a este curso.');
         }
+        $curso=Course::findOrFail($id);
         try {
             DB::beginTransaction();
             $newRequest= new Application();
@@ -749,9 +767,15 @@ class CourseController extends Controller
                 '},
             }';
 
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado unirse al curso: '. $newRequest->course_id;
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado unirse al curso: '. $curso->nombre;
             // //SE GUARDA EL LOG
             $newLog->save();
+
+            $notification = new Notification();
+            $notification->titulo= 'Tienes una nueva solicitud de ingreso al curso: '.$curso->nombre;
+            $notification->visto=false;
+            $notification->user_id=$curso->teacher_id;
+            $notification->save(); 
 
             DB::commit();
             return \Redirect::back()->with('success', 'Solicitud de inscripción enviada con éxito.');
