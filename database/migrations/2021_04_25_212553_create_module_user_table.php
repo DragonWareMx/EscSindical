@@ -19,6 +19,7 @@ class CreateModuleUserTable extends Migration
             $table->foreign('module_id')->references('id')->on('modules');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->float('calificacion')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
