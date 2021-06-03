@@ -27,7 +27,7 @@ const Editar = ({ cursos, entry }) => {
         contenido: entry.contenido,
         archivos: null,
         visible: entry.visible,
-        notificacion: entry.notificacion,
+        notificacion: false,
         permitir_envios_retrasados: entry.permitir_envios_retrasados,
         link: entry.link,
         fecha_de_apertura: fechaAp,
@@ -424,6 +424,7 @@ const Editar = ({ cursos, entry }) => {
         )
     }
 
+    console.log(entry);
     return (
         <>
             <div className="container">
@@ -778,7 +779,7 @@ const Editar = ({ cursos, entry }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                            <input type="checkbox" value={values.visible} onChange={handleVisible} />
+                                            <input type="checkbox" value={values.visible} checked={values.visible} onChange={handleVisible} />
                                                         <span className="lever" />
                                                 Si
                                         </label>
@@ -793,7 +794,7 @@ const Editar = ({ cursos, entry }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                                <input type="checkbox" value={values.notificacion} onChange={handleNotificacion} />
+                                                <input type="checkbox" value={values.notificacion} checked={values.notificacion} onChange={handleNotificacion} />
                                                         <span className="lever" />
                                                     Si
                                             </label>
@@ -805,7 +806,7 @@ const Editar = ({ cursos, entry }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                                <input type="checkbox" value={values.notificacion} onChange={handleNotificacion} />
+                                                <input type="checkbox" value={values.notificacion} checked={values.notificacion} onChange={handleNotificacion} />
                                                         <span className="lever" />
                                                     Si
                                             </label>
@@ -819,7 +820,7 @@ const Editar = ({ cursos, entry }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                                <input type="checkbox" value={values.permitir_envios_retrasados} onChange={handleEnvio} />
+                                                <input type="checkbox" value={values.permitir_envios_retrasados} checked={values.permitir_envios_retrasados} onChange={handleEnvio} />
                                                         <span className="lever" />
                                                     Si
                                             </label>
@@ -831,7 +832,7 @@ const Editar = ({ cursos, entry }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                            <input type="checkbox" value={values.permitir_envios_retrasados} onChange={handleEnvio} />
+                                            <input type="checkbox" value={values.permitir_envios_retrasados} checked={values.permitir_envios_retrasados} onChange={handleEnvio} />
                                                         <span className="lever" />
                                                 Si
                                         </label>
