@@ -584,21 +584,21 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                         </div>
                     </div>
 
+                    {user.roles && user.roles.length > 0 && user.roles[0].name == "Alumno" &&
                     <ul className="collapsible">
                         <li className="active">
                             <div className="collapsible-header" style={{"color":"#108058"}}><i className="material-icons">school</i>Cursos</div>
                             <div className="collapsible-body collapsible-padding padding3">
 
                                 <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>CURSOS ACTUALES</div>
-                                    {
-                                    user.active_courses &&  user.active_courses.length > 0 ? 
-                                    <div className="row">
-                                        {user.active_courses.map(curso=>(
-                                            <div key={curso.id}><CourseCard curso={curso} actuales={true}/></div>
-                                        ))}
-                                    </div>
-                                    : 
-                                    <div>Este usuario no pertenece a ningún curso activo</div>
+                                    {user.active_courses &&  user.active_courses.length > 0 ? 
+                                        <div className="row">
+                                            {user.active_courses.map(curso=>(
+                                                <div key={curso.id}><CourseCard curso={curso} actuales={true}/></div>
+                                            ))}
+                                        </div>
+                                        : 
+                                        <div>Este usuario no pertenece a ningún curso activo</div>
                                     }
 
                                 <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>HISTORIAL DE CURSOS</div>
@@ -615,6 +615,40 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                 </div>
                         </li>
                     </ul>
+                    }
+
+                    {user.roles && user.roles.length > 0 && user.roles[0].name == "Ponente" &&
+                    <ul className="collapsible">
+                        <li className="active">
+                            <div className="collapsible-header" style={{"color":"#108058"}}><i className="material-icons">school</i>Cursos</div>
+                            <div className="collapsible-body collapsible-padding padding3">
+
+                                <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>CURSOS ACTUALES</div>
+                                    {user.teacher_active_courses &&  user.teacher_active_courses.length > 0 ? 
+                                        <div className="row">
+                                            {user.teacher_active_courses.map(curso=>(
+                                                <div key={curso.id}><CourseCard curso={curso} actuales={true}/></div>
+                                            ))}
+                                        </div>
+                                        : 
+                                        <div>Este usuario no pertenece a ningún curso activo</div>
+                                    }
+
+                                <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>HISTORIAL DE CURSOS</div>
+                                    {
+                                    user.teacher_finished_courses &&  user.teacher_finished_courses.length > 0 ? 
+                                    <div className="row">
+                                        {user.teacher_finished_courses.map(curso=>(
+                                            <div key={curso.id}><CourseCard curso={curso} actuales={false}/></div>
+                                        ))}
+                                    </div>
+                                    : 
+                                    <div>Este usuario aún no tiene cursos terminados</div>
+                                    }
+                                </div>
+                        </li>
+                    </ul>
+                    }
                 </div>
             </div >
 

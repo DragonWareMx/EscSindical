@@ -426,8 +426,31 @@ class UserController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
 
         return Inertia::render('Usuarios/Editar', [
-            'user' => User::withTrashed()->with(['category:id,nombre','unit:id,nombre,regime_id', 'unit.regime:id,nombre', 'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 'activeCourses.images:course_id,imagen', 'finishedCourses.images:course_id,imagen', 'activeCourses.teacher:nombre,apellido_p,apellido_m,foto,id', 'finishedCourses.teacher:nombre,foto,id','activeCourses.tags:nombre','finishedCourses.tags:nombre', 'roles:name'])
-                            ->findOrFail($id),
+            'user' => User::withTrashed()->with([
+                    'category:id,nombre',
+                    'unit:id,nombre,regime_id', 
+                    'unit.regime:id,nombre',
+                    //cursos de alumno 
+                    'activeCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 
+                    'finishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 
+                    'activeCourses.images:course_id,imagen', 
+                    'finishedCourses.images:course_id,imagen', 
+                    'activeCourses.teacher:nombre,apellido_p,apellido_m,foto,id', 
+                    'finishedCourses.teacher:nombre,foto,id',
+                    'activeCourses.tags:nombre',
+                    'finishedCourses.tags:nombre',
+                    //cursos de profesor
+                    'teacherActiveCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 
+                    'teacherFinishedCourses:id,fecha_final,fecha_inicio,nombre,teacher_id', 
+                    'teacherActiveCourses.images:course_id,imagen', 
+                    'teacherFinishedCourses.images:course_id,imagen', 
+                    'teacherActiveCourses.teacher:nombre,apellido_p,apellido_m,foto,id', 
+                    'teacherFinishedCourses.teacher:nombre,foto,id',
+                    'teacherActiveCourses.tags:nombre',
+                    'teacherFinishedCourses.tags:nombre',
+                    'roles:name'
+                ])
+                ->findOrFail($id),
             'categories'=> fn () => Category::select('id','nombre')->get(),
             'regimes'=> fn () => Regime::select('id','nombre')->get(),
             'roles'=> fn () => Role::select('name')->get(),
