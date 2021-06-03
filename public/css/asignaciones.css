@@ -58,25 +58,26 @@
     font-size: 14px;
     line-height: 18px;
     color: #383838;
-    padding-left:40px !important;
+    padding-left:0px !important;
 }
 .txt-status-as{
     font-weight: normal;
     font-size: 13px;
     line-height: 16px;
     color: #848484;
-    padding-left:40px !important;
+    padding-left:0px !important;
     margin-top:30px;
     margin-bottom:10px;
 }
-.padding-40px{
-    padding-left:40px !important;
+.padding-0px{
+    padding-left:0px !important;
 }
 .row-extatus{
     padding-top:10px !important;
     padding-bottom:10px !important;
     border-bottom:1px solid #DDDDDD;
     display:flex;
+    flex-wrap:wrap;
     align-items:center;
 }
 .txt-title-estatus{
@@ -91,4 +92,32 @@
     font-size: 14px;
     line-height: 17px;
     color: #2E2E2E;
+    padding:0px 0px 0px 0px !important;
+}
+.estatus-bolder{
+    font-weight: 500 !important;
+}
+.estatus-red{
+    color:#D14747 !important;
+}
+.estatus-green{
+    color:#108058 !important;
+}
+.paddingRight-0px{
+    padding-right:0px !important;
+}
+.container-btns-as{
+    display:flex;
+    align-items: baseline !important;
+    justify-content: flex-end !important;
+    margin-top: 10px;
+    flex-wrap:wrap;
+}
+
+
+
+@media(max-width:600px){
+    .txt-content-estatus{
+        margin-top:5px;
+    }
 }
