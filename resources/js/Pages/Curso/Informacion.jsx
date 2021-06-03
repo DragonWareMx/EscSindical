@@ -5,6 +5,8 @@ import '/css/informacionCursos.css'
 import '../../styles/cursos.css'
 import '/css/courseCardSearch.css'
 import Tag from '../../components/common/Tag';
+import { InertiaLink } from '@inertiajs/inertia-react';
+import { Inertia } from '@inertiajs/inertia';
 
 
 function transformaFecha(fecha) {
@@ -31,7 +33,14 @@ function calculaAvance(ini, fin) {
   else return porcentaje
 }
 
-const Informacion = ({curso, cursos_count, participantes_count, calificacion}) => {
+const Informacion = ({curso, cursos_count, participantes_count, calificacion, inscrito}) => {
+
+  //manda el forumulario
+  function handleSubmit(e) {
+    e.preventDefault()
+    Inertia.post(route('cursos.inscribir',curso.id))
+  }
+
   function initializeMaterialize(){
     var elems = document.querySelectorAll('.slider');
     var options = { 
@@ -72,10 +81,12 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion}) =
             {/* bloque 2 */}
             <div className="col s12 m12 l4 push-l8">
               {/* Calificacion */}
+              {inscrito &&
               <div className="col s12">
                 <div className="info-title">CALIFICACIÓN</div>
                 {calificacion && calificacion.calificacion_final ? calificacion.calificacion_final : 'Sin evaluar'}
               </div>
+              }
               {/* Videoconferencias */}
               <div className="col s12 default-text">
                 <div className="info-title">VIDEOCONFERENCIAS</div>
@@ -87,14 +98,23 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion}) =
                   20:00 - 21:00<br />
                   15:00 - 17:00
                 </div>
+                <div className="col s12" style={{marginTop:15}}></div>
                 {/* Enlace a las videoconferencias */}
+                {inscrito ?
                 <div className="col s12">
                   <a href={curso.link} className="txt-video-course" style={{"marginTop":"10px"}}>
                       <i className="material-icons tiny" >videocam</i>
                       <a href={curso.link} target="_blank" style={{"marginLeft": "5px", "textDecoration": "underline",color:"#185E45"}}>Clic para acceder</a>
                   </a>
                 </div>
-                
+                :
+                <form onSubmit={handleSubmit}>
+                  <button type="submit" className="button_inscribir waves-effect waves-light" name="action">INSCRIBIRME
+                      <i className="tiny material-icons right">add_circle</i>
+                  </button>
+                </form>
+                }
+
               </div>
             </div>
             {/* bloque 1 */}
