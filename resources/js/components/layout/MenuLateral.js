@@ -88,7 +88,7 @@ export default function MenuLateral() {
               </InertiaLink>
           </li>
           <li><a className="subheader division-menu">CURSOS</a></li>
-          <li><a href={route('cursos').url()} className="icono-menu"><i className="material-icons icono-menu">school</i>Mis cursos</a></li>
+          <li><InertiaLink href={route('cursos').url()} className="icono-menu"><i className="material-icons icono-menu">school</i>Mis cursos</InertiaLink></li>
           <li><InertiaLink href={route('cursosBuscar').url()} className="icono-menu"><i className="material-icons icono-menu">search</i>Buscar cursos</InertiaLink></li>
           <li><a className="subheader division-menu">SISTEMA</a></li>
           <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">assignment_late</i>Reportes</a></li>

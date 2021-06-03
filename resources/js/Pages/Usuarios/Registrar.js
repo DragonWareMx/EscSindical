@@ -298,7 +298,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
                                 </div>
                                 
                                 <div className="col s12 m6 div-division">
-                                    <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN INSTITUCIONAL</p>
+                                    <p className="titles-sub" style={{"marginLeft":"3%", marginBottom: "15px"}}>INFORMACIÓN INSTITUCIONAL</p>
 
                                     <div className="input-field col s12">
                                         <input  id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="10" />

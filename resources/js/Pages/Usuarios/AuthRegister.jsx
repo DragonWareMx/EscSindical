@@ -200,8 +200,8 @@ const Usuarios = ({ categories, regimes, units }) => {
                     <div className="row tabs-responsive-register" style={{width: '100%'}}>
                         <div className="col s12 m12 l12" style={{display: 'block'}}>
                             <ul className="tabs">
-                                <li className="tab col xl6 l6 m6"><a href="{{ route('login') }}">Ingresar</a></li>
-                                <li className="tab col xl6 l6 m6"><a href="{{ route('register') }}">Registrarse</a></li>
+                                <li className="tab col xl6 l6 m6"><a href={ route('login') }>Ingresar</a></li>
+                                <li className="tab col xl6 l6 m6"><a href={ route('register') }>Registrarse</a></li>
                             </ul>
                         </div>
                     </div>
