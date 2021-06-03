@@ -121,7 +121,6 @@ const Informacion = ({curso,modulo,entrada}) => {
           <i className="material-icons">chevron_left</i>Regresar
         </div>
         
-        
       </div>
     </>
   )

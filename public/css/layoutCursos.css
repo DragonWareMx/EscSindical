@@ -48,25 +48,49 @@
 .tabs .tab a.active{
     color: #134E39 !important;
     background-color: transparent;
-  } 
-  
-  .tabs .tab a{
+} 
+
+.tabs .tab a{
     background-color: transparent;
     color: rgba(159, 157, 157, 0.6);
-  } 
-  
-   .tabs .tab a:hover {
+} 
+
+.tabs .tab a:hover {
     background-color:#eee;
     color:#000;
-  }
-  
-   .tabs .tab a:focus {
+}
+
+.tabs .tab a:focus {
     background-color: rgba(0, 255, 0, 0.1);
-  }
-   .tabs .tab a:focus.active {
+}
+.tabs .tab a:focus.active {
     background-color: rgba(0, 255, 0, 0.1);
-  }
-  
-   .tabs .indicator {
+}
+
+.tabs .indicator {
     background-color:#134E39;
-  }
+}
+
+
+.clase-nav
+{
+    box-shadow: 0px 0px 0px;
+    
+}
+
+.ul-style
+{
+    white-space: nowrap;
+    overflow: auto;
+}
+
+.li-style 
+{
+    display: inline-block;
+    float: none;
+}
+
+.selected-nav
+{
+    border-bottom: solid 2px #134E39;
+}

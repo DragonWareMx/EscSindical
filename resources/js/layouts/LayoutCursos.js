@@ -10,6 +10,10 @@ import Alertas from '../components/common/Alertas';
 function initializeMat() {
     var elems = document.querySelectorAll('.dropdown-trigger');
     var instances = M.Dropdown.init(elems);
+    var elems = document.querySelectorAll('.dropdown-trigger2');
+    var instances = M.Dropdown.init(elems,{
+        coverTrigger:false,
+    });
     var el = document.querySelectorAll('.tabs');
     var instance = M.Tabs.init(el);
     var elems = document.querySelectorAll('select');
@@ -77,7 +81,59 @@ const LayoutCursos = ({children}) => {
                    </div>
                     <div className="row">
                         <div className="col s12">
-                            <ul className="tabs LC">
+                            {/* contenido del dropdown de modulos */}
+                            <ul id="dropdown2" className="dropdown-content">
+                                <li><a href="/cursos/1/modulo/1">uno</a></li>
+                                <li><a href="!#">dos</a></li>
+                                <li><a href="!#">tres</a></li>
+                                
+                            </ul>
+
+                            <nav className="white clase-nav">
+                                <div className="nav-wrapper">
+                                    <ul className="ul-style">
+                                        {/* Informacion */}
+                                        <li className="li-style">
+                                            <InertiaLink id="tab_informacion" href={route('cursos.informacion', curso.id)}  className={false ? 'LC_a active' : 'LC_a'}  target="_self">
+                                                <i className="material-icons col s3 LC_tab_icons">school</i>
+                                                <div className="col s9">Información</div>
+                                            </InertiaLink>
+                                        </li>
+                                        {/* Modulos */}
+                                        <li className="li-style">
+                                            <InertiaLink id="tab_modulos" href={route('cursos.modulos', curso.id)} className={true  ? 'LC_a active dropdown-trigger2 black-text' : 'LC_a dropdown-trigger2 black-text'} target="_self" data-target="dropdown2">
+                                                <i className="material-icons col s3 LC_tab_icons">book</i>
+                                                <div className="col s9">Módulos</div>
+                                                <i class="material-icons right">arrow_drop_down</i>
+                                            </InertiaLink>
+                                        </li>
+                                        {/* Mochila */}
+                                        <li className="li-style">
+                                            <InertiaLink id="tab_mochila" href={route('cursos.mochila', curso.id)} className="LC_a" target="_self">
+                                                <i className="material-icons col s3 LC_tab_icons">backpack</i>
+                                                <div className="col s9">Mochila</div>
+                                            </InertiaLink>
+                                        </li>
+                                        {/* Participantes */}
+                                        <li className="li-style" >
+                                            <InertiaLink id="tab_participantes" href={route('cursos.participantes', curso.id)} className="LC_a" target="_self">
+                                                <i className="material-icons col s3 LC_tab_icons">people</i>
+                                                <div className="col s9">Participantes</div>
+                                            </InertiaLink>
+                                        </li>
+                                        {/* Estadisticas */}
+                                        <li className="li-style">
+                                            <InertiaLink id="tab_estadisticas" href="" className="LC_a" target="_self">
+                                                <i className="material-icons col s3 LC_tab_icons">bar_chart</i>
+                                                <div className="col s9">Estadísticas</div>
+                                            </InertiaLink>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
+
+
+                            {/* <ul className="tabs LC">
                                 <li className="tab LC_tab">
                                     <InertiaLink id="tab_informacion" href={route('cursos.informacion', curso.id)}  className={false ? 'LC_a active' : 'LC_a'}  target="_self">
                                         <i className="material-icons col s3 LC_tab_icons">school</i>
@@ -108,9 +164,11 @@ const LayoutCursos = ({children}) => {
                                         <div className="col s9">Estadísticas</div>
                                     </InertiaLink>
                                 </li>
-                            </ul>
+                            </ul> */}
                         </div>
-                        {children}
+                        <div className="col s12" style={{"marginTop":"25px"}}>
+                            {children}
+                        </div>
                     </div> 
                </div>
             </div>
