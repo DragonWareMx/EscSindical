@@ -647,6 +647,8 @@ class CourseController extends Controller
 
     public function solicitudes($id)
     {
+        \Gate::authorize('haveaccess', 'ponente.perm');
+
         $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto')
                         ->select('nombre','id')
                         ->findOrFail($id);
@@ -674,6 +676,8 @@ class CourseController extends Controller
     
     
     public function agregarParticipante($id, Request $request){
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        
         return Inertia::render('Curso/AgregarParticipante', [
             'curso' => Course::findOrFail($id),
             'users' =>
@@ -737,6 +741,7 @@ class CourseController extends Controller
             'curso' => Course::findOrFail($id)
         ]);
     }
+
     public function inscribir($id){
         $oldRequest=Application::where('course_id',$id)->where('user_id',Auth::id())->first();
         if($oldRequest){
