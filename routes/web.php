@@ -51,7 +51,8 @@ Route::get('/cursos/create', [App\Http\Controllers\CourseController::class, 'cre
 Route::get('/cursos/edit/{id}', [App\Http\Controllers\CourseController::class, 'editCourse'])->name('cursos.edit');
 Route::post('/storeCourse', [App\Http\Controllers\CourseController::class, 'store'])->name('storeCourse');
 Route::post('/updateCourse/{id}', [App\Http\Controllers\CourseController::class, 'update'])->name('updateCourse');
-Route::post('/cursos/deleteRequest/{id}', [App\Http\Controllers\CourseController::class, 'deleteRequest'])->name('cursos.deleteRequest');
+Route::post('/cursos/deleteRequest/{id}', [App\Http\Controllers\CourseController::class, 'deleteRequest'])->name('cursos.deleteRequest'); //solicitar BAJA DE CURSO-Estudiante
+Route::post('/cursos/deleteCourseRequest/{id}', [App\Http\Controllers\CourseController::class, 'deleteCourseRequest'])->name('cursos.deleteCourseRequest'); //solicitar Eliminación de curso -Ponente
 
 
 // ------Modulos del curso------

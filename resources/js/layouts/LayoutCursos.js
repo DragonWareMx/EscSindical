@@ -89,7 +89,7 @@ const LayoutCursos = ({children}) => {
                                     <li className="divider" tabIndex="-1"></li>
                                     <li><a className="dropdown-text" href="#!"><i className="material-icons">file_download</i>Descargar reporte del curso</a></li>
                                     <li className="divider" tabIndex="-1"></li>
-                                    <li><a className="dropdown-text modal-trigger" href="modalSolicitudEliminacion"><i className="material-icons">error_outline</i>Solicitar eliminación del curso</a></li>           
+                                    <li><a className="dropdown-text modal-trigger" data-target="modalSolicitudEliminacion"><i className="material-icons">error_outline</i>Solicitar eliminación del curso</a></li>           
                                 </ul>
                             }    
                    </div>
