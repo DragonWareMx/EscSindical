@@ -723,7 +723,7 @@ class CourseController extends Controller
     }
 
     // ASIGNACIONES----------------------------------
-    public function asignacion($id,$mid)
+    public function asignacion($id,$mid,$pid)
     {
         //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
         $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
@@ -732,6 +732,9 @@ class CourseController extends Controller
             return abort(404);
         }
 
+        // Buscar la asignacion
+        $entrada=Entry::with('files:archivo,entry_id')->where('tipo',"Asignacion")->findOrFail($pid);
+        dd($entrada);
         return Inertia::render('Curso/Asignacion/Asignacion', [
             'curso' => Course::findOrFail($id)
         ]);

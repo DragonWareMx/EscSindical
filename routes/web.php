@@ -67,7 +67,7 @@ Route::get('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class
 Route::get('/cursos/{id}/modulo/{mid}', [App\Http\Controllers\CourseController::class, 'modulo'])->name('cursos.modulo');
 
 // ASIGNACION   falta id de asignacion
-Route::get('/cursos/{id}/modulo/{mid}/asignacion', [App\Http\Controllers\CourseController::class, 'asignacion'])->name('cursos.asignacion');
+Route::get('/cursos/{id}/modulo/{mid}/asignacion/{pid}', [App\Http\Controllers\CourseController::class, 'asignacion'])->name('cursos.asignacion');
 
 
 
