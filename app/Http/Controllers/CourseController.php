@@ -478,66 +478,13 @@ class CourseController extends Controller
         DB::beginTransaction();
         try {
 
-            if (Delete_requests::where('course_id', $id)->where('user_id',Auth::id())->first()){
-                return \Redirect::route('cursos')->with('message', 'Ya solicitaste tu baja a este curso');
-            }
-            else {
-                $newRequest = new Delete_requests;
-                $newRequest->course_id = $id;
-                $newRequest->user_id = Auth::id();
-                $newRequest->comentario = $request->descripcion;
-                $newRequest->estatus = 'Pendiente'; 
-
-                $newRequest->save();
-                //SE CREA EL LOG
-
-                $newLog = new Log;
-
-                $newLog->categoria = 'create';
-                $newLog->user_id = Auth::id();
-                $newLog->accion =
-                '{
-                    delete_requests: {
-                        course_id: ' . $id . ',\n
-                        user_id: ' . Auth::id() . ',\n
-                        comentario: '.$request->descripcion. ',\n
-                        estatus: Pendiente, \n
-                    },
-                }';
-
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado la eliminación de un curso';
-                
-                //SE GUARDA EL LOG
-                $newLog->save();
-            
-                DB::commit();
-                return \Redirect::route('cursos')->with('success', 'Se solicitó la eliminación del curso');
-            }
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
-        }
-    }
-
-    public function deleteCourseRequest($id, Request $request)
-    {
-        \Gate::authorize('haveaccess', 'ponente.perm');
-        //VALIDAMOS DATOS
-        $validated = $request->validate([
-            'descripcion' => 'required',
-        ]);
-        
-        DB::beginTransaction();
-        try {
-
             if (Drop_requests::where('course_id', $id)->where('user_id',Auth::id())->first()){
                 return \Redirect::route('cursos')->with('message', 'Ya solicitaste tu baja a este curso');
             }
             else {
                 $newRequest = new Drop_requests;
                 $newRequest->course_id = $id;
-                $newRequest->user_id =Auth::id();
+                $newRequest->user_id = Auth::id();
                 $newRequest->descripcion = $request->descripcion;
 
                 $newRequest->save();
@@ -556,13 +503,67 @@ class CourseController extends Controller
                     },
                 }';
 
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado su baja del curso';
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado la baja de un curso';
                 
                 //SE GUARDA EL LOG
                 $newLog->save();
             
                 DB::commit();
-                return \Redirect::route('cursos')->with('success', 'Se solicitó tu baja de curso');
+                return \Redirect::route('cursos')->with('success', 'Se solicitó la baja del curso');
+            }
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
+        }
+    }
+
+    public function deleteCourseRequest($id, Request $request)
+    {
+        
+        //MÉTODO PARA SOLICITAR ELIMINAR CURSO
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        //VALIDAMOS DATOS
+        $validated = $request->validate([
+            'descripcion' => 'required',
+        ]);
+        
+        DB::beginTransaction();
+        try {
+
+            if (Delete_requests::where('course_id', $id)->where('user_id',Auth::id())->first()){
+                return \Redirect::route('cursos')->with('message', 'Ya solicitaste la eliminación de este curso');
+            }
+            else {
+                $newRequest = new Delete_requests;
+                $newRequest->course_id = $id;
+                $newRequest->user_id =Auth::id();
+                $newRequest->comentario = $request->descripcion;
+                $newRequest->status = 'Pendiente'; 
+                $newRequest->save();
+                //SE CREA EL LOG
+
+                $newLog = new Log;
+
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                '{
+                    drop_requests: {
+                        course_id: ' . $id . ',\n
+                        user_id: ' . Auth::id() . ',\n
+                        descripcion: '.$request->descripcion. ',\n
+                    },
+                }';
+
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado eliminar el curso';
+                
+                //SE GUARDA EL LOG
+                $newLog->save();
+            
+                DB::commit();
+                return \Redirect::route('cursos')->with('success', 'Se solicitó la eliminación de curso');
             }
 
         } catch (\Exception $e) {

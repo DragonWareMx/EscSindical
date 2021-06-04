@@ -41,7 +41,7 @@ export default function CursoActual({cursos, profesor, tags}) {
                                     <div className="txt-course-title"><InertiaLink href={route('cursos.informacion',cursos.id)} className="title-course-hover">{cursos.nombre}</InertiaLink></div>
                                     <div className="" style={{"display": "flex", "alignItems": "center", "marginTop": "10px"}}>
                                         <div style={{"width": "max-content", "marginRight": "10px"}}><img src={"storage/fotos_perfil/"+profesor.foto} style={{"width": "25px", "height": "25px", "borderRadius": "50%", "objectFit": "cover"}} /></div>
-                                        <a className="txt-teacher-name" style={{"width": "max-content"}} href={route('perfil.public',profesor.id)}>{profesor.nombre} {profesor.apellido_p} {profesor.apellido_m}</a>
+                                        <InertiaLink className="txt-teacher-name" style={{"width": "max-content"}} href={route('perfil.public',profesor.id)}>{profesor.nombre} {profesor.apellido_p} {profesor.apellido_m}</InertiaLink>
                                     </div>
                                     {/* Container tags */}
                                     <div className="container-tags">

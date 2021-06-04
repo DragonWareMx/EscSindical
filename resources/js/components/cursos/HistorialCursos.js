@@ -83,7 +83,7 @@ export default function HistorialCursos({cursos, solicitudes}) {
                                                             {/* Datos del profesor */}
                                                             <div className="" style={{"display": "flex", "alignItems": "center", "marginTop": "0px"}}>
                                                                 <div style={{"width": "max-content", "marginRight": "8px"}}><img src={"storage/fotos_perfil/"+curso.teacher.foto} style={{"width": "20px", "height": "20px", "borderRadius": "50%", "objectFit": "cover", "marginTop":"5px"}} /></div>
-                                                                <a className="txt-teacher-name truncate" style={{"width": "max-content", "fontSize":"12px"}} href={route('perfil.public',curso.teacher.id)}>{curso.teacher.nombre} {curso.teacher.apellido_p}</a>
+                                                                <InertiaLink className="txt-teacher-name truncate" style={{"width": "max-content", "fontSize":"12px"}} href={route('perfil.public',curso.teacher.id)}>{curso.teacher.nombre} {curso.teacher.apellido_p}</InertiaLink>
                                                             </div>
                                                             {/* Tags del curso */}
                                                             <div className="container-tags">
@@ -145,7 +145,7 @@ export default function HistorialCursos({cursos, solicitudes}) {
                                                     {/* Datos del profesor */}
                                                     <div className="" style={{"display": "flex", "alignItems": "center", "marginTop": "0px"}}>
                                                         <div style={{"width": "max-content", "marginRight": "8px"}}><img src={"storage/fotos_perfil/"+solicitud.course.teacher.foto} style={{"width": "20px", "height": "20px", "borderRadius": "50%", "objectFit": "cover", "marginTop":"5px"}} /></div>
-                                                        <a className="txt-teacher-name truncate" style={{"width": "max-content", "fontSize":"12px"}} href={route('perfil.public',solicitud.course.teacher.id)}>{solicitud.course.teacher.nombre} {solicitud.course.teacher.apellido_p}</a>
+                                                        <InertiaLink className="txt-teacher-name truncate" style={{"width": "max-content", "fontSize":"12px"}} href={route('perfil.public',solicitud.course.teacher.id)}>{solicitud.course.teacher.nombre} {solicitud.course.teacher.apellido_p}</InertiaLink>
                                                     </div>
                                                     {/* Tags del curso */}
                                                     <div className="container-tags">
