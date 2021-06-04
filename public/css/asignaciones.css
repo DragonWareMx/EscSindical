@@ -113,9 +113,35 @@
     margin-top: 10px;
     flex-wrap:wrap;
 }
+.table-entregas th{
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: #848484;
+}
+.table-entregas td:hover, .table-entregas td:focus{
+    cursor: pointer;
+}
+.td-estatus{
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 12px;
+    letter-spacing: 0.05em;
+    color:#999999;
+}
+.img-td-entregas{
+    border-radius: 50px;
+    width:30px;
+    height:30px;
+    object-fit: cover;
+    margin-right:10px;
+}
 
-
-
+@media(max-width:900px){
+    .table-entregas th{
+        font-size: 10px;
+    }
+}
 @media(max-width:600px){
     .txt-content-estatus{
         margin-top:5px;

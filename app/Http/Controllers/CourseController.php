@@ -81,7 +81,7 @@ class CourseController extends Controller
     public function storeModule(Request $request){
         \Gate::authorize('haveaccess', 'ponente.perm');
         $validated = $request->validate([
-            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'nombre' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'curso' => 'required|exists:courses,id',
             'objetivo' => "required",
             'criterios_de_evaluacion' => 'required',
@@ -207,7 +207,7 @@ class CourseController extends Controller
         //dd($request);
         //VALIDAMOS DATOS
         $validated = $request->validate([
-            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'nombre' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'tags' => 'required',
             'fecha_inicio' => 'required|date|after:today',
             'fecha_final' => 'required|date|after:fecha_inicio',
@@ -333,7 +333,7 @@ class CourseController extends Controller
         \Gate::authorize('haveaccess', 'ponente.perm');
         //VALIDAMOS DATOS
         $validated = $request->validate([
-            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'nombre' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'tags' => 'nullable',
             'fecha_inicio' => 'required|date|after:today',
             'fecha_final' => 'required|date|after:fecha_inicio',
@@ -663,7 +663,7 @@ class CourseController extends Controller
         $calificacion=Course::where('courses.id',$id)->leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.user_id',Auth::id())->first('calificacion_final');
 
         return Inertia::render('Curso/Informacion', [
-            'curso' => Course::with('images:imagen,course_id', 'tags:nombre','teacher:nombre,apellido_p,apellido_m,foto,id')->findOrFail($id),
+            'curso' => Course::with('images:imagen,course_id', 'tags:nombre','teacher:nombre,apellido_p,apellido_m,foto,id','modules:id,nombre,numero')->findOrFail($id),
             'cursos_count'=> $cursosCount,
             'participantes_count'=>$participantesCount,
             'calificacion'=>$calificacion,
@@ -742,7 +742,7 @@ class CourseController extends Controller
             return \Redirect::route('cursos.informacion',$id);
         }
         return Inertia::render('Curso/Participantes', [
-            'curso' => Course::with('users:id,nombre,foto,apellido_p,apellido_m,email','teacher:nombre,apellido_p,apellido_m,foto,id,email')->findOrFail($id),
+            'curso' => Course::with('users:id,nombre,foto,apellido_p,apellido_m,email','teacher:nombre,apellido_p,apellido_m,foto,id,email','modules:id,nombre,numero')->findOrFail($id),
         ]);
     }
 
@@ -804,6 +804,8 @@ class CourseController extends Controller
 
     public function solicitudes($id)
     {
+        \Gate::authorize('haveaccess', 'ponente.perm');
+
         $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto')
                         ->select('nombre','id')
                         ->findOrFail($id);
@@ -835,6 +837,8 @@ class CourseController extends Controller
     
     
     public function agregarParticipante($id, Request $request){
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        
         return Inertia::render('Curso/AgregarParticipante', [
             'curso' => Course::findOrFail($id),
             'users' =>
@@ -884,53 +888,8 @@ class CourseController extends Controller
         ]);
     }
 
-    public function inscribir($id){
-        $oldRequest=Application::where('course_id',$id)->where('user_id',Auth::id())->first();
-        if($oldRequest){
-            return \Redirect::back()->with('message', 'Ya solicitaste inscripción a este curso.');
-        }
-        $curso=Course::findOrFail($id);
-        try {
-            DB::beginTransaction();
-            $newRequest= new Application();
-            $newRequest->course_id = $id;
-            $newRequest->user_id = Auth::id();
-            $newRequest->estatus = 'En espera';
-            $newRequest->save();
-            //SE CREA EL LOG
-            $newLog = new Log;
-
-            $newLog->categoria = 'create';
-            $newLog->user_id = Auth::id();
-            $newLog->accion =
-            '{
-                requests: {
-                    course_id: ' . $newRequest->course_id .
-                    'user_id: ' . $newRequest->user_id .
-                    'estatus: ' . $newRequest->estatus .
-                '},
-            }';
-
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado unirse al curso: '. $curso->nombre;
-            // //SE GUARDA EL LOG
-            $newLog->save();
-
-            $notification = new Notification();
-            $notification->titulo= 'Tienes una nueva solicitud de ingreso al curso: '.$curso->nombre;
-            $notification->visto=false;
-            $notification->user_id=$curso->teacher_id;
-            $notification->save(); 
-
-            DB::commit();
-            return \Redirect::back()->with('success', 'Solicitud de inscripción enviada con éxito.');
-        } catch (\Throwable $th) {
-            DB::rollback();
-            return \Redirect::back()->with('error', 'Ha ocurrido un problema, vuela a intentarlo más tarde.');
-        }
-    }
-    
     // ASIGNACIONES----------------------------------
-    public function asignacion($id,$mid)
+    public function asignacion($id,$mid,$pid)
     {
         //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
         $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
@@ -939,10 +898,106 @@ class CourseController extends Controller
             return abort(404);
         }
 
+        // Buscar la asignacion
+        $entrada=Entry::with('files:archivo,entry_id')->where('tipo',"Asignacion")->findOrFail($pid);
+        dd($entrada);
         return Inertia::render('Curso/Asignacion/Asignacion', [
             'curso' => Course::findOrFail($id)
         ]);
     }
+
+    public function inscribir($id){
+        $curso=Course::findOrFail($id);
+
+        //Verificar que el usuario no pertenezca a algún curso activo
+        $user=User::with('courses:id,estatus')->findOrFail(Auth::id());
+        foreach($user->courses as $curso){
+            if($curso->estatus=='Activo'){
+                return \Redirect::back()->with('error', 'Ya perteneces a un curso actualmente activo.');
+            }
+        }
+
+        try {
+            DB::beginTransaction();
+
+            //Se inscribe automáticamente
+            if($curso->tipo_acceso == 'Automática'){
+                $user->courses()->attach($curso->id);
+                //SE CREA EL LOG
+                $newLog = new Log;
+
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                '{
+                    course_user: {
+                        course_id: ' . $id.
+                        'user_id: ' . $user->id .
+                    '},
+                }';
+
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' se ha inscrito al curso: '. $curso->nombre;
+                // //SE GUARDA EL LOG
+                $newLog->save();
+                
+                $notification = new Notification();
+                $notification->titulo= $user->nombre.' se ha inscrito al curso: '.$curso->nombre;
+                $notification->visto=false;
+                $notification->user_id=$curso->teacher_id;
+                $notification->save(); 
+
+                DB::commit();
+                return \Redirect::route('cursos.informacion',$id)->with('success', 'Te has inscrito a este curso.');
+            }
+
+            //Se manda solicitud
+            else if($curso->tipo_acceso == 'Solicitud'){
+                $oldRequest=Application::where('course_id',$id)->where('user_id',Auth::id())->first();
+                if($oldRequest){
+                    return \Redirect::back()->with('message', 'Ya solicitaste inscripción a este curso.');
+                }
+                $newRequest= new Application();
+                $newRequest->course_id = $id;
+                $newRequest->user_id = Auth::id();
+                $newRequest->estatus = 'En espera';
+                $newRequest->save();
+                //SE CREA EL LOG
+                $newLog = new Log;
+
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                '{
+                    requests: {
+                        course_id: ' . $newRequest->course_id .
+                        'user_id: ' . $newRequest->user_id .
+                        'estatus: ' . $newRequest->estatus .
+                    '},
+                }';
+
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado unirse al curso: '. $curso->nombre;
+                // //SE GUARDA EL LOG
+                $newLog->save();
+
+                $notification = new Notification();
+                $notification->titulo= 'Tienes una nueva solicitud de ingreso al curso: '.$curso->nombre;
+                $notification->visto=false;
+                $notification->user_id=$curso->teacher_id;
+                $notification->save(); 
+
+                DB::commit();
+                return \Redirect::back()->with('success', 'Solicitud de inscripción enviada con éxito.');
+            }
+            else{
+                DB::rollback();
+                return \Redirect::route('cursos.informacion',$id)->with('error', 'No es posible inscribirse a este curso, contacta al profesor para que él mismo te inscriba.');
+            }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return \Redirect::back()->with('error', 'Ha ocurrido un problema, vuela a intentarlo más tarde.');
+        }
+    }
+    
 }
     
 

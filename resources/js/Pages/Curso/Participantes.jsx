@@ -41,7 +41,7 @@ const Participantes = ({curso}) => {
                 </div>
             </div>
 
-            <div className="col s12 P_sub" style={{marginTop:"15px"}}>Compañeros de clase</div>
+            <div className="col s12 P_sub" style={{marginTop:"15px"}}>{curso.users && curso.users.length > 0 ? "Compañeros de clase" : "Sin alumnos registrados" }</div>
             
             {/* Rows de estudiantes */}
             {curso.users && curso.users.length>0 && curso.users.map((user, index) =>

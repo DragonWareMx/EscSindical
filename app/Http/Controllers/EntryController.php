@@ -550,4 +550,51 @@ class EntryController extends Controller
         }
         return Inertia::render('Entradas/Editar', ['cursos' => fn () => $cursos, 'entry' => fn () => $entry]);
     }
+
+    public function delete($id)
+    {
+        Gate::authorize('haveaccess', 'ponente.perm');
+        DB::beginTransaction();
+        try {
+            $entry = Entry::with(['module:id,nombre,course_id', 'module.course:id,nombre'])->findOrFail($id);
+            $cursos = Course::with('modules')->where('teacher_id', Auth::user()->id)->get();
+            $viledruid = false;
+            foreach ($cursos as $curso) {
+                foreach ($curso->modules()->get() as $modulo) {
+                    if ($modulo->id == $entry->module_id) {
+                        $viledruid = true;
+                    }
+                }
+            }
+            if (!$viledruid) {
+                return Redirect::back()->with('error', 'Ha ocurrido un error al intentar eliminar la entrada, inténtelo más tarde.');
+            }
+
+            $entry->delete();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'delete';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+                '{
+                entries: {
+                    id: ' . $id .
+                '}
+            }';
+
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha eliminado la entrada con id: ' . $id;
+
+            $newLog->save();
+
+            DB::commit();
+            // all good
+            return Redirect::route('entrada.crear')->with('success', '¡Entrada eliminada con éxito!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return Redirect::back()->with('error', 'Ha ocurrido un error al intentar eliminar la entrada, inténtelo más tarde.');
+        }
+    }
 }

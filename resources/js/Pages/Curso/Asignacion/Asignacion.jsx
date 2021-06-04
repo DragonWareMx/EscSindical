@@ -206,6 +206,39 @@ const Asignacion = ({curso}) => {
 
                 <div className="col s12 txt-status-as">ENTREGAS</div>
 
+                <table className="col s12 striped responsive-table table-entregas">
+                    <thead>
+                    <tr>
+                        <th>ESTUDIANTE</th>
+                        <th>ESTATUS</th>
+                        <th>CALIFICACIÓN</th>
+                        <th>FECHA DE ENVÍO</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}><img src={"/img/avatar1.png"} className="img-td-entregas" />Oscar André Huerta García</td>
+                        <td className="td-estatus" style={{"color":"#41AB59"}}>ENVIADA A TIEMPO</td>
+                        <td className="td-estatus">SIN REVISAR</td>
+                        <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>25/07/21 11:59</td>
+                    </tr>
+                    <tr>
+                        <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}><img src={"/img/avatar2.png"} className="img-td-entregas" />José Agustín Aguilar Solórzano de Huerta</td>
+                        <td className="td-estatus" style={{"color":"#134E39"}}>ENVIADA CON RETRASO</td>
+                        <td className="td-estatus">SIN REVISAR</td>
+                        <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>25/07/21 11:59</td>
+                    </tr>
+                    <tr>
+                        <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}><img src={"/img/avatar3.png"} className="img-td-entregas" />Leopoldo Fernando Lemus Sanchez</td>
+                        <td className="td-estatus" style={{"color":"#D3766A"}}>SIN ENVIAR</td>
+                        <td className="td-estatus">0/100</td>
+                        <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>-</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
             </div>
             
         </div>

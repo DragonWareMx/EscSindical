@@ -12,6 +12,7 @@ import { Inertia } from '@inertiajs/inertia';
 import Alertas from '../../components/common/Alertas';
 import CourseCard from '../../components/cursos/CourseCard'
 import ModalEliminar from '../../components/common/ModalEliminar';
+import ModalDarBaja from '../../components/common/ModalDarBaja';
 import ModalRestaurar from '../../components/common/ModalRestaurar';
 
 
@@ -130,6 +131,16 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
         var elems = document.querySelectorAll('.collapsible')
         var instances = M.Collapsible.init(elems)
+
+        var elems = document.querySelectorAll('.dropdown-trigger');
+        var options;
+        var instances = M.Dropdown.init(elems, ({inDuration: 300,
+            outDuration: 225,
+            constrainWidth: false,
+            gutter: 0, // Spacing from edge
+            belowOrigin: true, // Displays dropdown below the button
+            stopPropogation: true})
+        );
 
         initializeDatePicker();
 
@@ -302,7 +313,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s6 input-50-re">
-                                            <select  id="sexo" name="sexo" required autoComplete="sexo" value={values.sexo} onChange={handleChange} className={errors.sexo ? "input-field invalid" : "input-field"}>
+                                            <select  id="sexo" name="sexo" autoComplete="sexo" value={values.sexo} onChange={handleChange} className={errors.sexo ? "input-field invalid" : "input-field"}>
                                                 <option value="" disabled>Selecciona una opción</option>
                                                 <option value="m">Femenino</option>
                                                 <option value="h">Masculino</option>
@@ -383,7 +394,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                     </div>
 
                                     <div className="col s12 m6 div-division">
-                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>INFORMACIÓN INSTITUCIONAL</p>
+                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", marginBottom: "15px" }}>INFORMACIÓN INSTITUCIONAL</p>
 
                                         <div className="input-field col s12">
                                             <input  id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="10" />
@@ -395,7 +406,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s12">
-                                            <select  id="regimen" name="regimen" value={values.regimen} onChange={handleChange} required>
+                                            <select  id="regimen" name="regimen" value={values.regimen} onChange={handleChange}>
                                                 <option value="" disabled>Selecciona una opción</option>
                                                 {regimes && regimes.length > 0 &&
                                                     regimes.map(regime => (
@@ -584,21 +595,21 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                         </div>
                     </div>
 
+                    {user.roles && user.roles.length > 0 && user.roles[0].name == "Alumno" &&
                     <ul className="collapsible">
                         <li className="active">
                             <div className="collapsible-header" style={{"color":"#108058"}}><i className="material-icons">school</i>Cursos</div>
                             <div className="collapsible-body collapsible-padding padding3">
 
                                 <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>CURSOS ACTUALES</div>
-                                    {
-                                    user.active_courses &&  user.active_courses.length > 0 ? 
-                                    <div className="row">
-                                        {user.active_courses.map(curso=>(
-                                            <div key={curso.id}><CourseCard curso={curso} actuales={true}/></div>
-                                        ))}
-                                    </div>
-                                    : 
-                                    <div>Este usuario no pertenece a ningún curso activo</div>
+                                    {user.active_courses &&  user.active_courses.length > 0 ? 
+                                        <div className="row">
+                                            {user.active_courses.map(curso=>(
+                                                <div key={curso.id}><CourseCard curso={curso} actuales={true}/></div>
+                                            ))}
+                                        </div>
+                                        : 
+                                        <div>Este usuario no pertenece a ningún curso activo</div>
                                     }
 
                                 <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>HISTORIAL DE CURSOS</div>
@@ -615,6 +626,40 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                 </div>
                         </li>
                     </ul>
+                    }
+
+                    {user.roles && user.roles.length > 0 && user.roles[0].name == "Ponente" &&
+                    <ul className="collapsible">
+                        <li className="active">
+                            <div className="collapsible-header" style={{"color":"#108058"}}><i className="material-icons">school</i>Cursos</div>
+                            <div className="collapsible-body collapsible-padding padding3">
+
+                                <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>CURSOS ACTUALES</div>
+                                    {user.teacher_active_courses &&  user.teacher_active_courses.length > 0 ? 
+                                        <div className="row">
+                                            {user.teacher_active_courses.map(curso=>(
+                                                <div key={curso.id}><CourseCard curso={curso} actuales={true}/></div>
+                                            ))}
+                                        </div>
+                                        : 
+                                        <div>Este usuario no pertenece a ningún curso activo</div>
+                                    }
+
+                                <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>HISTORIAL DE CURSOS</div>
+                                    {
+                                    user.teacher_finished_courses &&  user.teacher_finished_courses.length > 0 ? 
+                                    <div className="row">
+                                        {user.teacher_finished_courses.map(curso=>(
+                                            <div key={curso.id}><CourseCard curso={curso} actuales={false}/></div>
+                                        ))}
+                                    </div>
+                                    : 
+                                    <div>Este usuario aún no tiene cursos terminados</div>
+                                    }
+                                </div>
+                        </li>
+                    </ul>
+                    }
                 </div>
             </div >
 

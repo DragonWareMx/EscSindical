@@ -8,6 +8,7 @@ import { Inertia } from '@inertiajs/inertia';
 import Alertas from '../../components/common/Alertas';
 
 import '../../styles/crearEntradas.css'
+import ModalEliminar from '../../components/common/ModalEliminar';
 
 const Editar = ({ cursos, entry }) => {
     //errores de la validacion de laravel
@@ -843,6 +844,7 @@ const Editar = ({ cursos, entry }) => {
                                     {/* Aqui empieza el div flex donde esta el boton que submitea el form */}
                                     <div className="row" style={{ marginBottom: "0px" }}>
                                         <div className="col s12" style={{ display: "flex" }}>
+                                            <button data-target="modalEliminar" type="button" className="center-align modal-trigger" style={{ "border": "none", "backgroundColor": "transparent", "color": "#515B60", "cursor": "pointer", marginLeft: "0px", marginRight: "auto" }}><i className="material-icons">delete</i></button>
                                             <button className="btn waves-effect waves-light btn-submit" type="submit" name="action">Agregar
                                             <i className="material-icons right">save</i>
                                             </button>
@@ -854,6 +856,7 @@ const Editar = ({ cursos, entry }) => {
                     </div>
                 </div>
             </div>
+            <ModalEliminar url={route('entrada.delete', entry.id)} nombre={'"' + entry.titulo + '"'} tipo={entry.tipo.toLowerCase()} />
         </>
     )
 }

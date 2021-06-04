@@ -1,6 +1,7 @@
 import { map } from 'jquery';
 import React from 'react'
 import { useEffect, useState } from 'react'
+import { InertiaLink } from '@inertiajs/inertia-react';
 import ReactDom from 'react-dom'
 import route from 'ziggy-js';
 import '../../styles/cursos.css'
@@ -63,20 +64,21 @@ export default function HistorialCursosPonente({finishedCourses}) {
                                     <div key={course.id} className="col s12 m6 l6 xl6">
                                         <div className="card">
                                             <div className="card-content">
-                                                <a className="dropdown-trigger"  data-target='download-report'>
-                                                    <i className="material-icons right">more_vert</i>
-                                                </a>
-                                                {/* DROPDOWN CON OPCIONES */}
-                                                <ul id='download-report' className='dropdown-content'>
-                                                    <li className="options-course-dropdown"><a href="#!"><i className="material-icons tiny" style={{"marginRight":"0px"}}>file_download</i>Descargar reporte</a></li>
-                                                </ul>
 
-                                                <div className="txt-title-course-history">
-                                                    <a href={route('cursos.informacion',course.id)} className="a-mini-course-hover">{course.nombre}</a>
+                                                <div className="col s12 history-mini-card">
+                                                    <div className="col s10 txt-title-course-history">
+                                                        <InertiaLink href={route('cursos.informacion', course.id)} className="a-mini-course-hover">{course.nombre}</InertiaLink>
+                                                    </div>
+                                                    <div className="col s1"><a className='dropdown-trigger'  data-target={'download-report'+course.id}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
+                                                    {/* DROPDOWN CON OPCIONES */}
+                                                    <ul id={'download-report'+course.id} className='dropdown-content dropdown_LC'>
+                                                        <li><a className="dropdown-text" ><i className="material-icons">file_download</i>Descargar reporte</a></li>
+                                                    </ul>
                                                 </div>
+
                                                 <div className="row" style={{"marginTop":"15px", "marginBottom":"5px"}}>
                                                     <div className="col s5">
-                                                        <a href="#!"><img src={course.images && course.images.length>0 && "/storage/imagenes_curso/"+course.images['0'].imagen} className="img-course" style={{"width":"100%"}} /></a>
+                                                        <InertiaLink href={route('cursos.informacion',course.id)}><img src={course.images && course.images.length>0 && "/storage/imagenes_curso/"+course.images['0'].imagen} className="img-course" style={{"width":"100%"}} /></InertiaLink>
                                                     </div>  
                                                     <div className="col s12 l7 m7 xl7">
 
@@ -104,9 +106,10 @@ export default function HistorialCursosPonente({finishedCourses}) {
                                                         
                                                         <div className="container-tags">
                                                             {course.tags.map((tag) =>
-                                                            <a key={tag.id} className="div-tag" href="#!">
-                                                            {tag.nombre}&nbsp;<i className="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
-                                                            </a>
+                                                                
+                                                            <InertiaLink className="div-tag" href={route('cursosBuscar')} data={{ busqueda: tag.nombre }} >
+                                                                {tag.nombre}&nbsp;<i className="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
+                                                            </InertiaLink>
                                                             )}
                                                         </div>
                                                     </div>

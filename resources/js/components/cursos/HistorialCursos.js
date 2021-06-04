@@ -1,5 +1,6 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
+import { InertiaLink } from '@inertiajs/inertia-react';
 import ReactDom from 'react-dom'
 import route from 'ziggy-js';
 import '../../styles/cursos.css'
@@ -14,14 +15,30 @@ function initializeDROP() {
         belowOrigin: true, // Displays dropdown below the button
         stopPropogation: true})
     );
-    var elems2 = document.querySelectorAll('.collapsible');
-    var instances2 = M.Collapsible.init(elems2, options);
 }
+
+function collapsible(){
+    var elems2 = document.querySelectorAll('.collapsible');
+    var instances2 = M.Collapsible.init(elems2);
+}
+
+function transformaFecha(fecha) {
+    const dob = new Date(fecha);
+    const monthNames = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+        'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    const day = dob.getDate(); 
+    const monthIndex = dob.getMonth();
+    const year = dob.getFullYear();
+    return `${day} ${monthNames[monthIndex]} ${year}`;
+  }
 
 
 export default function HistorialCursos({cursos, solicitudes}) {
     useEffect(() => {
         initializeDROP();
+        collapsible();
     }, [])
         return (
             <div className="row">                
@@ -44,20 +61,22 @@ export default function HistorialCursos({cursos, solicitudes}) {
                                         <div key={curso.id} className="col s12 m6 l6 xl4">
                                             <div className="card">
                                                 <div className="card-content">
-                                                    <a className="dropdown-trigger"  data-target='download-certificate'>
-                                                        <i className="material-icons right">more_vert</i>
-                                                    </a>
-                                                    {/* DROPDOWN CON OPCIONES */}
-                                                    <ul id='download-certificate' className='dropdown-content'>
-                                                        <li className="options-course-dropdown"><a href="#!"><i className="material-icons tiny" style={{"marginRight":"0px"}}>file_download</i>Descargar certificado</a></li>
-                                                    </ul>
 
-                                                    <div className="txt-title-course-history">
-                                                        <a href={route('cursos.informacion', curso.id)} className="a-mini-course-hover">{curso.nombre}</a>
+                                                    <div className="col s12 history-mini-card">
+                                                        <div className="col s10 txt-title-course-history">
+                                                            <InertiaLink href={route('cursos.informacion', curso.id)} className="a-mini-course-hover">{curso.nombre}</InertiaLink>
+                                                        </div>
+                                                        <div className="col s1"><a className='dropdown-trigger'  data-target={'download-certificate'+curso.id}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
+                                                        {/* DROPDOWN CON OPCIONES */}
+                                                        <ul id={'download-certificate'+curso.id} className='dropdown-content dropdown_LC'>
+                                                            <li><a className="dropdown-text" ><i className="material-icons">file_download</i>Descargar certificado</a></li>
+                                                        </ul>
                                                     </div>
+
+                                                    
                                                     <div className="row" style={{"marginTop":"15px", "marginBottom":"5px"}}>
                                                         <div className="col s5">
-                                                            <a href="#!"><img src={curso.images && curso.images.length>0 && "/storage/imagenes_curso/"+curso.images['0'].imagen} className="img-course" style={{"width":"100%"}} /></a>
+                                                            <InertiaLink href={route('cursos.informacion', curso.id)}><img src={curso.images && curso.images.length>0 && "/storage/imagenes_curso/"+curso.images['0'].imagen} className="img-course" style={{"width":"100%"}} /></InertiaLink>
                                                         </div>  
                                                         <div className="col s12 l7 m7 xl7">
                                                             <div className="txt-grade-course">CALIFICACIÓN: <b>100</b></div>
@@ -69,9 +88,9 @@ export default function HistorialCursos({cursos, solicitudes}) {
                                                             {/* Tags del curso */}
                                                             <div className="container-tags">
                                                                 {curso.tags.map((tag) => 
-                                                                <a key={tag.id} className="div-tag" href="#!">
+                                                                <InertiaLink key={tag.id} className="div-tag" href={route('cursosBuscar')} data={{ busqueda: tag.nombre }}>
                                                                     {tag.nombre}&nbsp;<i className="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
-                                                                </a>
+                                                                </InertiaLink>
                                                                 )}
                                                             </div>
                                                         </div>
@@ -98,26 +117,28 @@ export default function HistorialCursos({cursos, solicitudes}) {
                                 <span className="badge">{solicitudes.length}</span>
                             </div>
                             
-                            {solicitudes.map((solicitud)=>
+                            
                             <div className="collapsible-body row" style={{"backgroundColor":"white !important"}}>
+                            {solicitudes.map((solicitud)=>
                                 <div key={solicitud.id} className="col s12 m6 l6 xl4">
                                     <div className="card">
                                         <div className="card-content">
-                                            <a className="dropdown-trigger"  data-target='more-info-history' data-beloworigin="true">
-                                                <i className="material-icons right">more_vert</i>
-                                            </a>
-                                            {/* DROPDOWN CON OPCIONES */}
-                                            <ul id='more-info-history' className='dropdown-content'>
-                                                <li className="options-course-dropdown" style={{"cursor":"auto"}}>Fecha de solicitud: {solicitud.created_at}</li>
-                                                <li className="options-course-dropdown"><a href="#!"><i className="material-icons tiny" style={{"marginRight":"0px"}}>close</i>Cancelar solicitud</a></li>
-                                            </ul>
 
-                                            <div className="txt-title-course-history">
-                                                <a href={route('cursos.informacion',solicitud.course.id)} className="a-mini-course-hover">{solicitud.course.nombre}</a>
+                                            <div className="col s12 history-mini-card">
+                                                <div className="col s10 txt-title-course-history">
+                                                    <InertiaLink href={route('cursos.informacion',solicitud.course.id)} className="a-mini-course-hover">{solicitud.course.nombre}</InertiaLink>
+                                                </div>
+                                                <div className="col s1"><a className='dropdown-trigger' data-target={'more-info-history'+solicitud.id}> <i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
+                                                {/* DROPDOWN CON OPCIONES */}
+                                                <ul id={'more-info-history'+solicitud.id} className='dropdown-content dropdown_LC'>
+                                                    <li><a className="dropdown-text" >Fecha de solicitud: {transformaFecha(solicitud.created_at)}</a></li>
+                                                    <li><a className="dropdown-text" ><i className="material-icons">close</i>Cancelar solicitud</a></li>
+                                                </ul>
                                             </div>
+
                                             <div className="row" style={{"marginTop":"15px", "marginBottom":"5px"}}>
                                                 <div className="col s5">
-                                                    <a href="#!"><img src={solicitud.course.images && solicitud.course.images.length>0 && "/storage/imagenes_curso/"+solicitud.course.images['0'].imagen} className="img-course" style={{"width":"100%"}} /></a>
+                                                    <InertiaLink href={route('cursos.informacion',solicitud.course.id)}><img src={solicitud.course.images && solicitud.course.images.length>0 && "/storage/imagenes_curso/"+solicitud.course.images['0'].imagen} className="img-course" style={{"width":"100%"}} /></InertiaLink>
                                                 </div>  
                                                 <div className="col s12 l7 m7 xl7">
                                                     <div className="txt-grade-course" div style={{"width":"max-content", "display":"flex", "alignItems":"center"}}>Estatus:&nbsp;<div className="course-status" style={solicitud.estatus == 'Rechazado' ? {"color":"#D14747"}:{"color":"#1d7456"}}>{solicitud.estatus}</div></div>
@@ -129,9 +150,9 @@ export default function HistorialCursos({cursos, solicitudes}) {
                                                     {/* Tags del curso */}
                                                     <div className="container-tags">
                                                     {solicitud.course.tags.map((tag)=>
-                                                        <a className="div-tag" href="#!">
+                                                        <InertiaLink className="div-tag" href={route('cursosBuscar')} data={{ busqueda: tag.nombre }} >
                                                             {tag.nombre}&nbsp;<i className="material-icons" style={{"fontSize": "12px"}}>local_offer</i>
-                                                        </a>
+                                                        </InertiaLink>
                                                     )}
                                                     </div>
                                                 </div>
@@ -140,8 +161,9 @@ export default function HistorialCursos({cursos, solicitudes}) {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             )}
+                            </div>
+                            
                         </li>
                     </ul>
                 </div>
