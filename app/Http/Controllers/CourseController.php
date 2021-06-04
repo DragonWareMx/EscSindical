@@ -516,7 +516,7 @@ class CourseController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
         DB::beginTransaction();
         try {
-            $course = User::find($id);
+            $course = Course::find($id);
 
             $course->delete();
 
@@ -613,8 +613,40 @@ class CourseController extends Controller
 
     public function modulos($id){
         return Inertia::render('Curso/ModulosConfig', [
-            'curso' => Course::findOrFail($id),
+            'curso' => Course::with('modules')->findOrFail($id),
         ]);
+    }
+
+    public function deleteModule($id){
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        DB::beginTransaction();
+        try {
+            $module = Module::find($id);
+
+            $module->delete();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'delete';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+                '{
+                modules: {
+                    id: ' . $id .
+                '}
+            }';
+
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha eliminado el modulo: ' . $module->nombre;
+
+            $newLog->save();
+
+            DB::commit();
+            return \Redirect::route('cursos')->with('success', '¡Modulo eliminado con éxito!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
+        }   
     }
 
     public function modulo($id,$mid)

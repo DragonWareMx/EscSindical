@@ -47,5 +47,23 @@ class ModuleSeeder extends Seeder
                     <li>el modulo y sus derivados</li>
                 </ol>'
         ]);
+        DB::table('modules')->insert([
+            'course_id'=>1,
+            'numero'=>2,
+            'nombre'=>'Primeros pasos. ¿Qué es una clase?',
+            'objetivo'=>'UN LOREM IPSUM DE LA BASE DE DATOS SOY Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.',
+            'criterios'=>'Asistencia 10%, tareas 20%, examen 30% y proyecto final 40%',
+            'duracion'=>4,
+            'temario'=>'<h1>Unidad 2</h1>
+                <ol>
+                    <li>Introducci&oacute;n a poo</li>
+                    <li>Objetos</li>
+                    <li>Atributos</li>
+                    <li>M&eacute;todos</li>
+                    <li>Otro temita por ah&iacute; muy bonito</li>
+                </ol>
+                
+                <p>&nbsp;</p>'
+        ]);
     }
 }
