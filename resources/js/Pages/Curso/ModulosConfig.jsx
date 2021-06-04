@@ -37,7 +37,7 @@ const ModulosConfig = ({curso}) => {
                     <div className="col s12 div-modulo-config">
                         <div className="col s12">
                             <div className="div-info-modulo-c">
-                                <div className="col s12 m11 l11 xl11 txt-titulo-modulo-card">{modulo.nombre}</div>
+                                <InertiaLink href={route('cursos.modulo',[curso.id,modulo.id])} className="col s12 m11 l11 xl11 txt-titulo-modulo-card">{modulo.nombre}</InertiaLink>
                                 <div className="col s12 m1 l1 xl1"><a  className="dropdown-trigger right" data-target={'dropdown-option-module'+modulo.id}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                                 {/* Dropdown modulos */}
                                 <ul id={'dropdown-option-module'+modulo.id} className='dropdown-content dropdown_LC'>
