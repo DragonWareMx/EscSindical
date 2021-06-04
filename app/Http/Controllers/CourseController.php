@@ -738,9 +738,9 @@ class CourseController extends Controller
     public function participantes($id)
     {
         $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
-        if(!$inscrito){
-            return \Redirect::route('cursos.informacion',$id);
-        }
+        // if(!$inscrito){
+        //     return \Redirect::route('cursos.informacion',$id);
+        // }
         return Inertia::render('Curso/Participantes', [
             'curso' => Course::with('users:id,nombre,foto,apellido_p,apellido_m,email','teacher:nombre,apellido_p,apellido_m,foto,id,email','modules:course_id,id,nombre,numero')->findOrFail($id),
         ]);
