@@ -80,7 +80,7 @@ class CourseController extends Controller
     public function storeModule(Request $request){
         \Gate::authorize('haveaccess', 'ponente.perm');
         $validated = $request->validate([
-            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'nombre' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'curso' => 'required|exists:courses,id',
             'objetivo' => "required",
             'criterios_de_evaluacion' => 'required',
@@ -146,7 +146,7 @@ class CourseController extends Controller
         //dd($request);
         //VALIDAMOS DATOS
         $validated = $request->validate([
-            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'nombre' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'tags' => 'required',
             'fecha_inicio' => 'required|date|after:today',
             'fecha_final' => 'required|date|after:fecha_inicio',
@@ -272,7 +272,7 @@ class CourseController extends Controller
         \Gate::authorize('haveaccess', 'ponente.perm');
         //VALIDAMOS DATOS
         $validated = $request->validate([
-            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'nombre' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'tags' => 'nullable',
             'fecha_inicio' => 'required|date|after:today',
             'fecha_final' => 'required|date|after:fecha_inicio',

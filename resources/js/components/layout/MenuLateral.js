@@ -135,7 +135,9 @@ export default function MenuLateral() {
           </InertiaLink>
         </div>
         <div className="col s12">
-          <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Mis cursos">school</i>
+          <InertiaLink href={route('cursos').url()} className="icono-menu">
+            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Mis cursos">school</i>
+          </InertiaLink>
         </div>
         <div className="col s12">
           <InertiaLink href={route('cursosBuscar').url()} className="icono-menu">

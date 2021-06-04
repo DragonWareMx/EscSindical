@@ -68,7 +68,7 @@ const Create3 = ({ change, values,changeCK, errors, setValues}) => {
            
             <div className="col s12 ">
                 <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
-                    Editar
+                    Agregar
                     <i className="material-icons right">save</i>
                 </button>
             </div>
