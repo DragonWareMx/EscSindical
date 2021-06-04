@@ -138,7 +138,67 @@ class CourseController extends Controller
 
     public function moduleEdit($id)
     {
-        return Inertia::render('Cursos/ModuleEdit');
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        return Inertia::render('Cursos/ModuleEdit', [
+            'cursos' => Course::where('teacher_id', Auth::id())->get(),
+            'modulo'=> Module::with('course')->findOrFail($id),
+        ]);
+        
+    }
+    public function updateModule($id, Request $request)
+    {
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        $validated = $request->validate([
+            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'objetivo' => "required",
+            'criterios_de_evaluacion' => 'required',
+            'duracion' => 'required|numeric',
+            'temario' => 'required',
+        ]);
+        
+        //COMIENZA TRANSACCIÓN
+        DB::beginTransaction();
+        
+        try {
+            $myModule = Module::find($id);
+
+            $myModule->nombre = $request->nombre;
+            $myModule->objetivo = $request->objetivo;
+            $myModule->duracion = $request->duracion;
+            $myModule->criterios = $request->criterios_de_evaluacion;
+            $myModule->temario = $request->temario;
+
+            $myModule->save();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'update';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                modules: {
+                    nombre: ' . $request->nombre .
+                    'objetivo: ' . $request->objetivo .
+                    'duracion: ' . $request->duracion .
+                    'criterios: '. $request->criterios_de_evaluacion.                    
+                    'temario: ' . $request->temario .
+                '},
+            }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha creado el módulo: '. $myModule->nombre;
+                
+            // //SE GUARDA EL LOG
+            $newLog->save();
+
+            DB::commit();
+            return \Redirect::route('cursos.modulos',$myModule->course_id)->with('success', 'El módulo '.$myModule->nombre .' se ha editado exitosamente');
+        }
+        catch (\Exception $e) {
+            dd($e);
+            DB::rollBack();
+            return \Redirect::route('cursos.modulos', $myModule->course_id)->with('error', 'No se pudo editar el módulo '.$myModule->nombre);
+        }
     }
 
     public function store(Request $request)
@@ -622,7 +682,6 @@ class CourseController extends Controller
         DB::beginTransaction();
         try {
             $module = Module::find($id);
-
             $module->delete();
 
             //SE CREA EL LOG
@@ -642,7 +701,7 @@ class CourseController extends Controller
             $newLog->save();
 
             DB::commit();
-            return \Redirect::route('cursos')->with('success', '¡Modulo eliminado con éxito!');
+            return \Redirect::route('cursos.modulos',$module->course_id)->with('success', '¡Modulo eliminado con éxito!');
         } catch (\Exception $e) {
             DB::rollBack();
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');

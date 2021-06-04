@@ -60,6 +60,7 @@ Route::get('/cursos/module/create', [App\Http\Controllers\CourseController::clas
 Route::get('/cursos/module/edit/{id}', [App\Http\Controllers\CourseController::class, 'moduleEdit'])->name('module.edit');
 Route::post('/cursos/module/store', [App\Http\Controllers\CourseController::class, 'storeModule'])->name('module.store');
 Route::delete('/cursos/module/delete/{id}', [App\Http\Controllers\CourseController::class, 'deleteModule'])->name('module.delete');
+Route::post('/cursos/module/update/{id}', [App\Http\Controllers\CourseController::class, 'updateModule'])->name('module.update');
 
 //------Rutas del layout cursos
 Route::get('/cursos/{id}/informacion', [App\Http\Controllers\CourseController::class, 'informacion'])->name('cursos.informacion');
