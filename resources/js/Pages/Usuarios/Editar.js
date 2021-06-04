@@ -4,6 +4,8 @@ import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 
 import '../../styles/usersStyle.css'
 import '/css/infoAlumno.css'
+import '/css/modulos.css'
+import '/css/participantes.css'
 import '/css/register.css'
 import route from 'ziggy-js';
 import { Inertia } from '@inertiajs/inertia';
@@ -132,6 +134,9 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
         var elems = document.querySelectorAll('.collapsible')
         var instances = M.Collapsible.init(elems)
 
+        var elems = document.querySelectorAll('.tooltipped');
+        var instances = M.Tooltip.init(elems);
+
         var elems = document.querySelectorAll('.dropdown-trigger');
         var options;
         var instances = M.Dropdown.init(elems, ({inDuration: 300,
@@ -236,12 +241,18 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
     return (
         <>
-            <div className="row container">
+            <div className="row">
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
                         <div className="card-content">
-                            <span className="card-title"><InertiaLink href={route('usuarios')} style={{color: "#134E39"}}>Usuarios</InertiaLink> / Editar Usuario</span>
                             
+                            <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
+                                {/* regresar */}
+                                <InertiaLink  href={route('usuarios')}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
+                                EDITAR USUARIO
+                            </div>
+
+
                             <Alertas />
 
                             {user.deleted_at &&
@@ -305,7 +316,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
                                         <div className="input-field col s6 input-50-re">
                                             <input  id="fecha_de_nacimiento" type="text" className={errors.fecha_de_nacimiento ? "validate datepicker invalid" : "validate datepicker"} name="fecha_de_nacimiento" required autoComplete="fecha_de_nacimiento" value={values.fecha_de_nacimiento} readOnly />
-                                            <label htmlFor="fecha_de_nacimiento">Fecha de Nacimiento</label>
+                                            <label htmlFor="fecha_de_nacimiento">Fec. Nacimiento</label>
                                             {
                                                 errors.fecha_de_nacimiento &&
                                                 <span className="helper-text" data-error={errors.fecha_de_nacimiento} style={{ "marginBottom": "10px" }}>{errors.fecha_de_nacimiento}</span>
@@ -326,7 +337,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                             }
                                         </div>
 
-                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>DIRECCIÓN</p>
+                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", "marginBottom":"20px"}}>DIRECCIÓN</p>
 
                                         <div className="input-field col s12 ">
                                             <input  maxLength="50" id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado" value={values.estado} required autoComplete="estado" onChange={handleChange} />
@@ -384,7 +395,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
                                         <div className="input-field col s6 input-50-re">
                                             <input  maxLength="10" id="numero_interior" type="text" className={errors.numero_interior ? "validate form-control invalid" : "validate"} name="numero_interior" value={values.numero_interior} autoComplete="numero_interior" onChange={handleChange} />
-                                            <label htmlFor="numero_interior">No. Interior (opcional)</label>
+                                            <label htmlFor="numero_interior">No. Interior (Op)</label>
                                             {
                                                 errors.numero_interior &&
                                                 <span className="helper-text" data-error={errors.numero_interior} style={{ "marginBottom": "10px" }}>{errors.numero_interior}</span>
@@ -394,7 +405,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                     </div>
 
                                     <div className="col s12 m6 div-division">
-                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", marginBottom: "15px" }}>INFORMACIÓN INSTITUCIONAL</p>
+                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", marginBottom: "20px" }}>INFORMACIÓN INSTITUCIONAL</p>
 
                                         <div className="input-field col s12">
                                             <input  id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="10" />
@@ -498,10 +509,10 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                             }
                                         </div>
 
-                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>CUENTA</p>
+                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", "marginBottom":"20px" }}>CUENTA</p>
 
                                         <div className="input-field col s12">
-                                            <i className="material-icons prefix">account_circle</i>
+                                            {/* <i className="material-icons prefix">account_circle</i> */}
                                             <input  id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required autoComplete="email" onChange={handleChange} />
                                             <label htmlFor="email">Correo electrónico</label>
                                             {
@@ -511,7 +522,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
                                             <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>¿Cambiar contraseña?</p>
                                             
-                                            <div className="switch">
+                                            <div className="switch"  style={{"marginBottom":"15px"}}>
                                                 <label>
                                                 No
                                                 <input id="cambiar_contrasena" type="checkbox"  checked={values.cambiar_contrasena} onChange={cambiarContrasena} />
@@ -524,7 +535,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
                                         {values.cambiar_contrasena &&
                                         <>
-                                            <div className="input-field col s12">
+                                            <div className="input-field col s12" style={{"marginBottom":"5px"}}>
                                                 <i className="material-icons prefix">lock</i>
                                                 <input  id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"} name="contrasena" value={values.contrasena} required onChange={handleChange} />
                                                 <label htmlFor="contrasena">Nueva contraseña</label>

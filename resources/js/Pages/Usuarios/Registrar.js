@@ -5,6 +5,8 @@ import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 import '../../styles/usersStyle.css'
 import '/css/infoAlumno.css'
 import '/css/register.css'
+import '/css/modulos.css'
+import '/css/participantes.css'
 import route from 'ziggy-js';
 import { Inertia } from '@inertiajs/inertia';
 import Alertas from '../../components/common/Alertas';
@@ -155,11 +157,16 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
     }, [])
 
     return (
-        <div className="row container">
+        <div className="row">
             <div className="col contenedor s12">
                 <div className="card darken-1 cardUsers">
                     <div className="card-content">
-                        <span className="card-title"><InertiaLink href={route('usuarios')} style={{color: "#134E39"}}>Usuarios</InertiaLink> / Crear Usuario</span>
+                        <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
+                            {/* regresar */}
+                            <InertiaLink  href={route('usuarios')}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
+                            AGREGAR USUARIO
+                        </div>
+                        
                         <Alertas />
                         {/* ----Formulario---- */}
                         <form onSubmit={handleSubmit}>
@@ -201,7 +208,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
 
                                     <div className="input-field col s12 input-50-re">
                                         <input id="apellido_materno" type="text" className={errors.apellido_materno ? "validate form-control invalid" : "validate form-control"} name="apellido_materno" value={values.apellido_materno} onChange={handleChange} autoComplete="apellido_materno" maxLength="255" />
-                                        <label htmlFor="apellido_materno">Apellido Materno (opcional)</label>
+                                        <label htmlFor="apellido_materno">Apellido Materno (Op)</label>
                                         {
                                             errors.apellido_materno &&
                                             <span className="helper-text" data-error={errors.apellido_materno} style={{ "marginBottom": "10px" }}>{errors.apellido_materno}</span>
@@ -210,7 +217,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
 
                                     <div className="input-field col s6 input-50-re">
                                         <input id="fecha_de_nacimiento" type="text" className={errors.fecha_de_nacimiento ? "validate datepicker invalid" : "validate datepicker"} name="fecha_de_nacimiento" required autoComplete="fecha_de_nacimiento" value={values.fecha_de_nacimiento} readOnly />
-                                        <label htmlFor="fecha_de_nacimiento">Fecha de Nacimiento</label>
+                                        <label htmlFor="fecha_de_nacimiento">Fec. Nacimiento</label>
                                         {
                                             errors.fecha_de_nacimiento &&
                                             <span className="helper-text" data-error={errors.fecha_de_nacimiento} style={{ "marginBottom": "10px" }}>{errors.fecha_de_nacimiento}</span>
