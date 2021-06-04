@@ -214,7 +214,7 @@ class CourseController extends Controller
             'link' => 'required|url',
             'vc' => 'required|boolean',
             'tipos_de_capacitacion' => 'required',
-            'tipo_inscripcion' => 'required|exists:courses,tipo_acceso',
+            'tipo_inscripcion' => 'required|in:Automática,Solicitud,Sólo yo',
             'descripcion' => 'required',
             'imgs' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
             'maximo' =>'required|digits_between:1,3|numeric',
