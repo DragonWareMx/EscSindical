@@ -143,12 +143,12 @@ const LayoutCursos = ({children}) => {
                                             </InertiaLink>
                                         </li>
                                         {/* Estadisticas */}
-                                        <li className="li-style">
+                                        {/* <li className="li-style">
                                             <InertiaLink id="tab_estadisticas" href="" className="LC_a" target="_self">
                                                 <i className="material-icons col s3 LC_tab_icons">bar_chart</i>
                                                 <div className="col s9">Estadísticas</div>
                                             </InertiaLink>
-                                        </li>
+                                        </li> */}
                                     </ul>
                                 </div>
                             </nav>
