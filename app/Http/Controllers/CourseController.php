@@ -840,7 +840,7 @@ class CourseController extends Controller
         \Gate::authorize('haveaccess', 'ponente.perm');
         
         return Inertia::render('Curso/AgregarParticipante', [
-            'curso' => Course::findOrFail($id),
+            'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
             'users' =>
                 fn () => User::with('activeCourses:id','courses:id')->select('users.id','nombre','apellido_p', 'apellido_m', 'email','matricula')
                             ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
