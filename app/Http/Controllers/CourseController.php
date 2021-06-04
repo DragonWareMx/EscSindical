@@ -902,12 +902,12 @@ class CourseController extends Controller
         $entrada=Entry::with('files:archivo,entry_id')->where('tipo',"Asignacion")->findOrFail($pid);
         dd($entrada);
         return Inertia::render('Curso/Asignacion/Asignacion', [
-            'curso' => Course::findOrFail($id)
+            'curso' => Course::with('modules:course_id,id,nombre,numero')findOrFail($id)
         ]);
     }
 
     public function inscribir($id){
-        $curso=Course::findOrFail($id);
+        $curso=Course::with('modules:course_id,id,nombre,numero')->findOrFail($id);
 
         //Verificar que el usuario no pertenezca a algún curso activo
         $user=User::with('courses:id,estatus')->findOrFail(Auth::id());
