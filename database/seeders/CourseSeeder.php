@@ -70,7 +70,7 @@ class CourseSeeder extends Seeder
             'link'=>'https://facebook.com',
             'max'=>'10',
             'valor_curricular'=>'1',
-            'tipo_acceso' => 'Automática',
+            'tipo_acceso' => 'Sólo yo',
             'estatus'=>'Activo',
             'descripcion' =>'¿Te gustaría conocer los secretos del saiyajin más fuerte del universo?, este es tu curso',   
             'teacher_id' =>'3',
