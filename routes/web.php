@@ -98,3 +98,5 @@ Route::patch('/perfil/configuracion', [App\Http\Controllers\PerfilController::cl
 Route::get('/entrada/crear', [App\Http\Controllers\EntryController::class, 'index'])->name('entrada.crear');
 Route::post('/entrada/crear', [App\Http\Controllers\EntryController::class, 'create'])->name('entrada.create');
 Route::get('/entrada/editar/{id}', [App\Http\Controllers\EntryController::class, 'edit'])->name('entrada.editar');
+
+Route::delete('/entrada/eliminar/{id}', [App\Http\Controllers\EntryController::class, 'delete'])->name('entrada.delete');
