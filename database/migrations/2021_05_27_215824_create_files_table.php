@@ -16,6 +16,7 @@ class CreateFilesTable extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->text('archivo');
+            $table->text('original');
             $table->unsignedBigInteger('entry_id');
             $table->foreign('entry_id')->references('id')->on('entries')->onDelete('cascade');
             $table->timestamps();

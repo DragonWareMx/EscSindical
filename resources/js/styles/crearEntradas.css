@@ -21,3 +21,26 @@
     margin-top: 4px;
     margin-bottom: 4px;
 }
+
+.archivos-view ul, .archivos-view li{
+    list-style-type:  disc !important;
+}
+
+.archivos-view li a{
+    cursor: pointer;
+}
+
+.archivos-view ul{
+    padding-left: 20px !important;
+    margin: 10px 0px;
+}
+
+.archivos-view{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.archivoslist{
+    word-wrap: break-word
+}
