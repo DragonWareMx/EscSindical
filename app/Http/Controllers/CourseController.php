@@ -741,44 +741,91 @@ class CourseController extends Controller
     }
 
     public function inscribir($id){
-        $oldRequest=Application::where('course_id',$id)->where('user_id',Auth::id())->first();
-        if($oldRequest){
-            return \Redirect::back()->with('message', 'Ya solicitaste inscripción a este curso.');
-        }
         $curso=Course::findOrFail($id);
+
+        //Verificar que el usuario no pertenezca a algún curso activo
+        $user=User::with('courses:id,estatus')->findOrFail(Auth::id());
+        foreach($user->courses as $curso){
+            if($curso->estatus=='Activo'){
+                return \Redirect::back()->with('error', 'Ya perteneces a un curso actualmente activo.');
+            }
+        }
+
         try {
             DB::beginTransaction();
-            $newRequest= new Application();
-            $newRequest->course_id = $id;
-            $newRequest->user_id = Auth::id();
-            $newRequest->estatus = 'En espera';
-            $newRequest->save();
-            //SE CREA EL LOG
-            $newLog = new Log;
 
-            $newLog->categoria = 'create';
-            $newLog->user_id = Auth::id();
-            $newLog->accion =
-            '{
-                requests: {
-                    course_id: ' . $newRequest->course_id .
-                    'user_id: ' . $newRequest->user_id .
-                    'estatus: ' . $newRequest->estatus .
-                '},
-            }';
+            //Se inscribe automáticamente
+            if($curso->tipo_acceso == 'Automática'){
+                $user->courses()->attach($curso->id);
+                //SE CREA EL LOG
+                $newLog = new Log;
 
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado unirse al curso: '. $curso->nombre;
-            // //SE GUARDA EL LOG
-            $newLog->save();
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                '{
+                    course_user: {
+                        course_id: ' . $id.
+                        'user_id: ' . $user->id .
+                    '},
+                }';
 
-            $notification = new Notification();
-            $notification->titulo= 'Tienes una nueva solicitud de ingreso al curso: '.$curso->nombre;
-            $notification->visto=false;
-            $notification->user_id=$curso->teacher_id;
-            $notification->save(); 
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' se ha inscrito al curso: '. $curso->nombre;
+                // //SE GUARDA EL LOG
+                $newLog->save();
+                
+                $notification = new Notification();
+                $notification->titulo= $user->nombre.' se ha inscrito al curso: '.$curso->nombre;
+                $notification->visto=false;
+                $notification->user_id=$curso->teacher_id;
+                $notification->save(); 
 
-            DB::commit();
-            return \Redirect::back()->with('success', 'Solicitud de inscripción enviada con éxito.');
+                DB::commit();
+                return \Redirect::route('cursos.informacion',$id)->with('success', 'Te has inscrito a este curso.');
+            }
+
+            //Se manda solicitud
+            else if($curso->tipo_acceso == 'Solicitud'){
+                $oldRequest=Application::where('course_id',$id)->where('user_id',Auth::id())->first();
+                if($oldRequest){
+                    return \Redirect::back()->with('message', 'Ya solicitaste inscripción a este curso.');
+                }
+                $newRequest= new Application();
+                $newRequest->course_id = $id;
+                $newRequest->user_id = Auth::id();
+                $newRequest->estatus = 'En espera';
+                $newRequest->save();
+                //SE CREA EL LOG
+                $newLog = new Log;
+
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                '{
+                    requests: {
+                        course_id: ' . $newRequest->course_id .
+                        'user_id: ' . $newRequest->user_id .
+                        'estatus: ' . $newRequest->estatus .
+                    '},
+                }';
+
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado unirse al curso: '. $curso->nombre;
+                // //SE GUARDA EL LOG
+                $newLog->save();
+
+                $notification = new Notification();
+                $notification->titulo= 'Tienes una nueva solicitud de ingreso al curso: '.$curso->nombre;
+                $notification->visto=false;
+                $notification->user_id=$curso->teacher_id;
+                $notification->save(); 
+
+                DB::commit();
+                return \Redirect::back()->with('success', 'Solicitud de inscripción enviada con éxito.');
+            }
+            else{
+                DB::rollback();
+                return \Redirect::route('cursos.informacion',$id)->with('error', 'No es posible inscribirse a este curso, contacta al profesor para que él mismo te inscriba.');
+            }
         } catch (\Throwable $th) {
             DB::rollback();
             return \Redirect::back()->with('error', 'Ha ocurrido un problema, vuela a intentarlo más tarde.');
