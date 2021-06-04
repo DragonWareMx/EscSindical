@@ -806,7 +806,7 @@ class CourseController extends Controller
     {
         \Gate::authorize('haveaccess', 'ponente.perm');
 
-        $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto')
+        $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto','modules:course_id,id,nombre,numero')
                         ->select('nombre','id')
                         ->findOrFail($id);
         return Inertia::render('Curso/Solicitudes', [
