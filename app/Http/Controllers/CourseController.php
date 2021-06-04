@@ -18,6 +18,7 @@ use App\Models\Notification;
 use App\Models\Image;
 use App\Models\Training_type;
 use App\Models\Drop_requests;
+use App\Models\Delete_requests;
 
 
 class CourseController extends Controller
@@ -417,6 +418,59 @@ class CourseController extends Controller
         DB::beginTransaction();
         try {
 
+            if (Delete_requests::where('course_id', $id)->where('user_id',Auth::id())->first()){
+                return \Redirect::route('cursos')->with('message', 'Ya solicitaste tu baja a este curso');
+            }
+            else {
+                $newRequest = new Delete_requests;
+                $newRequest->course_id = $id;
+                $newRequest->user_id = Auth::id();
+                $newRequest->comentario = $request->descripcion;
+                $newRequest->estatus = 'Pendiente'; 
+
+                $newRequest->save();
+                //SE CREA EL LOG
+
+                $newLog = new Log;
+
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                '{
+                    delete_requests: {
+                        course_id: ' . $id . ',\n
+                        user_id: ' . Auth::id() . ',\n
+                        comentario: '.$request->descripcion. ',\n
+                        estatus: Pendiente, \n
+                    },
+                }';
+
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado la eliminación de un curso';
+                
+                //SE GUARDA EL LOG
+                $newLog->save();
+            
+                DB::commit();
+                return \Redirect::route('cursos')->with('success', 'Se solicitó la eliminación del curso');
+            }
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
+        }
+    }
+
+    public function deleteCourseRequest($id, Request $request)
+    {
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        //VALIDAMOS DATOS
+        $validated = $request->validate([
+            'descripcion' => 'required',
+        ]);
+        
+        DB::beginTransaction();
+        try {
+
             if (Drop_requests::where('course_id', $id)->where('user_id',Auth::id())->first()){
                 return \Redirect::route('cursos')->with('message', 'Ya solicitaste tu baja a este curso');
             }
@@ -456,14 +510,13 @@ class CourseController extends Controller
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
         }
     }
-
     public function delete($id)
     {
 
         \Gate::authorize('haveaccess', 'admin.perm');
         DB::beginTransaction();
         try {
-            $course = User::find($id);
+            $course = Course::find($id);
 
             $course->delete();
 
@@ -560,8 +613,40 @@ class CourseController extends Controller
 
     public function modulos($id){
         return Inertia::render('Curso/ModulosConfig', [
-            'curso' => Course::findOrFail($id),
+            'curso' => Course::with('modules')->findOrFail($id),
         ]);
+    }
+
+    public function deleteModule($id){
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        DB::beginTransaction();
+        try {
+            $module = Module::find($id);
+
+            $module->delete();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'delete';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+                '{
+                modules: {
+                    id: ' . $id .
+                '}
+            }';
+
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha eliminado el modulo: ' . $module->nombre;
+
+            $newLog->save();
+
+            DB::commit();
+            return \Redirect::route('cursos')->with('success', '¡Modulo eliminado con éxito!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
+        }   
     }
 
     public function modulo($id,$mid)

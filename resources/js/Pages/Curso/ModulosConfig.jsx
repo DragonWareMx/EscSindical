@@ -8,6 +8,10 @@ import '/css/modulos.css'
 
 // Default SortableJS
 import Sortable from 'sortablejs';
+//componentes
+import ModalEliminar from '../../components/common/ModalEliminarDD'
+import route from 'ziggy-js';
+import { Modal } from 'bootstrap';
 
 // Core SortableJS (without default plugins)
 // import Sortable from 'sortablejs/modular/sortable.core.esm.js';
@@ -16,7 +20,7 @@ import Sortable from 'sortablejs';
 // import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
 
 const ModulosConfig = ({curso}) => {
-
+    console.log (curso);
     function initializeMaterialize(){
         var elems = document.querySelectorAll('.dropdown-trigger');
         var instances = M.Dropdown.init(elems);
@@ -49,73 +53,33 @@ const ModulosConfig = ({curso}) => {
             
             
             <ul id="items" className="col s12">
-                <li>
+                {curso.modules.map((modulo) =>
+                <li key={modulo.id}>
                     <div className="col s12 div-modulo-config">
                         <div className="col s1">
                             <i className="material-icons" style={{"cursor":"move"}}>drag_handle</i>
                         </div>
                         <div className="col s11">
                             <div className="div-info-modulo-c">
-                                <div className="col s12 m11 l11 xl11 txt-titulo-modulo-card">Nombre completo del módulo A</div>
-                                <div className="col s12 m1 l1 xl1"><a  className="dropdown-trigger right" data-target='dropdown-option-module'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
+                                <div className="col s12 m11 l11 xl11 txt-titulo-modulo-card">{modulo.nombre}</div>
+                                <div className="col s12 m1 l1 xl1"><a  className="dropdown-trigger right" data-target={'dropdown-option-module'+modulo.id}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                                 {/* Dropdown modulos */}
-                                <ul id='dropdown-option-module' className='dropdown-content dropdown_LC'>
-                                    <li><a className="dropdown-text modal-trigger" href="#!"><i className="material-icons">edit</i>Editar módulo</a></li>
-                                    <li><a className="dropdown-text modal-trigger" href="#!"><i className="material-icons">clear</i>Eliminar módulo</a></li>
+                                <ul id={'dropdown-option-module'+modulo.id} className='dropdown-content dropdown_LC'>
+                                    <li><a className="dropdown-text modal-trigger" href={route('module.edit',modulo.id)}><i className="material-icons">edit</i>Editar módulo</a></li>
+                                    <li><a className="dropdown-text modal-trigger" data-target={'modalEliminar'+modulo.nombre} href=""><i className="material-icons">clear</i>Eliminar módulo</a></li>
                                 </ul>
-
+                            
                             </div>
                             <div className="col s12 txt-titulo-objetivo">OBJETIVO</div>
-                            <div className="col s12 txt-objetivo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.</div>
+                            <div className="col s12 txt-objetivo">{modulo.objetivo}</div>
                         </div>
                     </div>
+                    <ModalEliminar nombre={modulo.nombre} tipo={'modulo'} url = {route('module.delete', modulo.id)}/>
                 </li>
-                <li>
-                    <div className="col s12 div-modulo-config">
-                        <div className="col s1">
-                            <i className="material-icons" style={{"cursor":"move"}}>drag_handle</i>
-                        </div>
-                        <div className="col s11">
-                            <div className="div-info-modulo-c">
-                                <div className="col s12 m11 l11 xl11 txt-titulo-modulo-card">Nombre completo del módulo B</div>
-                                <div className="col s12 m1 l1 xl1"><a  className="dropdown-trigger right" data-target='dropdown-option-module'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
-                                {/* Dropdown modulos */}
-                                <ul id='dropdown-option-module' className='dropdown-content dropdown_LC'>
-                                    <li><a className="dropdown-text modal-trigger" href="#!"><i className="material-icons">edit</i>Editar módulo</a></li>
-                                    <li><a className="dropdown-text modal-trigger" href="#!"><i className="material-icons">clear</i>Eliminar módulo</a></li>
-                                </ul>
-
-                            </div>
-                            <div className="col s12 txt-titulo-objetivo">OBJETIVO</div>
-                            <div className="col s12 txt-objetivo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.</div>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div className="col s12 div-modulo-config">
-                        <div className="col s1">
-                            <i className="material-icons" style={{"cursor":"move"}}>drag_handle</i>
-                        </div>
-                        <div className="col s11">
-                            <div className="div-info-modulo-c">
-                                <div className="col s12 m11 l11 xl11 txt-titulo-modulo-card">Nombre completo del módulo C</div>
-                                <div className="col s12 m1 l1 xl1"><a  className="dropdown-trigger right" data-target='dropdown-option-module'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
-                                {/* Dropdown modulos */}
-                                <ul id='dropdown-option-module' className='dropdown-content dropdown_LC'>
-                                    <li><a className="dropdown-text modal-trigger" href="#!"><i className="material-icons">edit</i>Editar módulo</a></li>
-                                    <li><a className="dropdown-text modal-trigger" href="#!"><i className="material-icons">clear</i>Eliminar módulo</a></li>
-                                </ul>
-
-                            </div>
-                            <div className="col s12 txt-titulo-objetivo">OBJETIVO</div>
-                            <div className="col s12 txt-objetivo">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.</div>
-                        </div>
-                    </div>
-                </li>
+                )}
             </ul>
-            
-
         </div>
+        
     </>
   )
 }
