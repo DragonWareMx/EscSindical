@@ -21,6 +21,7 @@ const Editar = ({ cursos, entry }) => {
 
     //valores para formulario
     const [values, setValues] = useState({
+        _method: 'patch',
         curso: entry.module.course.id,
         modulo: entry.module.id,
         tipo: entry.tipo,
@@ -36,6 +37,7 @@ const Editar = ({ cursos, entry }) => {
         hora_de_apertura: horaAp,
         hora_de_entrega: horaEn,
         max_calif: entry.max_calif,
+        modFiles: false,
     })
 
     function separaFecha(fecha, tipo) {
@@ -351,6 +353,13 @@ const Editar = ({ cursos, entry }) => {
         }))
     }
 
+    function handleNewFiles() {
+        setValues(values => ({
+            ...values,
+            modFiles: !values.modFiles,
+        }))
+    }
+
     function handleNotificacion() {
         setValues(values => ({
             ...values,
@@ -416,7 +425,7 @@ const Editar = ({ cursos, entry }) => {
     //manda el forumulario
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.post(route('entrada.create'), values,
+        Inertia.post(route('entrada.edit', entry.id), values,
             {
                 onError: () => {
                     // Inertia.reload({ only: ['cursos'], data: { regime: values.regimen } })
@@ -425,7 +434,6 @@ const Editar = ({ cursos, entry }) => {
         )
     }
 
-    console.log(entry);
     return (
         <>
             <div className="container">
@@ -642,8 +650,115 @@ const Editar = ({ cursos, entry }) => {
                                                         />
                                                     </div>
                                         }
-                                        {/* -- INPUT FILE -- */}
+                                        {/* Cuadrito pa ver los archivos*/}
                                         {values.tipo == "Aviso" ?
+                                            <div className="col s12 archivos-view" style={{ paddingTop: "10px" }}>
+                                                {!values.modFiles &&
+                                                    <div className="col s12 m6 archivoslist" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+                                                        <h2 className="ck-titulo">Archivos</h2>
+                                                        <ul>
+                                                            {entry.files && entry.files.length > 0 && entry.files.map((file, index) =>
+                                                                <li key={index}><a href={"/storage/archivos_cursos/" + file.archivo} download={file.original}>{file.original}</a></li>
+                                                            )}
+                                                        </ul>
+                                                    </div>
+                                                }
+                                                <div className="col s12 m6" style={values.modFiles ? { paddingLeft: "0px", paddingRight: "0px", marginLeft: "0px" } : { paddingLeft: "0px", paddingRight: "0px" }}>
+                                                    <div className="col s12" >
+                                                        <h2 className="ck-titulo">Editar archivos</h2>
+                                                        <div className="switch">
+                                                            <label>
+                                                                No
+                                                            <input type="checkbox" value="" onChange={handleNewFiles} />
+                                                                <span className="lever" />
+                                                            Si
+                                                        </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            : values.tipo == "Informacion" ?
+                                                <div className="col s12 archivos-view" style={{ paddingTop: "10px" }}>
+                                                    {!values.modFiles &&
+                                                        <div className="col s12 m6 archivoslist" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+                                                            <h2 className="ck-titulo">Archivos</h2>
+                                                            <ul>
+                                                                {entry.files && entry.files.length > 0 && entry.files.map((file, index) =>
+                                                                    <li key={index}><a href={"/storage/archivos_cursos/" + file.archivo} download={file.original}>{file.original}</a></li>
+                                                                )}
+                                                            </ul>
+                                                        </div>
+                                                    }
+                                                    <div className="col s12 m6" style={values.modFiles ? { paddingLeft: "0px", paddingRight: "0px", marginLeft: "0px" } : { paddingLeft: "0px", paddingRight: "0px" }}>
+                                                        <div className="col s12" >
+                                                            <h2 className="ck-titulo">Editar archivos</h2>
+                                                            <div className="switch">
+                                                                <label>
+                                                                    No
+                                                            <input type="checkbox" value="" onChange={handleNewFiles} />
+                                                                    <span className="lever" />
+                                                            Si
+                                                        </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                : values.tipo == "Archivo" ?
+                                                    <div className="col s12 archivos-view" style={{ paddingTop: "10px" }}>
+                                                        {!values.modFiles &&
+                                                            <div className="col s12 m6 archivoslist" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+                                                                <h2 className="ck-titulo">Archivos</h2>
+                                                                <ul>
+                                                                    {entry.files && entry.files.length > 0 && entry.files.map((file, index) =>
+                                                                        <li key={index}><a href={"/storage/archivos_cursos/" + file.archivo} download={file.original}>{file.original}</a></li>
+                                                                    )}
+                                                                </ul>
+                                                            </div>
+                                                        }
+                                                        <div className="col s12 m6" style={values.modFiles ? { paddingLeft: "0px", paddingRight: "0px", marginLeft: "0px" } : { paddingLeft: "0px", paddingRight: "0px" }}>
+                                                            <div className="col s12" >
+                                                                <h2 className="ck-titulo">Editar archivos</h2>
+                                                                <div className="switch">
+                                                                    <label>
+                                                                        No
+                                                            <input type="checkbox" value="" onChange={handleNewFiles} />
+                                                                        <span className="lever" />
+                                                            Si
+                                                        </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    : values.tipo == "Asignacion" &&
+                                                    <div className="col s12 archivos-view" style={{ paddingTop: "10px" }}>
+                                                        {!values.modFiles &&
+                                                            <div className="col s12 m6 archivoslist" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+                                                                <h2 className="ck-titulo">Archivos</h2>
+                                                                <ul>
+                                                                    {entry.files && entry.files.length > 0 && entry.files.map((file, index) =>
+                                                                        <li key={index}><a href={"/storage/archivos_cursos/" + file.archivo} download={file.original}>{file.original}</a></li>
+                                                                    )}
+                                                                </ul>
+                                                            </div>
+                                                        }
+                                                        <div className="col s12 m6" style={values.modFiles ? { paddingLeft: "0px", paddingRight: "0px", marginLeft: "0px" } : { paddingLeft: "0px", paddingRight: "0px" }}>
+                                                            <div className="col s12" >
+                                                                <h2 className="ck-titulo">Editar archivos</h2>
+                                                                <div className="switch">
+                                                                    <label>
+                                                                        No
+                                                            <input type="checkbox" value="" onChange={handleNewFiles} />
+                                                                        <span className="lever" />
+                                                            Si
+                                                        </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                        }
+                                        {/* -- INPUT FILE -- */}
+                                        {values.modFiles && values.tipo == "Aviso" ?
                                             <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
                                                 <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)
                                                 {
@@ -661,7 +776,7 @@ const Editar = ({ cursos, entry }) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            : values.tipo == "Informacion" ?
+                                            : values.modFiles && values.tipo == "Informacion" ?
                                                 <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
                                                     <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)
                                                     {
@@ -679,7 +794,7 @@ const Editar = ({ cursos, entry }) => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                : values.tipo == "Recurso" ?
+                                                : values.modFiles && values.tipo == "Recurso" ?
                                                     <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
                                                         <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)
                                                         {
@@ -697,7 +812,7 @@ const Editar = ({ cursos, entry }) => {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    : values.tipo == "Archivo" ?
+                                                    : values.modFiles && values.tipo == "Archivo" ?
                                                         <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
                                                             <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivo
                                                             {
@@ -715,7 +830,7 @@ const Editar = ({ cursos, entry }) => {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        : values.tipo == "Asignacion" &&
+                                                        : values.modFiles && values.tipo == "Asignacion" &&
                                                         <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
                                                             <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)
                                                             {
