@@ -6,6 +6,8 @@ import '../../styles/cursos.css'
 import '/css/courseCard.css'
 import Tag from '../common/Tag'
 import route from 'ziggy-js'
+import ModalDarBaja from '../../components/common/ModalDarBaja';
+
 
 export default function InfoAlumno({ curso, actuales }) {
 
@@ -38,8 +40,19 @@ export default function InfoAlumno({ curso, actuales }) {
             <div className="card">
                 <div className="card-content">
                     <div className="row">
-                        <div className="col s10 truncate">{curso.nombre}</div>
-                        <div className="col s2 center-align"><i className="material-icons">more_vert</i></div>
+                    
+                        <div className="col s12 history-mini-card">
+                            <div className="col s10 txt-title-course-history">
+                                <InertiaLink href={route('cursos.informacion', curso.id)} className="a-mini-course-hover">{curso.nombre}</InertiaLink>
+                            </div>
+                            <div className="col s1"><a className='dropdown-trigger'  data-target={'baja-curso'+curso.id}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
+                            {/* DROPDOWN CON OPCIONES */}
+                            <ul id={'baja-curso'+curso.id} className='dropdown-content dropdown_LC'>
+                                <li><a className="dropdown-text modal-trigger" data-target="modalDarBaja" ><i className="material-icons">error_outline</i>Dar de baja del curso</a></li>
+                            </ul>
+                        </div>
+                        
+                        
                         <div className="col s4 little_course" style={{ "marginTop": "10px", "padding": "0px" }}>
                             <img className="courseCard_image" src={curso.images.length > 0 ? '/storage/imagenes_curso/' + curso.images[0].imagen : '/storage/imagenes_curso/default.png'} alt="img" />
                         </div>
@@ -89,7 +102,9 @@ export default function InfoAlumno({ curso, actuales }) {
                     </div>
                 </div>
             </div>
+            <ModalDarBaja url="#!" nombre="Dulce" curso={curso.nombre} />
         </div>
+        
     )
 
 }

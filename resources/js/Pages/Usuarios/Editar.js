@@ -12,6 +12,7 @@ import { Inertia } from '@inertiajs/inertia';
 import Alertas from '../../components/common/Alertas';
 import CourseCard from '../../components/cursos/CourseCard'
 import ModalEliminar from '../../components/common/ModalEliminar';
+import ModalDarBaja from '../../components/common/ModalDarBaja';
 import ModalRestaurar from '../../components/common/ModalRestaurar';
 
 
@@ -130,6 +131,16 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
         var elems = document.querySelectorAll('.collapsible')
         var instances = M.Collapsible.init(elems)
+
+        var elems = document.querySelectorAll('.dropdown-trigger');
+        var options;
+        var instances = M.Dropdown.init(elems, ({inDuration: 300,
+            outDuration: 225,
+            constrainWidth: false,
+            gutter: 0, // Spacing from edge
+            belowOrigin: true, // Displays dropdown below the button
+            stopPropogation: true})
+        );
 
         initializeDatePicker();
 

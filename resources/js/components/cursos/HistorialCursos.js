@@ -15,16 +15,20 @@ function initializeDROP() {
         belowOrigin: true, // Displays dropdown below the button
         stopPropogation: true})
     );
-    var elems2 = document.querySelectorAll('.collapsible');
-    var instances2 = M.Collapsible.init(elems2, options);
 }
+
+function collapsible(){
+    var elems2 = document.querySelectorAll('.collapsible');
+    var instances2 = M.Collapsible.init(elems2);
+}
+
 function transformaFecha(fecha) {
     const dob = new Date(fecha);
     const monthNames = [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
         'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ];
-    const day = dob.getDate();
+    const day = dob.getDate(); 
     const monthIndex = dob.getMonth();
     const year = dob.getFullYear();
     return `${day} ${monthNames[monthIndex]} ${year}`;
@@ -34,6 +38,7 @@ function transformaFecha(fecha) {
 export default function HistorialCursos({cursos, solicitudes}) {
     useEffect(() => {
         initializeDROP();
+        collapsible();
     }, [])
         return (
             <div className="row">                
@@ -61,9 +66,9 @@ export default function HistorialCursos({cursos, solicitudes}) {
                                                         <div className="col s10 txt-title-course-history">
                                                             <InertiaLink href={route('cursos.informacion', curso.id)} className="a-mini-course-hover">{curso.nombre}</InertiaLink>
                                                         </div>
-                                                        <div className="col s1"><a className='dropdown-trigger'  data-target='download-certificate'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
+                                                        <div className="col s1"><a className='dropdown-trigger'  data-target={'download-certificate'+curso.id}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                                                         {/* DROPDOWN CON OPCIONES */}
-                                                        <ul id='download-certificate' className='dropdown-content dropdown_LC'>
+                                                        <ul id={'download-certificate'+curso.id} className='dropdown-content dropdown_LC'>
                                                             <li><a className="dropdown-text" ><i className="material-icons">file_download</i>Descargar certificado</a></li>
                                                         </ul>
                                                     </div>
@@ -123,9 +128,9 @@ export default function HistorialCursos({cursos, solicitudes}) {
                                                 <div className="col s10 txt-title-course-history">
                                                     <InertiaLink href={route('cursos.informacion',solicitud.course.id)} className="a-mini-course-hover">{solicitud.course.nombre}</InertiaLink>
                                                 </div>
-                                                <div className="col s1"><a className='dropdown-trigger'  data-target='more-info-history'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
+                                                <div className="col s1"><a className='dropdown-trigger' data-target={'more-info-history'+solicitud.id}> <i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                                                 {/* DROPDOWN CON OPCIONES */}
-                                                <ul id='more-info-history' className='dropdown-content dropdown_LC'>
+                                                <ul id={'more-info-history'+solicitud.id} className='dropdown-content dropdown_LC'>
                                                     <li><a className="dropdown-text" >Fecha de solicitud: {transformaFecha(solicitud.created_at)}</a></li>
                                                     <li><a className="dropdown-text" ><i className="material-icons">close</i>Cancelar solicitud</a></li>
                                                 </ul>

@@ -69,9 +69,9 @@ export default function HistorialCursosPonente({finishedCourses}) {
                                                     <div className="col s10 txt-title-course-history">
                                                         <InertiaLink href={route('cursos.informacion', course.id)} className="a-mini-course-hover">{course.nombre}</InertiaLink>
                                                     </div>
-                                                    <div className="col s1"><a className='dropdown-trigger'  data-target='download-report'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
+                                                    <div className="col s1"><a className='dropdown-trigger'  data-target={'download-report'+course.id}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                                                     {/* DROPDOWN CON OPCIONES */}
-                                                    <ul id='download-report' className='dropdown-content dropdown_LC'>
+                                                    <ul id={'download-report'+course.id} className='dropdown-content dropdown_LC'>
                                                         <li><a className="dropdown-text" ><i className="material-icons">file_download</i>Descargar reporte</a></li>
                                                     </ul>
                                                 </div>
