@@ -900,7 +900,7 @@ class CourseController extends Controller
 
         // Buscar la asignacion
         $entrada=Entry::with('files:archivo,entry_id')->where('tipo',"Asignacion")->findOrFail($pid);
-        dd($entrada);
+        // dd($entrada); 
         return Inertia::render('Curso/Asignacion/Asignacion', [
             'curso' => Course::findOrFail($id)
         ]);
