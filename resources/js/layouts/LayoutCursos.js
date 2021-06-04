@@ -52,7 +52,7 @@ function isUrl(...urls) {
 
 const LayoutCursos = ({children}) => {   
 
-    const {curso} =usePage().props
+    const {curso} =usePage().props;
     const { auth } = usePage().props;
 
     useEffect(() => {
@@ -100,11 +100,14 @@ const LayoutCursos = ({children}) => {
                     <div className="row">
                         <div className="col s12">
                             {/* contenido del dropdown de modulos */}
-                            <ul id="dropdown2" className="dropdown-content">
-                                <li><a href="/cursos/1/modulo/1">uno</a></li>
-                                <li><a href="!#">dos</a></li>
-                                <li><a href="!#">tres</a></li>
-                                
+                            <ul id="dropdown2" className="dropdown-content drop-size">
+                                {curso.modules.map( (modulo,index) => (
+                                    <li key={index}>
+                                        <InertiaLink href={route('cursos.modulo', [curso.id, modulo.id] )} className='drop-text-format truncate'>
+                                            <b>Modulo {modulo.numero}.</b>{modulo.nombre}
+                                        </InertiaLink>
+                                    </li>
+                                ))}
                             </ul>
 
                             <nav className="white clase-nav">

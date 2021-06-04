@@ -663,7 +663,7 @@ class CourseController extends Controller
         $calificacion=Course::where('courses.id',$id)->leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.user_id',Auth::id())->first('calificacion_final');
 
         return Inertia::render('Curso/Informacion', [
-            'curso' => Course::with('images:imagen,course_id', 'tags:nombre','teacher:nombre,apellido_p,apellido_m,foto,id','modules:id,nombre,numero')->findOrFail($id),
+            'curso' => Course::with('images:imagen,course_id', 'tags:nombre','teacher:nombre,apellido_p,apellido_m,foto,id','modules:course_id,id,nombre,numero')->findOrFail($id),
             'cursos_count'=> $cursosCount,
             'participantes_count'=>$participantesCount,
             'calificacion'=>$calificacion,
@@ -726,7 +726,7 @@ class CourseController extends Controller
         $calificacion=Module::where('modules.id',$mid)->leftJoin('module_user','modules.id','=','module_user.module_id')->where('module_user.user_id',Auth::id())->first('calificacion');
 
         return Inertia::render('Curso/Modulo', [
-            'curso' => Course::findOrFail($id),
+            'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
             'modulo' => $modulo,
             'avisos' => $avisos,
             'entradas' => $entradas,
@@ -738,11 +738,11 @@ class CourseController extends Controller
     public function participantes($id)
     {
         $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
-        if(!$inscrito){
-            return \Redirect::route('cursos.informacion',$id);
-        }
+        // if(!$inscrito){
+        //     return \Redirect::route('cursos.informacion',$id);
+        // }
         return Inertia::render('Curso/Participantes', [
-            'curso' => Course::with('users:id,nombre,foto,apellido_p,apellido_m,email','teacher:nombre,apellido_p,apellido_m,foto,id,email','modules:id,nombre,numero')->findOrFail($id),
+            'curso' => Course::with('users:id,nombre,foto,apellido_p,apellido_m,email','teacher:nombre,apellido_p,apellido_m,foto,id,email','modules:course_id,id,nombre,numero')->findOrFail($id),
         ]);
     }
 
@@ -754,7 +754,7 @@ class CourseController extends Controller
             return \Redirect::route('cursos.informacion',$id);
         }
         $user = User::find(Auth::id());
-        $curso=$user->courses()->where('course_id',$id)->first();
+        $curso=$user->courses()->where('course_id',$id)->with('modules:course_id,id,nombre,numero')->first();
         if(!$curso){
             return abort(404);
         }
