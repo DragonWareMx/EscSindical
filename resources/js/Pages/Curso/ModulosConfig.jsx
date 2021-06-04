@@ -13,7 +13,7 @@ import { Modal } from 'bootstrap';
 
 
 const ModulosConfig = ({curso}) => {
-    console.log (curso);
+    
     function initializeMaterialize(){
         var elems = document.querySelectorAll('.dropdown-trigger');
         var instances = M.Dropdown.init(elems);
@@ -30,7 +30,7 @@ const ModulosConfig = ({curso}) => {
     <>
         <div className="row">
             <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>MÓDULOS</div>
-            <p className="col s12 text-ins-module">Aún no hay módulos en este curso.</p>
+            {curso.modules['0'] ? 
             <ul id="items" className="col s12">
                 {curso.modules.map((modulo) =>
                 <li key={modulo.id}>
@@ -54,6 +54,8 @@ const ModulosConfig = ({curso}) => {
                 </li>
                 )}
             </ul>
+            :
+            <p className="col s12 text-ins-module">Aún no hay módulos en este curso.</p>}
         </div>
         
     </>
