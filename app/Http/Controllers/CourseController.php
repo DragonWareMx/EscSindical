@@ -711,9 +711,9 @@ class CourseController extends Controller
     public function modulo($id,$mid)
     {
         $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
-        if(!$inscrito){
-            return \Redirect::route('cursos.informacion',$id);
-        }
+        // if(!$inscrito){
+        //     return \Redirect::route('cursos.informacion',$id);
+        // }
         $modulo=Module::with('users')->where('id',$mid)->where('course_id',$id)->first();
          if(!$modulo){
             return abort(404);
@@ -902,7 +902,7 @@ class CourseController extends Controller
         $entrada=Entry::with('files:archivo,entry_id')->where('tipo',"Asignacion")->findOrFail($pid);
         dd($entrada);
         return Inertia::render('Curso/Asignacion/Asignacion', [
-            'curso' => Course::with('modules:course_id,id,nombre,numero')findOrFail($id)
+            'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id)
         ]);
     }
 
