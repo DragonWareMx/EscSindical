@@ -5,6 +5,7 @@ import { InertiaLink, useRemember } from '@inertiajs/inertia-react';
 
 import '/css/participantes.css'
 import '/css/modulos.css'
+import route from 'ziggy-js';
 
 const Participantes = ({curso}) => {
 
@@ -33,9 +34,9 @@ const Participantes = ({curso}) => {
             <div className="col s12 div-collection-item ">
                 {/* Información del usuario */}
                 <div className=" P_collection_item col s12 m11 l11 xl11 left">
-                    <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src={"/storage/fotos_perfil/"+curso.teacher.foto}></img></InertiaLink>
+                    <InertiaLink  href={route('perfil.public',curso.teacher.id)}><img className="P_collection_image" width="50" height="50" src={"/storage/fotos_perfil/"+curso.teacher.foto}></img></InertiaLink>
                     <div>
-                        <InertiaLink  href="" className="P_collection_title">{curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m} </InertiaLink>
+                        <InertiaLink  href={route('perfil.public',curso.teacher.id)} className="P_collection_title">{curso.teacher.nombre} {curso.teacher.apellido_p} {curso.teacher.apellido_m} </InertiaLink>
                         <div className="P_collection_subtitle">Ponente</div>
                     </div>
                 </div>
@@ -59,9 +60,9 @@ const Participantes = ({curso}) => {
                     </ul>
                     {/* Información del usuario */}
                     <div className=" P_collection_item col s12 m11 l11 xl11 left">
-                        <InertiaLink  href="#!"><img className="P_collection_image" width="50" height="50" src={"/storage/fotos_perfil/"+user.foto}></img></InertiaLink>
+                        <InertiaLink  href={route('perfil.public',user.id)}><img className="P_collection_image" width="50" height="50" src={"/storage/fotos_perfil/"+user.foto}></img></InertiaLink>
                         <div>
-                            <InertiaLink  href="#!" className="P_collection_title">{user.nombre} {user.apellido_p} {user.apellido_m}</InertiaLink>
+                            <InertiaLink  href={route('perfil.public',user.id)} className="P_collection_title">{user.nombre} {user.apellido_p} {user.apellido_m}</InertiaLink>
                             <div className="P_collection_subtitle">Estudiante</div>
                         </div>
                     </div>
