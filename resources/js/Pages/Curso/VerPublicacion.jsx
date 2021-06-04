@@ -5,6 +5,8 @@ import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
 
 import '/css/modulos.css'
+import '/css/participantes.css'
+
 
 
 function transformaFechaModulo(fecha) {
@@ -31,6 +33,9 @@ const Informacion = ({curso,modulo,entrada}) => {
     <>
       <div className="row">
         <div className="col s12 titulo-modulo">
+        <InertiaLink  href={route('cursos.modulo', [curso.id,modulo.id])}  className="icon-back-course tooltipped" style={{"color":"#134E39"}} data-position="left" data-tooltip="Regresar">
+            <i className="material-icons">keyboard_backspace</i>
+          </InertiaLink>
           Modulo {modulo.numero}. {modulo.nombre}
         </div>
         <div className="col s12">
@@ -118,7 +123,8 @@ const Informacion = ({curso,modulo,entrada}) => {
 
         {/* boton de regresar */}
         <div className="col s12 valign-wrapper" style={{"color":"#134E39"}}>
-          <i className="material-icons">chevron_left</i>Regresar
+          
+          
         </div>
         
       </div>

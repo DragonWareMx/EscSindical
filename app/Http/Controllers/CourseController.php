@@ -806,7 +806,7 @@ class CourseController extends Controller
     {
         \Gate::authorize('haveaccess', 'ponente.perm');
 
-        $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto')
+        $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto','modules:course_id,id,nombre,numero')
                         ->select('nombre','id')
                         ->findOrFail($id);
         return Inertia::render('Curso/Solicitudes', [
@@ -829,7 +829,7 @@ class CourseController extends Controller
         //Se obtiene la entrada que se desea mostrar en la vista
         $entrada=Entry::with('files:archivo,entry_id')->findOrFail($pid);
         return Inertia::render('Curso/VerPublicacion', [
-            'curso' => Course::findOrFail($id),
+            'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
             'modulo' => $modulo,
             'entrada' => $entrada,
         ]);
