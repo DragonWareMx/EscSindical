@@ -114,7 +114,7 @@ export default function BarraBusqueda() {
                     <form onSubmit={handleSubmit}>
                         <div className="nav-wrapper nav-flex row">
                             <div className="input-field col s12" style={{ marginLeft: "0px", padding: "0px" }}>
-                                <input className="main-bar-search-2" id="busqueda" type="search" required style={{ "borderRadius": "4px" }} onBlur={shrinkSearchBar} value={values.busqueda} onChange={handleChange} autoComplete="off" />
+                                <input className="main-bar-search-2" id="busqueda" type="search" style={{ "borderRadius": "4px" }} onBlur={shrinkSearchBar} value={values.busqueda} onChange={handleChange} autoComplete="off" />
                                 <label className="label-icon margin-search-icons" htmlFor="search"><i className="material-icons">search</i></label>
                             </div>
                             <div className="col enter-div hide-on-small-only" id="enter-search">

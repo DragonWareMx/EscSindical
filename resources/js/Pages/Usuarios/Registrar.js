@@ -218,7 +218,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
                                     </div>
 
                                     <div className="input-field col s6 input-50-re">
-                                        <select id="sexo" name="sexo" required autoComplete="sexo" value={values.sexo} onChange={handleChange} className={errors.sexo ? "input-field invalid" : "input-field"}>
+                                        <select id="sexo" name="sexo" autoComplete="sexo" value={values.sexo} onChange={handleChange} className={errors.sexo ? "input-field invalid" : "input-field"}>
                                             <option value="" disabled>Selecciona una opción</option>
                                             <option value="m">Femenino</option>
                                             <option value="h">Masculino</option>
@@ -298,7 +298,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
                                 </div>
                                 
                                 <div className="col s12 m6 div-division">
-                                    <p className="titles-sub" style={{"marginLeft":"3%"}}>INFORMACIÓN INSTITUCIONAL</p>
+                                    <p className="titles-sub" style={{"marginLeft":"3%", marginBottom: "15px"}}>INFORMACIÓN INSTITUCIONAL</p>
 
                                     <div className="input-field col s12">
                                         <input  id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="10" />
@@ -310,7 +310,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
                                     </div>
 
                                     <div className="input-field col s12">
-                                        <select  id="regimen" name="regimen" value={values.regimen} onChange={handleChange} required>
+                                        <select  id="regimen" name="regimen" value={values.regimen} onChange={handleChange}>
                                             <option value="" disabled>Selecciona una opción</option>
                                             {regimes && regimes.length > 0 &&
                                                 regimes.map(regime => (

@@ -5,7 +5,9 @@ import route from 'ziggy-js'
 import { InertiaLink } from '@inertiajs/inertia-react'
 import { usePage } from '@inertiajs/inertia-react'
 import '../styles/cursos.css'
-import Alertas from '../components/common/Alertas'; 
+import Alertas from '../components/common/Alertas'
+import ModalSolicitudBaja from '../components/common/ModalSolicitudBaja.jsx'
+import ModalSolicitudEliminacion from '../components/common/ModalSolicitudEliminacion.jsx'
 
 function initializeMat() {
     var elems = document.querySelectorAll('.dropdown-trigger');
@@ -47,6 +49,7 @@ function isUrl(...urls) {
 const LayoutCursos = ({children}) => {   
 
     const {curso} =usePage().props
+    const { auth } = usePage().props;
 
     useEffect(() => {
         initializeMat();
@@ -64,16 +67,31 @@ const LayoutCursos = ({children}) => {
                             }
                         </div>   
                         <div className="col s1 LC_more"><a className='dropdown-trigger' href='#' data-target='dropdown_LC'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
-                        <ul id='dropdown_LC' className='dropdown-content'>
-                            <li><InertiaLink className="dropdown-text" href="#"><i className="material-icons">error_outline</i>Solicitar baja del curso</InertiaLink></li>
-                            <li className="divider" tabIndex="-1"></li>
-                            {/* Opciones exclusivas del ponente */}
-                            <li><InertiaLink className="dropdown-text" href={route('cursos.edit',1)}><i className="material-icons">edit</i>Editar curso</InertiaLink></li>
-                            <li className="divider" tabIndex="-1"></li>
-                            <li><a className="dropdown-text" href="#!"><i className="material-icons">file_download</i>Descargar reporte del curso</a></li>
-                            <li className="divider" tabIndex="-1"></li>
-                            <li><a className="dropdown-text modal-trigger" href="#modalSolicitud"><i className="material-icons">error_outline</i>Solicitar eliminación del curso</a></li>
-                        </ul>
+                            {
+                                auth.roles['0'].name == 'Alumno' ? 
+                                <ul id='dropdown_LC' className='dropdown-content'>
+                                    {curso.estatus == "Terminado" 
+                                    ?
+                                    <div>
+                                    <li><a className="dropdown-text" href="#"><i className="material-icons">error_outline</i>Descargar certificado</a></li>
+                                    <li className="divider" tabIndex="-1"></li>
+                                    </div>
+                                    :
+                                    <div>
+                                    <li><a className="dropdown-text modal-trigger" data-target="modalSolicitudBaja" href="#"><i className="material-icons">error_outline</i>Solicitar baja del curso</a></li>
+                                    <li className="divider" tabIndex="-1"></li> 
+                                    </div>
+                                    }  
+                                </ul>
+                            :
+                                <ul id='dropdown_LC' className='dropdown-content'>
+                                    <li><InertiaLink className="dropdown-text" href={route('cursos.edit',1)}><i className="material-icons">edit</i>Editar curso</InertiaLink></li>
+                                    <li className="divider" tabIndex="-1"></li>
+                                    <li><a className="dropdown-text" href="#!"><i className="material-icons">file_download</i>Descargar reporte del curso</a></li>
+                                    <li className="divider" tabIndex="-1"></li>
+                                    <li><a className="dropdown-text modal-trigger" href="modalSolicitudEliminacion"><i className="material-icons">error_outline</i>Solicitar eliminación del curso</a></li>           
+                                </ul>
+                            }    
                    </div>
                     <div className="row">
                         <div className="col s12">
@@ -114,6 +132,8 @@ const LayoutCursos = ({children}) => {
                     </div> 
                </div>
             </div>
+            <ModalSolicitudBaja curso = {curso} url = {'/cursos/deleteRequest/'+curso.id}/>
+            <ModalSolicitudEliminacion curso = {curso} url = {'/cursos/deleteCourseRequest/'+curso.id}/>
         </>
     )
 }

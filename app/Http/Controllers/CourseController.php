@@ -647,6 +647,8 @@ class CourseController extends Controller
 
     public function solicitudes($id)
     {
+        \Gate::authorize('haveaccess', 'ponente.perm');
+
         $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto')
                         ->select('nombre','id')
                         ->findOrFail($id);
@@ -674,10 +676,12 @@ class CourseController extends Controller
     
     
     public function agregarParticipante($id, Request $request){
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        
         return Inertia::render('Curso/AgregarParticipante', [
             'curso' => Course::findOrFail($id),
             'users' =>
-                fn () => User::with('activeCourses:id')->select('users.id','nombre','apellido_p', 'apellido_m', 'email')
+                fn () => User::with('activeCourses:id','courses:id')->select('users.id','nombre','apellido_p', 'apellido_m', 'email','matricula')
                             ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
                             ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
                             ->where('roles.name','Alumno')
@@ -723,6 +727,21 @@ class CourseController extends Controller
         ]);
     }
 
+    // ASIGNACIONES----------------------------------
+    public function asignacion($id,$mid)
+    {
+        //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
+        $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
+        //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
+        if(!$modulo){
+            return abort(404);
+        }
+
+        return Inertia::render('Curso/Asignacion/Asignacion', [
+            'curso' => Course::findOrFail($id)
+        ]);
+    }
+
     public function inscribir($id){
         $oldRequest=Application::where('course_id',$id)->where('user_id',Auth::id())->first();
         if($oldRequest){
@@ -762,3 +781,5 @@ class CourseController extends Controller
     }
     
 }
+    
+
