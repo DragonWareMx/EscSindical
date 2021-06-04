@@ -37,6 +37,7 @@ Route::get('/ejemplo', [App\Http\Controllers\HomeController::class, 'ejemplo'])-
 //--------RUTAS DE EJEMPLO
 
 //--------USUARIOS--------
+//VISTAS PARA ADMIN
 Route::get('/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios');
 Route::get('/usuarios/create', [App\Http\Controllers\UserController::class, 'create'])->name('usuarios.create');
 Route::post('/usuarios', [App\Http\Controllers\UserController::class, 'store'])->name('usuarios.store');
