@@ -13,7 +13,7 @@ import { Modal } from 'bootstrap';
 
 
 const ModulosConfig = ({curso}) => {
-    console.log (curso);
+    
     function initializeMaterialize(){
         var elems = document.querySelectorAll('.dropdown-trigger');
         var instances = M.Dropdown.init(elems);
@@ -30,14 +30,14 @@ const ModulosConfig = ({curso}) => {
     <>
         <div className="row">
             <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>MÓDULOS</div>
-            <p className="col s12 text-ins-module">Aún no hay módulos en este curso.</p>
+            {curso.modules['0'] ? 
             <ul id="items" className="col s12">
                 {curso.modules.map((modulo) =>
                 <li key={modulo.id}>
                     <div className="col s12 div-modulo-config">
                         <div className="col s12">
                             <div className="div-info-modulo-c">
-                                <div className="col s12 m11 l11 xl11 txt-titulo-modulo-card">{modulo.nombre}</div>
+                                <InertiaLink href={route('cursos.modulo',[curso.id,modulo.id])} className="col s12 m11 l11 xl11 txt-titulo-modulo-card">{modulo.nombre}</InertiaLink>
                                 <div className="col s12 m1 l1 xl1"><a  className="dropdown-trigger right" data-target={'dropdown-option-module'+modulo.id}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                                 {/* Dropdown modulos */}
                                 <ul id={'dropdown-option-module'+modulo.id} className='dropdown-content dropdown_LC'>
@@ -54,6 +54,8 @@ const ModulosConfig = ({curso}) => {
                 </li>
                 )}
             </ul>
+            :
+            <p className="col s12 text-ins-module">Aún no hay módulos en este curso.</p>}
         </div>
         
     </>

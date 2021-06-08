@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../../layouts/Layout';
 import { Inertia } from '@inertiajs/inertia'
 import Paginacion from '../../components/common/Paginacion';
+import { InertiaLink } from '@inertiajs/inertia-react'
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 
 import OwlCarousel from 'react-owl-carousel';
@@ -84,9 +85,9 @@ const BuscarCursos = ({ cursos, cursosParaTi }) => {
                                 <h1>CURSOS PARA TI</h1>
                                 <OwlCarousel className='owl-theme' margin={8} nav autoplay responsive={responsive}>
                                     {cursosParaTi.map((curso, index) => (
-                                        <div className='item' key={index}>
+                                        <InertiaLink href={route('cursos.informacion',curso.id)} className='item' key={index}>
                                             <CourseCardSearch curso={curso} />
-                                        </div>
+                                        </InertiaLink>
                                     ))}
                                 </OwlCarousel>
                             </div>
@@ -100,10 +101,10 @@ const BuscarCursos = ({ cursos, cursosParaTi }) => {
                             <h1>MÁS CURSOS</h1>
                             <div className="row">
                                 {state.cursos.data && state.cursos.data.length > 0 ? state.cursos.data.map(curso =>
-                                    <div className="col s12 m6 l3" key={curso.id} style={{ "padding": "0px" }}>
+                                    <InertiaLink href={route('cursos.informacion',curso.id)} className="col s12 m6 l3" key={curso.id} style={{ "padding": "0px" }}>
                                         {/* Aqui va el componente */}
                                         <CourseCardSearch curso={curso} />
-                                    </div>
+                                    </InertiaLink>
                                 ) :
                                     <div className="col s12 m6 l3">No se encontraron cursos</div>
                                 }
