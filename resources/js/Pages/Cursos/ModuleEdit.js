@@ -6,6 +6,7 @@ import Layout from '../../layouts/Layout';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import '../../styles/cursos.css'
+import '/css/asignaciones.css'
 import { Alert } from 'bootstrap';
 //COMPONENTS
 
@@ -153,10 +154,21 @@ const ModuleEdit = ({cursos, modulo}) => {
                                     }
                                 </div>
                                 
-                                <div className="col s12 ">
+                                {/* <div className="col s12 ">
                                     <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
                                         Agregar
                                         <i className="material-icons right">save</i>
+                                    </button> 
+                                </div> */}
+
+                                <div className="col s12 right container-btns-as paddingRight-0px">
+                                    <InertiaLink href="#!" className="no-uppercase" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}}>
+                                        Cancelar
+                                    </InertiaLink>
+                                    
+                                    <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
+                                        Guardar
+                                        <i className="material-icons right">send</i>
                                     </button>
                                 </div>
                                 

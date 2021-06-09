@@ -5,6 +5,8 @@ import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 import '../../styles/usersStyle.css'
 import '/css/infoAlumno.css'
 import '/css/register.css'
+import '/css/modulos.css'
+import '/css/participantes.css'
 import route from 'ziggy-js';
 import { Inertia } from '@inertiajs/inertia';
 
@@ -96,7 +98,8 @@ const Configuracion = ({ user }) => {
         var instances = M.Autocomplete.init(elems);
         var elems = document.querySelectorAll('.modal');
         var instances = M.Modal.init(elems);
-
+        var elems = document.querySelectorAll('.tooltipped');
+        var instances = M.Tooltip.init(elems);
         var elems = document.querySelectorAll('.collapsible')
         var instances = M.Collapsible.init(elems)
 
@@ -161,11 +164,15 @@ const Configuracion = ({ user }) => {
 
     return (
         <>
-            <div className="row container">
+            <div className="row">
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
                         <div className="card-content">
-                            <span className="card-title">Configuración</span>
+                            <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
+                                {/* regresar */}
+                                <InertiaLink  href={route('perfil')}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
+                                CONFIGURACIÓN
+                            </div>
                             
                             <Alertas />
 
@@ -311,7 +318,6 @@ const Configuracion = ({ user }) => {
                                         <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" , "marginBottom":"25px" }}>CUENTA</p>
 
                                         <div className="input-field col s12">
-                                            <i className="material-icons prefix">account_circle</i>
                                             <input disabled={true} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required autoComplete="email" onChange={handleChange} />
                                             <label htmlFor="email">Correo electrónico</label>
                                             {

@@ -52,7 +52,7 @@ function isUrl(...urls) {
 
 const LayoutCursos = ({children}) => {   
 
-    const {curso} =usePage().props
+    const {curso} =usePage().props;
     const { auth } = usePage().props;
 
     useEffect(() => {
@@ -100,11 +100,23 @@ const LayoutCursos = ({children}) => {
                     <div className="row">
                         <div className="col s12">
                             {/* contenido del dropdown de modulos */}
-                            <ul id="dropdown2" className="dropdown-content">
-                                <li><a href="/cursos/1/modulo/1">uno</a></li>
-                                <li><a href="!#">dos</a></li>
-                                <li><a href="!#">tres</a></li>
-                                
+                            <ul id="dropdown2" className="dropdown-content drop-size">
+                                {auth.roles['0'].name == 'Ponente' &&
+                                    <li>
+                                        <InertiaLink href={route('cursos.modulos', curso.id )} className='drop-text-format truncate'>
+                                            <b>Editar modulos</b>
+                                        </InertiaLink>
+                                    </li>
+                                }
+                                {curso.modules && curso.modules.length>0 &&
+                                    curso.modules.map( (modulo,index) => (
+                                        <li key={index}>
+                                            <InertiaLink href={route('cursos.modulo', [curso.id, modulo.id] )} className='drop-text-format truncate'>
+                                                <b>Modulo {modulo.numero}.</b>{modulo.nombre}
+                                            </InertiaLink>
+                                        </li>
+                                    )
+                                )}
                             </ul>
 
                             <nav className="white clase-nav">
@@ -126,12 +138,15 @@ const LayoutCursos = ({children}) => {
                                             </InertiaLink>
                                         </li>
                                         {/* Mochila */}
-                                        <li className="li-style">
-                                            <InertiaLink id="tab_mochila" href={route('cursos.mochila', curso.id)} className="LC_a" target="_self">
-                                                <i className="material-icons col s3 LC_tab_icons">backpack</i>
-                                                <div className="col s9">Mochila</div>
-                                            </InertiaLink>
-                                        </li>
+                                        {auth.roles['0'].name == 'Alumno' &&
+                                            <li className="li-style">
+                                                <InertiaLink id="tab_mochila" href={route('cursos.mochila', curso.id)} className="LC_a" target="_self">
+                                                    <i className="material-icons col s3 LC_tab_icons">backpack</i>
+                                                    <div className="col s9">Mochila</div>
+                                                </InertiaLink>
+                                            </li>
+                                        }
+                                        
                                         {/* Participantes */}
                                         <li className="li-style" >
                                             <InertiaLink id="tab_participantes" href={route('cursos.participantes', curso.id)} className="LC_a" target="_self">
@@ -140,12 +155,15 @@ const LayoutCursos = ({children}) => {
                                             </InertiaLink>
                                         </li>
                                         {/* Estadisticas */}
-                                        <li className="li-style">
-                                            <InertiaLink id="tab_estadisticas" href="" className="LC_a" target="_self">
-                                                <i className="material-icons col s3 LC_tab_icons">bar_chart</i>
-                                                <div className="col s9">Estadísticas</div>
-                                            </InertiaLink>
-                                        </li>
+                                        {auth.roles['0'].name == 'Ponente' &&
+                                            <li className="li-style">
+                                                <InertiaLink id="tab_estadisticas" href="" className="LC_a" target="_self">
+                                                    <i className="material-icons col s3 LC_tab_icons">bar_chart</i>
+                                                    <div className="col s9">Estadísticas</div>
+                                                </InertiaLink>
+                                            </li>
+                                        }
+                                        
                                     </ul>
                                 </div>
                             </nav>
