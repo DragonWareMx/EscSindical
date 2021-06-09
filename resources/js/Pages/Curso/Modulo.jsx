@@ -1,6 +1,7 @@
 import { Inertia } from '@inertiajs/inertia';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import React from 'react'
+import route from 'ziggy-js';
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
 
@@ -163,52 +164,54 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
             {/* asignacion */}
             {actividades && actividades.length >0 &&
               actividades.map((actividad, index) => (
-                <div key={index} className="card">
-                  {actividad.tipo == 'Asignacion' &&
-                    <div className="card-content" style={{"paddingBottom":"5px"}}>
-                      <div className="row valign-wrapper">
-                        <div className="col s2 l1 center-align">
-                          <i className="material-icons" style={{"color":"#134E39"}}>edit_note</i>
-                        </div>
-                        <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
-                          <div className="col s12 publicacion">
-                            <span className="publicacion">{actividad.titulo}</span> 
-                            <span className="calificacion">0/100</span>
+                <InertiaLink href={route('cursos.asignacion',[curso.id, modulo.id, actividad.id])} key={index}>
+                  <div className="card">
+                    {actividad.tipo == 'Asignacion' &&
+                      <div className="card-content" style={{"paddingBottom":"5px"}}>
+                        <div className="row valign-wrapper">
+                          <div className="col s2 l1 center-align">
+                            <i className="material-icons" style={{"color":"#134E39"}}>edit_note</i>
                           </div>
-                          <div className="col s12 posted-date">
-                            <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {modulo.numero}. "{modulo.nombre}"</span>
-                            <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el {transformaFechaModulo(actividad.fecha_de_entrega)}</span>
+                          <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
+                            <div className="col s12 publicacion">
+                              <span className="publicacion">{actividad.titulo}</span> 
+                              <span className="calificacion">0/100</span>
+                            </div>
+                            <div className="col s12 posted-date">
+                              <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {modulo.numero}. "{modulo.nombre}"</span>
+                              <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el {transformaFechaModulo(actividad.fecha_de_entrega)}</span>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col s2 l1 center-align">
-                          <span className="texto-enviado">ENVIADO</span>
+                          <div className="col s2 l1 center-align">
+                            <span className="texto-enviado">ENVIADO</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  }
-                  {actividad.tipo == 'Examen' &&
-                    <div className="card-content" style={{"paddingBottom":"5px"}}>
-                      <div className="row valign-wrapper">
-                        <div className="col s2 l1 center-align">
-                          <i className="material-icons" style={{"color":"#134E39"}}>quiz</i>
-                        </div>
-                        <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
-                          <div className="col s12 publicacion">
-                            <span className="publicacion">{actividad.titulo}</span> 
-                            <span className="calificacion">Sin calificar</span>
+                    }
+                    {actividad.tipo == 'Examen' &&
+                      <div className="card-content" style={{"paddingBottom":"5px"}}>
+                        <div className="row valign-wrapper">
+                          <div className="col s2 l1 center-align">
+                            <i className="material-icons" style={{"color":"#134E39"}}>quiz</i>
                           </div>
-                          <div className="col s12 posted-date">
-                            <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {modulo.numero}. {modulo.nombre}</span>
-                            <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el {transformaFechaModulo(actividad.fecha_de_entrega)}</span>
+                          <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
+                            <div className="col s12 publicacion">
+                              <span className="publicacion">{actividad.titulo}</span> 
+                              <span className="calificacion">Sin calificar</span>
+                            </div>
+                            <div className="col s12 posted-date">
+                              <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {modulo.numero}. {modulo.nombre}</span>
+                              <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Vence el {transformaFechaModulo(actividad.fecha_de_entrega)}</span>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col s2 l1 center-align">
-                          <span className="texto-cerrado">CERRADO</span>
+                          <div className="col s2 l1 center-align">
+                            <span className="texto-cerrado">CERRADO</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  }
-                </div>
+                    }
+                  </div>
+                </InertiaLink>
               ))
             }
           </div>

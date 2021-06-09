@@ -932,7 +932,7 @@ class CourseController extends Controller
 
         
         // Buscar la asignacion
-        $entrada=Entry::with('files:archivo,entry_id')->where('tipo',"Asignacion")->findOrFail($pid);
+        $entrada=Entry::with('files:archivo,entry_id')->where('tipo','Asignacion')->orWhere('tipo','Examen')->findOrFail($pid);
 
         //verificar que pertenezca al modulo
         
