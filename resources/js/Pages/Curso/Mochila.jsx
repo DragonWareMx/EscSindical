@@ -1,3 +1,4 @@
+import { InertiaLink } from '@inertiajs/inertia-react';
 import React from 'react'
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
@@ -106,7 +107,8 @@ const Informacion = ({curso, realizadas, pendientes}) => {
         <div id="asignado" className="col s12">
           {/* ejemplo de asignacion */}
           {pendientes && pendientes.length > 0 && pendientes.map((pendiente, index)=>
-            <div className="card" key={index}>
+            <InertiaLink href={route('cursos.asignacion',[curso.id, pendiente.module_id, pendiente.id])} key={index}>
+            <div className="card">
               <div className="card-content" style={{"paddingBottom":"5px"}}>
                 <div className="row valign-wrapper">
                   {/* icono */}
@@ -133,6 +135,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
                 </div>
               </div>
             </div>
+            </InertiaLink>
           )}
         </div>
 
@@ -150,6 +153,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
           
           {/* ejemplo de asignacion */}
           {realizadas && realizadas.length > 0 && realizadas.map((realizada, index)=>
+          <InertiaLink href={route('cursos.asignacion',[curso.id, realizada.module_id, realizada.id])} key={index}>
             <div className="card" key={index}>
               <div className="card-content" style={{"paddingBottom":"5px"}}>
                 <div className="row valign-wrapper">
@@ -177,6 +181,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
                 </div>
               </div>
             </div>
+            </InertiaLink>
           )}
         </div>
       </div>

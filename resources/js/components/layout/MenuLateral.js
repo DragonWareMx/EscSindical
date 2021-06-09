@@ -57,6 +57,11 @@ export default function MenuLateral() {
     initializeTooltip();
     window.addEventListener('resize', closeNav2);
   }, [])
+
+  function isUrl(url) {
+    return window.location.href.indexOf(url) > -1
+  }
+
   return (
     <div>
       {/* menu lateral extendido */}
@@ -77,16 +82,21 @@ export default function MenuLateral() {
           </li>
           <li>
             <InertiaLink href={route('ejemplo1').url()} className="icono-menu">
-              <i className="material-icons current-menu">home</i>
+              <i className="material-icons">home</i>
                   Inicio
             </InertiaLink>
           </li>
-          <li>
-            <InertiaLink href={route('usuarios').url()} className="icono-menu">
-              <i className="material-icons icono-menu">people</i>
-                  Usuarios
-              </InertiaLink>
-          </li>
+
+          {/* USUARIOS */}
+          {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
+            <li>
+              <InertiaLink href={route('usuarios').url()} className="icono-menu">
+                <i className={isUrl("usuarios") ? "material-icons icono-menu current-menu" : "material-icons icono-menu"}>people</i>
+                    Usuarios
+                </InertiaLink>
+            </li>
+          }
+
           <li><a className="subheader division-menu">CURSOS</a></li>
           <li><InertiaLink href={route('cursos').url()} className="icono-menu"><i className="material-icons icono-menu">school</i>Mis cursos</InertiaLink></li>
           <li><InertiaLink href={route('cursosBuscar').url()} className="icono-menu"><i className="material-icons icono-menu">search</i>Buscar cursos</InertiaLink></li>
@@ -119,6 +129,7 @@ export default function MenuLateral() {
           </div>
         </ul>
       </div>
+
       {/* menu lateral comprimido */}
       <div className="menu-compacto center-align">
         <div className="col s12">
@@ -126,14 +137,19 @@ export default function MenuLateral() {
         </div>
         <div className="col s12">
           <InertiaLink href={route('ejemplo1').url()} className="icono-menu">
-            <i className="material-icons tooltipped icono-menu-compacto current-menu" data-position="right" data-tooltip="Inicio">home</i>
+            <i className="material-icons tooltipped icono-menu-compacto" data-position="right" data-tooltip="Inicio">home</i>
           </InertiaLink>
         </div>
-        <div className="col s12">
-          <InertiaLink href={route('usuarios').url()} className="icono-menu">
-            <i className="material-icons tooltipped icono-menu-compacto current-menu" data-position="right" data-tooltip="Usuarios">people</i>
-          </InertiaLink>
-        </div>
+
+        {/* USUARIOS */}
+        {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
+          <div className="col s12">
+            <InertiaLink href={route('usuarios').url()} className="icono-menu">
+              <i className={isUrl("usuarios") ? "material-icons tooltipped icono-menu-compacto current-menu" : "material-icons tooltipped icono-menu-compacto"} data-position="right" data-tooltip="Usuarios">people</i>
+            </InertiaLink>
+          </div>
+        }
+
         <div className="col s12">
           <InertiaLink href={route('cursos').url()} className="icono-menu">
             <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Mis cursos">school</i>
