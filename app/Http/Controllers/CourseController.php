@@ -650,18 +650,33 @@ class CourseController extends Controller
 
     public function informacion($id)
     {
-        $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
-        if($inscrito){
-            $inscrito=true;
+        $tipo=Auth::user()->roles[0]->name;
+        if($tipo=='Ponente'){
+            $curso_teacher=Course::where('id',$id)->first('teacher_id');
+            if(Auth::id() == $curso_teacher->teacher_id){
+                $inscrito=true;
+                $calificacion=Course::where('courses.id',$id)->where('calificacion_final','!=','Null')->leftJoin('course_user','courses.id','=','course_user.course_id')
+                    ->select(DB::raw('TRUNCATE(AVG(calificacion_final),2) as calificacion_final'))->first();
+            }
+            else{
+                return abort(403);
+            }
         }
-        else{
-            $inscrito=false;
+        else if($tipo='Alumno'){
+            $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
+            if($inscrito){
+                $inscrito=true;
+            }
+            else{
+                $inscrito=false;
+            }
+            
+            $calificacion=Course::where('courses.id',$id)->leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.user_id',Auth::id())->first('calificacion_final');
         }
         $cursosCount=Course::with('teacher:id')->find($id);
         $cursosCount=Course::where('teacher_id',$cursosCount->teacher->id)->count();
         $participantesCount=Course::with('users:id')->findOrFail($id);
         $participantesCount=$participantesCount['users']->count();
-        $calificacion=Course::where('courses.id',$id)->leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.user_id',Auth::id())->first('calificacion_final');
 
         return Inertia::render('Curso/Informacion', [
             'curso' => Course::with('images:imagen,course_id', 'tags:nombre','teacher:nombre,apellido_p,apellido_m,foto,id','modules:course_id,id,nombre,numero')->findOrFail($id),
