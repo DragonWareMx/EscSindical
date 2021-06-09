@@ -107,7 +107,7 @@ class EntryController extends Controller
                 }
                 DB::commit();
                 // all good
-                return Redirect::back()->with('success', 'La entrada se ha creado con éxito!');
+                return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha creado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
@@ -183,7 +183,7 @@ class EntryController extends Controller
                 }
                 DB::commit();
                 // all good
-                return Redirect::back()->with('success', 'La entrada se ha creado con éxito!');
+                return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha creado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
@@ -246,7 +246,7 @@ class EntryController extends Controller
 
                 DB::commit();
                 // all good
-                return Redirect::back()->with('success', 'La entrada se ha creado con éxito!');
+                return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha creado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
@@ -318,7 +318,7 @@ class EntryController extends Controller
                 }
                 DB::commit();
                 // all good
-                return Redirect::back()->with('success', 'La entrada se ha creado con éxito!');
+                return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha creado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
@@ -427,7 +427,7 @@ class EntryController extends Controller
                 }
                 DB::commit();
                 // all good
-                return Redirect::back()->with('success', 'La entrada se ha creado con éxito!');
+                return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha creado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
@@ -444,8 +444,8 @@ class EntryController extends Controller
                 'visible' => 'required|boolean',
                 'notificacion' => 'required|boolean',
                 'permitir_envios_retrasados' => 'required|boolean',
-                'fecha_de_apertura' => 'required|date',
-                'fecha_de_entrega' => 'required|date',
+                'fecha_de_apertura' => 'required|date|after_or_equal:today',
+                'fecha_de_entrega' => 'required|date|after_or_equal:fecha_de_apertura',
                 'hora_de_apertura' => 'required|date_format:H:i',
                 'hora_de_entrega' => 'required|date_format:H:i',
                 'max_calif' => 'required|numeric|min:1|max:100',
@@ -468,12 +468,15 @@ class EntryController extends Controller
             }
 
             //comprobar fechas de apertura y de entrega
-            $fechaAp = new DateTime($request->fecha_de_apertura . '' . $request->hora_de_apertura);
-            $fechaEn = new DateTime($request->fecha_de_entrega . '' . $request->hora_de_entrega);
-            if ($fechaAp >= $fechaEn) {
-                return Redirect::back()->with('error', 'La fecha de entrega no puede ser menor a la fecha de apertura.');
+            if ($request->fecha_de_apertura == $request->fecha_de_entrega){
+                if ($request->hora_de_apertura > $request->hora_de_entrega){
+                    return Redirect::back()->with('error', 'La hora de entrega no puede ser menor a la hora de apertura.');
+                }   
             }
 
+            $fechaAp = new DateTime($request->fecha_de_apertura . '' . $request->hora_de_apertura);
+            $fechaEn = new DateTime($request->fecha_de_entrega . '' . $request->hora_de_entrega);
+            
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
@@ -527,7 +530,7 @@ class EntryController extends Controller
 
                 DB::commit();
                 // all good
-                return Redirect::back()->with('success', 'La entrada se ha creado con éxito!');
+                return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha creado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
@@ -688,7 +691,7 @@ class EntryController extends Controller
 
                 DB::commit();
                 // all good
-                return Redirect::back()->with('success', 'La entrada se ha editado con éxito!');
+                return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha editado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
@@ -775,7 +778,7 @@ class EntryController extends Controller
 
                 DB::commit();
                 // all good
-                return Redirect::back()->with('success', 'La entrada se ha editado con éxito!');
+                return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha editado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
@@ -849,7 +852,7 @@ class EntryController extends Controller
 
                 DB::commit();
                 // all good
-                return Redirect::back()->with('success', 'La entrada se ha editado con éxito!');
+                return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha editado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
@@ -932,7 +935,7 @@ class EntryController extends Controller
 
                 DB::commit();
                 // all good
-                return Redirect::back()->with('success', 'La entrada se ha editado con éxito!');
+                return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha editado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
@@ -1052,7 +1055,7 @@ class EntryController extends Controller
 
                 DB::commit();
                 // all good
-                return Redirect::back()->with('success', 'La entrada se ha editado con éxito!');
+                return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha editado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
@@ -1069,8 +1072,8 @@ class EntryController extends Controller
                 'visible' => 'required|boolean',
                 'notificacion' => 'required|boolean',
                 'permitir_envios_retrasados' => 'required|boolean',
-                'fecha_de_apertura' => 'required|date',
-                'fecha_de_entrega' => 'required|date',
+                'fecha_de_apertura' => 'required|date|after_or_equal:today',
+                'fecha_de_entrega' => 'required|date|after_or_equal:fecha_de_apertura',
                 'hora_de_apertura' => 'required|date_format:H:i',
                 'hora_de_entrega' => 'required|date_format:H:i',
                 'max_calif' => 'required|numeric|min:1|max:100',
@@ -1094,16 +1097,19 @@ class EntryController extends Controller
             }
 
             //comprobar fechas de apertura y de entrega
-            $fechaAp = new DateTime($request->fecha_de_apertura . '' . $request->hora_de_apertura);
-            $fechaEn = new DateTime($request->fecha_de_entrega . '' . $request->hora_de_entrega);
-            if ($fechaAp >= $fechaEn) {
-                return Redirect::back()->with('error', 'La fecha de entrega no puede ser menor a la fecha de apertura.');
+            if ($request->fecha_de_apertura == $request->fecha_de_entrega){
+                if ($request->hora_de_apertura > $request->hora_de_entrega){
+                    return Redirect::back()->with('error', 'La hora de entrega no puede ser menor a la hora de apertura.');
+                }   
             }
 
+            $fechaAp = new DateTime($request->fecha_de_apertura . '' . $request->hora_de_apertura);
+            $fechaEn = new DateTime($request->fecha_de_entrega . '' . $request->hora_de_entrega);
+            
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
-                //se crea la entrada
+                //se edita la entrada
                 $entrada =  Entry::findOrFail($id);
                 $entrada->titulo = $request->titulo;
                 $entrada->tipo = $request->tipo;
@@ -1152,7 +1158,7 @@ class EntryController extends Controller
 
                 DB::commit();
                 // all good
-                return Redirect::back()->with('success', 'La entrada se ha editado con éxito!');
+                return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha editado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
                 // something went wrong
