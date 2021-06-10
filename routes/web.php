@@ -37,6 +37,7 @@ Route::get('/ejemplo', [App\Http\Controllers\HomeController::class, 'ejemplo'])-
 //--------RUTAS DE EJEMPLO
 
 //--------USUARIOS--------
+//VISTAS PARA ADMIN
 Route::get('/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios');
 Route::get('/usuarios/create', [App\Http\Controllers\UserController::class, 'create'])->name('usuarios.create');
 Route::post('/usuarios', [App\Http\Controllers\UserController::class, 'store'])->name('usuarios.store');
@@ -68,10 +69,8 @@ Route::get('/cursos/{id}/informacion', [App\Http\Controllers\CourseController::c
 Route::get('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class, 'modulos'])->name('cursos.modulos');
 Route::get('/cursos/{id}/modulo/{mid}', [App\Http\Controllers\CourseController::class, 'modulo'])->name('cursos.modulo');
 
-// ASIGNACION   falta id de asignacion
+// ASIGNACION
 Route::get('/cursos/{id}/modulo/{mid}/asignacion/{pid}', [App\Http\Controllers\CourseController::class, 'asignacion'])->name('cursos.asignacion');
-
-
 
 Route::get('/cursos/{id}/participantes', [App\Http\Controllers\CourseController::class, 'participantes'])->name('cursos.participantes');
 Route::get('/cursos/{id}/solicitudes', [App\Http\Controllers\CourseController::class, 'solicitudes'])->name('cursos.solicitudes');
