@@ -79,6 +79,7 @@ Route::post('/cursos/{id}/agregar-participante', [App\Http\Controllers\RequestCo
 Route::get('/cursos/{id}/mochila', [App\Http\Controllers\CourseController::class, 'mochila'])->name('cursos.mochila');
 Route::get('/cursos/{id}/modulo/{mid}/publicacion/{pid}', [App\Http\Controllers\CourseController::class, 'verPublicacion'])->name('cursos.publicacion');
 Route::post('/cursos/{id}/inscribir', [App\Http\Controllers\CourseController::class, 'inscribir'])->name('cursos.inscribir');
+Route::get('/cursos/{id}/estadisticas', [App\Http\Controllers\CourseController::class, 'estadisticas'])->name('cursos.estadisticas');
 
 //----Solicitudes
 Route::post('/cursos/{id}/solicitudes', [App\Http\Controllers\RequestController::class, 'aprobar'])->name('solicitudes.aprobar');

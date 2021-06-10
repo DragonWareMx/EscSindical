@@ -723,53 +723,39 @@ class CourseController extends Controller
 
     public function modulo($id,$mid)
     {
-        $inscrito = Course::leftJoin('course_user','courses.id','=','course_user.course_id')
-                            ->where('course_user.course_id',$id)
-                            ->where('course_user.user_id',Auth::id())
-                            ->first();
+        //Se verifica que el modulo exista y pertenezca al curso
+        $modulo=Module::with('users')->where('id',$mid)->where('course_id',$id)->first();
+         if(!$modulo){
+            return abort(404);
+        }
+
+        $tipo=Auth::user()->roles[0]->name;
+        //Si es tipo alumno y no está inscrito lo redirige a la vista de información
+        if($tipo == 'Alumno'){
+            $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
+            $calificacion=Module::where('modules.id',$mid)->leftJoin('module_user','modules.id','=','module_user.module_id')->where('module_user.user_id',Auth::id())->first('calificacion');
+        }
+        //Si es un ponente se verifica que sea el dueño del curso
+        if($tipo == 'Ponente'){
+            $curso_teacher=Course::where('id',$id)->first('teacher_id');
+            if(Auth::id() == $curso_teacher->teacher_id){
+                $inscrito=true;
+                $calificacion=Module::where('modules.id',$mid)->where('calificacion','!=','Null')->leftJoin('module_user','modules.id','=','module_user.module_id')
+                ->select(DB::raw('TRUNCATE(AVG(calificacion),2) as calificacion'))->first();
+            }
+            else{
+                return abort(403);
+            }
+        }
 
         if(!$inscrito){
             return \Redirect::route('cursos.informacion',$id);
         }
 
-        $modulo=Module::with('users')
-                        ->where('id',$mid)
-                        ->where('course_id',$id)
-                        ->first();
-
-         if(!$modulo){
-            return abort(404);
-        }
-
-        $avisos=Entry::with('files:archivo,entry_id')
-                        ->where('module_id',$mid)
-                        ->where('tipo','Aviso')
-                        ->where('visible',1)
-                        ->orderBy('id','DESC')
-                        ->get();
-
-        $entradas=Entry::with('files:archivo,entry_id')
-                        ->where('module_id',$mid)
-                        ->where('tipo','!=','Aviso')
-                        ->where('tipo','!=','Asignacion')
-                        ->where('tipo','!=','Examen')
-                        ->where('visible',1)
-                        ->orderBy('id','DESC')
-                        ->get();
-
-        $actividades=Entry::with('files:archivo,entry_id')
-                            ->where('module_id',$mid)
-                            ->where('tipo','!=','Aviso')
-                            ->where('tipo','!=','Informacion')
-                            ->where('tipo','!=','Enlace')
-                            ->where('tipo','!=','Archivo')
-                            ->orderBy('id','ASC')
-                            ->get();
-
-        $calificacion=Module::where('modules.id',$mid)
-                            ->leftJoin('module_user','modules.id','=','module_user.module_id')
-                            ->where('module_user.user_id',Auth::id())
-                            ->first('calificacion');
+        $avisos=Entry::with('files:archivo,entry_id')->where('module_id',$mid)->where('tipo','Aviso')->where('visible',1)->orderBy('id','DESC')->get();
+        $entradas=Entry::with('files:archivo,entry_id')->where('module_id',$mid)->where('tipo','!=','Aviso')->where('tipo','!=','Asignacion')->where('tipo','!=','Examen')
+            ->where('visible',1)->orderBy('id','DESC')->get();
+        $actividades=Entry::with('files:archivo,entry_id')->where('module_id',$mid)->where('tipo','!=','Aviso')->where('tipo','!=','Informacion')->where('tipo','!=','Enlace')->where('tipo','!=','Archivo')->orderBy('id','ASC')->get();
 
         return Inertia::render('Curso/Modulo', [
             'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
@@ -845,6 +831,13 @@ class CourseController extends Controller
             'curso' => $curso,
             'realizadas' =>$realizadas,
             'pendientes'=>$pendientes,
+        ]);
+    }
+
+    public function estadisticas($id)
+    {
+        return Inertia::render('Curso/Estadisticas', [
+            'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
         ]);
     }
 

@@ -1,6 +1,6 @@
 import { Inertia } from '@inertiajs/inertia';
-import { InertiaLink } from '@inertiajs/inertia-react';
-import React from 'react'
+import { InertiaLink , usePage   } from '@inertiajs/inertia-react';
+import React, { useEffect, useState } from 'react'
 import route from 'ziggy-js';
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
@@ -24,10 +24,23 @@ function transformaFechaModulo(fecha) {
 
 function getFileSize(archivo){
   alert(archivo.size)
-  return 0
+  return 0  
 }
 
+
+
 const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacion}) => {
+  const { auth } = usePage().props;
+
+  function initializeMaterialize(){
+    var elems = document.querySelectorAll('.dropdown-trigger');
+    var instances = M.Dropdown.init(elems);
+  }
+  
+  useEffect(() => {
+    initializeMaterialize();
+  }, [])
+
   return (
     <>
       <div className="row default-text">
@@ -43,7 +56,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
           <div className="col s12 l2 push-l10">
             {/* calificacion */}
             <div className="col s6 l12  push-s6">
-              <div className="subtitulo-modulo">CALIFICACIÓN</div>
+              <div className="subtitulo-modulo">{auth.roles[0].name == 'Ponente' ? 'CALIFICACIÓN GRUPAL' : auth.roles[0].name == 'Alumno' && 'CALIFICACIÓN'}</div>
               {calificacion && calificacion.calificacion ? calificacion.calificacion : 'Sin evaluar'}
             </div>
             {/* duracion */}
@@ -84,12 +97,31 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                avisos.map( (aviso , index) => (
                 <div key={index} className="col s12" style={{"margin":"5px"}}>
                   <div className="col s2 l1 center-align">
-                    <i className="material-icons" style={{"color":"#D14747"}}>announcement</i>
+                    <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,aviso.id])}>
+                      <i className="material-icons" style={{"color":"#D14747"}}>announcement</i>
+                    </InertiaLink>
                   </div>
                   <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                    <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,aviso.id])} className="col s12 advice-text">
-                      {aviso.titulo}
-                    </InertiaLink>
+                    <div className="col s12 valign-wrapper">
+                      <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,aviso.id])} className="advice-text">
+                        {aviso.titulo}
+                      </InertiaLink>
+                      {/* dropdown para editar */}
+                      <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
+                      {/* contendio del dropdown */}
+                      <ul id="dropdown1" className="dropdown-content drop-size2">
+                        <li>
+                          <InertiaLink href="#" className="dropdown-text">
+                            <i className="material-icons">edit</i>Editar
+                          </InertiaLink>
+                        </li>
+                        <li>
+                          <InertiaLink href="#" className="dropdown-text">
+                            <i className="material-icons">delete</i>Eliminar
+                          </InertiaLink>
+                        </li>
+                      </ul>
+                    </div>
                     <div className="col s12 posted-date">
                       Publicado el {transformaFechaModulo(aviso.created_at)} 
                     </div>
@@ -103,6 +135,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
             {entradas && entradas.length > 0 &&
               entradas.map((entrada, index) =>(
                 <div key={index} className="col s12" style={{"margin":"5px"}}>
+                  {/* archivos */}
                   {entrada.tipo == 'Archivo' &&
                     <div>
                       <div className="col s2 l1 center-align">
@@ -111,6 +144,21 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
                         <div className="col s12">
                           <a href={entrada.files && entrada.files.length > 0 && "/storage/archivos_cursos/"+entrada.files[0].archivo} target="_blank" className="nombre-subrayado">{entrada.titulo}</a>
+                          {/* dropdown para editar */}
+                          <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
+                          {/* contendio del dropdown */}
+                          <ul id="dropdown1" className="dropdown-content drop-size2">
+                            <li>
+                              <InertiaLink href="#" className="dropdown-text">
+                                <i className="material-icons">edit</i>Editar
+                              </InertiaLink>
+                            </li>
+                            <li>
+                              <InertiaLink href="#" className="dropdown-text">
+                                <i className="material-icons">delete</i>Eliminar
+                              </InertiaLink>
+                            </li>
+                          </ul>
                         </div>
                         <div className="col s12 posted-date">
                           Publicado el {transformaFechaModulo(entrada.created_at)} 
@@ -118,30 +166,67 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                       </div>
                     </div>
                   }
+                  {/* enlaces */}
                   {entrada.tipo == 'Enlace' &&
                     <div>
                       <div className="col s2 l1 center-align">
                         <i className="material-icons" style={{"color":"#134E39"}}>link</i>
                       </div>
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                        <a href={entrada.link} target="_blank" className="col s12 advice-text nombre-subrayado">
-                          {entrada.titulo}
-                        </a>
+                        <div className="col s12">
+                          <a href={entrada.link} target="_blank" className="advice-text nombre-subrayado">
+                            {entrada.titulo}
+                          </a>
+                          {/* dropdown para editar */}
+                          <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
+                          {/* contendio del dropdown */}
+                          <ul id="dropdown1" className="dropdown-content drop-size2">
+                            <li>
+                              <InertiaLink href="#" className="dropdown-text">
+                                <i className="material-icons">edit</i>Editar
+                              </InertiaLink>
+                            </li>
+                            <li>
+                              <InertiaLink href="#" className="dropdown-text">
+                                <i className="material-icons">delete</i>Eliminar
+                              </InertiaLink>
+                            </li>
+                          </ul>
+                        </div>
+                        
                         <div className="col s12 posted-date">
                           Publicado el {transformaFechaModulo(entrada.created_at)} 
                         </div>
                       </div>
                     </div>
                   }
+                  {/* informacion */}
                   {entrada.tipo == 'Informacion' && 
                     <div>
                       <div className="col s2 l1 center-align">
                         <i className="material-icons" style={{"color":"#134E39"}}>assignment</i>
                       </div>
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                        <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,entrada.id])} className="col s12 publicacion">
-                          {entrada.titulo}
-                        </InertiaLink>
+                        <div className="col s12">
+                          <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,entrada.id])} className="publicacion">
+                            {entrada.titulo}
+                          </InertiaLink>
+                          {/* dropdown para editar */}
+                          <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
+                          {/* contendio del dropdown */}
+                          <ul id="dropdown1" className="dropdown-content drop-size2">
+                            <li>
+                              <InertiaLink href="#" className="dropdown-text">
+                                <i className="material-icons">edit</i>Editar
+                              </InertiaLink>
+                            </li>
+                            <li>
+                              <InertiaLink href="#" className="dropdown-text">
+                                <i className="material-icons">delete</i>Eliminar
+                              </InertiaLink>
+                            </li>
+                          </ul>
+                        </div>
                         <div className="col s12 posted-date">
                           Publicado el {transformaFechaModulo(entrada.created_at)} 
                         </div>
@@ -166,6 +251,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
               actividades.map((actividad, index) => (
                 <InertiaLink href={route('cursos.asignacion',[curso.id, modulo.id, actividad.id])} key={index}>
                   <div className="card">
+                    {/* asignacion */}
                     {actividad.tipo == 'Asignacion' &&
                       <div className="card-content" style={{"paddingBottom":"5px"}}>
                         <div className="row valign-wrapper">
@@ -184,10 +270,26 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                           </div>
                           <div className="col s2 l1 center-align">
                             <span className="texto-enviado">ENVIADO</span>
+                            {/* dropdown para editar */}
+                            <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px","marginLeft":"10px"}}>more_vert</i></a>
+                            {/* contendio del dropdown */}
+                            <ul id="dropdown1" className="dropdown-content drop-size2">
+                              <li>
+                                <InertiaLink href="#" className="dropdown-text">
+                                  <i className="material-icons">edit</i>Editar
+                                </InertiaLink>
+                              </li>
+                              <li>
+                                <InertiaLink href="#" className="dropdown-text">
+                                  <i className="material-icons">delete</i>Eliminar
+                                </InertiaLink>
+                              </li>
+                            </ul>
                           </div>
                         </div>
                       </div>
                     }
+                    {/* examen */}
                     {actividad.tipo == 'Examen' &&
                       <div className="card-content" style={{"paddingBottom":"5px"}}>
                         <div className="row valign-wrapper">
@@ -206,6 +308,21 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                           </div>
                           <div className="col s2 l1 center-align">
                             <span className="texto-cerrado">CERRADO</span>
+                            {/* dropdown para editar */}
+                            <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px","marginLeft":"10px"}}>more_vert</i></a>
+                            {/* contendio del dropdown */}
+                            <ul id="dropdown1" className="dropdown-content drop-size2">
+                              <li>
+                                <InertiaLink href="#" className="dropdown-text">
+                                  <i className="material-icons">edit</i>Editar
+                                </InertiaLink>
+                              </li>
+                              <li>
+                                <InertiaLink href="#" className="dropdown-text">
+                                  <i className="material-icons">delete</i>Eliminar
+                                </InertiaLink>
+                              </li>
+                            </ul>
                           </div>
                         </div>
                       </div>
