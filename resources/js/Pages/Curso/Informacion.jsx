@@ -5,9 +5,8 @@ import '/css/informacionCursos.css'
 import '../../styles/cursos.css'
 import '/css/courseCardSearch.css'
 import Tag from '../../components/common/Tag';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia';
-
 
 function transformaFecha(fecha) {
   const dob = new Date(fecha);
@@ -34,7 +33,7 @@ function calculaAvance(ini, fin) {
 }
 
 const Informacion = ({curso, cursos_count, participantes_count, calificacion, inscrito}) => {
-
+  const { auth } = usePage().props;
   //manda el forumulario
   function handleSubmit(e) {
     e.preventDefault()
@@ -83,7 +82,7 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
               {/* Calificacion */}
               {inscrito &&
               <div className="col s12">
-                <div className="info-title">CALIFICACIÓN</div>
+                <div className="info-title">{auth.roles[0].name == 'Ponente' ? 'CALIFICACIÓN GRUPAL' : auth.roles[0].name == 'Alumno' && 'CALIFICACIÓN'}</div>
                 {calificacion && calificacion.calificacion_final ? calificacion.calificacion_final : 'Sin evaluar'}
               </div>
               }
@@ -178,26 +177,28 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
           </div>
         </div>
         {/* Descripcion del curso */}
-        <div className="col s12 description-text" style={{"marginTop":"15px"}} dangerouslySetInnerHTML={{__html: curso.contenido}}>
+        <div className="col s12 description-text" style={{"marginTop":"15px"}} dangerouslySetInnerHTML={{__html: curso.descripcion}}>
           {/* Aquí va la descripcion pero se pone en el dangerouslySetInnerHTML */}
         </div>
         {/* Evaluacion y bibliografia */}
-        <div className="col s12">
-          <div className="section-title">
-            EVALUACIÓN Y BIBLIOGRAFÍA
+        { inscrito &&
+          <div className="col s12">
+            <div className="section-title">
+              EVALUACIÓN Y BIBLIOGRAFÍA
+            </div>
+            {/* collapsible de la bibliografia */}
+            <div style={{"marginTop":"15px"}}>
+              <ul className="collapsible">
+                <li>
+                  <div className="collapsible-header"><i className="material-icons">attach_file</i>Bibliografía</div>
+                  <div className="collapsible-body">
+                    Aqui va la bibliografia
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
-          {/* collapsible de la bibliografia */}
-          <div style={{"marginTop":"15px"}}>
-            <ul className="collapsible">
-              <li>
-                <div className="collapsible-header"><i className="material-icons">attach_file</i>Bibliografía</div>
-                <div className="collapsible-body">
-                  Aqui va la bibliografia
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
+        }
       </div>
     </>
   )
