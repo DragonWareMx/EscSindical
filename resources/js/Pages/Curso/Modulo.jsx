@@ -1,5 +1,5 @@
 import { Inertia } from '@inertiajs/inertia';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { InertiaLink , usePage   } from '@inertiajs/inertia-react';
 import React from 'react'
 import route from 'ziggy-js';
 import Layout from '../../layouts/Layout';
@@ -24,10 +24,11 @@ function transformaFechaModulo(fecha) {
 
 function getFileSize(archivo){
   alert(archivo.size)
-  return 0
+  return 0  
 }
 
 const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacion}) => {
+  const { auth } = usePage().props;
   return (
     <>
       <div className="row default-text">
@@ -43,7 +44,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
           <div className="col s12 l2 push-l10">
             {/* calificacion */}
             <div className="col s6 l12  push-s6">
-              <div className="subtitulo-modulo">CALIFICACIÓN</div>
+              <div className="subtitulo-modulo">{auth.roles[0].name == 'Ponente' ? 'CALIFICACIÓN GRUPAL' : auth.roles[0].name == 'Alumno' && 'CALIFICACIÓN'}</div>
               {calificacion && calificacion.calificacion ? calificacion.calificacion : 'Sin evaluar'}
             </div>
             {/* duracion */}
