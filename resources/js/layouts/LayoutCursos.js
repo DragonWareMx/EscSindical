@@ -157,7 +157,7 @@ const LayoutCursos = ({children}) => {
                                         {/* Estadisticas */}
                                         {auth.roles['0'].name == 'Ponente' &&
                                             <li className="li-style">
-                                                <InertiaLink id="tab_estadisticas" href="" className="LC_a" target="_self">
+                                                <InertiaLink id="tab_estadisticas" href={route('cursos.estadisticas',curso.id)} className="LC_a" target="_self">
                                                     <i className="material-icons col s3 LC_tab_icons">bar_chart</i>
                                                     <div className="col s9">Estadísticas</div>
                                                 </InertiaLink>

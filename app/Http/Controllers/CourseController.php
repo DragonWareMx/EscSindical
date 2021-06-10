@@ -847,6 +847,13 @@ class CourseController extends Controller
         ]);
     }
 
+    public function estadisticas($id)
+    {
+        return Inertia::render('Curso/Estadisticas', [
+            'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
+        ]);
+    }
+
     public function solicitudes($id)
     {
         \Gate::authorize('haveaccess', 'ponente.perm');
