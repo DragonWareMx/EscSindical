@@ -57,17 +57,17 @@ Route::post('/cursos/deleteCourseRequest/{id}', [App\Http\Controllers\CourseCont
 
 
 // ------Modulos del curso------
+Route::get('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class, 'modulos'])->name('cursos.modulos');
 Route::get('/cursos/module/create', [App\Http\Controllers\CourseController::class, 'moduleCreate'])->name('module.create');
 Route::get('/cursos/module/edit/{id}', [App\Http\Controllers\CourseController::class, 'moduleEdit'])->name('module.edit');
 Route::post('/cursos/module/store', [App\Http\Controllers\CourseController::class, 'storeModule'])->name('module.store');
 Route::delete('/cursos/module/delete/{id}', [App\Http\Controllers\CourseController::class, 'deleteModule'])->name('module.delete');
 Route::post('/cursos/module/update/{id}', [App\Http\Controllers\CourseController::class, 'updateModule'])->name('module.update');
+Route::get('/cursos/{id}/modulo/{mid}', [App\Http\Controllers\CourseController::class, 'modulo'])->name('cursos.modulo');
 
 //------Rutas del layout cursos
 Route::get('/cursos/{id}/informacion', [App\Http\Controllers\CourseController::class, 'informacion'])->name('cursos.informacion');
 
-Route::get('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class, 'modulos'])->name('cursos.modulos');
-Route::get('/cursos/{id}/modulo/{mid}', [App\Http\Controllers\CourseController::class, 'modulo'])->name('cursos.modulo');
 
 // ASIGNACION
 Route::get('/cursos/{id}/modulo/{mid}/asignacion/{pid}', [App\Http\Controllers\CourseController::class, 'asignacion'])->name('cursos.asignacion');

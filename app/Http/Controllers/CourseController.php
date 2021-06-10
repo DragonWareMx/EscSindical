@@ -329,6 +329,7 @@ class CourseController extends Controller
     public function update($id, Request $request)
     {
         \Gate::authorize('haveaccess', 'ponente.perm');
+
         //VALIDAMOS DATOS
         $validated = $request->validate([
             'nombre' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
@@ -922,28 +923,96 @@ class CourseController extends Controller
     // ASIGNACIONES----------------------------------
     public function asignacion($id,$mid,$pid)
     {
-        //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
-        $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
+        //VERIFICA EL ROL DEL USUARIO
+        if (Auth::user()->roles[0]->name == 'Ponente') {
+            \Gate::authorize('haveaccess', 'ponente.perm');
 
-        //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
-        if(!$modulo){
-            return abort(404);
+            //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
+            $modulo = Module::findOrFail($mid);
+
+            //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if(!$modulo){
+                return abort(404);
+            }
+
+            // Buscar la asignacion
+            $entrada=Entry::with('files:archivo,entry_id')->findOrFail($pid);
+
+            //verificar que la entrada sea asingacion o examen
+
+            //verificar que pertenezca al modulo
+
+            //si el usuario es ponente...
+                //verificar que el curso sea suyo
+            //si el usuario es estudiante...
+                //verificar que este registrado en el curso
+
+            return Inertia::render('Curso/Asignacion/Asignacion', [
+                'curso' => Course::findOrFail($id),
+                'modulo' => $modulo,
+                'asignacion' => $entrada,
+            ]);
+        } else if (Auth::user()->roles[0]->name == 'Alumno') {
+            \Gate::authorize('haveaccess', 'alumno.perm');
+            
+            //busca el curso
+            $curso = Course::select('id')->findOrFail($id);
+            
+            //Si no existe el curso quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if(!$curso){
+                return abort(404);
+            }
+
+            //verifica que el usuario auth sea alumno del curso
+            $validador = false;
+            foreach (Auth::user()->courses()->get() as $cursoA) {
+                if($cursoA->id == $curso->id)
+                    $validador = true;
+            }
+            if(!$validador)
+                abort(403);
+
+            //Buscar el modulo con el mid
+            $modulo = Module::select('id','nombre','course_id')->findOrFail($mid);
+
+            //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if(!$modulo){
+                return abort(404);
+            }
+
+            //verifica que el modulo pertenezca al curso
+            if($modulo->course_id != $curso->id){
+                abort(403);
+            }
+
+            // Buscar la asignacion
+            $entrada=Entry::with('files:archivo,entry_id')->select('id','titulo','created_at','contenido','tipo','module_id')->findOrFail($pid);
+
+            //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if(!$entrada){
+                return abort(404);
+            }
+
+            //verificar que la entrada sea asingacion o examen
+            if($entrada->tipo != 'Asignacion' && $entrada->tipo != 'Examen'){
+                abort(403);
+            }
+
+            //verifica que pertenezca al modulo
+            if($entrada->module_id != $modulo->id){
+                abort(403);
+            }
+
+            return Inertia::render('Curso/Asignacion/Asignacion', [
+                'curso' => $curso,
+                'modulo' => $modulo,
+                'asignacion' => $entrada,
+            ]);
+        } else if (Auth::user()->roles[0]->name == 'Administrador') {
+            \Gate::authorize('haveaccess', 'admin.perm');
+        } else {
+            abort(403);
         }
-
-        
-        // Buscar la asignacion
-        $entrada=Entry::with('files:archivo,entry_id')->where('tipo','Asignacion')->orWhere('tipo','Examen')->findOrFail($pid);
-
-        //verificar que pertenezca al modulo
-        
-        //si el usuario es ponente...
-            //verificar que el curso sea suyo
-        //si el usuario es estudiante...
-            //verificar que este registrado en el curso
-
-        return Inertia::render('Curso/Asignacion/Asignacion', [
-            'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id)
-        ]);
     }
 
     public function inscribir($id){
