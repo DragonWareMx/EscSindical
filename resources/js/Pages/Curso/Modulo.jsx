@@ -29,7 +29,7 @@ function getFileSize(archivo){
 
 
 
-const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacion}) => {
+const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacion, siguiente, anterior}) => {
   const { auth } = usePage().props;
 
 
@@ -65,6 +65,8 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
   function initializeMaterialize(){
     var elems = document.querySelectorAll('.dropdown-trigger');
     var instances = M.Dropdown.init(elems);
+    var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems);
   }
   
   useEffect(() => {
@@ -76,11 +78,27 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
       <div className="row default-text">
         {/* seccion 1 */}
         <div className="col s12" style={{"borderBottom":"1px solid #DDDDDD"}}>
-          <div className="col s11 titulo-modulo">
-            Modulo {modulo.numero}. {modulo.nombre}
-          </div>
-          <div className="col s1 center-align">
-            <i className="material-icons tiny">navigate_next</i>
+          {/* titulo y flechas para navegar */}
+          <div className="row">
+            {/* titulo */}
+            <div className="col s9 m11 l11 titulo-modulo">
+              Modulo {modulo.numero}. {modulo.nombre}
+            </div>
+            {/* flechas para navegar */}
+            <div className="col s3 m1 l1 center-align" style={{"marginTop":"16px"}}>
+              {/* modulo anterior */}
+              { anterior!=null &&
+                <InertiaLink href={route('cursos.modulo', [curso.id, anterior.id] )} className="tooltipped" data-position="top" data-tooltip="Anterior">
+                  <i className="material-icons tiny" style={{"marginRight":"5px","color":"#134E39","fontSize":"22px"}}>navigate_before</i>
+                </InertiaLink>
+              }
+              {/* modulo siguiente */}
+              { siguiente!=null &&
+                <InertiaLink href={route('cursos.modulo', [curso.id, siguiente.id] )} className="tooltipped" data-position="top" data-tooltip="Siguiente">
+                  <i className="material-icons tiny" style={{"marginLeft":"5px","color":"#134E39","fontSize":"22px"}}>navigate_next</i>
+                </InertiaLink>
+              }
+            </div>
           </div>
           {/* contenedor 2 */}
           <div className="col s12 l2 push-l10">

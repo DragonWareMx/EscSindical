@@ -831,6 +831,15 @@ class CourseController extends Controller
             ->orderBy('id','DESC')
             ->get();
 
+
+        $actual=Module::findOrFail($mid);
+        $numeroActual=$actual->numero;
+
+        $numeroSiguiente=$numeroActual+1;
+        $siguiente=Module::where('numero',$numeroSiguiente)->first('id');
+
+        $numeroAnterior=$numeroActual-1;
+        $anterior=Module::where('numero',$numeroAnterior)->first('id');
         
 
         return Inertia::render('Curso/Modulo', [
@@ -838,8 +847,10 @@ class CourseController extends Controller
             'modulo' => $modulo,
             'avisos' => $avisos,
             'entradas' => $entradas,
-            'actividades' =>$actividades,
+            'actividades' => $actividades,
             'calificacion' => $calificacion,
+            'siguiente' => $siguiente,
+            'anterior' => $anterior,
         ]);
     }
 
