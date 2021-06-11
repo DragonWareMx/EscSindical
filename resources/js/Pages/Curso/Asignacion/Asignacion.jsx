@@ -54,7 +54,35 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             formato = "am"
 
         return `${day} de ${monthNames[monthIndex]} de ${year} a las ${hour}:${minutes} ${formato}`;
-      }
+    }
+
+    // / funcion para calcular el estatus de la entrega o algo así
+    function pendienteEstatus(entrega, permitir){
+        const hoy = new Date();
+        const fecha_entrega=new Date(entrega);
+        if(hoy < fecha_entrega){
+            return 'Pendiente'
+        }
+        else if(hoy > fecha_entrega && permitir){
+            return 'Retrasada'
+        }
+        else{
+            return 'Cerrado'
+        }
+    }
+
+    // / funcion para calcular el estatus de la entrega realizada o algo así
+    function realizadaEstatus(fecha_entrega,entregado){
+        const entrega=new Date(fecha_entrega);
+        const fecha = new Date(entregado);
+
+        if(fecha < entrega){
+            return 'Enviado'
+        }
+        else{
+            return 'Retrasada'
+        }
+    }
 
     return (
     <>
@@ -152,18 +180,22 @@ const Asignacion = ({curso, modulo, asignacion}) => {
 
                 {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Alumno" &&
                     <>
-                        {/* row de info */}
                         {/* información para el estudiante antes de entregar la asignación */}
                         <div className="col s12 padding-0px row-extatus">
-                            {/* OJO!!!!!---------- */}
-                            {/* Si esta atrasada o cerrada sería en color rojo className="estatus-red" */}
-                            {/* Si ya fue enviada sería en color verde className="estatus-green" */}
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus</div>
-                            <div className="col s12 m9 l9 xl9 txt-content-estatus estatus-bolder">Abierto</div>
+                            {asignacion.users && asignacion.users.length > 0 ?
+                            <>
+                                <div className={realizadaEstatus(asignacion.fecha_de_entrega, asignacion.users[0].pivot.created_at) == "Retrasada" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-red" : "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-green"}>{realizadaEstatus(asignacion.fecha_de_entrega, asignacion.users[0].pivot.created_at)}</div>
+                            </>
+                            :
+                            <>
+                                <div className={pendienteEstatus(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados) == "Pendiente" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-green" : "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-red"}>{pendienteEstatus(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados)}</div>
+                            </>
+                            }
                         </div>
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de entrega</div>
-                            <div className="col s12 m9 l9 xl9 txt-content-estatus">27 de Abril de 2021 a las 23:59</div>
+                            <div className="col s12 m9 l9 xl9 txt-content-estatus">{asignacion.fecha_de_entrega && transformaFecha(asignacion.fecha_de_entrega)}</div>
                         </div>
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Tiempo restante</div>
