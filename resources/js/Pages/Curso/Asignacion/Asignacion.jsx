@@ -60,7 +60,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
     function pendienteEstatus(entrega, permitir){
         const hoy = new Date();
         const fecha_entrega=new Date(entrega);
-        if(hoy < fecha_entrega){
+        if(hoy <= fecha_entrega){
             return 'Pendiente'
         }
         else if(hoy > fecha_entrega && permitir){
@@ -76,7 +76,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
         const entrega=new Date(fecha_entrega);
         const fecha = new Date(entregado);
 
-        if(fecha < entrega){
+        if(fecha <= entrega){
             return 'Enviado'
         }
         else{
