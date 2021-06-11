@@ -26,6 +26,17 @@
     text-align: left;
 }
 
+.LC_a_2{
+    color:#134E39 !important;
+    font-size: 13px !important;
+    display:flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    line-height: 13px;
+    text-transform: capitalize;
+    text-align: left;
+}
+
 .LC_tab{
     padding: 0px !important;
     font-family: Montserrat;
@@ -82,6 +93,7 @@
 {
     white-space: nowrap;
     overflow: auto;
+    border-bottom: solid 1px #8A8A8A;
 }
 
 .li-style 
@@ -92,7 +104,9 @@
 
 .selected-nav
 {
-    border-bottom: solid 2px #134E39;
+    padding-bottom: 8px;
+    color: #134E39 !important;
+    border-bottom: solid 3px #134E39;
 }
 
 .drop-text-format
