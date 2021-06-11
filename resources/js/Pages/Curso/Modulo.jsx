@@ -32,6 +32,36 @@ function getFileSize(archivo){
 const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacion}) => {
   const { auth } = usePage().props;
 
+
+  // / funcion para calcular el estatus de la entrega o algo así
+  function pendienteEstatus(entrega, permitir){
+    const hoy = new Date();
+    const fecha_entrega=new Date(entrega);
+    if(hoy < fecha_entrega){
+      return 'Pendiente'
+    }
+    else if(hoy > fecha_entrega && permitir){
+      return 'Retrasada'
+    }
+    else{
+      return 'Cerrado'
+    }
+  }
+
+
+  // / funcion para calcular el estatus de la entrega realizada o algo así
+  function realizadaEstatus(fecha_entrega,entregado){
+    const entrega=new Date(fecha_entrega);
+    const fecha = new Date(entregado);
+
+    if(fecha < entrega){
+      return 'Enviado'
+    }
+    else{
+      return 'Retrasada'
+    }
+  }
+
   function initializeMaterialize(){
     var elems = document.querySelectorAll('.dropdown-trigger');
     var instances = M.Dropdown.init(elems);
@@ -107,20 +137,23 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                         {aviso.titulo}
                       </InertiaLink>
                       {/* dropdown para editar */}
-                      <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
-                      {/* contendio del dropdown */}
-                      <ul id="dropdown1" className="dropdown-content drop-size2">
-                        <li>
-                          <InertiaLink href="#" className="dropdown-text">
-                            <i className="material-icons">edit</i>Editar
-                          </InertiaLink>
-                        </li>
-                        <li>
-                          <InertiaLink href="#" className="dropdown-text">
-                            <i className="material-icons">delete</i>Eliminar
-                          </InertiaLink>
-                        </li>
-                      </ul>
+                      { auth.roles[0].name=='Ponente' &&
+                        <div>
+                          <a href="#" className="dropdown-trigger" data-target={'aviso'+aviso.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
+                          <ul id={'aviso'+aviso.id} className="dropdown-content drop-size2">
+                            <li>
+                              <InertiaLink href="#" className="dropdown-text">
+                                <i className="material-icons">edit</i>Editar
+                              </InertiaLink>
+                            </li>
+                            <li>
+                              <InertiaLink href="#" className="dropdown-text">
+                                <i className="material-icons">delete</i>Eliminar
+                              </InertiaLink>
+                            </li>
+                          </ul>
+                        </div>
+                      }
                     </div>
                     <div className="col s12 posted-date">
                       Publicado el {transformaFechaModulo(aviso.created_at)} 
@@ -142,23 +175,26 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                         <i className="material-icons" style={{"color":"#134E39"}}>description</i>
                       </div>
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                        <div className="col s12">
+                        <div className="col s12 valign-wrapper">
                           <a href={entrada.files && entrada.files.length > 0 && "/storage/archivos_cursos/"+entrada.files[0].archivo} target="_blank" className="nombre-subrayado">{entrada.titulo}</a>
                           {/* dropdown para editar */}
-                          <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
-                          {/* contendio del dropdown */}
-                          <ul id="dropdown1" className="dropdown-content drop-size2">
-                            <li>
-                              <InertiaLink href="#" className="dropdown-text">
-                                <i className="material-icons">edit</i>Editar
-                              </InertiaLink>
-                            </li>
-                            <li>
-                              <InertiaLink href="#" className="dropdown-text">
-                                <i className="material-icons">delete</i>Eliminar
-                              </InertiaLink>
-                            </li>
-                          </ul>
+                          { auth.roles[0].name=='Ponente' &&
+                            <div>
+                              <a href="#" className="dropdown-trigger" data-target={'archivo'+entrada.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
+                              <ul id={'archivo'+entrada.id} className="dropdown-content drop-size2">
+                                <li>
+                                  <InertiaLink href="#" className="dropdown-text">
+                                    <i className="material-icons">edit</i>Editar
+                                  </InertiaLink>
+                                </li>
+                                <li>
+                                  <InertiaLink href="#" className="dropdown-text">
+                                    <i className="material-icons">delete</i>Eliminar
+                                  </InertiaLink>
+                                </li>
+                              </ul>
+                            </div>
+                          }
                         </div>
                         <div className="col s12 posted-date">
                           Publicado el {transformaFechaModulo(entrada.created_at)} 
@@ -173,25 +209,28 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                         <i className="material-icons" style={{"color":"#134E39"}}>link</i>
                       </div>
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                        <div className="col s12">
+                        <div className="col s12 valign-wrapper">
                           <a href={entrada.link} target="_blank" className="advice-text nombre-subrayado">
                             {entrada.titulo}
                           </a>
                           {/* dropdown para editar */}
-                          <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
-                          {/* contendio del dropdown */}
-                          <ul id="dropdown1" className="dropdown-content drop-size2">
-                            <li>
-                              <InertiaLink href="#" className="dropdown-text">
-                                <i className="material-icons">edit</i>Editar
-                              </InertiaLink>
-                            </li>
-                            <li>
-                              <InertiaLink href="#" className="dropdown-text">
-                                <i className="material-icons">delete</i>Eliminar
-                              </InertiaLink>
-                            </li>
-                          </ul>
+                          { auth.roles[0].name=='Ponente' &&
+                            <div>
+                              <a href="#" className="dropdown-trigger" data-target={'enlace'+entrada.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
+                              <ul id={'enlace'+entrada.id} className="dropdown-content drop-size2">
+                                <li>
+                                  <InertiaLink href="#" className="dropdown-text">
+                                    <i className="material-icons">edit</i>Editar
+                                  </InertiaLink>
+                                </li>
+                                <li>
+                                  <InertiaLink href="#" className="dropdown-text">
+                                    <i className="material-icons">delete</i>Eliminar
+                                  </InertiaLink>
+                                </li>
+                              </ul>
+                            </div>
+                          }
                         </div>
                         
                         <div className="col s12 posted-date">
@@ -207,25 +246,28 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                         <i className="material-icons" style={{"color":"#134E39"}}>assignment</i>
                       </div>
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
-                        <div className="col s12">
+                        <div className="col s12 valign-wrapper">
                           <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,entrada.id])} className="publicacion">
                             {entrada.titulo}
                           </InertiaLink>
                           {/* dropdown para editar */}
-                          <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
-                          {/* contendio del dropdown */}
-                          <ul id="dropdown1" className="dropdown-content drop-size2">
-                            <li>
-                              <InertiaLink href="#" className="dropdown-text">
-                                <i className="material-icons">edit</i>Editar
-                              </InertiaLink>
-                            </li>
-                            <li>
-                              <InertiaLink href="#" className="dropdown-text">
-                                <i className="material-icons">delete</i>Eliminar
-                              </InertiaLink>
-                            </li>
-                          </ul>
+                          { auth.roles[0].name == 'Ponente' &&
+                            <div>
+                              <a href="#" className="dropdown-trigger" data-target={'info'+entrada.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
+                              <ul id={'info'+entrada.id} className="dropdown-content drop-size2">
+                                <li>
+                                  <InertiaLink href="#" className="dropdown-text">
+                                    <i className="material-icons">edit</i>Editar
+                                  </InertiaLink>
+                                </li>
+                                <li>
+                                  <InertiaLink href="#" className="dropdown-text">
+                                    <i className="material-icons">delete</i>Eliminar
+                                  </InertiaLink>
+                                </li>
+                              </ul>
+                            </div>
+                          }
                         </div>
                         <div className="col s12 posted-date">
                           Publicado el {transformaFechaModulo(entrada.created_at)} 
@@ -261,7 +303,13 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                           <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
                             <div className="col s12 publicacion">
                               <span className="publicacion">{actividad.titulo}</span> 
-                              <span className="calificacion">0/100</span>
+                              <span className="calificacion">{auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Alumno" &&
+                               <>{
+                                actividad.calificacion ? actividad.calificacion+'/' : 'Sin calificar/'
+                               }
+                               </>
+                               }{actividad.max_calif}
+                               </span>
                             </div>
                             <div className="col s12 posted-date">
                               <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {modulo.numero}. "{modulo.nombre}"</span>
@@ -269,22 +317,30 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                             </div>
                           </div>
                           <div className="col s2 l1 center-align">
-                            <span className="texto-enviado">ENVIADO</span>
+                            {auth.roles[0].name=="Alumno" && actividad.fecha &&
+                              <div><span className={'texto-estatus '+realizadaEstatus(actividad.fecha_de_entrega, actividad.fecha)}>{realizadaEstatus(actividad.fecha_de_entrega, actividad.fecha)}</span></div>
+                            }
+                            {auth.roles[0].name=="Alumno" && !actividad.fecha &&
+                              <div><span className={'texto-estatus '+pendienteEstatus(actividad.fecha_de_entrega, actividad.permitir_envios_retrasados)}>{pendienteEstatus(actividad.fecha_de_entrega, actividad.permitir_envios_retrasados)}</span></div>
+                            }
                             {/* dropdown para editar */}
-                            <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px","marginLeft":"10px"}}>more_vert</i></a>
-                            {/* contendio del dropdown */}
-                            <ul id="dropdown1" className="dropdown-content drop-size2">
-                              <li>
-                                <InertiaLink href="#" className="dropdown-text">
-                                  <i className="material-icons">edit</i>Editar
-                                </InertiaLink>
-                              </li>
-                              <li>
-                                <InertiaLink href="#" className="dropdown-text">
-                                  <i className="material-icons">delete</i>Eliminar
-                                </InertiaLink>
-                              </li>
-                            </ul>
+                            { auth.roles[0].name=='Ponente' &&
+                              <div>
+                                <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px","marginLeft":"10px"}}>more_vert</i></a>
+                                <ul id="dropdown1" className="dropdown-content drop-size2">
+                                  <li>
+                                    <InertiaLink href="#" className="dropdown-text">
+                                      <i className="material-icons">edit</i>Editar
+                                    </InertiaLink>
+                                  </li>
+                                  <li>
+                                    <InertiaLink href="#" className="dropdown-text">
+                                      <i className="material-icons">delete</i>Eliminar
+                                    </InertiaLink>
+                                  </li>
+                                </ul>
+                              </div>
+                            }
                           </div>
                         </div>
                       </div>
@@ -299,7 +355,13 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                           <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
                             <div className="col s12 publicacion">
                               <span className="publicacion">{actividad.titulo}</span> 
-                              <span className="calificacion">Sin calificar</span>
+                              <span className="calificacion">{auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Alumno" &&
+                               <>{
+                                actividad.calificacion ? actividad.calificacion+'/' : 'Sin calificar/'
+                               }
+                               </>
+                               }{actividad.max_calif}
+                               </span>
                             </div>
                             <div className="col s12 posted-date">
                               <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo {modulo.numero}. {modulo.nombre}</span>
@@ -307,22 +369,30 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                             </div>
                           </div>
                           <div className="col s2 l1 center-align">
-                            <span className="texto-cerrado">CERRADO</span>
+                            {auth.roles[0].name=="Alumno" && actividad.fecha &&
+                              <div><span className={'texto-estatus '+realizadaEstatus(actividad.fecha_de_entrega, actividad.fecha)}>{realizadaEstatus(actividad.fecha_de_entrega, actividad.fecha)}</span></div>
+                            }
+                            {auth.roles[0].name=="Alumno" && !actividad.fecha &&
+                              <div><span className={'texto-estatus '+pendienteEstatus(actividad.fecha_de_entrega, actividad.permitir_envios_retrasados)}>{pendienteEstatus(actividad.fecha_de_entrega, actividad.permitir_envios_retrasados)}</span></div>
+                            }
                             {/* dropdown para editar */}
-                            <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px","marginLeft":"10px"}}>more_vert</i></a>
-                            {/* contendio del dropdown */}
-                            <ul id="dropdown1" className="dropdown-content drop-size2">
-                              <li>
-                                <InertiaLink href="#" className="dropdown-text">
-                                  <i className="material-icons">edit</i>Editar
-                                </InertiaLink>
-                              </li>
-                              <li>
-                                <InertiaLink href="#" className="dropdown-text">
-                                  <i className="material-icons">delete</i>Eliminar
-                                </InertiaLink>
-                              </li>
-                            </ul>
+                            { auth.roles[0].name=='Ponente' &&
+                              <div>
+                                <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px","marginLeft":"10px"}}>more_vert</i></a>
+                                <ul id="dropdown1" className="dropdown-content drop-size2">
+                                  <li>
+                                    <InertiaLink href="#" className="dropdown-text">
+                                      <i className="material-icons">edit</i>Editar
+                                    </InertiaLink>
+                                  </li>
+                                  <li>
+                                    <InertiaLink href="#" className="dropdown-text">
+                                      <i className="material-icons">delete</i>Eliminar
+                                    </InertiaLink>
+                                  </li>
+                                </ul>
+                              </div>
+                            }
                           </div>
                         </div>
                       </div>
