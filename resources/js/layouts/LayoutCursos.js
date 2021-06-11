@@ -59,6 +59,10 @@ const LayoutCursos = ({children}) => {
         initializeMat();
     }, [])
 
+    function isUrl(url) {
+        return window.location.href.indexOf(url) > -1
+    }
+
     return (
         <>  
             <div className="row contenedor">
@@ -123,15 +127,15 @@ const LayoutCursos = ({children}) => {
                                 <div className="nav-wrapper">
                                     <ul className="ul-style">
                                         {/* Informacion */}
-                                        <li className="li-style">
-                                            <InertiaLink id="tab_informacion" href={route('cursos.informacion', curso.id)}  className={false ? 'LC_a active' : 'LC_a'}  target="_self">
+                                        <li className={isUrl("informacion") ? "li-style selected-nav" : "li-style"}>
+                                            <InertiaLink id="tab_informacion" href={route('cursos.informacion', curso.id)}  className={isUrl("informacion") ? "LC_a_2" : "LC_a"}  target="_self">
                                                 <i className="material-icons col s3 LC_tab_icons">school</i>
                                                 <div className="col s9">Información</div>
                                             </InertiaLink>
                                         </li>
                                         {/* Modulos */}
-                                        <li className="li-style">
-                                            <InertiaLink id="tab_modulos" href={route('cursos.modulos', curso.id)} className={true  ? 'LC_a active dropdown-trigger2 black-text' : 'LC_a dropdown-trigger2 black-text'} target="_self" data-target="dropdown2">
+                                        <li className={isUrl("modulo") ? "li-style selected-nav" : "li-style"}>
+                                            <InertiaLink id="tab_modulos" href={route('cursos.modulos', curso.id)} className={isUrl("modulo")  ? 'LC_a_2 active dropdown-trigger2 black-text' : 'LC_a dropdown-trigger2 black-text'} target="_self" data-target="dropdown2">
                                                 <i className="material-icons col s3 LC_tab_icons">book</i>
                                                 <div className="col s9">Módulos</div>
                                                 <i className="material-icons right">arrow_drop_down</i>
@@ -139,8 +143,8 @@ const LayoutCursos = ({children}) => {
                                         </li>
                                         {/* Mochila */}
                                         {auth.roles['0'].name == 'Alumno' &&
-                                            <li className="li-style">
-                                                <InertiaLink id="tab_mochila" href={route('cursos.mochila', curso.id)} className="LC_a" target="_self">
+                                            <li className={isUrl("mochila") ? "li-style selected-nav" : "li-style"}>
+                                                <InertiaLink id="tab_mochila" href={route('cursos.mochila', curso.id)} className={isUrl("mochila") ? "LC_a_2" : "LC_a"} target="_self">
                                                     <i className="material-icons col s3 LC_tab_icons">backpack</i>
                                                     <div className="col s9">Mochila</div>
                                                 </InertiaLink>
@@ -148,16 +152,16 @@ const LayoutCursos = ({children}) => {
                                         }
                                         
                                         {/* Participantes */}
-                                        <li className="li-style" >
-                                            <InertiaLink id="tab_participantes" href={route('cursos.participantes', curso.id)} className="LC_a" target="_self">
+                                        <li className={isUrl("participantes") ? "li-style selected-nav" : "li-style"}>
+                                            <InertiaLink id="tab_participantes" href={route('cursos.participantes', curso.id)} className={isUrl("participantes") ? "LC_a_2" : "LC_a"} target="_self">
                                                 <i className="material-icons col s3 LC_tab_icons">people</i>
                                                 <div className="col s9">Participantes</div>
                                             </InertiaLink>
                                         </li>
                                         {/* Estadisticas */}
                                         {auth.roles['0'].name == 'Ponente' &&
-                                            <li className="li-style">
-                                                <InertiaLink id="tab_estadisticas" href={route('cursos.estadisticas',curso.id)} className="LC_a" target="_self">
+                                            <li className={isUrl("estadisticas") ? "li-style selected-nav" : "li-style"}>
+                                                <InertiaLink id="tab_estadisticas" href={route('cursos.estadisticas',curso.id)} className={isUrl("estadisticas") ? "LC_a_2" : "LC_a"} target="_self">
                                                     <i className="material-icons col s3 LC_tab_icons">bar_chart</i>
                                                     <div className="col s9">Estadísticas</div>
                                                 </InertiaLink>
@@ -168,39 +172,6 @@ const LayoutCursos = ({children}) => {
                                 </div>
                             </nav>
 
-
-                            {/* <ul className="tabs LC">
-                                <li className="tab LC_tab">
-                                    <InertiaLink id="tab_informacion" href={route('cursos.informacion', curso.id)}  className={false ? 'LC_a active' : 'LC_a'}  target="_self">
-                                        <i className="material-icons col s3 LC_tab_icons">school</i>
-                                        <div className="col s9">Información</div>
-                                    </InertiaLink>
-                                </li>
-                                <li className="tab">
-                                    <InertiaLink id="tab_modulos" href={route('cursos.modulos', curso.id)} className={true  ? 'LC_a active' : 'LC_a'} target="_self">
-                                        <i className="material-icons col s3 LC_tab_icons">book</i>
-                                        <div className="col s9">Módulos</div>
-                                    </InertiaLink>
-                                </li>
-                                <li className="tab">
-                                    <InertiaLink id="tab_mochila" href={route('cursos.mochila', curso.id)} className="LC_a" target="_self">
-                                        <i className="material-icons col s3 LC_tab_icons">backpack</i>
-                                        <div className="col s9">Mochila</div>
-                                    </InertiaLink>
-                                </li>
-                                <li className="tab">
-                                    <InertiaLink id="tab_participantes" href={route('cursos.participantes', curso.id)} className="LC_a" target="_self">
-                                        <i className="material-icons col s3 LC_tab_icons">people</i>
-                                        <div className="col s9">Participantes</div>
-                                    </InertiaLink>
-                                </li>
-                                <li className="tab">
-                                    <InertiaLink id="tab_estadisticas" href="" className="LC_a" target="_self">
-                                        <i className="material-icons col s3 LC_tab_icons">bar_chart</i>
-                                        <div className="col s9">Estadísticas</div>
-                                    </InertiaLink>
-                                </li>
-                            </ul> */}
                         </div>
                         <div className="col s12" style={{"marginTop":"25px"}}>
                             {children}

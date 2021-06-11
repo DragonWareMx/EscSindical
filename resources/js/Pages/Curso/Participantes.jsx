@@ -74,7 +74,7 @@ const Participantes = ({curso}) => {
 }
 
 Participantes.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="PARTICIPANTES">
+  <Layout title="Escuela sindical - Curso" pageTitle="Participantes">
     <LayoutCursos children={page} />
   </Layout>
 )

@@ -76,7 +76,17 @@ const Informacion = ({curso,modulo,entrada}) => {
                     <div className="col s12 description-text" style={{"marginTop":"15px"}} dangerouslySetInnerHTML={{__html: entrada.contenido}}>
                       {/* Aquí va la descripcion pero se pone en el dangerouslySetInnerHTML */}
                     </div>
-                      
+                    {/* En caso de que existan archivos en la publicacion aqui se ponen */}
+                    { entrada.files && entrada.files.length > 0 &&
+                      <div className="col s12">
+                        <div className="titulo-modulo">
+                          ARCHIVOS
+                        </div>
+                        <div className="valign-wrapper">
+                          <a href={"/storage/archivos_cursos/"+entrada.files[0].archivo} target="_blank" className="nombre-subrayado" style={{"color":"#5A5A5A"}}>{entrada.files[0].archivo}</a><i className="material-icons tiny" style={{"marginLeft":"5px","color":"#5A5A5A"}}>description</i>
+                        </div>
+                      </div>
+                    }
                   </div>
                 }
                 {/* si la entrada es una publicacion */}
@@ -113,7 +123,17 @@ const Informacion = ({curso,modulo,entrada}) => {
                     <div className="col s12 description-text" style={{"marginTop":"15px"}} dangerouslySetInnerHTML={{__html: entrada.contenido}}>
                       {/* Aquí va la descripcion pero se pone en el dangerouslySetInnerHTML */}
                     </div>
-                      
+                    {/* En caso de que existan archivos en la publicacion aqui se ponen */}
+                    { entrada.files && entrada.files.length > 0 &&
+                      <div className="col s12">
+                        <div className="titulo-modulo">
+                          ARCHIVOS
+                        </div>
+                        <div className="valign-wrapper">
+                          <a href={"/storage/archivos_cursos/"+entrada.files[0].archivo} target="_blank" className="nombre-subrayado" style={{"color":"#5A5A5A"}}>{entrada.files[0].archivo}</a><i className="material-icons tiny" style={{"marginLeft":"5px","color":"#5A5A5A"}}>description</i>
+                        </div>
+                      </div>
+                    }
                   </div>
                 }
               </div>
