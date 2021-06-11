@@ -52,7 +52,7 @@ const AgregarParticipante = ({curso, users, request}) => {
 
     function seleccionar_todo(){
         for (var i=0;i<document.form_solicitudes.elements.length;i++)
-            if(document.form_solicitudes.elements[i].type == "checkbox")
+            if(document.form_solicitudes.elements[i].type == "checkbox" && document.form_solicitudes.elements[i].disabled == "true")
                 document.form_solicitudes.elements[i].checked=true;
 
         document.getElementById("txt-select-all").style.display = "none";
