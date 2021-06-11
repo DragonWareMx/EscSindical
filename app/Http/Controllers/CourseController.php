@@ -1050,7 +1050,7 @@ class CourseController extends Controller
             \Gate::authorize('haveaccess', 'alumno.perm');
             
             //busca el curso
-            $curso = Course::select('id')->findOrFail($id);
+            $curso = Course::with('modules:course_id,id,nombre,numero')->select('id','nombre')->findOrFail($id);
             
             //Si no existe el curso quiere decir que algo anda mal y por eso se regresa a la vista de error
             if(!$curso){
@@ -1076,12 +1076,18 @@ class CourseController extends Controller
 
             //verifica que el modulo pertenezca al curso
             if($modulo->course_id != $curso->id){
+                //si no está lo mandamos a la vista informacion -  solo si es alumno
                 abort(403);
             }
 
             // Buscar la asignacion
-            $entrada=Entry::with('files:archivo,entry_id')->select('id','titulo','created_at','contenido','tipo','module_id')->findOrFail($pid);
+            $entrada=Entry::with(['files:archivo,entry_id',
+            'users' => function ($entrega){
+                return $entrega->where('entry_user.user_id',Auth::user()->id)->select('users.id')
+                            ->withPivot('calificacion','archivo','fecha','editado','Comentario','fecha_calif','comentario_retroalimentacion','created_at','updated_at');
+            }])->select('id','titulo','created_at','contenido','tipo','module_id','permitir_envios_retrasados','fecha_de_entrega')->findOrFail($pid);
 
+            
             //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
             if(!$entrada){
                 return abort(404);

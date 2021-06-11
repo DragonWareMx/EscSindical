@@ -54,7 +54,132 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             formato = "am"
 
         return `${day} de ${monthNames[monthIndex]} de ${year} a las ${hour}:${minutes} ${formato}`;
-      }
+    }
+
+    // / funcion para calcular el estatus de la entrega o algo así
+    function pendienteEstatus(entrega, permitir){
+        const hoy = new Date();
+        const fecha_entrega=new Date(entrega);
+        if(hoy <= fecha_entrega){
+            return 'Pendiente'
+        }
+        else if(hoy > fecha_entrega && permitir){
+            return 'Retrasada'
+        }
+        else{
+            return 'Cerrado'
+        }
+    }
+
+    // / funcion para calcular el estatus de la entrega realizada o algo así
+    function realizadaEstatus(fecha_entrega,entregado){
+        const entrega=new Date(fecha_entrega);
+        const fecha = new Date(entregado);
+
+        if(fecha <= entrega){
+            return 'Enviado'
+        }
+        else{
+            return 'Retrasada'
+        }
+    }
+    
+    function tiempoRestante(fechaEntrega){
+        //si el usuario ya entrego la tarea
+        if(asignacion && asignacion.users && asignacion.users.length > 0){
+            //fecha de entrega de envio
+            var entrega = new Date(asignacion.users[0].pivot.created_at);
+            //fecha de entrega programada
+            var fecha = new Date(fechaEntrega);
+
+            const total = Date.parse(fecha) - Date.parse(entrega);
+
+            let hours = Math.floor( (total/(1000*60*60)) % 24 );
+            let days = Math.floor( total/(1000*60*60*24) );
+            let retrasada = "Enviada "
+
+            let antes = " antes"
+            if(hours < 0){
+                hours *= -1
+                retrasada = "con "
+                antes = " de retraso"
+            }
+            if(days < 0){
+                days *= -1
+                retrasada = "Enviada con "
+                antes = " de retraso"
+            }
+
+            let horas
+            let dias
+            if(hours == 1)
+                horas = " hora"
+            else
+                horas = " horas"
+
+            if(days == 1)
+                dias = " día y "
+            else
+                dias = " días y "
+
+            return retrasada + days + dias + hours + horas + antes
+        }
+        else{
+            //fecha actual
+            var hoy = new Date();
+            //fecha de entrega
+            var entrega = new Date(fechaEntrega);
+
+            console.log(hoy)
+            console.log(entrega)
+
+            const total = Date.parse(entrega) - Date.parse(hoy);
+
+            let hours = Math.floor( (total/(1000*60*60)) % 24 );
+            let days = Math.floor( total/(1000*60*60*24) );
+            const seconds = Math.floor( (total/1000) % 60 );
+            const minutes = Math.floor( (total/1000/60) % 60 );
+
+            let retrasada = ""
+
+            if(hours < 0){
+                hours *= -1
+                retrasada = "Retrasada por "
+            }
+            if(days < 0){
+                days *= -1
+                retrasada = "Retrasada por "
+            }
+
+            let horas
+            let dias
+            if(hours == 1)
+                horas = " hora"
+            else
+                horas = " horas"
+
+            if(days == 1)
+                dias = " día y "
+            else
+                dias = " días y "
+
+            return retrasada + days + dias + hours + horas
+        }
+    }
+
+    function bTiempoRestante(fechaEntrega){
+        //fecha actual
+        var hoy = new Date();
+        //fecha de entrega
+        var entrega = new Date(fechaEntrega);
+
+        const total = Date.parse(entrega) - Date.parse(hoy);
+
+        if(total < 0)
+            return false
+        else
+            return true
+    }
 
     return (
     <>
@@ -160,23 +285,35 @@ const Asignacion = ({curso, modulo, asignacion}) => {
 
                 {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Alumno" &&
                     <>
-                        {/* row de info */}
                         {/* información para el estudiante antes de entregar la asignación */}
                         <div className="col s12 padding-0px row-extatus">
-                            {/* OJO!!!!!---------- */}
-                            {/* Si esta atrasada o cerrada sería en color rojo className="estatus-red" */}
-                            {/* Si ya fue enviada sería en color verde className="estatus-green" */}
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus</div>
-                            <div className="col s12 m9 l9 xl9 txt-content-estatus estatus-bolder">Abierto</div>
+                            {asignacion.users && asignacion.users.length > 0 ?
+                            <>
+                                <div className={realizadaEstatus(asignacion.fecha_de_entrega, asignacion.users[0].pivot.created_at) == "Retrasada" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-red" : "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-green"}>{realizadaEstatus(asignacion.fecha_de_entrega, asignacion.users[0].pivot.created_at)}</div>
+                            </>
+                            :
+                            <>
+                                <div className={pendienteEstatus(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados) == "Pendiente" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-green" : "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-red"}>{pendienteEstatus(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados)}</div>
+                            </>
+                            }
                         </div>
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de entrega</div>
-                            <div className="col s12 m9 l9 xl9 txt-content-estatus">27 de Abril de 2021 a las 23:59</div>
+                            <div className="col s12 m9 l9 xl9 txt-content-estatus">{asignacion.fecha_de_entrega && transformaFecha(asignacion.fecha_de_entrega)}</div>
                         </div>
+                        {asignacion.permitir_envios_retrasados ? 
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Tiempo restante</div>
-                            <div className="col s12 m9 l9 xl9 txt-content-estatus">3 días y 3 horas</div>
+                            <div className="col s12 m9 l9 xl9 txt-content-estatus">{tiempoRestante(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados)}</div>
                         </div>
+                        :
+                        bTiempoRestante(asignacion.fecha_de_entrega) &&
+                        <div className="col s12 padding-0px row-extatus">
+                            <div className="col s12 m3 l3 xl3 txt-title-estatus">Tiempo restante</div>
+                            <div className="col s12 m9 l9 xl9 txt-content-estatus">{tiempoRestante(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados)}</div>
+                        </div>
+                        }  
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus de calificación</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">Sin calificar</div>
