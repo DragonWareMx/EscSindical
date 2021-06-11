@@ -149,7 +149,7 @@ const Solicitudes = ({curso}) => {
             
             {curso.waiting_requests && curso.waiting_requests.length > 0 &&  curso.waiting_requests.map(usuario => (
                 <div className="col s12 div-collection-item div-item-solicitudes" key={usuario.id}>
-                    <label className="pink">
+                    <label>
                         <input type="checkbox" name="solicitud[]" id={usuario.id} value={usuario.id} onChange={handleCheckboxChange} />
                         <span className="P_collection_item col s12" style={{"display":"flex"}}>
                             <InertiaLink  href={route("perfil.public",usuario.id)}><img className="P_collection_image" width="50" height="50" src={usuario.foto ? "/storage/fotos_perfil/"+usuario.foto : "/storage/fotos_perfil/avatar1.jpg"}></img></InertiaLink>
@@ -165,25 +165,27 @@ const Solicitudes = ({curso}) => {
             {
                 !curso.waiting_requests ? 
                 <div className="col s12 div-collection-item div-item-solicitudes">
-                <label className="pink">
-                    <span className="P_collection_item col s12" style={{"display":"flex"}}>
-                        <div style={{"width":"max-content","paddingBottom":"0px"}}>
-                        Sin solicitudes pendientes
-                        </div>
-                    </span>
-                </label>
-            </div> 
+                    <label>
+                        <span className="P_collection_item col s12 space-padding" style={{"display":"flex"}}>
+                            <div style={{"width":"max-content","paddingBottom":"0px"}}>
+                            Sin solicitudes pendientes
+                            </div>
+                        </span>
+                    </label>
+                </div> 
             : 
             curso.waiting_requests.length == 0 && 
             <div className="col s12 div-collection-item div-item-solicitudes">
-            <label className="pink">
-                <span className="P_collection_item col s12" style={{"display":"flex"}}>
+            <label>
+                <span className="P_collection_item col s12 space-padding" style={{"display":"flex","padding":"0px 0px 0px 0px !important"}}>
                     <div style={{"width":"max-content","paddingBottom":"0px"}}>
                     Sin solicitudes pendientes
                     </div>
                 </span>
             </label>
         </div>
+
+        
             }
 
             <div className="col s12  right">

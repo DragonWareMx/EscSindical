@@ -91,6 +91,9 @@
 .input-field input[type=search]:focus:not(.browser-default){
     background-color:transparent !important;
 }
+.space-padding{
+    padding:0px 0px 0px 0px !important;
+}
 
 
 @media(max-width:500px){

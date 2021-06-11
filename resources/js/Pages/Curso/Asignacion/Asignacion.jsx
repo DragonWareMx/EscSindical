@@ -92,6 +92,14 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                 {/* Estatus de la asignación */}
                 <div className="col s12 txt-status-as">ESTATUS DE LA ASIGNACIÓN</div>
 
+                <div className="col s12 right paddingRight-0px" id="btn-comenzar">
+                    {/* Botón para comenzar examen*/}
+                    <button className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
+                        Comenzar examen
+                        <i className="material-icons right">send</i>
+                    </button>
+                </div>
+
                 {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Ponente" &&
                     <>
                     {/* VISTA PARA EL PONENTE */}
