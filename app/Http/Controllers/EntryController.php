@@ -597,7 +597,7 @@ class EntryController extends Controller
 
             DB::commit();
             // all good
-            return Redirect::route('entrada.crear')->with('success', '¡Entrada eliminada con éxito!');
+            return Redirect::back()->with('success', '¡Entrada eliminada con éxito!');
         } catch (\Exception $e) {
             DB::rollback();
             // something went wrong

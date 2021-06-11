@@ -6,7 +6,7 @@ import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
 
 import '/css/modulos.css'
-
+import ModalEliminar from '../../components/common/ModalEliminarDD.jsx'
 
 function transformaFechaModulo(fecha) {
   const dob = new Date(fecha);
@@ -160,12 +160,12 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                           <a href="#" className="dropdown-trigger" data-target={'aviso'+aviso.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
                           <ul id={'aviso'+aviso.id} className="dropdown-content drop-size2">
                             <li>
-                              <InertiaLink href="#" className="dropdown-text">
+                              <InertiaLink href={route('entrada.editar',aviso.id)} className="dropdown-text">
                                 <i className="material-icons">edit</i>Editar
                               </InertiaLink>
                             </li>
                             <li>
-                              <InertiaLink href="#" className="dropdown-text">
+                              <InertiaLink data-target={"modalEliminar"+aviso.titulo} className="dropdown-text modal-trigger">
                                 <i className="material-icons">delete</i>Eliminar
                               </InertiaLink>
                             </li>
@@ -177,6 +177,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                       Publicado el {transformaFechaModulo(aviso.created_at)} 
                     </div>
                   </div>
+                  <ModalEliminar tipo={"aviso"} nombre={aviso.titulo} url={route('entrada.delete', aviso.id)}/>
                 </div>  
                 ))
                }
@@ -201,17 +202,17 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                               <a href="#" className="dropdown-trigger" data-target={'archivo'+entrada.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
                               <ul id={'archivo'+entrada.id} className="dropdown-content drop-size2">
                                 <li>
-                                  <InertiaLink href="#" className="dropdown-text">
+                                  <InertiaLink href={route('entrada.editar',entrada.id)} className="dropdown-text">
                                     <i className="material-icons">edit</i>Editar
                                   </InertiaLink>
                                 </li>
                                 <li>
-                                  <InertiaLink href="#" className="dropdown-text">
+                                  <InertiaLink data-target={"modalEliminar"+entrada.titulo} className="dropdown-text mod modal-trigger">
                                     <i className="material-icons">delete</i>Eliminar
                                   </InertiaLink>
                                 </li>
                               </ul>
-                            </div>
+                            </div>  
                           }
                         </div>
                         <div className="col s12 posted-date">
@@ -237,12 +238,12 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                               <a href="#" className="dropdown-trigger" data-target={'enlace'+entrada.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
                               <ul id={'enlace'+entrada.id} className="dropdown-content drop-size2">
                                 <li>
-                                  <InertiaLink href="#" className="dropdown-text">
+                                  <InertiaLink href={route('entrada.editar', entrada.id)} className="dropdown-text">
                                     <i className="material-icons">edit</i>Editar
                                   </InertiaLink>
                                 </li>
                                 <li>
-                                  <InertiaLink href="#" className="dropdown-text">
+                                  <InertiaLink data-target={"modalEliminar"+entrada.titulo} className="dropdown-text mod modal-trigger">
                                     <i className="material-icons">delete</i>Eliminar
                                   </InertiaLink>
                                 </li>
@@ -274,12 +275,12 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                               <a href="#" className="dropdown-trigger" data-target={'info'+entrada.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
                               <ul id={'info'+entrada.id} className="dropdown-content drop-size2">
                                 <li>
-                                  <InertiaLink href="#" className="dropdown-text">
+                                  <InertiaLink href={route('entrada.editar', entrada.id)} className="dropdown-text">
                                     <i className="material-icons">edit</i>Editar
                                   </InertiaLink>
                                 </li>
                                 <li>
-                                  <InertiaLink href="#" className="dropdown-text">
+                                  <InertiaLink data-target={"modalEliminar"+entrada.titulo} className="dropdown-text mod modal-trigger">
                                     <i className="material-icons">delete</i>Eliminar
                                   </InertiaLink>
                                 </li>
@@ -293,7 +294,9 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                       </div>
                     </div>
                   }
+                <ModalEliminar tipo={"Entrada"} nombre={entrada.titulo} url={route('entrada.delete', entrada.id)}/>
                 </div>
+                
               ))
             }
           </div>
@@ -344,15 +347,15 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                             {/* dropdown para editar */}
                             { auth.roles[0].name=='Ponente' &&
                               <div>
-                                <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px","marginLeft":"10px"}}>more_vert</i></a>
-                                <ul id="dropdown1" className="dropdown-content drop-size2">
+                                <a href="#" className="dropdown-trigger" data-target={"dropdown"+actividad.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px","marginLeft":"10px"}}>more_vert</i></a>
+                                <ul id={"dropdown"+actividad.id} className="dropdown-content drop-size2">
                                   <li>
-                                    <InertiaLink href="#" className="dropdown-text">
+                                    <InertiaLink href={route('entrada.editar',actividad.id)} className="dropdown-text">
                                       <i className="material-icons">edit</i>Editar
                                     </InertiaLink>
                                   </li>
                                   <li>
-                                    <InertiaLink href="#" className="dropdown-text">
+                                    <InertiaLink data-target={"modalEliminar"+actividad.titulo} className="dropdown-text modal-trigger">
                                       <i className="material-icons">delete</i>Eliminar
                                     </InertiaLink>
                                   </li>
@@ -396,15 +399,15 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                             {/* dropdown para editar */}
                             { auth.roles[0].name=='Ponente' &&
                               <div>
-                                <a href="#" className="dropdown-trigger" data-target="dropdown1"><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px","marginLeft":"10px"}}>more_vert</i></a>
-                                <ul id="dropdown1" className="dropdown-content drop-size2">
+                                <a href="#" className="dropdown-trigger" data-target={"dropdown"+actividad.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px","marginLeft":"10px"}}>more_vert</i></a>
+                                <ul id={"dropdown"+actividad.id} className="dropdown-content drop-size2">
                                   <li>
-                                    <InertiaLink href="#" className="dropdown-text">
+                                    <InertiaLink href={route('entrada.editar',actividad.id)} className="dropdown-text">
                                       <i className="material-icons">edit</i>Editar
                                     </InertiaLink>
                                   </li>
                                   <li>
-                                    <InertiaLink href="#" className="dropdown-text">
+                                    <InertiaLink data-target={"modalEliminar"+actividad.titulo} className="dropdown-text modal-trigger">
                                       <i className="material-icons">delete</i>Eliminar
                                     </InertiaLink>
                                   </li>
@@ -415,14 +418,17 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                         </div>
                       </div>
                     }
+                    <ModalEliminar tipo={"actividad"} nombre={actividad.titulo} url={route('entrada.delete', actividad.id)}/>
                   </div>
                 </InertiaLink>
+                
               ))
             }
           </div>
         </div>
 
       </div>
+      
     </>
   )
 }
