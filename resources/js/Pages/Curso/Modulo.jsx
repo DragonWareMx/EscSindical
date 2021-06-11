@@ -46,11 +46,17 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
       <div className="row default-text">
         {/* seccion 1 */}
         <div className="col s12" style={{"borderBottom":"1px solid #DDDDDD"}}>
-          <div className="col s11 titulo-modulo">
-            Modulo {modulo.numero}. {modulo.nombre}
-          </div>
-          <div className="col s1 center-align">
-            <i className="material-icons tiny">navigate_next</i>
+          {/* titulo y flechas para navegar */}
+          <div className="row">
+            {/* titulo */}
+            <div className="col s9 m11 l11 titulo-modulo orange">
+              Modulo {modulo.numero}. {modulo.nombre}
+            </div>
+            {/* flechas para navegar */}
+            <div className="col s3 m1 l1 center-align blue" style={{"marginTop":"16px"}}>
+              <i className="material-icons tiny" style={{"marginRight":"5px"}}>navigate_before</i>
+              <i className="material-icons tiny" style={{"marginLeft":"5px"}}>navigate_next</i>
+            </div>
           </div>
           {/* contenedor 2 */}
           <div className="col s12 l2 push-l10">
