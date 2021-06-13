@@ -308,7 +308,16 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                         }  
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus de calificación</div>
-                            <div className="col s12 m9 l9 xl9 txt-content-estatus">Sin calificar</div>
+                            <div className="col s12 m9 l9 xl9 txt-content-estatus">
+                                {asignacion.users && asignacion.users.length > 0 ?
+                                asignacion.users[0].calificacion ?
+                                    asignacion.users[0].calificacion
+                                    :
+                                    "Sin calificar"
+                                :
+                                "Sin calificar"
+                                }
+                            </div>
                         </div>
                         {/* Para cuando ya se haya entregado-------------- */}
                         <div className="col s12 padding-0px row-extatus">
