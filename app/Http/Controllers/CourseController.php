@@ -1085,7 +1085,7 @@ class CourseController extends Controller
             'users' => function ($entrega){
                 return $entrega->where('entry_user.user_id',Auth::user()->id)->select('users.id')
                             ->withPivot('calificacion','archivo','fecha','editado','Comentario','fecha_calif','comentario_retroalimentacion','created_at','updated_at');
-            }])->select('id','titulo','created_at','contenido','tipo','module_id','permitir_envios_retrasados','fecha_de_entrega')->findOrFail($pid);
+            }])->select('id','titulo','created_at','contenido','tipo','module_id','permitir_envios_retrasados','fecha_de_entrega','max_calif')->findOrFail($pid);
 
             
             //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error

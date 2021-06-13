@@ -80,7 +80,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             return 'Enviado'
         }
         else{
-            return 'Retrasada'
+            return 'Enviado con retraso'
         }
     }
     
@@ -323,105 +323,148 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Archivos enviados</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
-                                <a className="col s12 padding-0px paddingRight-0px" href="#!" style={{"color":"#5A5A5A","marginBottom":"5px","display":"flex","alignItems":"center"}}>documentoTarea2021.PDF<i className="material-icons tiny" style={{"marginLeft":"5px"}}>description</i></a>
-                                <a className="col s12 padding-0px paddingRight-0px" href="#!" style={{"color":"#5A5A5A","marginBottom":"5px","display":"flex","alignItems":"center"}}>documentoTarea2021.PDF<i className="material-icons tiny" style={{"marginLeft":"5px"}}>description</i></a>
+                            {asignacion.users && asignacion.users.length > 0 ?
+                            asignacion.users[0].calificacion ?
+                                <a className="col s12 padding-0px paddingRight-0px" href={"/storage/entregas_asignaciones/"+asignacion.users[0].archivo} style={{"color":"#5A5A5A","marginBottom":"5px","display":"flex","alignItems":"center"}}>{asignacion.users[0].archivo}<i className="material-icons tiny" style={{"marginLeft":"5px"}}>description</i></a>
+                                :
+                                "Sin archivos enviados"
+                            :
+                            "Sin archivos enviados"
+                            }
                             </div>
                         </div>
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Comentarios del envío</div>
-                            <div className="col s12 m9 l9 xl9 txt-content-estatus">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.</div>
+                            <div className="col s12 m9 l9 xl9 txt-content-estatus">
+                                {asignacion.users && asignacion.users.length > 0 ?
+                                asignacion.users[0].Comentario ?
+                                    asignacion.users[0].Comentario
+                                    :
+                                    "Sin comentarios"
+                                :
+                                "Sin comentarios"
+                                }
+                            </div>
                         </div>
-                        {/* FORM PARA ENTREGAR LA ASIGNACIÓN O EDITAR */}
-                        <form className="col s12 padding-0px paddingRight-0px" id="div-entrega" style={{"display":"none"}}>
-                            <div className="col s12 txt-status-as" style={{"color":"#134E39"}}><b>ENTREGAR ASIGNACIÓN</b></div>
+                        {/*si la asignacion no se ha entregado o si se entrego pero no tiene calificacion */}
+                        {(asignacion.permitir_envios_retrasados || bTiempoRestante(asignacion.fecha_de_entrega)) && (asignacion.users && asignacion.users.length == 0 || (asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion != 0))) &&
+                        <>
+                            {asignacion.users && asignacion.users.length == 0 &&
+                            <>
+                            {/* FORM PARA ENTREGAR LA ASIGNACIÓN O EDITAR */}
+                            <form className="col s12 padding-0px paddingRight-0px" id="div-entrega" style={{"display":"none"}}>
+                                <div className="col s12 txt-status-as" style={{"color":"#134E39"}}><b>ENTREGAR ASIGNACIÓN</b></div>
 
-                            <div className="col s12 padding-0px paddingRight-0px">
-                                <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", "boxSizing": "border-box", "borderRadius": "4px"}}>
-                                    <div className="col s12">
-                                        <span style={{"fontSize":"12px", "textAlign":"center", "paddingTop":"10px"}} className="col s12">Arrastre aquí los archivos o <b>clic</b> para seleccionarlos</span>
-                                        <input type="file" className="form-control" id="files" name="files" />
-                                    </div>
-                                    <div className="file-path-wrapper">
-                                        <input className="file-path validate" type="text" />
+                                <div className="col s12 padding-0px paddingRight-0px">
+                                    <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", "boxSizing": "border-box", "borderRadius": "4px"}}>
+                                        <div className="col s12">
+                                            <span style={{"fontSize":"12px", "textAlign":"center", "paddingTop":"10px"}} className="col s12">Arrastre aquí los archivos o <b>clic</b> para seleccionarlos</span>
+                                            <input type="file" className="form-control" id="files" name="files" />
+                                        </div>
+                                        <div className="file-path-wrapper">
+                                            <input className="file-path validate" type="text" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            {/* Estatus de la asignación */}
-                            <div className="col s12 txt-status-as" style={{"marginTop":"15px"}}>Agregar comentarios a tu entrega</div>
-                            <div className="col s12 padding-0px paddingRight-0px">
-                                <CKEditor
-                                    editor={ ClassicEditor }
-                                    id="editorCK"
-                                    // data={values.descripcion}
-                                    onReady={ editor => {
-                                        // You can store the "editor" and use when it is needed.
-                                        // console.log( 'Editor is ready to use!', editor );
-                                    } }
-                                    onChange={ 
-                                        ( event, editor ) => {
-                                        changeCK(editor.getData());
+                                {/* Estatus de la asignación */}
+                                <div className="col s12 txt-status-as" style={{"marginTop":"15px"}}>Agregar comentarios a tu entrega</div>
+                                <div className="col s12 padding-0px paddingRight-0px">
+                                    <CKEditor
+                                        editor={ ClassicEditor }
+                                        id="editorCK"
+                                        // data={values.descripcion}
+                                        onReady={ editor => {
+                                            // You can store the "editor" and use when it is needed.
+                                            // console.log( 'Editor is ready to use!', editor );
+                                        } }
+                                        onChange={ 
+                                            ( event, editor ) => {
+                                            changeCK(editor.getData());
+                                            }
                                         }
-                                    }
-                                    onBlur={ ( event, editor ) => {
-                                        // console.log( 'Blur.', editor );
-                                    } }
-                                    onFocus={ ( event, editor ) => {
-                                        // console.log( 'Focus.', editor );
-                                    } }
-                                />
-                            </div>
+                                        onBlur={ ( event, editor ) => {
+                                            // console.log( 'Blur.', editor );
+                                        } }
+                                        onFocus={ ( event, editor ) => {
+                                            // console.log( 'Focus.', editor );
+                                        } }
+                                    />
+                                </div>
 
-                            <div className="col s12 right container-btns-as paddingRight-0px">
-                                <a className="no-uppercase" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}} onClick={cancelar}>
-                                    Cancelar
-                                </a>
-                                
-                                <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
-                                    Enviar
+                                <div className="col s12 right container-btns-as paddingRight-0px">
+                                    <a className="no-uppercase" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}} onClick={cancelar}>
+                                        Cancelar
+                                    </a>
+                                    
+                                    <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
+                                        Enviar
+                                        <i className="material-icons right">send</i>
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            <div className="col s12 right paddingRight-0px" id="btn-entregar">
+                                {/* Botón para entregar asignación */}
+                                <button className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}} onClick={entregar}>
+                                    Entregar
                                     <i className="material-icons right">send</i>
                                 </button>
                             </div>
-                        </form>
-                        <div className="col s12 right paddingRight-0px" id="btn-entregar">
-                            {/* Botón para entregar asignación */}
-                            <button className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}} onClick={entregar}>
-                                Entregar
-                                <i className="material-icons right">send</i>
-                            </button>
-                        </div>
-
-                        {/* Enviado pero no calificado */}
-                        <div className="col s12 right container-btns-as paddingRight-0px">
-                            {/* Pedir confirmacion para cancelar el envio */}
-                            <a className="no-uppercase" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}}>
-                                Cancelar envío
-                            </a>
-                            <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
-                                Editar
-                                <i className="material-icons right">edit</i>
-                            </button>
-                        </div>
+                            </>
+                            }
+                            {asignacion.users && asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion && asignacion.users[0].pivot.calificacion != 0) &&
+                            <div className="col s12 right container-btns-as paddingRight-0px">
+                                {alert(asignacion.users[0].pivot.calificacion != 0)}
+                                {/* Enviado pero no calificado */}
+                                {/* Pedir confirmacion para cancelar el envio */}
+                                <a className="no-uppercase" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}}>
+                                    Cancelar envío
+                                </a>
+                                <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
+                                    Editar
+                                    <i className="material-icons right">edit</i>
+                                </button>
+                            </div>
+                            }
+                        </>
+                        }
                     </>   
                 }
 
 
 
                 {/* Retroalimentación, calificado */}
-                <div className="col s12 txt-status-as">ESTATUS DE LA ASIGNACIÓN</div>
+                {asignacion.users && asignacion.users.length > 0 &&
+                <>
+                {asignacion.max_calif &&
+                <>
+                    {(asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion == 0) &&
+                        <div className="col s12 padding-0px row-extatus">
+                            <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificación</div>
+                            <div className="col s12 m9 l9 xl9 txt-content-estatus">{asignacion.users[0].pivot.calificacion}/{asignacion.max_calif}</div>
+                        </div>
+                    }
+                </>
+                }
 
-                <div className="col s12 padding-0px row-extatus">
-                    <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificación</div>
-                    <div className="col s12 m9 l9 xl9 txt-content-estatus">95/100</div>
-                </div>
+                {asignacion.users[0].pivot.fecha_calif &&
                 <div className="col s12 padding-0px row-extatus">
                     <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificado el</div>
-                    <div className="col s12 m9 l9 xl9 txt-content-estatus">30 de Abril de 2021 a las 15:03</div>
+                    <div className="col s12 m9 l9 xl9 txt-content-estatus">{transformaFecha(asignacion.users[0].pivot.fecha_calif)}</div>
                 </div>
+                }
+
+                {asignacion.users[0].pivot.comentario_retroalimentacion &&
                 <div className="col s12 padding-0px row-extatus">
                     <div className="col s12 m3 l3 xl3 txt-title-estatus">Comentarios</div>
-                    <div className="col s12 m9 l9 xl9 txt-content-estatus">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore</div>
+                    <div className="col s12 m9 l9 xl9 txt-content-estatus">
+                        {asignacion.users[0].pivot.comentario_retroalimentacion}
+                    </div>
                 </div>
+                }
+                </>
+                } 
             </div>
             
         </div>
