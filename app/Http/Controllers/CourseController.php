@@ -19,7 +19,7 @@ use App\Models\Image;
 use App\Models\Training_type;
 use App\Models\Drop_requests;
 use App\Models\Delete_requests;
-
+use Illuminate\Support\Facades\Gate;
 
 class CourseController extends Controller
 {
@@ -37,14 +37,14 @@ class CourseController extends Controller
 
         if ($user->roles[0]->name == 'Ponente') {
             \Gate::authorize('haveaccess', 'ponente.perm');
-            $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users','images')->get();
-            $OldCourses = Course::where('teacher_id', Auth::id())->where('estatus', 'Terminado')->with('users','images','tags',)->get();
+            $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users', 'images')->get();
+            $OldCourses = Course::where('teacher_id', Auth::id())->where('estatus', 'Terminado')->with('users', 'images', 'tags',)->get();
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
                     'roles', 'activeCourses', 'activeCourses.images'
                 ])->where('id', Auth::id())->first(),
                 'cursos' => fn () => $cursos,
-                'finishedCourses' =>$OldCourses,
+                'finishedCourses' => $OldCourses,
             ]);
         } else {
             \Gate::authorize('haveaccess', 'alumno.perm');
@@ -53,7 +53,7 @@ class CourseController extends Controller
             $tags = $curso_actual->tags;
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
-                    'roles', 'requests', 'requests.course.images', 'requests.course.teacher', 'requests.course.tags', 'activeCourses', 'activeCourses.images', 'finishedCourses', 'finishedCourses.images', 'finishedCourses.teacher' , 'finishedCourses.tags'
+                    'roles', 'requests', 'requests.course.images', 'requests.course.teacher', 'requests.course.tags', 'activeCourses', 'activeCourses.images', 'finishedCourses', 'finishedCourses.images', 'finishedCourses.teacher', 'finishedCourses.tags'
                 ])->where('id', Auth::id())->first(),
                 'profesor' => $profesor,
                 'tags' => $tags,
@@ -64,9 +64,9 @@ class CourseController extends Controller
     public function create()
     {
         \Gate::authorize('haveaccess', 'ponente.perm');
-        
-        return Inertia::render('Cursos/FormCurso', [ 
-        'capacitaciones'=> Training_type::get(),
+
+        return Inertia::render('Cursos/FormCurso', [
+            'capacitaciones' => Training_type::get(),
         ]);
     }
 
@@ -78,20 +78,21 @@ class CourseController extends Controller
         ]);
     }
 
-    public function storeModule(Request $request){
+    public function storeModule(Request $request)
+    {
         \Gate::authorize('haveaccess', 'ponente.perm');
         $validated = $request->validate([
-            'nombre' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'nombre' => ['required', 'max:100', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'curso' => 'required|exists:courses,id',
             'objetivo' => "required",
             'criterios_de_evaluacion' => 'required',
             'duracion' => 'required|numeric',
             'temario' => 'required',
         ]);
-        
+
         //COMIENZA TRANSACCIÓN
         DB::beginTransaction();
-        
+
         try {
             $newModule = new Module;
 
@@ -110,26 +111,25 @@ class CourseController extends Controller
             $newLog->categoria = 'create';
             $newLog->user_id = Auth::id();
             $newLog->accion =
-            '{
+                '{
                 modules: {
                     nombre: ' . $request->nombre .
-                    'objetivo: ' . $request->objetivo .
-                    'duracion: ' . $request->duracion .
-                    'criterios: '. $request->criterios_de_evaluacion.                    
-                    'temario: ' . $request->temario .
-                    'course_id: '.$request->curso.
+                'objetivo: ' . $request->objetivo .
+                'duracion: ' . $request->duracion .
+                'criterios: ' . $request->criterios_de_evaluacion .
+                'temario: ' . $request->temario .
+                'course_id: ' . $request->curso .
                 '},
             }';
 
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha creado el módulo: '. $newModule->nombre;
-                
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado el módulo: ' . $newModule->nombre;
+
             // //SE GUARDA EL LOG
             $newLog->save();
 
             DB::commit();
             return \Redirect::route('cursos.informacion', $request->curso)->with('success', 'El módulo de este curso se ha creado exitosamente');
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             return \Redirect::route('cursos.informacion', $request->curso)->with('error', 'No se pudo crear un módulo para este curso');
         }
@@ -140,24 +140,23 @@ class CourseController extends Controller
         \Gate::authorize('haveaccess', 'ponente.perm');
         return Inertia::render('Cursos/ModuleEdit', [
             'cursos' => Course::where('teacher_id', Auth::id())->get(),
-            'modulo'=> Module::with('course')->findOrFail($id),
+            'modulo' => Module::with('course')->findOrFail($id),
         ]);
-        
     }
     public function updateModule($id, Request $request)
     {
         \Gate::authorize('haveaccess', 'ponente.perm');
         $validated = $request->validate([
-            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'nombre' => ['required', 'max:255', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'objetivo' => "required",
             'criterios_de_evaluacion' => 'required',
             'duracion' => 'required|numeric',
             'temario' => 'required',
         ]);
-        
+
         //COMIENZA TRANSACCIÓN
         DB::beginTransaction();
-        
+
         try {
             $myModule = Module::find($id);
 
@@ -175,27 +174,26 @@ class CourseController extends Controller
             $newLog->categoria = 'update';
             $newLog->user_id = Auth::id();
             $newLog->accion =
-            '{
+                '{
                 modules: {
                     nombre: ' . $request->nombre .
-                    'objetivo: ' . $request->objetivo .
-                    'duracion: ' . $request->duracion .
-                    'criterios: '. $request->criterios_de_evaluacion.                    
-                    'temario: ' . $request->temario .
+                'objetivo: ' . $request->objetivo .
+                'duracion: ' . $request->duracion .
+                'criterios: ' . $request->criterios_de_evaluacion .
+                'temario: ' . $request->temario .
                 '},
             }';
 
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha creado el módulo: '. $myModule->nombre;
-                
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado el módulo: ' . $myModule->nombre;
+
             // //SE GUARDA EL LOG
             $newLog->save();
 
             DB::commit();
-            return \Redirect::route('cursos.modulos',$myModule->course_id)->with('success', 'El módulo '.$myModule->nombre .' se ha editado exitosamente');
-        }
-        catch (\Exception $e) {
+            return \Redirect::route('cursos.modulos', $myModule->course_id)->with('success', 'El módulo ' . $myModule->nombre . ' se ha editado exitosamente');
+        } catch (\Exception $e) {
             DB::rollBack();
-            return \Redirect::route('cursos.modulos', $myModule->course_id)->with('error', 'No se pudo editar el módulo '.$myModule->nombre);
+            return \Redirect::route('cursos.modulos', $myModule->course_id)->with('error', 'No se pudo editar el módulo ' . $myModule->nombre);
         }
     }
 
@@ -205,7 +203,7 @@ class CourseController extends Controller
 
         //VALIDAMOS DATOS
         $validated = $request->validate([
-            'nombre' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'nombre' => ['required', 'max:100', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'tags' => 'required',
             'fecha_inicio' => 'required|date|after:today',
             'fecha_final' => 'required|date|after:fecha_inicio',
@@ -215,9 +213,9 @@ class CourseController extends Controller
             'tipo_inscripcion' => 'required|in:Automática,Solicitud,Sólo yo',
             'descripcion' => 'required',
             'imgs' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
-            'maximo' =>'required|digits_between:1,3|numeric',
-            'inicio_inscripciones' =>'nullable|date|after:today|before:fecha_inicio',
-            'final_inscripciones' =>'nullable|date|after:inicio_inscripciones|before:fecha_inicio',
+            'maximo' => 'required|digits_between:1,3|numeric',
+            'inicio_inscripciones' => 'nullable|date|after:today|before:fecha_inicio',
+            'final_inscripciones' => 'nullable|date|after:inicio_inscripciones|before:fecha_inicio',
             //las inscripciones podrán seguir después de iniciado el curso?
         ]);
 
@@ -241,7 +239,7 @@ class CourseController extends Controller
 
             if ($request->inicio_inscripciones) $newCourse->inicio_inscripciones = $request->inicio_inscripciones;
             if ($request->final_inscripciones) $newCourse->fecha_limite = $request->final_inscripciones;
-                 
+
 
             $newCourse->save();
             //SE AGREGAN REGISTROS A SUS RELACIONES
@@ -284,33 +282,33 @@ class CourseController extends Controller
             $newLog->categoria = 'create';
             $newLog->user_id = Auth::id();
             $newLog->accion =
-            '{
+                '{
                 courses: {
                     nombre: ' . $request->nombre .
-                    'fecha_inicio: ' . $request->fecha_inicio .
-                    'fecha_final: ' . $request->fecha_final .
-                    'valor_curricular: '. $request->vc.                    
-                    'tipo_acceso: ' . $request->tipo_inscripcion .
-                    'descripcion: '.$request->descripcion.
-                    'teacher_id: ' . Auth::id() .
-                    'max: ' .$request->maximo.
-                    'link: ' . $request->link .
+                'fecha_inicio: ' . $request->fecha_inicio .
+                'fecha_final: ' . $request->fecha_final .
+                'valor_curricular: ' . $request->vc .
+                'tipo_acceso: ' . $request->tipo_inscripcion .
+                'descripcion: ' . $request->descripcion .
+                'teacher_id: ' . Auth::id() .
+                'max: ' . $request->maximo .
+                'link: ' . $request->link .
                 '},
-                tags: ' .\json_encode($tags) .
+                tags: ' . \json_encode($tags) .
                 'tipos_capacitacion: ' . \json_encode($tipos) .
-                'imgs: ' .$request->file('imgs')->hashName() .
+                'imgs: ' . $request->file('imgs')->hashName() .
                 '
             }';
 
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha creado el curso: '. $newCourse->nombre;
-                
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado el curso: ' . $newCourse->nombre;
+
             // //SE GUARDA EL LOG
             $newLog->save();
 
             DB::commit();
             return \Redirect::route('cursos')->with('success', 'El curso se ha creado exitosamente');
         } catch (\Exception $e) {
-            
+
             DB::rollBack();
             return \Redirect::route('cursos')->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
             //return response()->json(["status" => $e]);
@@ -332,7 +330,7 @@ class CourseController extends Controller
 
         //VALIDAMOS DATOS
         $validated = $request->validate([
-            'nombre' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'nombre' => ['required', 'max:100', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'tags' => 'nullable',
             'fecha_inicio' => 'required|date|after:today',
             'fecha_final' => 'required|date|after:fecha_inicio',
@@ -342,9 +340,9 @@ class CourseController extends Controller
             'tipo_inscripcion' => 'required|exists:courses,tipo_acceso',
             'descripcion' => 'required',
             'imgs' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
-            'maximo' =>'required|digits_between:1,3|numeric',
-            'inicio_inscripciones' =>'nullable|date|after:today|before:fecha_inicio',
-            'final_inscripciones' =>'nullable|date|after:inicio_inscripciones|before:fecha_inicio',
+            'maximo' => 'required|digits_between:1,3|numeric',
+            'inicio_inscripciones' => 'nullable|date|after:today|before:fecha_inicio',
+            'final_inscripciones' => 'nullable|date|after:inicio_inscripciones|before:fecha_inicio',
             //las inscripciones podrán seguir después de iniciado el curso?
         ]);
 
@@ -368,13 +366,13 @@ class CourseController extends Controller
 
             if ($request->inicio_inscripciones) $myCourse->inicio_inscripciones = $request->inicio_inscripciones;
             if ($request->final_inscripciones) $myCourse->fecha_limite = $request->final_inscripciones;
-                 
+
 
             $myCourse->save();
             //SE AGREGAN REGISTROS A SUS RELACIONES
             //TAGS
             $tagsLog = "Sin cambios";
-            if($request->tags){
+            if ($request->tags) {
                 $tags = $request->tags;
                 $tags_ids = [];
                 $i = 0;
@@ -396,14 +394,14 @@ class CourseController extends Controller
 
                 $tagsLog = \json_encode($tags);
             }
-            
+
             //TIPO DE CAPACITACIONES
-            
+
             $capacitaciones = 'no hubo cambios';
-            
-            if($request->tipos_de_capacitacion){
+
+            if ($request->tipos_de_capacitacion) {
                 //Eliminamos las capacitaciones que ya existen
-                
+
                 foreach ($myCourse->training_types as $tipo) {
                     $myCourse->training_types()->detach($tipo->id);
                 }
@@ -412,10 +410,10 @@ class CourseController extends Controller
                 $myCourse->training_types()->sync($tipos);
                 $capacitaciones = \json_encode($tipos);
             }
-            
+
             //IMÁGENES
             $imagenes = "No hubo cambios";
-            if($request->imgs){
+            if ($request->imgs) {
                 $newImagen = new Image;
                 $newImagen->course_id = $myCourse->id;
                 $imagen = $request->file('imgs')->store('/public/imagenes_curso');
@@ -424,39 +422,39 @@ class CourseController extends Controller
                 $newImagen->save();
                 $imagenes = $request->file('imgs')->hashName();
             }
-            
+
             //SE CREA EL LOG
             $newLog = new Log;
 
             $newLog->categoria = 'update';
             $newLog->user_id = Auth::id();
             $newLog->accion =
-            '{
+                '{
                 courses: {
                     nombre: ' . $request->nombre . ',\n
                     fecha_inicio: ' . $request->fecha_inicio . ',\n
                     fecha_final: ' . $request->fecha_final . ',\n
-                    valor_curricular: '. $request->vc. ',\n                    
+                    valor_curricular: ' . $request->vc . ',\n
                     tipo_acceso: ' . $request->tipo_inscripcion . ',\n
-                    descripcion: '.$request->descripcion. ',\n
+                    descripcion: ' . $request->descripcion . ',\n
                     teacher_id: ' . Auth::id() . ',\n
-                    max: ' .$request->maximo. ',\n
+                    max: ' . $request->maximo . ',\n
                     link: ' . $request->link . ',\n
                 },
-                tags:'. $tagsLog .',\n
+                tags:' . $tagsLog . ',\n
                 tipos_capacitacion: ' . $capacitaciones  . ',\n
                 imgs: ' . $imagenes . ',\n
             }';
 
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha editado el curso: '. $myCourse->nombre;
-                
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha editado el curso: ' . $myCourse->nombre;
+
             // //SE GUARDA EL LOG
             $newLog->save();
 
             DB::commit();
             return \Redirect::route('cursos.informacion', $id)->with('success', 'El curso se ha editado exitosamente');
         } catch (\Exception $e) {
-            
+
             DB::rollBack();
             return \Redirect::route('cursos.informacion', $id)->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
             //return response()->json(["status" => $e]);
@@ -466,20 +464,19 @@ class CourseController extends Controller
     public function deleteRequest($id, Request $request)
     {
         //metodo para que alumno solicite baja de curso
-        
+
         \Gate::authorize('haveaccess', 'alumno.perm');
         //VALIDAMOS DATOS
         $validated = $request->validate([
             'descripcion' => 'required',
         ]);
-        
+
         DB::beginTransaction();
         try {
 
-            if (Drop_requests::where('course_id', $id)->where('user_id',Auth::id())->first()){
+            if (Drop_requests::where('course_id', $id)->where('user_id', Auth::id())->first()) {
                 return \Redirect::route('cursos')->with('message', 'Ya solicitaste tu baja a este curso');
-            }
-            else {
+            } else {
                 $newRequest = new Drop_requests;
                 $newRequest->course_id = $id;
                 $newRequest->user_id = Auth::id();
@@ -493,23 +490,22 @@ class CourseController extends Controller
                 $newLog->categoria = 'create';
                 $newLog->user_id = Auth::id();
                 $newLog->accion =
-                '{
+                    '{
                     drop_requests: {
                         course_id: ' . $id . ',\n
                         user_id: ' . Auth::id() . ',\n
-                        descripcion: '.$request->descripcion. ',\n
+                        descripcion: ' . $request->descripcion . ',\n
                     },
                 }';
 
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado la baja de un curso';
-                
+                $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha solicitado la baja de un curso';
+
                 //SE GUARDA EL LOG
                 $newLog->save();
-            
+
                 DB::commit();
                 return \Redirect::route('cursos')->with('success', 'Se solicitó la baja del curso');
             }
-
         } catch (\Exception $e) {
             DB::rollBack();
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
@@ -518,26 +514,25 @@ class CourseController extends Controller
 
     public function deleteCourseRequest($id, Request $request)
     {
-        
+
         //MÉTODO PARA SOLICITAR ELIMINAR CURSO
         \Gate::authorize('haveaccess', 'ponente.perm');
         //VALIDAMOS DATOS
         $validated = $request->validate([
             'descripcion' => 'required',
         ]);
-        
+
         DB::beginTransaction();
         try {
 
-            if (Delete_requests::where('course_id', $id)->where('user_id',Auth::id())->first()){
+            if (Delete_requests::where('course_id', $id)->where('user_id', Auth::id())->first()) {
                 return \Redirect::route('cursos')->with('message', 'Ya solicitaste la eliminación de este curso');
-            }
-            else {
+            } else {
                 $newRequest = new Delete_requests;
                 $newRequest->course_id = $id;
-                $newRequest->user_id =Auth::id();
+                $newRequest->user_id = Auth::id();
                 $newRequest->comentario = $request->descripcion;
-                $newRequest->status = 'Pendiente'; 
+                $newRequest->status = 'Pendiente';
                 $newRequest->save();
                 //SE CREA EL LOG
 
@@ -546,23 +541,22 @@ class CourseController extends Controller
                 $newLog->categoria = 'create';
                 $newLog->user_id = Auth::id();
                 $newLog->accion =
-                '{
+                    '{
                     drop_requests: {
                         course_id: ' . $id . ',\n
                         user_id: ' . Auth::id() . ',\n
-                        descripcion: '.$request->descripcion. ',\n
+                        descripcion: ' . $request->descripcion . ',\n
                     },
                 }';
 
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado eliminar el curso';
-                
+                $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha solicitado eliminar el curso';
+
                 //SE GUARDA EL LOG
                 $newLog->save();
-            
+
                 DB::commit();
                 return \Redirect::route('cursos')->with('success', 'Se solicitó la eliminación de curso');
             }
-
         } catch (\Exception $e) {
             DB::rollBack();
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
@@ -647,64 +641,62 @@ class CourseController extends Controller
 
     public function informacion($id)
     {
-        $tipo=Auth::user()->roles[0]->name;
-        if($tipo=='Ponente'){
-            $curso_teacher=Course::where('id',$id)->first('teacher_id');
-            if(Auth::id() == $curso_teacher->teacher_id){
-                $inscrito=true;
-                $calificacion=Course::
-                    where('courses.id',$id)
-                    ->where('calificacion_final','!=','Null')
-                    ->leftJoin('course_user','courses.id','=','course_user.course_id')
+        $tipo = Auth::user()->roles[0]->name;
+        if ($tipo == 'Ponente') {
+            $curso_teacher = Course::where('id', $id)->first('teacher_id');
+            if (Auth::id() == $curso_teacher->teacher_id) {
+                $inscrito = true;
+                $calificacion = Course::where('courses.id', $id)
+                    ->where('calificacion_final', '!=', 'Null')
+                    ->leftJoin('course_user', 'courses.id', '=', 'course_user.course_id')
                     ->select(DB::raw('TRUNCATE(AVG(calificacion_final),2) as calificacion_final'))
                     ->first();
-            }
-            else{
+            } else {
                 return abort(403);
             }
-        }
-        else if($tipo='Alumno'){
+        } else if ($tipo = 'Alumno') {
 
-            $inscrito=Course::
-            leftJoin('course_user','courses.id','=','course_user.course_id')
-            ->where('course_user.course_id',$id
-            )->where('course_user.user_id',Auth::id())
-            ->first();
+            $inscrito = Course::leftJoin('course_user', 'courses.id', '=', 'course_user.course_id')
+                ->where(
+                    'course_user.course_id',
+                    $id
+                )->where('course_user.user_id', Auth::id())
+                ->first();
 
-            if($inscrito){
-                $inscrito=true;
+            if ($inscrito) {
+                $inscrito = true;
+            } else {
+                $inscrito = false;
             }
-            else{
-                $inscrito=false;
-            }
-            
-            $calificacion=Course::
-                where('courses.id',$id)
-                ->leftJoin('course_user','courses.id','=','course_user.course_id')
-                ->where('course_user.user_id',Auth::id())
+
+            $calificacion = Course::where('courses.id', $id)
+                ->leftJoin('course_user', 'courses.id', '=', 'course_user.course_id')
+                ->where('course_user.user_id', Auth::id())
                 ->first('calificacion_final');
         }
-        $cursosCount=Course::with('teacher:id')->find($id);
-        $cursosCount=Course::where('teacher_id',$cursosCount->teacher->id)->count();
-        $participantesCount=Course::with('users:id')->findOrFail($id);
-        $participantesCount=$participantesCount['users']->count();
+        $cursosCount = Course::with('teacher:id')->find($id);
+        $cursosCount = Course::where('teacher_id', $cursosCount->teacher->id)->count();
+        $participantesCount = Course::with('users:id')->findOrFail($id);
+        $participantesCount = $participantesCount['users']->count();
 
         return Inertia::render('Curso/Informacion', [
-            'curso' => Course::with('images:imagen,course_id', 'tags:nombre','teacher:nombre,apellido_p,apellido_m,foto,id','modules:course_id,id,nombre,numero')->findOrFail($id),
-            'cursos_count'=> $cursosCount,
-            'participantes_count'=>$participantesCount,
-            'calificacion'=>$calificacion,
-            'inscrito'=>$inscrito,
+            'curso' => Course::with('images:imagen,course_id', 'tags:nombre', 'teacher:nombre,apellido_p,apellido_m,foto,id', 'modules:course_id,id,nombre,numero')->findOrFail($id),
+            'cursos_count' => $cursosCount,
+            'participantes_count' => $participantesCount,
+            'calificacion' => $calificacion,
+            'inscrito' => $inscrito,
         ]);
     }
 
-    public function modulos($id){
+    public function modulos($id)
+    {
         return Inertia::render('Curso/ModulosConfig', [
             'curso' => Course::with('modules')->findOrFail($id),
         ]);
     }
 
-    public function deleteModule($id){
+    public function deleteModule($id)
+    {
         \Gate::authorize('haveaccess', 'ponente.perm');
         DB::beginTransaction();
         try {
@@ -728,119 +720,108 @@ class CourseController extends Controller
             $newLog->save();
 
             DB::commit();
-            return \Redirect::route('cursos.modulos',$module->course_id)->with('success', '¡Modulo eliminado con éxito!');
+            return \Redirect::route('cursos.modulos', $module->course_id)->with('success', '¡Modulo eliminado con éxito!');
         } catch (\Exception $e) {
             DB::rollBack();
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
-        }   
+        }
     }
 
-    public function modulo($id,$mid)
+    public function modulo($id, $mid)
     {
         //Se verifica que el modulo exista y pertenezca al curso
-        $modulo=Module::
-            with('users')
-            ->where('id',$mid)
-            ->where('course_id',$id)
+        $modulo = Module::with('users')
+            ->where('id', $mid)
+            ->where('course_id', $id)
             ->first();
 
-        if(!$modulo){
+        if (!$modulo) {
             return abort(404);
         }
 
 
 
-        $tipo=Auth::user()->roles[0]->name;
+        $tipo = Auth::user()->roles[0]->name;
         //Si es tipo alumno y no está inscrito lo redirige a la vista de información
-        if($tipo == 'Alumno'){
-            $inscrito=Course::
-                leftJoin('course_user','courses.id','=','course_user.course_id')
-                ->where('course_user.course_id',$id)
-                ->where('course_user.user_id',Auth::id())
+        if ($tipo == 'Alumno') {
+            $inscrito = Course::leftJoin('course_user', 'courses.id', '=', 'course_user.course_id')
+                ->where('course_user.course_id', $id)
+                ->where('course_user.user_id', Auth::id())
                 ->first();
 
-            $calificacion=Module::
-                where('modules.id',$mid)
-                ->leftJoin('module_user','modules.id','=','module_user.module_id')
-                ->where('module_user.user_id',Auth::id())
+            $calificacion = Module::where('modules.id', $mid)
+                ->leftJoin('module_user', 'modules.id', '=', 'module_user.module_id')
+                ->where('module_user.user_id', Auth::id())
                 ->first('calificacion');
         }
         //Si es un ponente se verifica que sea el dueño del curso
-        if($tipo == 'Ponente'){
-            $curso_teacher=Course::where('id',$id)->first('teacher_id');
-            if(Auth::id() == $curso_teacher->teacher_id){
-                $inscrito=true;
+        if ($tipo == 'Ponente') {
+            $curso_teacher = Course::where('id', $id)->first('teacher_id');
+            if (Auth::id() == $curso_teacher->teacher_id) {
+                $inscrito = true;
 
-                $calificacion=Module::
-                    where('modules.id',$mid)
-                    ->where('calificacion','!=','Null')
-                    ->leftJoin('module_user','modules.id','=','module_user.module_id')
+                $calificacion = Module::where('modules.id', $mid)
+                    ->where('calificacion', '!=', 'Null')
+                    ->leftJoin('module_user', 'modules.id', '=', 'module_user.module_id')
                     ->select(DB::raw('TRUNCATE(AVG(calificacion),2) as calificacion'))
                     ->first();
-            }
-            else{
+            } else {
                 return abort(403);
             }
-            $actividades=Entry::
-            with('files:archivo,entry_id')
-            ->where('module_id',$mid)
-            ->where('tipo','!=','Aviso')
-            ->where('tipo','!=','Informacion')
-            ->where('tipo','!=','Enlace')
-            ->where('tipo','!=','Archivo')
-            ->orderBy('id','ASC')
-            ->get();
-        }
-
-        else if($tipo == 'Alumno'){
-            $actividades=Entry::
-                where('entries.module_id',$mid)
-                ->where('entries.visible',1)
-                ->leftJoin('entry_user','entries.id','=','entry_user.entry_id')
+            $actividades = Entry::with('files:archivo,entry_id')
+                ->where('module_id', $mid)
+                ->where('tipo', '!=', 'Aviso')
+                ->where('tipo', '!=', 'Informacion')
+                ->where('tipo', '!=', 'Enlace')
+                ->where('tipo', '!=', 'Archivo')
+                ->orderBy('id', 'ASC')
+                ->get();
+        } else if ($tipo == 'Alumno') {
+            $actividades = Entry::where('entries.module_id', $mid)
+                ->where('entries.visible', 1)
+                ->leftJoin('entry_user', 'entries.id', '=', 'entry_user.entry_id')
                 ->where(function ($query) {
                     $query->where('entry_user.user_id', Auth::id())
                         ->orWhere('entry_user.user_id', null);
-                    })
+                })
                 ->where(function ($query) {
                     $query->where('entries.tipo', 'Asignacion')
                         ->orWhere('entries.tipo', 'Examen');
-                    })
-                ->select('entries.*','entry_user.calificacion as calificacion','entry_user.fecha as fecha')
+                })
+                ->select('entries.*', 'entry_user.calificacion as calificacion', 'entry_user.fecha as fecha')
                 ->get();
         }
 
-        if(!$inscrito){
-            return \Redirect::route('cursos.informacion',$id);
+        if (!$inscrito) {
+            return \Redirect::route('cursos.informacion', $id);
         }
 
-        $avisos=Entry::
-            with('files:archivo,entry_id')
-            ->where('module_id',$mid)
-            ->where('tipo','Aviso')
-            ->where('visible',1)
-            ->orderBy('id','DESC')
+        $avisos = Entry::with('files:archivo,entry_id')
+            ->where('module_id', $mid)
+            ->where('tipo', 'Aviso')
+            ->where('visible', 1)
+            ->orderBy('id', 'DESC')
             ->get();
 
-        $entradas=Entry::
-            with('files:archivo,entry_id')
-            ->where('module_id',$mid)
-            ->where('tipo','!=','Aviso')
-            ->where('tipo','!=','Asignacion')
-            ->where('tipo','!=','Examen')
-            ->where('visible',1)
-            ->orderBy('id','DESC')
+        $entradas = Entry::with('files:archivo,entry_id')
+            ->where('module_id', $mid)
+            ->where('tipo', '!=', 'Aviso')
+            ->where('tipo', '!=', 'Asignacion')
+            ->where('tipo', '!=', 'Examen')
+            ->where('visible', 1)
+            ->orderBy('id', 'DESC')
             ->get();
 
 
-        $actual=Module::findOrFail($mid);
-        $numeroActual=$actual->numero;
+        $actual = Module::findOrFail($mid);
+        $numeroActual = $actual->numero;
 
-        $numeroSiguiente=$numeroActual+1;
-        $siguiente=Module::where('numero',$numeroSiguiente)->first('id');
+        $numeroSiguiente = $numeroActual + 1;
+        $siguiente = Module::where('numero', $numeroSiguiente)->first('id');
 
-        $numeroAnterior=$numeroActual-1;
-        $anterior=Module::where('numero',$numeroAnterior)->first('id');
-        
+        $numeroAnterior = $numeroActual - 1;
+        $anterior = Module::where('numero', $numeroAnterior)->first('id');
+
 
         return Inertia::render('Curso/Modulo', [
             'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
@@ -856,75 +837,100 @@ class CourseController extends Controller
 
     public function participantes($id)
     {
-        $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
+        $inscrito = Course::leftJoin('course_user', 'courses.id', '=', 'course_user.course_id')->where('course_user.course_id', $id)->where('course_user.user_id', Auth::id())->first();
         // if(!$inscrito){
         //     return \Redirect::route('cursos.informacion',$id);
         // }
         return Inertia::render('Curso/Participantes', [
-            'curso' => Course::with('users:id,nombre,foto,apellido_p,apellido_m,email','teacher:nombre,apellido_p,apellido_m,foto,id,email','modules:course_id,id,nombre,numero')->findOrFail($id),
+            'curso' => Course::with('users:id,nombre,foto,apellido_p,apellido_m,email', 'teacher:nombre,apellido_p,apellido_m,foto,id,email', 'modules:course_id,id,nombre,numero')->findOrFail($id),
         ]);
     }
 
     public function mochila($id)
     {
         \Gate::authorize('haveaccess', 'alumno.perm');
-        $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
-        if(!$inscrito){
-            return \Redirect::route('cursos.informacion',$id);
+        $inscrito = Course::leftJoin('course_user', 'courses.id', '=', 'course_user.course_id')->where('course_user.course_id', $id)->where('course_user.user_id', Auth::id())->first();
+        if (!$inscrito) {
+            return \Redirect::route('cursos.informacion', $id);
         }
         $user = User::find(Auth::id());
-        $curso=$user->courses()->where('course_id',$id)->with('modules:course_id,id,nombre,numero')->first();
-        if(!$curso){
+        $curso = $user->courses()->where('course_id', $id)->with('modules:course_id,id,nombre,numero')->first();
+        if (!$curso) {
             return abort(404);
         }
 
-        $entradas=Course::where('courses.id',$id)->leftJoin('modules','courses.id','=','modules.course_id')
-            ->leftJoin('entries','modules.id','=','entries.module_id')
-            ->where('entries.visible',1)
-            ->whereIn('entries.tipo',['Asignacion','Examen'])
-            ->select('entries.*','modules.nombre as modulo','modules.numero as numero','modules.id as module_id')
-            ->orderBy('fecha_de_entrega','ASC')
+        $entradas = Course::where('courses.id', $id)->leftJoin('modules', 'courses.id', '=', 'modules.course_id')
+            ->leftJoin('entries', 'modules.id', '=', 'entries.module_id')
+            ->where('entries.visible', 1)
+            ->whereIn('entries.tipo', ['Asignacion', 'Examen'])
+            ->select('entries.*', 'modules.nombre as modulo', 'modules.numero as numero', 'modules.id as module_id')
+            ->orderBy('fecha_de_entrega', 'ASC')
             ->get();
 
-        $realizadas=Course::where('courses.id',$id)->leftJoin('modules','courses.id','=','modules.course_id')
-            ->leftJoin('entries','modules.id','=','entries.module_id')
-            ->where('entries.visible',1)
-            ->whereIn('entries.tipo',['Asignacion','Examen'])
-            ->join('entry_user','entries.id','=','entry_id')
-            ->where('entry_user.user_id',$user->id)
-            ->select('entries.id as id','entries.tipo as tipo','entries.titulo as titulo','modules.nombre as modulo', 'entries.fecha_de_apertura as fecha_de_apertura', 
-                'entries.fecha_de_entrega as fecha_de_entrega', 'entry_user.fecha as fecha', 'entry_user.calificacion as calificacion', 'entries.max_calif as max_calif',
-                'entries.permitir_envios_retrasados as permitir_envios_retrasados','modules.numero as numero','modules.id as module_id')
-            ->orderBy('fecha_de_entrega','ASC')
+        $realizadas = Course::where('courses.id', $id)->leftJoin('modules', 'courses.id', '=', 'modules.course_id')
+            ->leftJoin('entries', 'modules.id', '=', 'entries.module_id')
+            ->where('entries.visible', 1)
+            ->whereIn('entries.tipo', ['Asignacion', 'Examen'])
+            ->join('entry_user', 'entries.id', '=', 'entry_id')
+            ->where('entry_user.user_id', $user->id)
+            ->select(
+                'entries.id as id',
+                'entries.tipo as tipo',
+                'entries.titulo as titulo',
+                'modules.nombre as modulo',
+                'entries.fecha_de_apertura as fecha_de_apertura',
+                'entries.fecha_de_entrega as fecha_de_entrega',
+                'entry_user.fecha as fecha',
+                'entry_user.calificacion as calificacion',
+                'entries.max_calif as max_calif',
+                'entries.permitir_envios_retrasados as permitir_envios_retrasados',
+                'modules.numero as numero',
+                'modules.id as module_id'
+            )
+            ->orderBy('fecha_de_entrega', 'ASC')
             ->get();
 
-        $pendientes=[];
-        $i=0;
-        foreach($entradas as $entrada){
-            $found=false;
-            foreach($realizadas as $realizada){
-                if($entrada->id == $realizada->id){
-                    $found=true;
+        $pendientes = [];
+        $i = 0;
+        foreach ($entradas as $entrada) {
+            $found = false;
+            foreach ($realizadas as $realizada) {
+                if ($entrada->id == $realizada->id) {
+                    $found = true;
                     break;
                 }
-            }    
-            if($found == false){
-                $pendientes[$i]=$entrada;
+            }
+            if ($found == false) {
+                $pendientes[$i] = $entrada;
                 $i++;
             }
         }
 
         return Inertia::render('Curso/Mochila', [
             'curso' => $curso,
-            'realizadas' =>$realizadas,
-            'pendientes'=>$pendientes,
+            'realizadas' => $realizadas,
+            'pendientes' => $pendientes,
         ]);
     }
 
     public function estadisticas($id)
     {
+        Gate::authorize('haveaccess', 'ponente.perm');
+        $curso = Course::findOrFail($id);
+        $alumnos = $curso->users()->select('sexo', 'calificacion_final')->get();
+        $cantidad = $alumnos->count();
+        $categorias = User::leftJoin('categories', 'users.category_id', '=', 'categories.id')
+            ->leftJoin('course_user', 'users.id', '=', 'course_user.user_id')
+            ->where('course_id', $id)
+            ->select('categories.nombre', DB::raw('count(*) as total'))
+            ->orderBy('total', 'desc')
+            ->groupBy('categories.nombre')->limit(4)->get();
+
         return Inertia::render('Curso/Estadisticas', [
             'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
+            'cantidad' => $cantidad,
+            'alumnos' => $alumnos,
+            'categorias' => $categorias
         ]);
     }
 
@@ -932,90 +938,90 @@ class CourseController extends Controller
     {
         \Gate::authorize('haveaccess', 'ponente.perm');
 
-        $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto','modules:course_id,id,nombre,numero')
-                        ->select('nombre','id')
-                        ->findOrFail($id);
+        $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto', 'modules:course_id,id,nombre,numero')
+            ->select('nombre', 'id')
+            ->findOrFail($id);
         return Inertia::render('Curso/Solicitudes', [
             'curso' => $curso,
         ]);
     }
 
-    public function verPublicacion($id,$mid,$pid)
+    public function verPublicacion($id, $mid, $pid)
     {
-        $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
+        $inscrito = Course::leftJoin('course_user', 'courses.id', '=', 'course_user.course_id')->where('course_user.course_id', $id)->where('course_user.user_id', Auth::id())->first();
         // if(!$inscrito){
         //     return \Redirect::route('cursos.informacion',$id);
         // }
         //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
-        $modulo=Module::where('id',$mid)->where('course_id',$id)->first();
+        $modulo = Module::where('id', $mid)->where('course_id', $id)->first();
         //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
-        if(!$modulo){
+        if (!$modulo) {
             return abort(404);
         }
         //Se obtiene la entrada que se desea mostrar en la vista
-        $entrada=Entry::with('files:archivo,entry_id')->findOrFail($pid);
+        $entrada = Entry::with('files:archivo,entry_id')->findOrFail($pid);
         return Inertia::render('Curso/VerPublicacion', [
             'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
             'modulo' => $modulo,
             'entrada' => $entrada,
         ]);
     }
-    
-    
-    public function agregarParticipante($id, Request $request){
+
+
+    public function agregarParticipante($id, Request $request)
+    {
         \Gate::authorize('haveaccess', 'ponente.perm');
-        
+
         return Inertia::render('Curso/AgregarParticipante', [
             'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
             'users' =>
-                fn () => User::with('activeCourses:id','courses:id')->select('users.id','nombre','apellido_p', 'apellido_m', 'email','matricula')
-                            ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
-                            ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
-                            ->where('roles.name','Alumno')
-                            ->when($request->user_search, function ($query, $search) use ($request) {
-                                if ($request->filter) {
-                                    switch ($request->filter) {
-                                        case 'matricula':
-                                            return $query->where('users.matricula', 'LIKE', '%' . $search . '%')->where('roles.name','Alumno');
-                                            break;
-                                        case 'nombre':
-                                            return $query->WhereRaw(
-                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
-                                            )->orWhereRaw(
-                                                "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
-                                            )->where('roles.name','Alumno');
-                                            break;
-                                        case 'email':
-                                            return $query->where('users.email', 'LIKE', '%' . $search . '%')->where('roles.name','Alumno');
-                                            break;
-                                        default:
-                                        return $query->WhereRaw(
-                                            "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
-                                        )->orWhereRaw(
-                                            "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
-                                        )->where('roles.name','Alumno');
-                                            break;
-                                    }
-                                } else
+            fn () => User::with('activeCourses:id', 'courses:id')->select('users.id', 'nombre', 'apellido_p', 'apellido_m', 'email', 'matricula')
+                ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
+                ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
+                ->where('roles.name', 'Alumno')
+                ->when($request->user_search, function ($query, $search) use ($request) {
+                    if ($request->filter) {
+                        switch ($request->filter) {
+                            case 'matricula':
+                                return $query->where('users.matricula', 'LIKE', '%' . $search . '%')->where('roles.name', 'Alumno');
+                                break;
+                            case 'nombre':
                                 return $query->WhereRaw(
                                     "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
                                 )->orWhereRaw(
                                     "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
-                                )->where('roles.name','Alumno');
-                            })
-                            ->when(!$request->user_search, function ($query, $search) use ($request) {
-                                return $query->where('users.id',0);
-                            })
-                            ->orderBy('users.created_at','desc')
-                            ->paginate(20)
-                            ->withQueryString()
-                ,
-                'request' => $request
+                                )->where('roles.name', 'Alumno');
+                                break;
+                            case 'email':
+                                return $query->where('users.email', 'LIKE', '%' . $search . '%')->where('roles.name', 'Alumno');
+                                break;
+                            default:
+                                return $query->WhereRaw(
+                                    "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                )->orWhereRaw(
+                                    "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                )->where('roles.name', 'Alumno');
+                                break;
+                        }
+                    } else
+                        return $query->WhereRaw(
+                            "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                        )->orWhereRaw(
+                            "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                        )->where('roles.name', 'Alumno');
+                })
+                ->when(!$request->user_search, function ($query, $search) use ($request) {
+                    return $query->where('users.id', 0);
+                })
+                ->orderBy('users.created_at', 'desc')
+                ->paginate(20)
+                ->withQueryString(),
+            'request' => $request
         ]);
     }
 
     // ASIGNACIONES----------------------------------
-    public function asignacion($id,$mid,$pid)
+    public function asignacion($id, $mid, $pid)
     {
         //VERIFICA EL ROL DEL USUARIO
         if (Auth::user()->roles[0]->name == 'Ponente') {
@@ -1025,21 +1031,21 @@ class CourseController extends Controller
             $modulo = Module::findOrFail($mid);
 
             //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
-            if(!$modulo){
+            if (!$modulo) {
                 return abort(404);
             }
 
             // Buscar la asignacion
-            $entrada=Entry::with('files:archivo,entry_id')->findOrFail($pid);
+            $entrada = Entry::with('files:archivo,entry_id')->findOrFail($pid);
 
             //verificar que la entrada sea asingacion o examen
 
             //verificar que pertenezca al modulo
 
             //si el usuario es ponente...
-                //verificar que el curso sea suyo
+            //verificar que el curso sea suyo
             //si el usuario es estudiante...
-                //verificar que este registrado en el curso
+            //verificar que este registrado en el curso
 
             return Inertia::render('Curso/Asignacion/Asignacion', [
                 'curso' => Course::findOrFail($id),
@@ -1048,58 +1054,60 @@ class CourseController extends Controller
             ]);
         } else if (Auth::user()->roles[0]->name == 'Alumno') {
             \Gate::authorize('haveaccess', 'alumno.perm');
-            
+
             //busca el curso
-            $curso = Course::with('modules:course_id,id,nombre,numero')->select('id','nombre')->findOrFail($id);
-            
+            $curso = Course::with('modules:course_id,id,nombre,numero')->select('id', 'nombre')->findOrFail($id);
+
             //Si no existe el curso quiere decir que algo anda mal y por eso se regresa a la vista de error
-            if(!$curso){
+            if (!$curso) {
                 return abort(404);
             }
 
             //verifica que el usuario auth sea alumno del curso
             $validador = false;
             foreach (Auth::user()->courses()->get() as $cursoA) {
-                if($cursoA->id == $curso->id)
+                if ($cursoA->id == $curso->id)
                     $validador = true;
             }
-            if(!$validador)
+            if (!$validador)
                 abort(403);
 
             //Buscar el modulo con el mid
-            $modulo = Module::select('id','nombre','course_id')->findOrFail($mid);
+            $modulo = Module::select('id', 'nombre', 'course_id')->findOrFail($mid);
 
             //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
-            if(!$modulo){
+            if (!$modulo) {
                 return abort(404);
             }
 
             //verifica que el modulo pertenezca al curso
-            if($modulo->course_id != $curso->id){
+            if ($modulo->course_id != $curso->id) {
                 //si no está lo mandamos a la vista informacion -  solo si es alumno
                 abort(403);
             }
 
             // Buscar la asignacion
-            $entrada=Entry::with(['files:archivo,entry_id',
-            'users' => function ($entrega){
-                return $entrega->where('entry_user.user_id',Auth::user()->id)->select('users.id')
-                            ->withPivot('calificacion','archivo','fecha','editado','Comentario','fecha_calif','comentario_retroalimentacion','created_at','updated_at');
-            }])->select('id','titulo','created_at','contenido','tipo','module_id','permitir_envios_retrasados','fecha_de_entrega','max_calif')->findOrFail($pid);
+            $entrada = Entry::with([
+                'files:archivo,entry_id',
+                'users' => function ($entrega) {
+                    return $entrega->where('entry_user.user_id', Auth::user()->id)->select('users.id')
+                        ->withPivot('calificacion', 'archivo', 'fecha', 'editado', 'Comentario', 'fecha_calif', 'comentario_retroalimentacion', 'created_at', 'updated_at');
+                }
+            ])->select('id', 'titulo', 'created_at', 'contenido', 'tipo', 'module_id', 'permitir_envios_retrasados', 'fecha_de_entrega', 'max_calif')->findOrFail($pid);
 
-            
+
             //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
-            if(!$entrada){
+            if (!$entrada) {
                 return abort(404);
             }
 
             //verificar que la entrada sea asingacion o examen
-            if($entrada->tipo != 'Asignacion' && $entrada->tipo != 'Examen'){
+            if ($entrada->tipo != 'Asignacion' && $entrada->tipo != 'Examen') {
                 abort(403);
             }
 
             //verifica que pertenezca al modulo
-            if($entrada->module_id != $modulo->id){
+            if ($entrada->module_id != $modulo->id) {
                 abort(403);
             }
 
@@ -1115,13 +1123,14 @@ class CourseController extends Controller
         }
     }
 
-    public function inscribir($id){
-        $curso=Course::with('modules:course_id,id,nombre,numero')->findOrFail($id);
+    public function inscribir($id)
+    {
+        $curso = Course::with('modules:course_id,id,nombre,numero')->findOrFail($id);
 
         //Verificar que el usuario no pertenezca a algún curso activo
-        $user=User::with('courses:id,estatus')->findOrFail(Auth::id());
-        foreach($user->courses as $curso){
-            if($curso->estatus=='Activo'){
+        $user = User::with('courses:id,estatus')->findOrFail(Auth::id());
+        foreach ($user->courses as $curso) {
+            if ($curso->estatus == 'Activo') {
                 return \Redirect::back()->with('error', 'Ya perteneces a un curso actualmente activo.');
             }
         }
@@ -1130,7 +1139,7 @@ class CourseController extends Controller
             DB::beginTransaction();
 
             //Se inscribe automáticamente
-            if($curso->tipo_acceso == 'Automática'){
+            if ($curso->tipo_acceso == 'Automática') {
                 $user->courses()->attach($curso->id);
                 //SE CREA EL LOG
                 $newLog = new Log;
@@ -1138,34 +1147,34 @@ class CourseController extends Controller
                 $newLog->categoria = 'create';
                 $newLog->user_id = Auth::id();
                 $newLog->accion =
-                '{
+                    '{
                     course_user: {
-                        course_id: ' . $id.
-                        'user_id: ' . $user->id .
+                        course_id: ' . $id .
+                    'user_id: ' . $user->id .
                     '},
                 }';
 
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' se ha inscrito al curso: '. $curso->nombre;
+                $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' se ha inscrito al curso: ' . $curso->nombre;
                 // //SE GUARDA EL LOG
                 $newLog->save();
-                
+
                 $notification = new Notification();
-                $notification->titulo= $user->nombre.' se ha inscrito al curso: '.$curso->nombre;
-                $notification->visto=false;
-                $notification->user_id=$curso->teacher_id;
-                $notification->save(); 
+                $notification->titulo = $user->nombre . ' se ha inscrito al curso: ' . $curso->nombre;
+                $notification->visto = false;
+                $notification->user_id = $curso->teacher_id;
+                $notification->save();
 
                 DB::commit();
-                return \Redirect::route('cursos.informacion',$id)->with('success', 'Te has inscrito a este curso.');
+                return \Redirect::route('cursos.informacion', $id)->with('success', 'Te has inscrito a este curso.');
             }
 
             //Se manda solicitud
-            else if($curso->tipo_acceso == 'Solicitud'){
-                $oldRequest=Application::where('course_id',$id)->where('user_id',Auth::id())->first();
-                if($oldRequest){
+            else if ($curso->tipo_acceso == 'Solicitud') {
+                $oldRequest = Application::where('course_id', $id)->where('user_id', Auth::id())->first();
+                if ($oldRequest) {
                     return \Redirect::back()->with('message', 'Ya solicitaste inscripción a este curso.');
                 }
-                $newRequest= new Application();
+                $newRequest = new Application();
                 $newRequest->course_id = $id;
                 $newRequest->user_id = Auth::id();
                 $newRequest->estatus = 'En espera';
@@ -1176,37 +1185,33 @@ class CourseController extends Controller
                 $newLog->categoria = 'create';
                 $newLog->user_id = Auth::id();
                 $newLog->accion =
-                '{
+                    '{
                     requests: {
                         course_id: ' . $newRequest->course_id .
-                        'user_id: ' . $newRequest->user_id .
-                        'estatus: ' . $newRequest->estatus .
+                    'user_id: ' . $newRequest->user_id .
+                    'estatus: ' . $newRequest->estatus .
                     '},
                 }';
 
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha solicitado unirse al curso: '. $curso->nombre;
+                $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha solicitado unirse al curso: ' . $curso->nombre;
                 // //SE GUARDA EL LOG
                 $newLog->save();
 
                 $notification = new Notification();
-                $notification->titulo= 'Tienes una nueva solicitud de ingreso al curso: '.$curso->nombre;
-                $notification->visto=false;
-                $notification->user_id=$curso->teacher_id;
-                $notification->save(); 
+                $notification->titulo = 'Tienes una nueva solicitud de ingreso al curso: ' . $curso->nombre;
+                $notification->visto = false;
+                $notification->user_id = $curso->teacher_id;
+                $notification->save();
 
                 DB::commit();
                 return \Redirect::back()->with('success', 'Solicitud de inscripción enviada con éxito.');
-            }
-            else{
+            } else {
                 DB::rollback();
-                return \Redirect::route('cursos.informacion',$id)->with('error', 'No es posible inscribirse a este curso, contacta al profesor para que él mismo te inscriba.');
+                return \Redirect::route('cursos.informacion', $id)->with('error', 'No es posible inscribirse a este curso, contacta al profesor para que él mismo te inscriba.');
             }
         } catch (\Throwable $th) {
             DB::rollback();
             return \Redirect::back()->with('error', 'Ha ocurrido un problema, vuela a intentarlo más tarde.');
         }
     }
-    
 }
-    
-
