@@ -43,7 +43,7 @@ const ModulosConfig = ({curso}) => {
                 set: function (sortable) {
                     var order = sortable.toArray();
                     localStorage.setItem(sortable.options.group.name, order.join('|'));
-                    //  console.log(order)
+                    console.log(order)
                 }
             }
         });
