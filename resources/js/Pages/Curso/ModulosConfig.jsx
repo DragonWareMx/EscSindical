@@ -11,12 +11,42 @@ import ModalEliminar from '../../components/common/ModalEliminarDD'
 import route from 'ziggy-js';
 import { Modal } from 'bootstrap';
 
+// Default SortableJS
+import Sortable from 'sortablejs';
 
 const ModulosConfig = ({curso}) => {
     
     function initializeMaterialize(){
         var elems = document.querySelectorAll('.dropdown-trigger');
         var instances = M.Dropdown.init(elems);
+        //  aqui se inicializa el sortable
+        var el = document.getElementById('items');
+        var sortable = Sortable.create(el,{
+            handle: '.my-handle',
+            animation: 150,
+            group: "localStorage-example",
+            store: {
+                /**
+                 * Get the order of elements. Called once during initialization.
+                 * @param   {Sortable}  sortable
+                 * @returns {Array}
+                 */
+                get: function (sortable) {
+                    var order = localStorage.getItem(sortable.options.group.name);
+                    return order ? order.split('|') : [];
+                },
+
+                /**
+                 * Save the order of elements. Called onEnd (when the item is dropped).
+                 * @param {Sortable}  sortable
+                 */
+                set: function (sortable) {
+                    var order = sortable.toArray();
+                    localStorage.setItem(sortable.options.group.name, order.join('|'));
+                    //  console.log(order)
+                }
+            }
+        });
     }
 
     
@@ -29,11 +59,22 @@ const ModulosConfig = ({curso}) => {
   return (
     <>
         <div className="row">
-            <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>MÓDULOS</div>
+            <div className="col s12 titulo-modulo left" style={{"marginTop":"15px"}}>
+                <div className="col s6">
+                    MÓDULOS
+                </div>
+                <div className="col s6 right-align">
+                    Cambiar orden <i className="material-icons" style={{"color":"#108058", "fontSize":"18px"}}>edit</i>
+                </div>
+                
+            </div>
             {curso.modules['0'] ? 
                 <ul id="items" className="col s12">
                     {curso.modules.map((modulo) =>
-                        <li key={modulo.id}>
+                        <li data-id={modulo.numero} key={modulo.id} className="valign-wrapper">
+                            {/* solo se muestra el icono cuando se le da al boton de editar */}
+                            <span className="material-icons my-handle">drag_indicator</span>
+
                             <div className="col s12 div-modulo-config">
                                 <div className="col s12">
                                     <div className="div-info-modulo-c">
@@ -57,6 +98,19 @@ const ModulosConfig = ({curso}) => {
             :
                 <p className="col s12 text-ins-module">Aún no hay módulos en este curso.</p>
             }
+
+
+            {/* esto es una prueba */}
+            {/* <div className="col s12">
+                <ul id="items2">
+                    <li data-id="1" className="list-group-item valign-wrapper orange"><span className="material-icons my-handle">home</span> item 1</li>
+                    <li data-id="2" className="list-group-item valign-wrapper red"><span className="material-icons my-handle">home</span>item 2</li>
+                    <li data-id="3" className="list-group-item valign-wrapper purple"><span className="material-icons my-handle">home</span>item 3</li>
+                </ul>
+                
+            </div> */}
+            
+
         </div>
         
     </>
