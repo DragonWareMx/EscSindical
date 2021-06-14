@@ -855,10 +855,21 @@ class CourseController extends Controller
 
     public function participantes($id)
     {
-        $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
-        // if(!$inscrito){
-        //     return \Redirect::route('cursos.informacion',$id);
-        // }
+        $tipo=Auth::user()->roles[0]->name;
+
+        if($tipo == 'Ponente'){
+            $curso_teacher=Course::where('id',$id)->first('teacher_id');
+            if(Auth::id() != $curso_teacher->teacher_id){
+                return abort(403);
+            }
+        }
+        else if ($tipo == 'Alumno'){
+            $inscrito=Course::leftJoin('course_user','courses.id','=','course_user.course_id')->where('course_user.course_id',$id)->where('course_user.user_id',Auth::id())->first();
+            if(!$inscrito){
+                return \Redirect::route('cursos.informacion',$id);
+            }
+        }
+        
         return Inertia::render('Curso/Participantes', [
             'curso' => Course::with('users:id,nombre,foto,apellido_p,apellido_m,email','teacher:nombre,apellido_p,apellido_m,foto,id,email','modules:course_id,id,nombre,numero')->findOrFail($id),
         ]);
