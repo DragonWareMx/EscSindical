@@ -1212,7 +1212,7 @@ class EntryController extends Controller
         }
 
         //verificar que la entrada sea asingacion o examen
-        if ($entrada->tipo != 'Asignacion' && $entrada->tipo != 'Examen') {
+        if ($entrada->tipo != 'Examen') {
             abort(403);
         }
 
