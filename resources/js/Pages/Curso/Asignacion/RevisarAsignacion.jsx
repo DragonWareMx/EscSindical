@@ -111,6 +111,10 @@ const AsignacionEntrega = ({curso, modulo, asignacion}) => {
                         <div className="col s12 m9 l9 xl9 txt-content-estatus">Sin revisar</div>
                     </div>
                     <div className="col s12 padding-0px row-extatus">
+                        <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificado el</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">-</div>
+                    </div>
+                    <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Observaciones</div>
                         <div className="col s12 m9 l9 xl9 txt-content-estatus">-</div>
                     </div>
