@@ -10,7 +10,19 @@ import '/css/asignaciones.css'
 
 
 const Examen = ({curso , modulo, asignacion}) => {
-    console.log(asignacion)
+    
+    function initializeMaterialize(){
+        var elems = document.querySelectorAll('.dropdown-trigger');
+        var instances = M.Dropdown.init(elems);
+        var elems = document.querySelectorAll('.tooltipped');
+        var instances = M.Tooltip.init(elems);
+      }
+      
+      useEffect(() => {
+        initializeMaterialize();
+      }, [])
+
+      
     return (
         <>
         <div className="row">
