@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -53,11 +54,11 @@ class HandleInertiaRequests extends Middleware
                 : null,
 
             // Lazily
-            'auth.roles' => fn () => $request->user() ? 
-            $request->user()->roles()->get()
+            'auth.roles' => fn () => $request->user() ?
+                $request->user()->roles()->get()
                 ? $request->user()->roles()->get()
                 : null
-            :null,
+                : null,
             // 'flash' => [
             //     'message' => $request->session()->get('message'),
             //     'error' => $request->session()->get('error'),
@@ -67,11 +68,14 @@ class HandleInertiaRequests extends Middleware
                 return [
                     'success' => $request->session()->get('success'),
                     'error' => $request->session()->get('error'),
-                    'message'=>$request->session()->get('message')
+                    'message' => $request->session()->get('message')
                 ];
             },
 
-            'busqueda' => fn () => $request->busqueda, 
+            'notif' => fn () =>
+            Notification::where('user_id', $request->user()->id)->get(),
+
+            'busqueda' => fn () => $request->busqueda,
         ]);
     }
 }
