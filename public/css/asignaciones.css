@@ -137,6 +137,43 @@
     margin-right:10px;
 }
 
+/* ENTREGAS */
+.link-profile-e{
+    color:#1E1E1E;
+    transition: all ease-in-out 0.25s;
+}
+.link-profile-e:hover{
+    color:#108058;
+    transition: all ease-in-out 0.25s;
+}
+.file-entrega{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #7a6161;
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+.file-entregaLink{
+    color: #7a6161;
+    text-decoration: underline;
+    transition: all ease-in-out 0.25s;
+}
+.file-entregaLink:hover{
+    color:#575252;
+    transition: all ease-in-out 0.25s;
+}
+.txt-comentariosE{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+    color: #263238;
+}
+
 @media(max-width:900px){
     .table-entregas th{
         font-size: 10px;

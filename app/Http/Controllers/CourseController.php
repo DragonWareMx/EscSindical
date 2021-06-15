@@ -1022,6 +1022,43 @@ class CourseController extends Controller
         }
     }
 
+    public function asignacionEntrega($id,$mid,$pid,$eid)
+    {
+        //VERIFICA EL ROL DEL USUARIO
+        if (Auth::user()->roles[0]->name == 'Ponente') {
+            \Gate::authorize('haveaccess', 'ponente.perm');
+
+            //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
+            $modulo = Module::findOrFail($mid);
+
+            //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if(!$modulo){
+                return abort(404);
+            }
+
+            // Buscar la asignacion
+            $entrada=Entry::with('files:archivo,entry_id')->findOrFail($pid);
+
+            //verificar que la entrada sea asingacion o examen
+
+            //verificar que pertenezca al modulo
+
+            //si el usuario es ponente...
+                //verificar que el curso sea suyo
+            //si el usuario es estudiante...
+                //verificar que este registrado en el curso
+
+            //faltra tratar el $eid, id de la entrada
+
+            return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
+                'curso' => Course::findOrFail($id),
+                'modulo' => $modulo,
+                'asignacion' => $entrada,
+            ]);
+        }
+    }
+
+
     public function inscribir($id){
         $curso=Course::with('modules:course_id,id,nombre,numero')->findOrFail($id);
 
