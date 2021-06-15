@@ -224,3 +224,9 @@
 {
     width: 120px !important;
 }
+
+/* sortable */
+.my-handle {
+	cursor: move;
+	cursor: -webkit-grabbing;
+}
