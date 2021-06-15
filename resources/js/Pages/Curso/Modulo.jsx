@@ -434,7 +434,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
 }
 
 Informacion.layout = page => (
-  <Layout title="Escuela sindical - Modulo" pageTitle="Modulo">
+  <Layout title="Escuela sindical - Modulo" pageTitle="Módulo">
     <LayoutCursos children={page} />
   </Layout>
 )
