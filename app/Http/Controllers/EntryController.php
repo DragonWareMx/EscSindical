@@ -1166,4 +1166,65 @@ class EntryController extends Controller
             }
         }
     }
+
+    public function doExam($id, $mid, $eid)
+    {
+        \Gate::authorize('haveaccess', 'alumno.perm');
+
+        //busca el curso
+        $curso = Course::with('modules:course_id,id,nombre,numero')->select('id', 'nombre')->findOrFail($id);
+
+        //Si no existe el curso quiere decir que algo anda mal y por eso se regresa a la vista de error
+        if (!$curso) {
+            return abort(404);
+        }
+
+        //verifica que el usuario auth sea alumno del curso
+        $validador = false;
+        foreach (Auth::user()->courses()->get() as $cursoA) {
+            if ($cursoA->id == $curso->id)
+                $validador = true;
+        }
+        if (!$validador)
+            abort(403);
+
+        //Buscar el modulo con el mid
+        $modulo = Module::select('id', 'nombre', 'course_id')->findOrFail($mid);
+
+        //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
+        if (!$modulo) {
+            return abort(404);
+        }
+
+        //verifica que el modulo pertenezca al curso
+        if ($modulo->course_id != $curso->id) {
+            //si no está lo mandamos a la vista informacion -  solo si es alumno
+            abort(403);
+        }
+
+        // Buscar la asignacion
+        $entrada = Entry::findOrFail($eid);
+            
+
+        //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
+        if (!$entrada) {
+            return abort(404);
+        }
+
+        //verificar que la entrada sea asingacion o examen
+        if ($entrada->tipo != 'Asignacion' && $entrada->tipo != 'Examen') {
+            abort(403);
+        }
+
+        //verifica que pertenezca al modulo
+        if ($entrada->module_id != $modulo->id) {
+            abort(403);
+        }
+
+        return Inertia::render('Curso/Examen', [
+            'curso' => $curso,
+            'modulo' => $modulo,
+            'asignacion' => $entrada,
+        ]);
+    }
 }
