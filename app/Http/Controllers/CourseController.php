@@ -927,6 +927,11 @@ class CourseController extends Controller
     public function estadisticas($id)
     {
         Gate::authorize('haveaccess', 'ponente.perm');
+        //verificar que el ponente sea dueño del curso
+        $curso_teacher=Course::where('id',$id)->first('teacher_id');
+        if(Auth::id() != $curso_teacher->teacher_id){
+            return abort(403);
+        }
         $curso = Course::findOrFail($id);
         $alumnos = $curso->users()->select('sexo', 'calificacion_final')->get();
         $cantidad = $alumnos->count();
