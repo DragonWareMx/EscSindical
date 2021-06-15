@@ -1089,7 +1089,7 @@ class CourseController extends Controller
                 abort(403);
 
             //Buscar el modulo con el mid
-            $modulo = Module::select('id', 'nombre', 'course_id')->findOrFail($mid);
+            $modulo = Module::select('id', 'nombre', 'course_id','numero')->findOrFail($mid);
 
             //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
             if (!$modulo) {
@@ -1137,6 +1137,10 @@ class CourseController extends Controller
         } else {
             abort(403);
         }
+    }
+
+    public function entregarAsignacion($id, $mid, $pid, Request $request){
+        dd($request);
     }
 
     public function inscribir($id)

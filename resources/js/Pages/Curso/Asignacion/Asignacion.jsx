@@ -28,6 +28,9 @@ function cancelar(){
 
 const Asignacion = ({curso, modulo, asignacion}) => {
     const { auth } = usePage().props;
+    const [values,setValues] = useState({
+        comentario: ""
+    });
 
     useEffect(() => {
         tooltip();
@@ -130,9 +133,6 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             //fecha de entrega
             var entrega = new Date(fechaEntrega);
 
-            console.log(hoy)
-            console.log(entrega)
-
             const total = Date.parse(entrega) - Date.parse(hoy);
 
             let hours = Math.floor( (total/(1000*60*60)) % 24 );
@@ -181,13 +181,19 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             return true
     }
 
+    //manda el forumulario
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.post(route('cursos.asignacion.entregar', [curso.id,modulo.id, asignacion.id]), values)
+    }
+
     return (
     <>
         <div className="row">
             {/* NOMBRE DEL MODULO */}
             <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
                 <InertiaLink  href={route('cursos.modulo', [curso.id, modulo.id])}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
-                MÓDULO. {modulo.nombre}
+                MÓDULO {modulo.numero}. {modulo.nombre}
             </div>
 
             {/* Recuadro de la asignacion */}
@@ -360,7 +366,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             {asignacion.users && asignacion.users.length == 0 &&
                             <>
                             {/* FORM PARA ENTREGAR LA ASIGNACIÓN O EDITAR */}
-                            <form className="col s12 padding-0px paddingRight-0px" id="div-entrega" style={{"display":"none"}}>
+                            <form className="col s12 padding-0px paddingRight-0px" id="div-entrega" style={{"display":"none"}} onSubmit={handleSubmit}>
                                 <div className="col s12 txt-status-as" style={{"color":"#134E39"}}><b>ENTREGAR ASIGNACIÓN</b></div>
 
                                 <div className="col s12 padding-0px paddingRight-0px">
@@ -380,17 +386,20 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                                 <div className="col s12 padding-0px paddingRight-0px">
                                     <CKEditor
                                         editor={ ClassicEditor }
+                                        data={values.comentario}
                                         id="editorCK"
                                         // data={values.descripcion}
                                         onReady={ editor => {
                                             // You can store the "editor" and use when it is needed.
                                             // console.log( 'Editor is ready to use!', editor );
                                         } }
-                                        onChange={ 
-                                            ( event, editor ) => {
-                                            changeCK(editor.getData());
-                                            }
-                                        }
+                                        onChange={(event, editor) => {
+                                            const data = editor.getData();
+                                            setValues(values => ({
+                                                ...values,
+                                                comentario: data,
+                                            }))
+                                        }}
                                         onBlur={ ( event, editor ) => {
                                             // console.log( 'Blur.', editor );
                                         } }
