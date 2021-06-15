@@ -103,5 +103,49 @@ class UserSeeder extends Seeder
             'category_id' => '1',
             'unit_id' => 3
         ]);
+
+        DB::table('users')->insert([
+            'nombre' => 'Jocabed Guadalupe',
+            'sexo' => 'o',
+            'apellido_p' => 'Marín',
+            'apellido_m' => 'Piñón',
+            'email' =>  'estudiante2@dragonware.com.mx',
+            'password' => Hash::make('viledruid9000'),
+            'foto' =>  'avatar4.jpg',
+            'fecha_nac' => '1999/12/04',
+            'estado' => 'Michoacan',
+            'ciudad' => 'Morelia',
+            'colonia' => 'Agua Clara',
+            'calle' => 'Ignacio Moctezuma',
+            'num_ext' => '159',
+            'num_int' => '',
+            'cp' => '58189',
+            'tarjeton_pago' => 'tarjeton.pdf',
+            'matricula' => '17121038',
+            'category_id' => '2',
+            'unit_id' => 3
+        ]);
+
+        DB::table('users')->insert([
+            'nombre' => 'Oscar Andre',
+            'sexo' => 'h',
+            'apellido_p' => 'Pantoja',
+            'apellido_m' => 'de Nivardy',
+            'email' =>  'estudiante3@dragonware.com.mx',
+            'password' => Hash::make('viledruid9000'),
+            'foto' =>  'avatar4.jpg',
+            'fecha_nac' => '1999/12/04',
+            'estado' => 'Michoacan',
+            'ciudad' => 'Morelia',
+            'colonia' => 'Agua Clara',
+            'calle' => 'Ignacio Moctezuma',
+            'num_ext' => '159',
+            'num_int' => '',
+            'cp' => '58189',
+            'tarjeton_pago' => 'tarjeton.pdf',
+            'matricula' => '17121039',
+            'category_id' => '1',
+            'unit_id' => 3
+        ]);
     }
 }

@@ -64,6 +64,8 @@ Route::post('/cursos/module/store', [App\Http\Controllers\CourseController::clas
 Route::delete('/cursos/module/delete/{id}', [App\Http\Controllers\CourseController::class, 'deleteModule'])->name('module.delete');
 Route::post('/cursos/module/update/{id}', [App\Http\Controllers\CourseController::class, 'updateModule'])->name('module.update');
 Route::get('/cursos/{id}/modulo/{mid}', [App\Http\Controllers\CourseController::class, 'modulo'])->name('cursos.modulo');
+Route::get('/cursos/{id}/modulo/{mid}/examen/{eid}', [App\Http\Controllers\EntryController::class, 'doExam'])->name('cursos.examen');
+
 
 //------Rutas del layout cursos
 Route::get('/cursos/{id}/informacion', [App\Http\Controllers\CourseController::class, 'informacion'])->name('cursos.informacion');

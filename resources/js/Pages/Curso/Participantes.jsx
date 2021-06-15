@@ -2,12 +2,15 @@ import React, {useEffect} from 'react'
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
 import { InertiaLink, useRemember } from '@inertiajs/inertia-react';
+import { usePage } from '@inertiajs/inertia-react'
 
 import '/css/participantes.css'
 import '/css/modulos.css'
 import route from 'ziggy-js';
 
 const Participantes = ({curso}) => {
+
+    const { auth } = usePage().props;
 
     function initializeMaterialize(){
         var elems = document.querySelectorAll('.dropdown-trigger');
@@ -22,12 +25,16 @@ const Participantes = ({curso}) => {
   return (
     <>
         <div className="row">
-            <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>PARTICIPANTES</div>
-            <div className="col s12 m3 l2 xl2 right" style={{"textAlign":"right"}}><InertiaLink href={route('cursos.solicitudes', curso.id)} className="link-solicitudes">Solicitudes<i class="material-icons tiny" style={{"marginLeft":"10px","marginRight":"5px"}}>mail</i></InertiaLink></div>
-            <div className="col s12">
-                <InertiaLink className="a-select-all" href={route('cursos.agregarParticipante', curso.id)}>Agregar participantes</InertiaLink>
-            </div>
-            
+            <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{"marginTop":"15px"}}>PARTICIPANTES</div>
+            { auth.roles['0'].name == 'Ponente' &&
+                <div>
+                    <div className="col s12 m3 l2 xl2 right" style={{"textAlign":"right","marginTop":"15px"}}><InertiaLink href={route('cursos.solicitudes', curso.id)} className="link-solicitudes">Solicitudes<i class="material-icons tiny" style={{"marginLeft":"10px","marginRight":"5px"}}>mail</i></InertiaLink></div>
+                    <div className="col s12">
+                        <InertiaLink className="a-select-all" href={route('cursos.agregarParticipante', curso.id)}>Agregar participantes</InertiaLink>
+                    </div>
+                </div>
+                
+            }
             <div className="col s12 P_sub" style={{marginTop:"15px"}}>Ponente</div>
             
             {/* Row de ponente */}
@@ -53,9 +60,12 @@ const Participantes = ({curso}) => {
                         <li><a className="dropdown-text" href={"mailto:"+user.email}><i className="material-icons">mail</i>Enviar mensaje</a></li>
                         <li className="divider" tabIndex="-1"></li>
                         {/* Opción exclusiva para el ponente */}
-                        <li><a className="dropdown-text modal-trigger" href="#modalEliminar"><i className="material-icons">error_outline</i>Dar de baja del curso</a></li>
-                        
-                        <li className="divider" tabIndex="-1"></li>
+                        { auth.roles['0'].name == 'Ponente' &&
+                            <div>
+                                <li><a className="dropdown-text modal-trigger" href="#modalEliminar"><i className="material-icons">error_outline</i>Dar de baja del curso</a></li>
+                                <li className="divider" tabIndex="-1"></li>
+                            </div>
+                        }
                         <li><a className="dropdown-text modal-trigger" href="#modalReportar"><i className="material-icons">report_problem</i>Reportar</a></li>
                     </ul>
                     {/* Información del usuario */}
@@ -74,7 +84,7 @@ const Participantes = ({curso}) => {
 }
 
 Participantes.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="PARTICIPANTES">
+  <Layout title="Escuela sindical - Curso" pageTitle="Participantes">
     <LayoutCursos children={page} />
   </Layout>
 )

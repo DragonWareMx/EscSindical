@@ -62,7 +62,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
   function pendienteEstatus(entrega, permitir){
     const hoy = new Date();
     const fecha_entrega=new Date(entrega);
-    if(hoy < fecha_entrega){
+    if(hoy <= fecha_entrega){
       return 'Pendiente'
     }
     else if(hoy > fecha_entrega && permitir){
@@ -79,7 +79,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
     const entrega=new Date(fecha_entrega);
     const fecha = new Date(entregado);
 
-    if(fecha < entrega){
+    if(fecha <= entrega){
       return 'Enviado'
     }
     else{
@@ -166,11 +166,11 @@ const Informacion = ({curso, realizadas, pendientes}) => {
                     {/* titulo de la asignacion y calificacion */}
                     <div className="col s12 publicacion">
                       <span className="publicacion">{realizada.titulo}</span> 
-                      <span className="calificacion">{realizada.calificacion ? realizada.calificacion : 'Sin calificar'}/100</span>
+                      <span className="calificacion">{realizada.calificacion ? realizada.calificacion : 'Sin calificar'}/{realizada.max_calif}</span>
                     </div>
                     {/* nombre del modulo y fecha de vencimiento*/}
                     <div className="col s12 posted-date">
-                      <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo. {pendiente.numero} "{realizada.modulo}"</span>
+                      <span className="col m12 l6 posted-date" style={{"paddingLeft":"0px"}}>Módulo. {realizada.numero} "{realizada.modulo}"</span>
                       <span className="col m12 l6 expiration-date" style={{"paddingLeft":"0px"}}>Entregada el {transformaFechaMochila(realizada.fecha)}</span>
                     </div>
                   </div>
