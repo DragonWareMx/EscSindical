@@ -1236,9 +1236,6 @@ class CourseController extends Controller
         }
     }
 
-
-    public function inscribir($id){
-        $curso=Course::with('modules:course_id,id,nombre,numero')->findOrFail($id);
     public function inscribir($id)
     {
         $curso = Course::with('modules:course_id,id,nombre,numero')->findOrFail($id);
