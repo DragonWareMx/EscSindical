@@ -1140,7 +1140,108 @@ class CourseController extends Controller
     }
 
     public function entregarAsignacion($id, $mid, $pid, Request $request){
-        dd($request);
+        \Gate::authorize('haveaccess', 'alumno.perm');
+
+        //VALIDAMOS DATOS
+        $validated = $request->validate([
+            'archivos' => 'required_without:comentario|file',
+            'comentario' => 'required_without:archivos',
+        ]);
+
+        //COMIENZA TRANSACCIÓN
+        DB::beginTransaction();
+
+        try {
+
+            //busca el curso
+            $curso = Course::findOrFail($id);
+
+            //Si no existe el curso quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$curso) {
+                return abort(404);
+            }
+
+            //verifica que el usuario auth sea alumno del curso
+            $validador = false;
+            foreach (Auth::user()->courses()->get() as $cursoA) {
+                if ($cursoA->id == $curso->id)
+                    $validador = true;
+            }
+            if (!$validador)
+                abort(403);
+
+            //Buscar el modulo con el mid
+            $modulo = Module::findOrFail($mid);
+
+            //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$modulo) {
+                return abort(404);
+            }
+
+            //verifica que el modulo pertenezca al curso
+            if ($modulo->course_id != $curso->id) {
+                //si no está lo mandamos a la vista informacion -  solo si es alumno
+                abort(403);
+            }
+
+            // Buscar la asignacion
+            $entrada = Entry::findOrFail($pid);
+
+
+            //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$entrada) {
+                return abort(404);
+            }
+
+            //verificar que la entrada sea asingacion
+            if ($entrada->tipo != 'Asignacion') {
+                abort(403);
+            }
+
+            //verifica que pertenezca al modulo
+            if ($entrada->module_id != $modulo->id) {
+                abort(403);
+            }
+            
+            $newModule = new Module;
+
+            $newModule->nombre = $request->nombre;
+            $newModule->objetivo = $request->objetivo;
+            $newModule->duracion = $request->duracion;
+            $newModule->criterios = $request->criterios_de_evaluacion;
+            $newModule->temario = $request->temario;
+            $newModule->course_id = $request->curso;
+
+            $newModule->save();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'create';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+                '{
+                modules: {
+                    nombre: ' . $request->nombre .
+                'objetivo: ' . $request->objetivo .
+                'duracion: ' . $request->duracion .
+                'criterios: ' . $request->criterios_de_evaluacion .
+                'temario: ' . $request->temario .
+                'course_id: ' . $request->curso .
+                '},
+            }';
+
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado el módulo: ' . $newModule->nombre;
+
+            // //SE GUARDA EL LOG
+            $newLog->save();
+
+            DB::commit();
+            return \Redirect::route('cursos.informacion', $request->curso)->with('success', 'El módulo de este curso se ha creado exitosamente');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return \Redirect::route('cursos.informacion', $request->curso)->with('error', 'No se pudo crear un módulo para este curso');
+        }
     }
 
     public function inscribir($id)

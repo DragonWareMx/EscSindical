@@ -12,6 +12,9 @@ import '/css/modulos.css'
 import '/css/asignaciones.css'
 import route from 'ziggy-js';
 
+//componentes
+import Alertas from '../../../components/common/Alertas';
+
 function tooltip(){
     var elems = document.querySelectorAll('.tooltipped');
     var instances = M.Tooltip.init(elems);
@@ -27,14 +30,24 @@ function cancelar(){
 
 
 const Asignacion = ({curso, modulo, asignacion}) => {
+    //errores de la validacion de laravel
+    const { errors } = usePage().props
+    //errores de la validacion de laravel
+    const { flash } = usePage().props
+    
     const { auth } = usePage().props;
     const [values,setValues] = useState({
-        comentario: ""
+        comentario: "",
+        archivos: null
     });
 
     useEffect(() => {
         tooltip();
     }, [])
+
+    useEffect(() => {
+        openAlert('alert_error');
+    }, [errors])
 
     function transformaFecha(fecha) {
         const dob = new Date(fecha);
@@ -184,9 +197,35 @@ const Asignacion = ({curso, modulo, asignacion}) => {
     //manda el forumulario
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.post(route('cursos.asignacion.entregar', [curso.id,modulo.id, asignacion.id]), values)
+        Inertia.post(route('cursos.asignacion.entregar', [curso.id,modulo.id, asignacion.id]), values, {preserveScroll: true})
     }
 
+    function changeArchivo(e){
+        var inputFile = document.getElementById('archivos');
+        if (inputFile.files && inputFile.files[0]) {
+            setValues(values => ({
+                ...values,
+                archivos: inputFile.files[0],
+            }))
+        }
+    }
+
+    function closeAlert(type){
+        var divsToHide = document.getElementsByClassName(type); //divsToHide is an array
+        for(var i = 0; i < divsToHide.length; i++){
+            divsToHide[i].style.visibility = "hidden"; // or
+            divsToHide[i].style.display = "none"; // depending on what you're doing
+        }
+    }
+
+    function openAlert(type){
+        var divsToHide = document.getElementsByClassName(type); //divsToHide is an array
+        for(var i = 0; i < divsToHide.length; i++){
+            divsToHide[i].style.visibility = "visible"; // or
+            divsToHide[i].style.display = "flex"; // depending on what you're doing
+        }
+    }
+    
     return (
     <>
         <div className="row">
@@ -365,6 +404,22 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                         <>
                             {asignacion.users && asignacion.users.length == 0 &&
                             <>
+
+                            <Alertas />
+
+                            {(errors.archivos || errors.comentario) &&
+                                <div className="col s12" style={{width: "100%", margin:"0px", marginTop: "10px"}}>
+                                    <div className="errores">
+                                        <ul>
+                                            <li className="alert_error">
+                                                <div className="col s11">No se has subido ningún contenido a la asignación.</div>
+                                                <div onClick={() => {closeAlert('alert_error')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
+                                            </li>
+                                        </ul>  
+                                    </div>
+                                </div>
+                            }
+
                             {/* FORM PARA ENTREGAR LA ASIGNACIÓN O EDITAR */}
                             <form className="col s12 padding-0px paddingRight-0px" id="div-entrega" style={{"display":"none"}} onSubmit={handleSubmit}>
                                 <div className="col s12 txt-status-as" style={{"color":"#134E39"}}><b>ENTREGAR ASIGNACIÓN</b></div>
@@ -373,7 +428,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                                     <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", "boxSizing": "border-box", "borderRadius": "4px"}}>
                                         <div className="col s12">
                                             <span style={{"fontSize":"12px", "textAlign":"center", "paddingTop":"10px"}} className="col s12">Arrastre aquí los archivos o <b>clic</b> para seleccionarlos</span>
-                                            <input type="file" className="form-control" id="files" name="files" />
+                                            <input type="file" className="form-control" id="archivos" name="files" onChange={changeArchivo} />
                                         </div>
                                         <div className="file-path-wrapper">
                                             <input className="file-path validate" type="text" />
@@ -387,7 +442,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                                     <CKEditor
                                         editor={ ClassicEditor }
                                         data={values.comentario}
-                                        id="editorCK"
+                                        id="comentario"
                                         // data={values.descripcion}
                                         onReady={ editor => {
                                             // You can store the "editor" and use when it is needed.
