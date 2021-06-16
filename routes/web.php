@@ -106,4 +106,4 @@ Route::delete('/entrada/eliminar/{id}', [App\Http\Controllers\EntryController::c
 
 //----------------NOTIFICACION----------------------
 
-Route::patch('/notificacion/vista/{id}', [App\Http\Controllers\NotificationController::class, 'marcar'])->name('notif.vista');
+Route::post('/notificacion/vista/{id}', [App\Http\Controllers\NotificationController::class, 'marcar'])->name('notif.vista');

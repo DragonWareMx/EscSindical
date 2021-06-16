@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { usePage } from '@inertiajs/inertia-react';
 import axios from 'axios';
+import { Inertia } from '@inertiajs/inertia'
 
 import '/css/notificaciones.css'
 
@@ -26,7 +27,7 @@ export default function Notificaciones({ }) {
 
     //valores para formulario
     const [values, setValues] = useState({
-        id_notif: "",
+        _method: "post",
         notif: notificat,
     })
 
@@ -46,19 +47,17 @@ export default function Notificaciones({ }) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        setValues(values => ({
-            ...values,
-            id_notif: e.target.getAttribute("data-id"),
-        }))
-        Inertia.post(route('notif.vista'), values,
-            {
-                onError: () => {
-                },
-                onSuccess: () => {
-
-                }
-            }
-        )
+        const ruta = route('notif.vista', e.target.getAttribute("data-id")).urlBuilder.domain + "notificacion/vista/" + e.target.getAttribute("data-id")
+        axios.post(ruta).then(response => {
+            setValues(values => ({
+                ...values,
+                notif: response.data,
+            })).catch(function (error) {
+                setValues(values => ({
+                    ...values
+                }))
+            });
+        })
     }
 
     return (
@@ -75,10 +74,12 @@ export default function Notificaciones({ }) {
                     <div className="notifi-item" key={index}>
                         <div className="text">
                             <h4>{not.titulo}</h4>
-                            <p >Aqui iria el link</p>
+                            {values.notif.link &&
+                                <p >{values.notif.link}</p>
+                            }
                         </div>
                         <div className="close">
-                            <span className="material-icons" style={{ color: "gray" }} data-id={not.id} onClick={handleSubmit}>
+                            <span className="material-icons" style={{ color: "gray", cursor: "pointer" }} data-id={not.id} onClick={handleSubmit}>
                                 close
                             </span>
                         </div>
