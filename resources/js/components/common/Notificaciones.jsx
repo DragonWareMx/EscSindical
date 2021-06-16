@@ -34,15 +34,23 @@ export default function Notificaciones({ }) {
     var down = false;
     function toggleNotif() {
         var box = document.getElementById('box');
+        var fondo = document.getElementById('backgroundOverlay');
         if (down) {
             box.style.maxHeight = '0px';
             box.style.opacity = 0;
+            fondo.style.display = "none"
             down = false;
         } else {
             box.style.maxHeight = '300px';
             box.style.opacity = 1;
+            fondo.style.display = "block"
             down = true;
         }
+    }
+
+    function clickBack() {
+        down = true;
+        toggleNotif();
     }
 
     function handleSubmit(e) {
@@ -68,6 +76,7 @@ export default function Notificaciones({ }) {
                     <div style={sStyle}>{Object.keys(values.notif).length}</div>
                 }
             </a>
+            <div id="backgroundOverlay" onClick={clickBack}></div>
             <div className="notifi-box" id="box">
                 <h2>Notificaciones <span>{Object.keys(values.notif).length}</span> </h2>
                 {values.notif && values.notif.length > 0 ? values.notif.map((not, index) => (
