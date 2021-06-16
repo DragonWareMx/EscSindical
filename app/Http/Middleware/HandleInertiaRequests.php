@@ -72,7 +72,7 @@ class HandleInertiaRequests extends Middleware
                 ];
             },
 
-            'notif' => fn () =>
+            'notificat' => fn () =>
             Notification::where('user_id', $request->user()->id)->get(),
 
             'busqueda' => fn () => $request->busqueda,

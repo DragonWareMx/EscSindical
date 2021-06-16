@@ -128,7 +128,7 @@ export default function BarraBusqueda() {
                 <div className="main-bar-right" id="main-bar-right">
                     <div className="main-bar-right-leftSide" id="main-bar-backNoti">
                         <a href="#">
-                            <i className="material-icons icono-notificaciones">backpack</i>
+                            <i className="material-icons icono-notificaciones" style={{ marginTop: "20px" }}>backpack</i>
                         </a>
                         < Notificaciones />
                     </div>
