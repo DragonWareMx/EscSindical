@@ -9,23 +9,25 @@ export default function Notificaciones({ }) {
         lineHeight: '11px',
         textAlign: 'center',
         color: '#FFF',
-        backgroundColor: 'rgb(16, 128, 88)',
+        backgroundColor: '#ff3333',
         borderRadius: '50%',
         position: 'relative',
         bottom: '15px',
         right: '-15px',
-        width: '15px',
-        height: '15px',
+        width: '16px',
+        height: '16px',
         textAlign: 'center',
         verticalAlign: 'middle',
-        padding: '2.5px 0px',
+        padding: '3px 0px',
     };
 
     return (
         <>
             <a href="#">
                 <i className="material-icons icono-notificaciones">notifications</i>
-                <div style={sStyle}>32</div>
+                {notif && Object.keys(notif).length > 0 &&
+                    <div style={sStyle}>{Object.keys(notif).length}</div>
+                }
             </a>
         </>
     )
