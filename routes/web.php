@@ -105,3 +105,7 @@ Route::post('/entrada/crear', [App\Http\Controllers\EntryController::class, 'cre
 Route::get('/entrada/editar/{id}', [App\Http\Controllers\EntryController::class, 'edit'])->name('entrada.editar');
 Route::patch('/entrada/editar/{id}', [App\Http\Controllers\EntryController::class, 'update'])->name('entrada.edit');
 Route::delete('/entrada/eliminar/{id}', [App\Http\Controllers\EntryController::class, 'delete'])->name('entrada.delete');
+
+//----------------NOTIFICACION----------------------
+
+Route::post('/notificacion/vista/{id}', [App\Http\Controllers\NotificationController::class, 'marcar'])->name('notif.vista');
