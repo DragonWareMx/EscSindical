@@ -703,6 +703,68 @@ class CourseController extends Controller
         ]);
     }
 
+    //  funcion para reordenar los modulos
+    public function ordenarModulos($id, Request $request){
+        
+
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        $validated = $request->validate([
+            'order.*' => "required | numeric",
+        ]);
+
+        //COMIENZA TRANSACCIÓN
+        DB::beginTransaction();
+
+        try {
+            //  se valida que el ponente sea el del curso
+            $curso = Course::findOrFail($id);
+            if($curso->teacher_id != Auth::user()->id){
+                return abort(403);
+            }
+
+            //  se valida que los modulos pertezcan al curso
+            foreach ($request->order as $mid) {
+                $modulo=Module::
+                    where('id',$mid)
+                    ->where('course_id',$id)
+                    ->first();
+
+                if(!$modulo){
+                    return abort(403);
+                }
+            }
+
+            //  variable que dara el nuevo orden a los modulos
+            $newNum = 1;
+            //  se actualiza el numero de los modulos
+            foreach ($request->order as $mid) {
+                
+                $modulo=Module::find($mid);
+
+                $modulo->numero = $newNum;
+                $modulo->save();
+
+                //  se actualiza el valor de la variable que asigna el nuevo orden
+                $newNum = $newNum + 1;
+            }
+
+            DB::commit();
+            return \Redirect::back()->with('success', 'Orden actualizado con exito.');
+        } catch (\Exception $e) {
+            
+            DB::rollBack();
+            return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
+            // return \Redirect::route('cursos.informacion', $id)->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
+            //return response()->json(["status" => $e]);
+        }
+
+        //dd($request->all());
+
+        // return Inertia::render('Curso/ModulosConfig', [
+        //     'curso' => Course::with('modules')->findOrFail($id),
+        // ]);
+    }
+
     public function deleteModule($id){
         \Gate::authorize('haveaccess', 'ponente.perm');
         DB::beginTransaction();
