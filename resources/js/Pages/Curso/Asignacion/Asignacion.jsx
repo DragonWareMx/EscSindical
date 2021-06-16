@@ -108,37 +108,47 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             //fecha de entrega programada
             var fecha = new Date(fechaEntrega);
 
-            const total = Date.parse(fecha) - Date.parse(entrega);
+            let total = Date.parse(fecha) - Date.parse(entrega);
 
-            let hours = Math.floor( (total/(1000*60*60)) % 24 );
-            let days = Math.floor( total/(1000*60*60*24) );
-            let retrasada = "Enviada "
-
+            let seconds = 0;
+            let minutes = 0;
+            let hours = 0;
+            let days =0;
+            let retrasada = "Enviada "            
             let antes = " antes"
-            if(hours < 0){
-                hours *= -1
-                retrasada = "con "
-                antes = " de retraso"
-            }
-            if(days < 0){
-                days *= -1
+
+            if(total < 0){
+                total *= -1
                 retrasada = "Enviada con "
                 antes = " de retraso"
+            }
+
+            if(( (total/1000) % 60 ) > 0){
+                seconds = Math.floor( (total/1000) % 60 );
+            }
+            if(( (total/1000/60) % 60 ) > 0){
+                minutes = Math.floor( (total/1000/60) % 60 );
+            }
+            if(( (total/(1000*60*60)) % 24 ) > 0){
+                hours = Math.floor( (total/(1000*60*60)) % 24 );
+            }
+            if(( total/(1000*60*60*24) ) > 0){
+                days =  Math.floor( total/(1000*60*60*24) );
             }
 
             let horas
             let dias
             if(hours == 1)
-                horas = " hora"
+                horas = " hora "
             else
-                horas = " horas"
+                horas = " horas "
 
             if(days == 1)
                 dias = " día y "
             else
                 dias = " días y "
 
-            return retrasada + days + dias + hours + horas + antes
+            return retrasada + days + dias + hours + horas + minutes + " minutos " + seconds + " segundos " + antes
         }
         else{
             //fecha actual
@@ -363,8 +373,8 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus de calificación</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
                                 {asignacion.users && asignacion.users.length > 0 ?
-                                asignacion.users[0].calificacion ?
-                                    asignacion.users[0].calificacion
+                                asignacion.users[0].pivot.calificacion ?
+                                    asignacion.users[0].pivot.calificacion
                                     :
                                     "Sin calificar"
                                 :
@@ -377,8 +387,8 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Archivos enviados</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
                             {asignacion.users && asignacion.users.length > 0 ?
-                            asignacion.users[0].calificacion ?
-                                <a className="col s12 padding-0px paddingRight-0px" href={"/storage/entregas_asignaciones/"+asignacion.users[0].archivo} style={{"color":"#5A5A5A","marginBottom":"5px","display":"flex","alignItems":"center"}}>{asignacion.users[0].archivo}<i className="material-icons tiny" style={{"marginLeft":"5px"}}>description</i></a>
+                            asignacion.users[0].pivot.archivo ?
+                                <a className="col s12 padding-0px paddingRight-0px" target="_blank" href={"/storage/entregas_asignaciones/"+asignacion.users[0].pivot.archivo} style={{"color":"#5A5A5A","marginBottom":"5px","display":"flex","alignItems":"center"}}>{asignacion.users[0].pivot.archivo}<i className="material-icons tiny" style={{"marginLeft":"5px"}}>description</i></a>
                                 :
                                 "Sin archivos enviados"
                             :
@@ -390,8 +400,8 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Comentarios del envío</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
                                 {asignacion.users && asignacion.users.length > 0 ?
-                                asignacion.users[0].Comentario ?
-                                    asignacion.users[0].Comentario
+                                asignacion.users[0].pivot.Comentario ?
+                                    <div dangerouslySetInnerHTML={{__html: asignacion.users[0].pivot.Comentario}} />
                                     :
                                     "Sin comentarios"
                                 :
@@ -404,8 +414,9 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                         <>
                             {asignacion.users && asignacion.users.length == 0 &&
                             <>
-
-                            <Alertas />
+                            <div className="col s12" style={{width: "100%", margin:"0px", marginTop: "10px"}}>
+                                <Alertas />
+                            </div>
 
                             {(errors.archivos || errors.comentario) &&
                                 <div className="col s12" style={{width: "100%", margin:"0px", marginTop: "10px"}}>
@@ -487,7 +498,6 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             }
                             {asignacion.users && asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion && asignacion.users[0].pivot.calificacion != 0) &&
                             <div className="col s12 right container-btns-as paddingRight-0px">
-                                {alert(asignacion.users[0].pivot.calificacion != 0)}
                                 {/* Enviado pero no calificado */}
                                 {/* Pedir confirmacion para cancelar el envio */}
                                 <a className="no-uppercase" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}}>

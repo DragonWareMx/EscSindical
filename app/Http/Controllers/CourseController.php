@@ -1144,10 +1144,11 @@ class CourseController extends Controller
 
         //VALIDAMOS DATOS
         $validated = $request->validate([
-            'archivos' => 'required_without:comentario|file',
+            'archivos' => 'nullable:comentario|file',
             'comentario' => 'required_without:archivos',
         ]);
 
+        $archivos = null;
         //COMIENZA TRANSACCIÓN
         DB::beginTransaction();
 
@@ -1190,7 +1191,7 @@ class CourseController extends Controller
 
             //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
             if (!$entrada) {
-                return abort(404);
+                abort(404);
             }
 
             //verificar que la entrada sea asingacion
@@ -1202,45 +1203,54 @@ class CourseController extends Controller
             if ($entrada->module_id != $modulo->id) {
                 abort(403);
             }
-            
-            $newModule = new Module;
 
-            $newModule->nombre = $request->nombre;
-            $newModule->objetivo = $request->objetivo;
-            $newModule->duracion = $request->duracion;
-            $newModule->criterios = $request->criterios_de_evaluacion;
-            $newModule->temario = $request->temario;
-            $newModule->course_id = $request->curso;
+            //verifica que no haya otra entrega ni este calificado
+            foreach ($entrada->users as $tarea) {
+                if($tarea->id == Auth::user()->id)
+                    return \Redirect::back()->with('error', 'Ya no puedes volver a enviar la asignación, primero cancela el envío anterior.');
+            }
 
-            $newModule->save();
+            //verifica que la fecha actual no se haya pasado en caso que no se acepten entregas tardías
+            if(!$entrada->permitir_envios_retrasados && $entrada->fecha_de_entrega){
+                $hoy = \Carbon\Carbon::now();
+                $fechaEntrega = \Carbon\Carbon::create($entrada->fecha_de_entrega);
+                if(!$hoy->lte($fechaEntrega))
+                    return \Redirect::back()->with('error', 'Ya no puedes enviar la asignación.');
+            }
+
+            //se crea y actualiza la asignacion
+            if($request->file('archivos')){
+                //guarda el archivo
+                $archivos = $request->file('archivos')->store('public/entregas_asignaciones');
+                $entrada->users()->sync([Auth::user()->id => ['Comentario' => $request->comentario, 'archivo' => $request->file('archivos')->hashName()]]);
+            }
+            else{
+                $entrada->users()->sync([Auth::user()->id => ['Comentario' => $request->comentario]]);
+            }
 
             //SE CREA EL LOG
             $newLog = new Log;
 
             $newLog->categoria = 'create';
             $newLog->user_id = Auth::id();
-            $newLog->accion =
-                '{
-                modules: {
-                    nombre: ' . $request->nombre .
-                'objetivo: ' . $request->objetivo .
-                'duracion: ' . $request->duracion .
-                'criterios: ' . $request->criterios_de_evaluacion .
-                'temario: ' . $request->temario .
-                'course_id: ' . $request->curso .
-                '},
-            }';
+            $newLog->accion = "{}";
 
-            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha creado el módulo: ' . $newModule->nombre;
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha entregado la asignacion de id: ' . $entrada->id;
 
             // //SE GUARDA EL LOG
             $newLog->save();
 
             DB::commit();
-            return \Redirect::route('cursos.informacion', $request->curso)->with('success', 'El módulo de este curso se ha creado exitosamente');
+
+            return \Redirect::back()->with('success', 'Asignación entregada.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return \Redirect::route('cursos.informacion', $request->curso)->with('error', 'No se pudo crear un módulo para este curso');
+            $entrada->users()->detach(Auth::user()->id);
+            if($archivos)
+            {
+                \Storage::delete($archivos);
+            }
+            return \Redirect::back()->with('error', 'No fue posible enviar la asignación, vuelve a intentarlo.');
         }
     }
 
