@@ -67,9 +67,14 @@ Route::get('/cursos/{id}/modulo/{mid}', [App\Http\Controllers\CourseController::
 Route::get('/cursos/{id}/modulo/{mid}/examen/{eid}', [App\Http\Controllers\EntryController::class, 'doExam'])->name('cursos.examen');
 
 
+
 //------Rutas del layout cursos
 Route::get('/cursos/{id}/informacion', [App\Http\Controllers\CourseController::class, 'informacion'])->name('cursos.informacion');
 
+Route::get('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class, 'modulos'])->name('cursos.modulos');
+//ruta para reordenar los modulos
+Route::post('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class, 'ordenarModulos'])->name('cursos.modulos.order');
+Route::get('/cursos/{id}/modulo/{mid}', [App\Http\Controllers\CourseController::class, 'modulo'])->name('cursos.modulo');
 
 // ASIGNACION
 Route::get('/cursos/{id}/modulo/{mid}/asignacion/{pid}', [App\Http\Controllers\CourseController::class, 'asignacion'])->name('cursos.asignacion');
