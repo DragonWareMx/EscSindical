@@ -60,12 +60,46 @@ export default function Notificaciones({ }) {
             setValues(values => ({
                 ...values,
                 notif: response.data,
-            })).catch(function (error) {
-                setValues(values => ({
-                    ...values
-                }))
-            });
-        })
+            }))
+        }).catch(function (error) {
+            setValues(values => ({
+                ...values
+            }))
+        });
+    }
+
+    function haceTiempo(fecha) {
+        var hoy = new Date();
+        var notDate = new Date(fecha);
+
+        console.log(hoy);
+        console.log(notDate);
+        var dif = hoy.getHours() - notDate.getHours();
+        console.log(dif);
+        if (dif == 0) {
+            var difMin = hoy.getMinutes() - notDate.getMinutes();
+            if (difMin > 1) {
+                return "Hace " + difMin + " minutos";
+            }
+            else {
+                return "Hace 1 minuto";
+            }
+        }
+        if (dif == 1) {
+            return "Hace " + dif + " hora";
+        }
+        if (dif < 25) {
+            return "Hace " + dif + " horas";
+        }
+        else {
+            var dias = dif / 24;
+            dias = math.round(dias);
+            if (dias == 1)
+                return "Hace " + dias + " día";
+            else
+                return "Hace " + dias + " días";
+        }
+
     }
 
     return (
@@ -83,9 +117,10 @@ export default function Notificaciones({ }) {
                     <div className="notifi-item" key={index}>
                         <div className="text">
                             <h4>{not.titulo}</h4>
-                            {values.notif.link &&
-                                <p >{values.notif.link}</p>
+                            {not.link &&
+                                <p >{not.link}</p>
                             }
+                            <h5>{haceTiempo(not.created_at)}</h5>
                         </div>
                         <div className="close">
                             <span className="material-icons" style={{ color: "gray", cursor: "pointer" }} data-id={not.id} onClick={handleSubmit}>
