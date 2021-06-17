@@ -69,6 +69,38 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
         }
     }
 
+    //errores de la validacion de laravel
+    const { errors } = usePage().props
+
+    //valores para formulario
+    const [values, setValues] = useState({
+        calificacion: "",
+        comentarios: "",
+    })
+
+    //actualiza los hooks cada vez que se modifica un input
+    function handleChange(e) {
+        const key = e.target.id;
+        const value = e.target.value
+        setValues(values => ({
+            ...values,
+            [key]: value,
+        }))
+    }
+
+    //manda el forumulario
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.post(route('entrada.create'), values,
+            {
+                onError: () => {
+                    // Inertia.reload({ only: ['cursos'], data: { regime: values.regimen } })
+                }
+            }
+        )
+    }
+
+    
     return (
         <>
             <div className="row">
@@ -159,8 +191,8 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
                     <form className="col s12 padding-0px paddingRight-0px" id="div-calificar" style={{"display":"none", "marginTop":"30px"}}>
 
                         <div class="input-field col s12 padding-0px paddingRight-0px">
-                                <input id="grade" type="text" class="validate form-control" name="grade"  required />
-                                <label for="grade">Calificación obtenida</label> 
+                            <input id="calificacion" name="calificacion" type="text" className={errors.calificacion ? "validate form-control invalid" : "validate form-control"}  value={values.calificacion} onChange={handleChange} required />
+                            <label for="calificacion">Calificación obtenida</label> 
                         </div>
 
                         {/* Agregar comentarios */}
