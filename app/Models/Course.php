@@ -23,7 +23,7 @@ class Course extends Model
 
     public function modules()
     {
-        return $this->hasMany('App\Models\Module');
+        return $this->hasMany('App\Models\Module')->orderBy('numero','ASC');
     }
 
 

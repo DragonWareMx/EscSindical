@@ -26,7 +26,7 @@ function cancelar(){
 }
 
 
-const AsignacionEntrega = ({curso, modulo, asignacion}) => {
+const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
     const { auth } = usePage().props;
 
     useEffect(() => {
@@ -56,6 +56,19 @@ const AsignacionEntrega = ({curso, modulo, asignacion}) => {
         return `${day} de ${monthNames[monthIndex]} de ${year} a las ${hour}:${minutes} ${formato}`;
     }
 
+    // / funcion para calcular el estatus de la entrega realizada o algo así
+    function realizadaEstatus(fecha_entrega,entregado){
+        const entrega=new Date(fecha_entrega);
+        const fecha = new Date(entregado);
+
+        if(fecha <= entrega){
+        return 'ENVIADA A TIEMPO'
+        }
+        else{
+        return 'ENVIADA CON RETRASO'
+        }
+    }
+
     return (
         <>
             <div className="row">
@@ -80,15 +93,14 @@ const AsignacionEntrega = ({curso, modulo, asignacion}) => {
                     
                     <div className="col s12 padding-0px" style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center","marginTop":"15px"}}>
                         <img src={"/img/avatar1.png"} className="img-td-entregas" />
-                        <InertiaLink href="#!" className="link-profile-e">Oscar André Huerta García</InertiaLink>
+                        <InertiaLink href="#!" className="link-profile-e">{entrega.nombre} {entrega.apellido_p} {entrega.apellido_m}</InertiaLink>
                     </div>
 
                     {/* fecha del envio */}
-                    <div className="col s12 txt-date-as padding-0px" style={{"marginTop":"10px"}}>Fecha de envío 00/00/00 a las 00:00 am</div>
+                    <div className="col s12 txt-date-as padding-0px" style={{"marginTop":"10px"}}>{entrega.created_at && "Fecha de entrega " + transformaFecha(entrega.created_at)}</div>
                     
-                    <div className="td-estatus col s12 padding-0px" style={{"color":"#41AB59", "marginTop":"5px"}}>ENVIADA A TIEMPO</div>
+                    <div className='td-estatus col s12 padding-0px' style={{"color":"#41AB59", "marginTop":"5px"}}>{realizadaEstatus(asignacion.fecha_de_entrega, entrega.created_at)}</div>
                     {/* Enviada con retraso #134E39 */}
-                    {/* Sin enviar 1E1E1E */}
 
                     {/* Archivos enviados */}
                     <div className="col s12 padding-0px file-entrega">
