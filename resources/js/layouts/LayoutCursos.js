@@ -158,6 +158,15 @@ const LayoutCursos = ({children}) => {
                                                 <div className="col s9">Participantes</div>
                                             </InertiaLink>
                                         </li>
+                                        {/* Calificaciones */}
+                                        {auth.roles['0'].name == 'Ponente' &&
+                                            <li className={isUrl("calificaciones") ? "li-style selected-nav" : "li-style"}>
+                                                <InertiaLink id="tab_calificaciones" href={route('cursos.calificaciones',curso.id)} className={isUrl("estadisticas") ? "LC_a_2" : "LC_a"} target="_self">
+                                                    <i className="material-icons col s3 LC_tab_icons">fact_check</i>
+                                                    <div className="col s9">Calificaciones</div>
+                                                </InertiaLink>
+                                            </li>
+                                        }
                                         {/* Estadisticas */}
                                         {auth.roles['0'].name == 'Ponente' &&
                                             <li className={isUrl("estadisticas") ? "li-style selected-nav" : "li-style"}>
@@ -167,15 +176,7 @@ const LayoutCursos = ({children}) => {
                                                 </InertiaLink>
                                             </li>
                                         }
-                                        {/* Calificaciones */}
-                                        {auth.roles['0'].name == 'Ponente' &&
-                                            <li className={isUrl("calificaciones") ? "li-style selected-nav" : "li-style"}>
-                                                <InertiaLink id="tab_calificaciones" href={route('cursos.calificaciones',curso.id)} className={isUrl("estadisticas") ? "LC_a_2" : "LC_a"} target="_self">
-                                                    <i className="material-icons col s3 LC_tab_icons">bar_chart</i>
-                                                    <div className="col s9">Calificaciones</div>
-                                                </InertiaLink>
-                                            </li>
-                                        }
+                                        
                                         
                                     </ul>
                                 </div>
