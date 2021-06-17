@@ -408,6 +408,7 @@ class EntryController extends Controller
                         $notificacion = new Notification();
                         $notificacion->user_id = $user->id;
                         $notificacion->titulo = "Se te ha asignado una nueva actividad";
+                        $notificacion->link = '/cursos/' . $curso->id . '/modulo/' . $request->modulo . '/asignacion/' . $entrada->id;
                         $notificacion->visto = false;
                         $notificacion->save();
                     }
@@ -468,15 +469,15 @@ class EntryController extends Controller
             }
 
             //comprobar fechas de apertura y de entrega
-            if ($request->fecha_de_apertura == $request->fecha_de_entrega){
-                if ($request->hora_de_apertura > $request->hora_de_entrega){
+            if ($request->fecha_de_apertura == $request->fecha_de_entrega) {
+                if ($request->hora_de_apertura > $request->hora_de_entrega) {
                     return Redirect::back()->with('error', 'La hora de entrega no puede ser menor a la hora de apertura.');
-                }   
+                }
             }
 
             $fechaAp = new DateTime($request->fecha_de_apertura . '' . $request->hora_de_apertura);
             $fechaEn = new DateTime($request->fecha_de_entrega . '' . $request->hora_de_entrega);
-            
+
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
@@ -523,6 +524,7 @@ class EntryController extends Controller
                         $notificacion = new Notification();
                         $notificacion->user_id = $user->id;
                         $notificacion->titulo = "Se te ha asignado un nuevo examen";
+                        $notificacion->link = '/cursos/' . $curso->id . '/modulo/' . $request->modulo . '/asignacion/' . $entrada->id;
                         $notificacion->visto = false;
                         $notificacion->save();
                     }
@@ -1097,15 +1099,15 @@ class EntryController extends Controller
             }
 
             //comprobar fechas de apertura y de entrega
-            if ($request->fecha_de_apertura == $request->fecha_de_entrega){
-                if ($request->hora_de_apertura > $request->hora_de_entrega){
+            if ($request->fecha_de_apertura == $request->fecha_de_entrega) {
+                if ($request->hora_de_apertura > $request->hora_de_entrega) {
                     return Redirect::back()->with('error', 'La hora de entrega no puede ser menor a la hora de apertura.');
-                }   
+                }
             }
 
             $fechaAp = new DateTime($request->fecha_de_apertura . '' . $request->hora_de_apertura);
             $fechaEn = new DateTime($request->fecha_de_entrega . '' . $request->hora_de_entrega);
-            
+
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
@@ -1169,7 +1171,7 @@ class EntryController extends Controller
 
     public function doExam($id, $mid, $eid)
     {
-        \Gate::authorize('haveaccess', 'alumno.perm');
+        Gate::authorize('haveaccess', 'alumno.perm');
 
         //busca el curso
         $curso = Course::with('modules:course_id,id,nombre,numero')->select('id', 'nombre')->findOrFail($id);
@@ -1204,7 +1206,7 @@ class EntryController extends Controller
 
         // Buscar la asignacion
         $entrada = Entry::findOrFail($eid);
-            
+
 
         //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
         if (!$entrada) {
