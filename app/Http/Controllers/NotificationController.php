@@ -21,7 +21,7 @@ class NotificationController extends Controller
         $notificat = Notification::where([
             ['user_id', '=', $request->user()->id],
             ['visto', '=', '0'],
-        ])->get();
+        ])->orderBy('created_at', 'desc')->get();
 
         if ($request->wantsJson()) {
             return $notificat;

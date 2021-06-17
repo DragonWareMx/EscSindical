@@ -76,7 +76,7 @@ class HandleInertiaRequests extends Middleware
             Notification::where([
                 ['user_id', '=', $request->user()->id],
                 ['visto', '=', '0'],
-            ])->get(),
+            ])->orderBy('created_at', 'desc')->get(),
 
             'busqueda' => fn () => $request->busqueda,
         ]);

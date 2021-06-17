@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { usePage } from '@inertiajs/inertia-react';
 import axios from 'axios';
 import { Inertia } from '@inertiajs/inertia'
+import moment from 'moment'
 
 import '/css/notificaciones.css'
 
@@ -68,39 +69,7 @@ export default function Notificaciones({ }) {
         });
     }
 
-    function haceTiempo(fecha) {
-        var hoy = new Date();
-        var notDate = new Date(fecha);
-
-        console.log(hoy);
-        console.log(notDate);
-        var dif = hoy.getHours() - notDate.getHours();
-        console.log(dif);
-        if (dif == 0) {
-            var difMin = hoy.getMinutes() - notDate.getMinutes();
-            if (difMin > 1) {
-                return "Hace " + difMin + " minutos";
-            }
-            else {
-                return "Hace 1 minuto";
-            }
-        }
-        if (dif == 1) {
-            return "Hace " + dif + " hora";
-        }
-        if (dif < 25) {
-            return "Hace " + dif + " horas";
-        }
-        else {
-            var dias = dif / 24;
-            dias = math.round(dias);
-            if (dias == 1)
-                return "Hace " + dias + " día";
-            else
-                return "Hace " + dias + " días";
-        }
-
-    }
+    moment.locale('es');
 
     return (
         <>
@@ -120,7 +89,7 @@ export default function Notificaciones({ }) {
                             {not.link &&
                                 <p >{not.link}</p>
                             }
-                            <h5>{haceTiempo(not.created_at)}</h5>
+                            <h5>{moment(not.created_at).fromNow()}</h5>
                         </div>
                         <div className="close">
                             <span className="material-icons" style={{ color: "gray", cursor: "pointer" }} data-id={not.id} onClick={handleSubmit}>
