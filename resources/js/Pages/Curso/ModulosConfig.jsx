@@ -62,13 +62,9 @@ const ModulosConfig = ({curso}) => {
     <>
         <div className="row">
             <div className="col s12 titulo-modulo left" style={{"marginTop":"15px"}}>
-                <div className="col s6">
+                <div className="col s12">
                     MÓDULOS
                 </div>
-                <div className="col s6 right-align">
-                    Cambiar orden <i className="material-icons" style={{"color":"#108058", "fontSize":"18px"}}>edit</i>
-                </div>
-                
             </div>
             {curso.modules['0'] ? 
                 <ul id="items" className="col s12">
