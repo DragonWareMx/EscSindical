@@ -1183,7 +1183,7 @@ class CourseController extends Controller
                 'files:archivo,entry_id',
                 'users' => function ($entrega) {
                     return $entrega->where('entry_user.user_id', Auth::user()->id)->select('users.id')
-                        ->withPivot('calificacion', 'archivo', 'fecha', 'editado', 'Comentario', 'fecha_calif', 'comentario_retroalimentacion', 'created_at', 'updated_at');
+                        ->withPivot('calificacion', 'archivo', 'fecha', 'editado', 'Comentario', 'fecha_calif', 'comentario_retroalimentacion', 'nombre_original_archivo', 'created_at', 'updated_at');
                 }
             ])->select('id', 'titulo', 'created_at', 'contenido', 'tipo', 'module_id', 'permitir_envios_retrasados', 'fecha_de_entrega', 'max_calif')->findOrFail($pid);
 
@@ -1298,7 +1298,7 @@ class CourseController extends Controller
             if($request->file('archivos')){
                 //guarda el archivo
                 $archivos = $request->file('archivos')->store('public/entregas_asignaciones');
-                $entrada->users()->sync([Auth::user()->id => ['Comentario' => $request->comentario, 'archivo' => $request->file('archivos')->hashName()]]);
+                $entrada->users()->sync([Auth::user()->id => ['Comentario' => $request->comentario, 'archivo' => $request->file('archivos')->hashName(), 'nombre_original_archivo' => $request->file('archivos')->getClientOriginalName()]]);
             }
             else{
                 $entrada->users()->sync([Auth::user()->id => ['Comentario' => $request->comentario]]);
@@ -1329,7 +1329,7 @@ class CourseController extends Controller
             return \Redirect::back()->with('error', 'No fue posible enviar la asignación, vuelve a intentarlo.');
         }
     }
-    
+
     public function asignacionEntrega($id,$mid,$pid,$eid)
     {
         //VERIFICA EL ROL DEL USUARIO

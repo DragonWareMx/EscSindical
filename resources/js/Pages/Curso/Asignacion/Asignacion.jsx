@@ -388,7 +388,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
                             {asignacion.users && asignacion.users.length > 0 ?
                             asignacion.users[0].pivot.archivo ?
-                                <a className="col s12 padding-0px paddingRight-0px" target="_blank" href={"/storage/entregas_asignaciones/"+asignacion.users[0].pivot.archivo} style={{"color":"#5A5A5A","marginBottom":"5px","display":"flex","alignItems":"center"}}>{asignacion.users[0].pivot.archivo}<i className="material-icons tiny" style={{"marginLeft":"5px"}}>description</i></a>
+                                <a className="col s12 padding-0px paddingRight-0px" target="_blank" href={"/storage/entregas_asignaciones/"+asignacion.users[0].pivot.archivo} style={{"color":"#5A5A5A","marginBottom":"5px","display":"flex","alignItems":"center"}}>{asignacion.users[0].pivot.nombre_original_archivo}<i className="material-icons tiny" style={{"marginLeft":"5px"}}>description</i></a>
                                 :
                                 "Sin archivos enviados"
                             :
