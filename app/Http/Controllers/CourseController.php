@@ -1207,16 +1207,30 @@ class CourseController extends Controller
             \Gate::authorize('haveaccess', 'ponente.perm');
 
             //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
-            $modulo = Module::findOrFail($mid);
+            $modulo = Module::where('id',$mid)->where('course_id',$id)->first();
 
             //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
             if(!$modulo){
                 return abort(404);
             }
 
-            // Buscar la asignacion
-            $entrada=Entry::with('files:archivo,entry_id')->findOrFail($pid);
+            // Buscar la asignacion y se verifica que perteneza al modulo
+            $entrada=Entry::where('id',$pid)->where('module_id', $mid)->first();
+            if(!$entrada){
+                return abort(404);
+            }
 
+            //Ahora buscar la entrega del alumno
+            $entrega=Entry::where('entries.id',$pid)
+                ->leftJoin('entry_user','entries.id','=','entry_user.entry_id')
+                ->where('entry_user.user_id',$eid)
+                ->select('entry_user.*','entries.tipo')
+                ->first();
+            //si no encuentra la entrega algo anda mal y se cancela todo amigos    
+            if(!$entrega){
+                return abort(404);
+            } 
+            dd($entrega);  
             //verificar que la entrada sea asingacion o examen
 
             //verificar que pertenezca al modulo
@@ -1227,9 +1241,8 @@ class CourseController extends Controller
                 //verificar que este registrado en el curso
 
             //faltra tratar el $eid, id de la entrada
-
             return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
-                'curso' => Course::findOrFail($id),
+                'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id), 
                 'modulo' => $modulo,
                 'asignacion' => $entrada,
             ]);
