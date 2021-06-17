@@ -274,10 +274,10 @@ const Asignacion = ({curso, modulo, asignacion}) => {
 
                 <div className="col s12 right paddingRight-0px" id="btn-comenzar">
                     {/* Botón para comenzar examen*/}
-                    <button className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
+                    <InertiaLink href={route('cursos.examen', [curso.id,modulo.id,asignacion.id])} className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
                         Comenzar examen
                         <i className="material-icons right">send</i>
-                    </button>
+                    </InertiaLink>
                 </div>
 
                 {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Ponente" &&

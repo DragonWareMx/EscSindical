@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
 import { InertiaLink, useRemember } from '@inertiajs/inertia-react';
+import { Inertia } from '@inertiajs/inertia'
 
 import '/css/participantes.css'
 import '/css/modulos.css'
@@ -44,6 +45,7 @@ const ModulosConfig = ({curso}) => {
                     var order = sortable.toArray();
                     localStorage.setItem(sortable.options.group.name, order.join('|'));
                     console.log(order)
+                    Inertia.post(route('cursos.modulos.order',curso.id), {order:order});
                 }
             }
         });
@@ -60,18 +62,14 @@ const ModulosConfig = ({curso}) => {
     <>
         <div className="row">
             <div className="col s12 titulo-modulo left" style={{"marginTop":"15px"}}>
-                <div className="col s6">
+                <div className="col s12">
                     MÓDULOS
                 </div>
-                <div className="col s6 right-align">
-                    Cambiar orden <i className="material-icons" style={{"color":"#108058", "fontSize":"18px"}}>edit</i>
-                </div>
-                
             </div>
             {curso.modules['0'] ? 
                 <ul id="items" className="col s12">
                     {curso.modules.map((modulo) =>
-                        <li data-id={modulo.numero} key={modulo.id} className="valign-wrapper">
+                        <li data-id={modulo.id} key={modulo.id} className="valign-wrapper">
                             {/* solo se muestra el icono cuando se le da al boton de editar */}
                             <span className="material-icons my-handle">drag_indicator</span>
 
