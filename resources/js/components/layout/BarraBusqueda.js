@@ -8,6 +8,7 @@ import { usePage } from '@inertiajs/inertia-react'
 import FlotanteAyuda from '../../components/common/FlotanteAyuda';
 import FlotanteProfe from '../../components/common/FlotanteProfe';
 import FlotanteAdmin from '../../components/common/FlotanteAdmin';
+import Notificaciones from '../common/Notificaciones';
 
 
 function openNav() {
@@ -127,11 +128,9 @@ export default function BarraBusqueda() {
                 <div className="main-bar-right" id="main-bar-right">
                     <div className="main-bar-right-leftSide" id="main-bar-backNoti">
                         <a href="#">
-                            <i className="material-icons icono-notificaciones">backpack</i>
+                            <i className="material-icons icono-notificaciones" style={{ marginTop: "20px" }}>backpack</i>
                         </a>
-                        <a href="#">
-                            <i className="material-icons icono-notificaciones">notifications</i>
-                        </a>
+                        < Notificaciones />
                     </div>
 
                     <div className="main-bar-right-rightSide">
