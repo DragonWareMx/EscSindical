@@ -30,6 +30,7 @@
         "@inertiajs/inertia": "^0.8.7",
         "@inertiajs/inertia-react": "^0.5.12",
         "chart.js": "^3.3.2",
+        "moment": "^2.29.1",
         "react-chartjs-2": "^3.0.3",
         "react-loader-spinner": "^4.0.0",
         "react-loading-skeleton": "^2.2.0",
