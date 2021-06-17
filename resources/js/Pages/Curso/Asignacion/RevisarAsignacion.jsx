@@ -75,7 +75,7 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
                 {/* NOMBRE DEL MODULO */}
                 <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
                     <InertiaLink  href={route('cursos.asignacion', [curso.id, modulo.id, asignacion.id])}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
-                    MÓDULO. {modulo.nombre}
+                    MÓDULO {modulo.numero}. {modulo.nombre}
                 </div>
 
                     {/* Recuadro de la asignacion */}
@@ -99,36 +99,53 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
                     {/* fecha del envio */}
                     <div className="col s12 txt-date-as padding-0px" style={{"marginTop":"10px"}}>{entrega.created_at && "Fecha de entrega " + transformaFecha(entrega.created_at)}</div>
                     
-                    <div className='td-estatus col s12 padding-0px' style={{"color":"#41AB59", "marginTop":"5px"}}>{realizadaEstatus(asignacion.fecha_de_entrega, entrega.created_at)}</div>
+                    <div className='td-estatus col s12 padding-0px' style={{"color": asignacion.fecha_de_entrega >= entrega.created_at ?"#41AB59" : "#ffb90a", "marginTop":"5px"}}>{realizadaEstatus(asignacion.fecha_de_entrega, entrega.created_at)}</div>
                     {/* Enviada con retraso #134E39 */}
 
-                    {/* Archivos enviados */}
-                    <div className="col s12 padding-0px file-entrega">
-                        <i className="material-icons tiny" style={{"marginRight":"5px"}}>description</i>
-                        <InertiaLink href="#!" className="file-entregaLink">Nombre del archivo.pdf</InertiaLink>
-                    </div>
-                    <div className="col s12 padding-0px file-entrega">
-                        <i className="material-icons tiny" style={{"marginRight":"5px"}}>description</i>
-                        <InertiaLink href="#!" className="file-entregaLink">Nombre del archivo.pdf</InertiaLink>
-                    </div>
+                    {/* Archivo enviado */}
+                    {entrega.archivo &&
+                        <div className="col s12 padding-0px file-entrega">
+                            <i className="material-icons tiny" style={{"marginRight":"5px"}}>description</i>
+                            <a href={"/storage/entregas_asignaciones/"+entrega.archivo} target="_blank" className="file-entregaLink">.pdf</a>
+                        </div>
+                    }
 
                     {/* Comentarios, si no hay no se muestra esta parte */}
-                    <div className="col s12 txt-status-as">COMENTARIOS</div>
-                    <div className="col s12 txt-comentariosE padding-0px">Comentarios de envío lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.</div>
+                    {entrega.Comentario &&
+                        <>
+                            <div className="col s12 txt-status-as">COMENTARIOS</div>
+                            <div className="col s12 txt-comentariosE padding-0px">{entrega.Comentario}</div>
+                        </>
+                    }
                 
                     {/* Retroalimentación */}
                     <div className="col s12 txt-status-as">RETROALIMENTACIÓN</div>
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificación</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus">Sin revisar</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">
+                            {entrega.calificacion ?
+                                entrega.calificacion + '/' + asignacion.max_calif :
+                                'Sin calificar / ' + asignacion.max_calif
+                            }
+                        </div>
                     </div>
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificado el</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus">-</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">
+                            {entrega.fecha_calif ?
+                                transformaFecha(entrega.fecha_calif) :
+                                '-'
+                            }
+                        </div>
                     </div>
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Observaciones</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus">-</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">
+                            {entrega.comentario_retroalimentacion ?
+                                entrega.comentario_retroalimentacion :
+                                '-'
+                            }
+                        </div>
                     </div>
 
                     <div className="col s12 right paddingRight-0px" id="btn-calificar">
