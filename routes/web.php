@@ -84,6 +84,7 @@ Route::get('/cursos/{id}/mochila', [App\Http\Controllers\CourseController::class
 Route::get('/cursos/{id}/modulo/{mid}/publicacion/{pid}', [App\Http\Controllers\CourseController::class, 'verPublicacion'])->name('cursos.publicacion');
 Route::post('/cursos/{id}/inscribir', [App\Http\Controllers\CourseController::class, 'inscribir'])->name('cursos.inscribir');
 Route::get('/cursos/{id}/estadisticas', [App\Http\Controllers\CourseController::class, 'estadisticas'])->name('cursos.estadisticas');
+Route::get('/cursos/{id}/calificaciones', [App\Http\Controllers\CourseController::class, 'calificaciones'])->name('cursos.calificaciones');
 
 //----Solicitudes
 Route::post('/cursos/{id}/solicitudes', [App\Http\Controllers\RequestController::class, 'aprobar'])->name('solicitudes.aprobar');

@@ -950,6 +950,21 @@ class CourseController extends Controller
         ]);
     }
 
+    public function calificaciones($id)
+    {
+        Gate::authorize('haveaccess', 'ponente.perm');
+        //verificar que el ponente sea dueño del curso
+        $curso_teacher=Course::where('id',$id)->first('teacher_id');
+        if(Auth::id() != $curso_teacher->teacher_id){
+            return abort(403);
+        }
+        $curso = Course::findOrFail($id);
+
+        return Inertia::render('Curso/Calificaciones', [
+            'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id)
+        ]);
+    }
+
     public function solicitudes($id)
     {
         \Gate::authorize('haveaccess', 'ponente.perm');
@@ -1175,9 +1190,6 @@ class CourseController extends Controller
         }
     }
 
-
-    public function inscribir($id){
-        $curso=Course::with('modules:course_id,id,nombre,numero')->findOrFail($id);
     public function inscribir($id)
     {
         $curso = Course::with('modules:course_id,id,nombre,numero')->findOrFail($id);
