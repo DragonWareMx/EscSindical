@@ -1410,9 +1410,34 @@ class CourseController extends Controller
                     'users.apellido_m',
                 )
                 ->first();
-            //si no encuentra la entrega algo anda mal y se cancela todo amigos    
+            //si no encuentra la entrega quiere decir que no la entregó el alumno o que es un examen 
             if(!$entrega){
-                return abort(404);
+                if($entrada->tipo=='Examen'){
+                    dd('soy examen');
+                }
+                else if($entrada->tipo=='Asignacion'){
+
+                    //se sacan los datos del usuario para mostrarlos en la vista
+                    $entrega=User::
+                        where('users.id',$eid)
+                        ->where('course_user.course_id',$id)
+                        ->leftJoin('course_user','users.id','=','course_user.user_id')
+                        ->select(
+                            'users.nombre',
+                            'users.apellido_p',
+                            'users.apellido_m',
+                            'users.id as id',
+                            'users.sexo as usuario'
+                        )
+                        ->first();
+
+                    return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
+                        'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id), 
+                        'modulo' => $modulo,
+                        'asignacion' => $entrada,
+                        'entrega' => $entrega,
+                    ]);
+                }
             } 
             if($entrega->tipo=='Asignacion'){
                 return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
@@ -1420,7 +1445,7 @@ class CourseController extends Controller
                 'modulo' => $modulo,
                 'asignacion' => $entrada,
                 'entrega' => $entrega,
-            ]);
+                ]);
             }
             else if($entrega->tipo == 'Examen'){
                 dd('soy examen');
