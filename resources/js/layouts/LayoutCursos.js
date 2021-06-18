@@ -161,8 +161,8 @@ const LayoutCursos = ({children}) => {
                                         {/* Calificaciones */}
                                         {auth.roles['0'].name == 'Ponente' &&
                                             <li className={isUrl("calificaciones") ? "li-style selected-nav" : "li-style"}>
-                                                <InertiaLink id="tab_calificaciones" href={route('cursos.calificaciones',curso.id)} className={isUrl("calificaciones") ? "LC_a_2" : "LC_a"} target="_self">
-                                                    <i className="material-icons col s3 LC_tab_icons">history_edu</i>
+                                                <InertiaLink id="tab_calificaciones" href={route('cursos.calificaciones',curso.id)} className={isUrl("estadisticas") ? "LC_a_2" : "LC_a"} target="_self">
+                                                    <i className="material-icons col s3 LC_tab_icons">fact_check</i>
                                                     <div className="col s9">Calificaciones</div>
                                                 </InertiaLink>
                                             </li>
@@ -176,6 +176,8 @@ const LayoutCursos = ({children}) => {
                                                 </InertiaLink>
                                             </li>
                                         }
+                                        
+                                        
                                     </ul>
                                 </div>
                             </nav>

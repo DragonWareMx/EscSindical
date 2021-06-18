@@ -131,7 +131,7 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
                     {/* fecha del envio */}
                     <div className="col s12 txt-date-as padding-0px" style={{"marginTop":"10px"}}>{entrega.created_at && "Fecha de entrega " + transformaFecha(entrega.created_at)}</div>
                     
-                    <div className='td-estatus col s12 padding-0px' style={{"color": asignacion.fecha_de_entrega >= entrega.created_at ?"#41AB59" : "#ffb90a", "marginTop":"5px"}}>{realizadaEstatus(asignacion.fecha_de_entrega, entrega.created_at)}</div>
+                    <div className='td-estatus col s12 padding-0px' style={{"color": entrega.usuario ? 'red' :asignacion.fecha_de_entrega >= entrega.created_at ?"#41AB59" : "#ffb90a", "marginTop":"5px"}}>{entrega.usuario ? 'SIN ENVÍO' : realizadaEstatus(asignacion.fecha_de_entrega, entrega.created_at)}</div>
                     {/* Enviada con retraso #134E39 */}
 
                     {/* Archivo enviado */}

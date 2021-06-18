@@ -12,6 +12,11 @@ import '/css/modulos.css'
 import '/css/asignaciones.css'
 import route from 'ziggy-js';
 
+//componentes
+import Alertas from '../../../components/common/Alertas';
+import ModalEliminar from '../../../components/common/ModalEliminar';
+
+
 function tooltip(){
     var elems = document.querySelectorAll('.tooltipped');
     var instances = M.Tooltip.init(elems);
@@ -27,11 +32,24 @@ function cancelar(){
 
 
 const Asignacion = ({curso, modulo, asignacion}) => {
+    //errores de la validacion de laravel
+    const { errors } = usePage().props
+    //errores de la validacion de laravel
+    const { flash } = usePage().props
+    
     const { auth } = usePage().props;
+    const [values,setValues] = useState({
+        comentario: "",
+        archivos: null
+    });
 
     useEffect(() => {
         tooltip();
     }, [])
+
+    useEffect(() => {
+        openAlert('alert_error');
+    }, [errors])
 
     function transformaFecha(fecha) {
         const dob = new Date(fecha);
@@ -92,37 +110,43 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             //fecha de entrega programada
             var fecha = new Date(fechaEntrega);
 
-            const total = Date.parse(fecha) - Date.parse(entrega);
+            let total = Date.parse(fecha) - Date.parse(entrega);
 
-            let hours = Math.floor( (total/(1000*60*60)) % 24 );
-            let days = Math.floor( total/(1000*60*60*24) );
-            let retrasada = "Enviada "
-
+            let minutes = 0;
+            let hours = 0;
+            let days =0;
+            let retrasada = "Enviada "            
             let antes = " antes"
-            if(hours < 0){
-                hours *= -1
-                retrasada = "con "
-                antes = " de retraso"
-            }
-            if(days < 0){
-                days *= -1
+
+            if(total < 0){
+                total *= -1
                 retrasada = "Enviada con "
                 antes = " de retraso"
+            }
+
+            if(( (total/1000/60) % 60 ) > 0){
+                minutes = Math.floor( (total/1000/60) % 60 );
+            }
+            if(( (total/(1000*60*60)) % 24 ) > 0){
+                hours = Math.floor( (total/(1000*60*60)) % 24 );
+            }
+            if(( total/(1000*60*60*24) ) > 0){
+                days =  Math.floor( total/(1000*60*60*24) );
             }
 
             let horas
             let dias
             if(hours == 1)
-                horas = " hora"
+                horas = " hora "
             else
-                horas = " horas"
+                horas = " horas "
 
             if(days == 1)
                 dias = " día y "
             else
                 dias = " días y "
 
-            return retrasada + days + dias + hours + horas + antes
+            return retrasada + days + dias + hours + horas + minutes + " minutos " + antes
         }
         else{
             //fecha actual
@@ -130,40 +154,41 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             //fecha de entrega
             var entrega = new Date(fechaEntrega);
 
-            console.log(hoy)
-            console.log(entrega)
+            let total = Date.parse(entrega) - Date.parse(hoy);
 
-            const total = Date.parse(entrega) - Date.parse(hoy);
+            let minutes = 0;
+            let hours = 0;
+            let days =0;
+            let retrasada = ""            
 
-            let hours = Math.floor( (total/(1000*60*60)) % 24 );
-            let days = Math.floor( total/(1000*60*60*24) );
-            const seconds = Math.floor( (total/1000) % 60 );
-            const minutes = Math.floor( (total/1000/60) % 60 );
-
-            let retrasada = ""
-
-            if(hours < 0){
-                hours *= -1
+            if(total < 0){
+                total *= -1
                 retrasada = "Retrasada por "
             }
-            if(days < 0){
-                days *= -1
-                retrasada = "Retrasada por "
+
+            if(( (total/1000/60) % 60 ) > 0){
+                minutes = Math.floor( (total/1000/60) % 60 );
+            }
+            if(( (total/(1000*60*60)) % 24 ) > 0){
+                hours = Math.floor( (total/(1000*60*60)) % 24 );
+            }
+            if(( total/(1000*60*60*24) ) > 0){
+                days =  Math.floor( total/(1000*60*60*24) );
             }
 
             let horas
             let dias
             if(hours == 1)
-                horas = " hora"
+                horas = " hora "
             else
-                horas = " horas"
+                horas = " horas "
 
             if(days == 1)
                 dias = " día y "
             else
                 dias = " días y "
 
-            return retrasada + days + dias + hours + horas
+            return retrasada + days + dias + hours + horas + minutes + " minutos "
         }
     }
 
@@ -181,13 +206,51 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             return true
     }
 
+    //manda el forumulario
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.post(route('cursos.asignacion.entregar', [curso.id,modulo.id, asignacion.id]), values, {preserveScroll: true, 
+            onSuccess: () => {
+            setValues(values => ({
+            ...values,
+            archivos: null,
+            comentario: ""
+        }))}})
+    }
+
+    function changeArchivo(e){
+        var inputFile = document.getElementById('archivos');
+        if (inputFile.files && inputFile.files[0]) {
+            setValues(values => ({
+                ...values,
+                archivos: inputFile.files[0],
+            }))
+        }
+    }
+
+    function closeAlert(type){
+        var divsToHide = document.getElementsByClassName(type); //divsToHide is an array
+        for(var i = 0; i < divsToHide.length; i++){
+            divsToHide[i].style.visibility = "hidden"; // or
+            divsToHide[i].style.display = "none"; // depending on what you're doing
+        }
+    }
+
+    function openAlert(type){
+        var divsToHide = document.getElementsByClassName(type); //divsToHide is an array
+        for(var i = 0; i < divsToHide.length; i++){
+            divsToHide[i].style.visibility = "visible"; // or
+            divsToHide[i].style.display = "flex"; // depending on what you're doing
+        }
+    }
+    
     return (
     <>
         <div className="row">
             {/* NOMBRE DEL MODULO */}
             <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
                 <InertiaLink  href={route('cursos.modulo', [curso.id, modulo.id])}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
-                MÓDULO. {modulo.nombre}
+                MÓDULO {modulo.numero}. {modulo.nombre}
             </div>
 
             {/* Recuadro de la asignacion */}
@@ -212,11 +275,12 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                 <div className="col s12 txt-date-as">{asignacion.created_at && "Publicado el " + transformaFecha(asignacion.created_at)} </div>
 
                 {/* contenido de la asignación, con formato del ckeditor */}
-                <div className="col s12 txt-ejm-as" style={{"marginTop":"15px"}}>{asignacion.contenido && asignacion.contenido}</div>
+                <div className="col s12 txt-ejm-as" style={{"marginTop":"15px"}}>{asignacion.contenido && <div dangerouslySetInnerHTML={{__html: asignacion.contenido}} />}</div>
                 
                 {/* Estatus de la asignación */}
                 <div className="col s12 txt-status-as">ESTATUS DE LA ASIGNACIÓN</div>
 
+                {asignacion.tipo == "Examen" &&
                 <div className="col s12 right paddingRight-0px" id="btn-comenzar">
                     {/* Botón para comenzar examen*/}
                     <InertiaLink href={route('cursos.examen', [curso.id,modulo.id,asignacion.id])} className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
@@ -224,6 +288,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                         <i className="material-icons right">send</i>
                     </InertiaLink>
                 </div>
+                }
 
                 {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Ponente" &&
                     <>
@@ -299,7 +364,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             }
                         </div>
                         <div className="col s12 padding-0px row-extatus">
-                            <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de entrega</div>
+                            <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de {asignacion.tipo == "Examen" ? "cierre" : "entrega"}</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">{asignacion.fecha_de_entrega && transformaFecha(asignacion.fecha_de_entrega)}</div>
                         </div>
                         {asignacion.permitir_envios_retrasados ? 
@@ -318,8 +383,8 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus de calificación</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
                                 {asignacion.users && asignacion.users.length > 0 ?
-                                asignacion.users[0].calificacion ?
-                                    asignacion.users[0].calificacion
+                                asignacion.users[0].pivot.calificacion ?
+                                    asignacion.users[0].pivot.calificacion
                                     :
                                     "Sin calificar"
                                 :
@@ -328,12 +393,14 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             </div>
                         </div>
                         {/* Para cuando ya se haya entregado-------------- */}
+
+                        {asignacion.tipo == 'Asignacion' &&
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Archivos enviados</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
                             {asignacion.users && asignacion.users.length > 0 ?
-                            asignacion.users[0].calificacion ?
-                                <a className="col s12 padding-0px paddingRight-0px" href={"/storage/entregas_asignaciones/"+asignacion.users[0].archivo} style={{"color":"#5A5A5A","marginBottom":"5px","display":"flex","alignItems":"center"}}>{asignacion.users[0].archivo}<i className="material-icons tiny" style={{"marginLeft":"5px"}}>description</i></a>
+                            asignacion.users[0].pivot.archivo ?
+                                <a className="col s12 padding-0px paddingRight-0px" target="_blank" href={"/storage/entregas_asignaciones/"+asignacion.users[0].pivot.archivo} style={{"color":"#5A5A5A","marginBottom":"5px","display":"flex","alignItems":"center"}}>{asignacion.users[0].pivot.nombre_original_archivo}<i className="material-icons tiny" style={{"marginLeft":"5px"}}>description</i></a>
                                 :
                                 "Sin archivos enviados"
                             :
@@ -341,12 +408,15 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             }
                             </div>
                         </div>
+                        }
+
+                        {asignacion.tipo == 'Asignacion' &&
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Comentarios del envío</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
                                 {asignacion.users && asignacion.users.length > 0 ?
-                                asignacion.users[0].Comentario ?
-                                    asignacion.users[0].Comentario
+                                asignacion.users[0].pivot.Comentario ?
+                                    <div dangerouslySetInnerHTML={{__html: asignacion.users[0].pivot.Comentario}} />
                                     :
                                     "Sin comentarios"
                                 :
@@ -354,20 +424,36 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                                 }
                             </div>
                         </div>
+                        }
+
                         {/*si la asignacion no se ha entregado o si se entrego pero no tiene calificacion */}
-                        {(asignacion.permitir_envios_retrasados || bTiempoRestante(asignacion.fecha_de_entrega)) && (asignacion.users && asignacion.users.length == 0 || (asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion != 0))) &&
+                        {asignacion.tipo == "Asignacion" && (asignacion.permitir_envios_retrasados || bTiempoRestante(asignacion.fecha_de_entrega)) && (asignacion.users && asignacion.users.length == 0 || (asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion != 0))) &&
                         <>
                             {asignacion.users && asignacion.users.length == 0 &&
                             <>
+
+                            {(errors.archivos || errors.comentario) &&
+                                <div className="col s12" style={{width: "100%", margin:"0px", marginTop: "10px"}}>
+                                    <div className="errores">
+                                        <ul>
+                                            <li className="alert_error">
+                                                <div className="col s11">No se has subido ningún contenido a la asignación.</div>
+                                                <div onClick={() => {closeAlert('alert_error')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
+                                            </li>
+                                        </ul>  
+                                    </div>
+                                </div>
+                            }
+
                             {/* FORM PARA ENTREGAR LA ASIGNACIÓN O EDITAR */}
-                            <form className="col s12 padding-0px paddingRight-0px" id="div-entrega" style={{"display":"none"}}>
+                            <form className="col s12 padding-0px paddingRight-0px" id="div-entrega" style={{"display":"none"}} onSubmit={handleSubmit}>
                                 <div className="col s12 txt-status-as" style={{"color":"#134E39"}}><b>ENTREGAR ASIGNACIÓN</b></div>
 
                                 <div className="col s12 padding-0px paddingRight-0px">
                                     <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", "boxSizing": "border-box", "borderRadius": "4px"}}>
                                         <div className="col s12">
                                             <span style={{"fontSize":"12px", "textAlign":"center", "paddingTop":"10px"}} className="col s12">Arrastre aquí los archivos o <b>clic</b> para seleccionarlos</span>
-                                            <input type="file" className="form-control" id="files" name="files" />
+                                            <input type="file" className="form-control" id="archivos" name="files" onChange={changeArchivo} />
                                         </div>
                                         <div className="file-path-wrapper">
                                             <input className="file-path validate" type="text" />
@@ -380,17 +466,20 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                                 <div className="col s12 padding-0px paddingRight-0px">
                                     <CKEditor
                                         editor={ ClassicEditor }
-                                        id="editorCK"
+                                        data={values.comentario}
+                                        id="comentario"
                                         // data={values.descripcion}
                                         onReady={ editor => {
                                             // You can store the "editor" and use when it is needed.
                                             // console.log( 'Editor is ready to use!', editor );
                                         } }
-                                        onChange={ 
-                                            ( event, editor ) => {
-                                            changeCK(editor.getData());
-                                            }
-                                        }
+                                        onChange={(event, editor) => {
+                                            const data = editor.getData();
+                                            setValues(values => ({
+                                                ...values,
+                                                comentario: data,
+                                            }))
+                                        }}
                                         onBlur={ ( event, editor ) => {
                                             // console.log( 'Blur.', editor );
                                         } }
@@ -421,12 +510,12 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             </div>
                             </>
                             }
+
                             {asignacion.users && asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion && asignacion.users[0].pivot.calificacion != 0) &&
                             <div className="col s12 right container-btns-as paddingRight-0px">
-                                {alert(asignacion.users[0].pivot.calificacion != 0)}
                                 {/* Enviado pero no calificado */}
                                 {/* Pedir confirmacion para cancelar el envio */}
-                                <a className="no-uppercase" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}}>
+                                <a data-target="modalEliminar" className="no-uppercase modal-trigger" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}}>
                                     Cancelar envío
                                 </a>
                                 <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
@@ -474,7 +563,8 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                 </>
                 } 
             </div>
-            
+
+            <ModalEliminar url={route('cursos.asignacion.cancelar', [curso.id, modulo.id, asignacion.id])} nombre="" tipo="registro de asignación" />
         </div>
     </>
   )

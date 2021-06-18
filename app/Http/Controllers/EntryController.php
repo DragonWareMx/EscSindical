@@ -408,6 +408,7 @@ class EntryController extends Controller
                         $notificacion = new Notification();
                         $notificacion->user_id = $user->id;
                         $notificacion->titulo = "Se te ha asignado una nueva actividad";
+                        $notificacion->link = '/cursos/' . $curso->id . '/modulo/' . $request->modulo . '/asignacion/' . $entrada->id;
                         $notificacion->visto = false;
                         $notificacion->save();
                     }
@@ -468,15 +469,15 @@ class EntryController extends Controller
             }
 
             //comprobar fechas de apertura y de entrega
-            if ($request->fecha_de_apertura == $request->fecha_de_entrega){
-                if ($request->hora_de_apertura > $request->hora_de_entrega){
+            if ($request->fecha_de_apertura == $request->fecha_de_entrega) {
+                if ($request->hora_de_apertura > $request->hora_de_entrega) {
                     return Redirect::back()->with('error', 'La hora de entrega no puede ser menor a la hora de apertura.');
-                }   
+                }
             }
 
             $fechaAp = new DateTime($request->fecha_de_apertura . '' . $request->hora_de_apertura);
             $fechaEn = new DateTime($request->fecha_de_entrega . '' . $request->hora_de_entrega);
-            
+
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
@@ -523,6 +524,7 @@ class EntryController extends Controller
                         $notificacion = new Notification();
                         $notificacion->user_id = $user->id;
                         $notificacion->titulo = "Se te ha asignado un nuevo examen";
+                        $notificacion->link = '/cursos/' . $curso->id . '/modulo/' . $request->modulo . '/asignacion/' . $entrada->id;
                         $notificacion->visto = false;
                         $notificacion->save();
                     }
@@ -1097,15 +1099,15 @@ class EntryController extends Controller
             }
 
             //comprobar fechas de apertura y de entrega
-            if ($request->fecha_de_apertura == $request->fecha_de_entrega){
-                if ($request->hora_de_apertura > $request->hora_de_entrega){
+            if ($request->fecha_de_apertura == $request->fecha_de_entrega) {
+                if ($request->hora_de_apertura > $request->hora_de_entrega) {
                     return Redirect::back()->with('error', 'La hora de entrega no puede ser menor a la hora de apertura.');
-                }   
+                }
             }
 
             $fechaAp = new DateTime($request->fecha_de_apertura . '' . $request->hora_de_apertura);
             $fechaEn = new DateTime($request->fecha_de_entrega . '' . $request->hora_de_entrega);
-            
+
             //aqui empieza la transaccion
             DB::beginTransaction();
             try {
@@ -1169,7 +1171,7 @@ class EntryController extends Controller
 
     public function doExam($id, $mid, $eid)
     {
-        \Gate::authorize('haveaccess', 'alumno.perm');
+        Gate::authorize('haveaccess', 'alumno.perm');
 
         //busca el curso
         $curso = Course::with('modules:course_id,id,nombre,numero')->select('id', 'nombre')->findOrFail($id);
@@ -1204,7 +1206,7 @@ class EntryController extends Controller
 
         // Buscar la asignacion
         $entrada = Entry::findOrFail($eid);
-            
+
 
         //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
         if (!$entrada) {
@@ -1226,5 +1228,107 @@ class EntryController extends Controller
             'modulo' => $modulo,
             'asignacion' => $entrada,
         ]);
+    }
+
+    public function cancelarEntrega($id, $mid, $pid){
+        \Gate::authorize('haveaccess', 'alumno.perm');
+
+        //COMIENZA TRANSACCIÓN
+        DB::beginTransaction();
+
+        try {
+            //busca el curso
+            $curso = Course::findOrFail($id);
+
+            //Si no existe el curso quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$curso) {
+                return abort(404);
+            }
+
+            //verifica que el usuario auth sea alumno del curso
+            $validador = false;
+            foreach (Auth::user()->courses()->get() as $cursoA) {
+                if ($cursoA->id == $curso->id)
+                    $validador = true;
+            }
+            if (!$validador)
+                abort(403);
+
+            //Buscar el modulo con el mid
+            $modulo = Module::findOrFail($mid);
+
+            //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$modulo) {
+                return abort(404);
+            }
+
+            //verifica que el modulo pertenezca al curso
+            if ($modulo->course_id != $curso->id) {
+                //si no está lo mandamos a la vista informacion -  solo si es alumno
+                abort(403);
+            }
+
+            // Buscar la asignacion
+            $entrada = Entry::findOrFail($pid);
+
+
+            //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$entrada) {
+                abort(404);
+            }
+
+            //verificar que la entrada sea asingacion
+            if ($entrada->tipo != 'Asignacion') {
+                abort(403);
+            }
+
+            //verifica que pertenezca al modulo
+            if ($entrada->module_id != $modulo->id) {
+                abort(403);
+            }
+
+            $validador = false;
+            $file = null;
+            //verifica que haya otra entrega pero que no este calificado
+            foreach ($entrada->users as $tarea) {
+                if($tarea->id == Auth::user()->id){
+                    if(!is_null($tarea->pivot->archivo)){
+                        $file = $tarea->pivot->archivo;
+                    }
+                    if(is_null($tarea->pivot->calificacion)){
+                        $validador = true;
+                    }
+                }
+            }
+            if (!$validador)
+                abort(403);
+
+            //se elimina el archivo
+            if($file)
+            {
+                unlink(storage_path('app\public\entregas_asignaciones\\'.$file));
+            }
+            $entrada->users()->detach(Auth::user()->id);
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'delete';
+            $newLog->user_id = Auth::id();
+            $newLog->accion = "{}";
+
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha eliminado la entrega de asignacion de id: ' . $entrada->id;
+
+            // //SE GUARDA EL LOG
+            $newLog->save();
+
+            DB::commit();
+
+            return \Redirect::back()->with('success', 'Entrega eliminada.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            return \Redirect::back()->with('error', 'No fue posible enviar la asignación, vuelve a intentarlo.');
+        }
     }
 }

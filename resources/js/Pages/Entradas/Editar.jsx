@@ -447,7 +447,7 @@ const Editar = ({ cursos, entry }) => {
                                     <div className="row">
                                         {/* aqui va el input del select del curso */}
                                         <div className="input-field col s12 m6">
-                                            <select id="curso" name="curso" value={values.curso} onChange={changeModulos} className={errors.curso ? "input-field invalid" : "input-field"}>
+                                            <select id="curso" name="curso" value={values.curso} onChange={changeModulos} className={errors.curso ? "input-field invalid" : "input-field"} disabled>
                                                 <option value disabled value={""}>Elige una opción</option>
                                                 {cursos && cursos.length > 0 && cursos.map((curso, index) =>
                                                     <option value={curso.id} key={index}>{curso.nombre}</option>
@@ -461,7 +461,7 @@ const Editar = ({ cursos, entry }) => {
                                         </div>
                                         {/* aqui va el input del modulo */}
                                         <div className="input-field col s12 m6">
-                                            <select id="modulo" name="modulo" value={values.modulo} onChange={handleChange} className={errors.modulo ? "input-field invalid" : "input-field"}>
+                                            <select id="modulo" name="modulo" value={values.modulo} onChange={handleChange} className={errors.modulo ? "input-field invalid" : "input-field"} disabled>
                                                 <option value disabled value={""}>Elige una opción</option>
                                             </select>
                                             <label>Selecciona el modulo</label>
@@ -472,7 +472,7 @@ const Editar = ({ cursos, entry }) => {
                                         </div>
                                         {/* aqui va el input del select tipo */}
                                         <div className="input-field col s12 m6">
-                                            <select id="tipo" name="tipo" value={values.tipo} onChange={cambiarForm} className={errors.tipo ? "input-field invalid" : "input-field"}>
+                                            <select id="tipo" name="tipo" value={values.tipo} onChange={cambiarForm} className={errors.tipo ? "input-field invalid" : "input-field"} disabled>
                                                 <option value disabled value={""}>Elige una opción</option>
                                                 <option value={"Aviso"}>Aviso</option>
                                                 <option value={"Informacion"}>Información</option>
@@ -669,10 +669,10 @@ const Editar = ({ cursos, entry }) => {
                                                         <div className="switch">
                                                             <label>
                                                                 No
-                                                            <input type="checkbox" value="" onChange={handleNewFiles} />
+                                                                <input type="checkbox" value="" onChange={handleNewFiles} />
                                                                 <span className="lever" />
-                                                            Si
-                                                        </label>
+                                                                Si
+                                                            </label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -695,10 +695,10 @@ const Editar = ({ cursos, entry }) => {
                                                             <div className="switch">
                                                                 <label>
                                                                     No
-                                                            <input type="checkbox" value="" onChange={handleNewFiles} />
+                                                                    <input type="checkbox" value="" onChange={handleNewFiles} />
                                                                     <span className="lever" />
-                                                            Si
-                                                        </label>
+                                                                    Si
+                                                                </label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -721,10 +721,10 @@ const Editar = ({ cursos, entry }) => {
                                                                 <div className="switch">
                                                                     <label>
                                                                         No
-                                                            <input type="checkbox" value="" onChange={handleNewFiles} />
+                                                                        <input type="checkbox" value="" onChange={handleNewFiles} />
                                                                         <span className="lever" />
-                                                            Si
-                                                        </label>
+                                                                        Si
+                                                                    </label>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -747,10 +747,10 @@ const Editar = ({ cursos, entry }) => {
                                                                 <div className="switch">
                                                                     <label>
                                                                         No
-                                                            <input type="checkbox" value="" onChange={handleNewFiles} />
+                                                                        <input type="checkbox" value="" onChange={handleNewFiles} />
                                                                         <span className="lever" />
-                                                            Si
-                                                        </label>
+                                                                        Si
+                                                                    </label>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -761,7 +761,7 @@ const Editar = ({ cursos, entry }) => {
                                         {values.modFiles && values.tipo == "Aviso" ?
                                             <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
                                                 <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)
-                                                {
+                                                    {
                                                         errors.archivos &&
                                                         <span className="helper-text" data-error={errors.arrchivos} style={{ marginBottom: "10px", fontSize: "12px", color: "rgb(244, 67, 54)", marginLeft: "5px" }}>{errors.archivos}</span>
                                                     }
@@ -779,7 +779,7 @@ const Editar = ({ cursos, entry }) => {
                                             : values.modFiles && values.tipo == "Informacion" ?
                                                 <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
                                                     <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)
-                                                    {
+                                                        {
                                                             errors.archivos &&
                                                             <span className="helper-text" data-error={errors.arrchivos} style={{ marginBottom: "10px", fontSize: "12px", color: "rgb(244, 67, 54)", marginLeft: "5px" }}>{errors.archivos}</span>
                                                         }
@@ -797,7 +797,7 @@ const Editar = ({ cursos, entry }) => {
                                                 : values.modFiles && values.tipo == "Recurso" ?
                                                     <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
                                                         <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)
-                                                        {
+                                                            {
                                                                 errors.archivos &&
                                                                 <span className="helper-text" data-error={errors.arrchivos} style={{ marginBottom: "10px", fontSize: "12px", color: "rgb(244, 67, 54)", marginLeft: "5px" }}>{errors.archivos}</span>
                                                             }
@@ -815,7 +815,7 @@ const Editar = ({ cursos, entry }) => {
                                                     : values.modFiles && values.tipo == "Archivo" ?
                                                         <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
                                                             <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivo
-                                                            {
+                                                                {
                                                                     errors.archivos &&
                                                                     <span className="helper-text" data-error={errors.arrchivos} style={{ marginBottom: "10px", fontSize: "12px", color: "rgb(244, 67, 54)", marginLeft: "5px" }}>{errors.archivos}</span>
                                                                 }
@@ -833,7 +833,7 @@ const Editar = ({ cursos, entry }) => {
                                                         : values.modFiles && values.tipo == "Asignacion" &&
                                                         <div id="file-div" className="col s12" style={{ marginBottom: "2%", marginTop: "2%" }}>
                                                             <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)" }}>Adjuntar archivos (Opcional)
-                                                            {
+                                                                {
                                                                     errors.archivos &&
                                                                     <span className="helper-text" data-error={errors.arrchivos} style={{ marginBottom: "10px", fontSize: "12px", color: "rgb(244, 67, 54)", marginLeft: "5px" }}>{errors.archivos}</span>
                                                                 }
@@ -895,10 +895,10 @@ const Editar = ({ cursos, entry }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                            <input type="checkbox" value={values.visible} checked={values.visible} onChange={handleVisible} />
+                                                        <input type="checkbox" value={values.visible} checked={values.visible} onChange={handleVisible} />
                                                         <span className="lever" />
-                                                Si
-                                        </label>
+                                                        Si
+                                                    </label>
                                                 </div>
                                             </div>
                                         }
@@ -910,10 +910,10 @@ const Editar = ({ cursos, entry }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                                <input type="checkbox" value={values.notificacion} checked={values.notificacion} onChange={handleNotificacion} />
+                                                        <input type="checkbox" value={values.notificacion} checked={values.notificacion} onChange={handleNotificacion} />
                                                         <span className="lever" />
-                                                    Si
-                                            </label>
+                                                        Si
+                                                    </label>
                                                 </div>
                                             </div>
                                             : values.tipo == "Examen" &&
@@ -922,10 +922,10 @@ const Editar = ({ cursos, entry }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                                <input type="checkbox" value={values.notificacion} checked={values.notificacion} onChange={handleNotificacion} />
+                                                        <input type="checkbox" value={values.notificacion} checked={values.notificacion} onChange={handleNotificacion} />
                                                         <span className="lever" />
-                                                    Si
-                                            </label>
+                                                        Si
+                                                    </label>
                                                 </div>
                                             </div>
                                         }
@@ -936,10 +936,10 @@ const Editar = ({ cursos, entry }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                                <input type="checkbox" value={values.permitir_envios_retrasados} checked={values.permitir_envios_retrasados} onChange={handleEnvio} />
+                                                        <input type="checkbox" value={values.permitir_envios_retrasados} checked={values.permitir_envios_retrasados} onChange={handleEnvio} />
                                                         <span className="lever" />
-                                                    Si
-                                            </label>
+                                                        Si
+                                                    </label>
                                                 </div>
                                             </div>
                                             : values.tipo == "Examen" &&
@@ -948,10 +948,10 @@ const Editar = ({ cursos, entry }) => {
                                                 <div className="switch">
                                                     <label>
                                                         No
-                                            <input type="checkbox" value={values.permitir_envios_retrasados} checked={values.permitir_envios_retrasados} onChange={handleEnvio} />
+                                                        <input type="checkbox" value={values.permitir_envios_retrasados} checked={values.permitir_envios_retrasados} onChange={handleEnvio} />
                                                         <span className="lever" />
-                                                Si
-                                        </label>
+                                                        Si
+                                                    </label>
                                                 </div>
                                             </div>
                                         }
@@ -961,7 +961,7 @@ const Editar = ({ cursos, entry }) => {
                                         <div className="col s12" style={{ display: "flex" }}>
                                             <button data-target="modalEliminar" type="button" className="center-align modal-trigger" style={{ "border": "none", "backgroundColor": "transparent", "color": "#515B60", "cursor": "pointer", marginLeft: "0px", marginRight: "auto" }}><i className="material-icons">delete</i></button>
                                             <button className="btn waves-effect waves-light btn-submit" type="submit" name="action">Agregar
-                                            <i className="material-icons right">save</i>
+                                                <i className="material-icons right">save</i>
                                             </button>
                                         </div>
                                     </div>
