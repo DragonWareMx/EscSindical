@@ -258,8 +258,8 @@ const Asignacion = ({curso, modulo, asignacion, alumnos, nAlumnos, nEntregas}) =
         }
     }
 
-    function verEntrega(e){
-
+    function verEntrega(id){
+        Inertia.get(route('cursos.asignacion.entrega', [curso.id, modulo.id, asignacion.id, id]))
     }
     
     return (
@@ -348,7 +348,7 @@ const Asignacion = ({curso, modulo, asignacion, alumnos, nAlumnos, nEntregas}) =
 
                         <tbody>
                         {alumnos && alumnos.length > 0 && alumnos.map(alumno => (
-                        <tr key={alumno.id} onClick={verEntrega}>
+                        <tr key={alumno.id} onClick={() => {verEntrega(alumno.id)}}>
                             <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}>
                                 <img src={alumno.foto ? "/storage/fotos_perfil/"+alumno.foto : "/storage/fotos_perfil/avatar1.jpg"} className="img-td-entregas" />
                                 {alumno.nombre} {alumno.apellido_p} {alumno.apellido_m}
@@ -556,10 +556,6 @@ const Asignacion = ({curso, modulo, asignacion, alumnos, nAlumnos, nEntregas}) =
                                 <a data-target="modalEliminar" className="no-uppercase modal-trigger" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}}>
                                     Cancelar envío
                                 </a>
-                                <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
-                                    Editar
-                                    <i className="material-icons right">edit</i>
-                                </button>
                             </div>
                             }
                         </>
