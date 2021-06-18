@@ -103,6 +103,23 @@ class CourseController extends Controller
             $newModule->temario = $request->temario;
             $newModule->course_id = $request->curso;
 
+            //  se le asigna numero al nuevo modulo
+            //  primero se consultan todos lo modulos correspondientes a ese curso
+            $modulosCurso=Module::where('course_id',$newModule->course_id)->get('id');
+            
+
+            //  si el curso aun no tiene modulos se le asigna automaticamente el numero 1
+            if($modulosCurso == null){
+                $newModule->numero = 1;
+            }
+            else{
+                //  se deben contar la cantidad de modulos que hay en el curso actualmente
+                $cantidad = $modulosCurso->count();
+                //  se le suma 1 a la cantidad
+                $cantidad = $cantidad + 1;
+                $newModule->numero = $cantidad;
+            }
+
             $newModule->save();
 
             //SE CREA EL LOG
@@ -761,8 +778,36 @@ class CourseController extends Controller
         \Gate::authorize('haveaccess', 'ponente.perm');
         DB::beginTransaction();
         try {
+            //  se busca el modulo a eliminar por su id
             $module = Module::find($id);
+            //  antes de eliminarlo se guarda el id del curso al que pertenece
+            //  para poder reordenar el resto de modulos
+            $idCurso = $module->course_id;
+            $curso=Course::findOrFail($idCurso);
+            //  se valida que quien intente borrar el modulo sea un ponente
+            if($curso->teacher_id != Auth::user()->id){
+                return abort(403);
+            }
+            //  ahora si se elimina el modulo
             $module->delete();
+
+            //  se consultan todos lo modulos correspondientes a ese curso
+            $modulosCurso=Module::where('course_id',$idCurso)->get('id');
+
+            //  si el curso aun tiene modulos se reordenan, si no no
+            if($modulosCurso != null){
+                //  variable que dara el nuevo orden a los modulos
+                $newNum = 1;
+                //  se actualiza el numero de los modulos
+                foreach ($modulosCurso as $modulo) {
+
+                    $modulo->numero = $newNum;
+                    $modulo->save();
+
+                    //  se actualiza el valor de la variable que asigna el nuevo orden
+                    $newNum = $newNum + 1;
+                }
+            }
 
             //SE CREA EL LOG
             $newLog = new Log;
@@ -784,6 +829,7 @@ class CourseController extends Controller
             return \Redirect::route('cursos.modulos', $module->course_id)->with('success', '¡Modulo eliminado con éxito!');
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
         }
     }
@@ -878,10 +924,10 @@ class CourseController extends Controller
         $numeroActual = $actual->numero;
 
         $numeroSiguiente = $numeroActual + 1;
-        $siguiente = Module::where('numero', $numeroSiguiente)->first('id');
+        $siguiente = Module::where('numero', $numeroSiguiente)->where('course_id',$id)->first('id');
 
         $numeroAnterior = $numeroActual - 1;
-        $anterior = Module::where('numero', $numeroAnterior)->first('id');
+        $anterior = Module::where('numero', $numeroAnterior)->where('course_id',$id)->first('id');
 
 
         return Inertia::render('Curso/Modulo', [
@@ -1119,30 +1165,70 @@ class CourseController extends Controller
         if (Auth::user()->roles[0]->name == 'Ponente') {
             \Gate::authorize('haveaccess', 'ponente.perm');
 
-            //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
-            $modulo = Module::findOrFail($mid);
+            //busca el curso
+            $curso = Course::with('modules:course_id,id,nombre,numero')->select('id', 'nombre','teacher_id')->findOrFail($id);
+
+            //Si no existe el curso quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$curso) {
+                return abort(404);
+            }
+
+            //verifica que el usuario auth sea profesor del curso
+            if($curso->teacher_id != Auth::user()->id){
+                return abort(403);
+            }
+
+            //Buscar el modulo con el mid
+            $modulo = Module::select('id', 'nombre', 'course_id','numero')->findOrFail($mid);
 
             //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
             if (!$modulo) {
                 return abort(404);
             }
 
+            //verifica que el modulo pertenezca al curso
+            if ($modulo->course_id != $curso->id) {
+                //si no está lo mandamos a la vista informacion -  solo si es alumno
+                abort(403);
+            }
+
             // Buscar la asignacion
-            $entrada = Entry::with('files:archivo,entry_id')->findOrFail($pid);
+            $entrada = Entry::with('users:id')->select('id', 'titulo', 'created_at', 'contenido', 'tipo', 'module_id', 'permitir_envios_retrasados', 'fecha_de_entrega', 'max_calif')->findOrFail($pid);
+
+            //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$entrada) {
+                return abort(404);
+            }
 
             //verificar que la entrada sea asingacion o examen
+            if ($entrada->tipo != 'Asignacion' && $entrada->tipo != 'Examen') {
+                abort(403);
+            }
 
-            //verificar que pertenezca al modulo
+            //verifica que pertenezca al modulo
+            if ($entrada->module_id != $modulo->id) {
+                abort(403);
+            }
 
-            //si el usuario es ponente...
-            //verificar que el curso sea suyo
-            //si el usuario es estudiante...
-            //verificar que este registrado en el curso
+            $alumnos =
+            User::whereHas('courses', function ($query) use ($id) {
+                $query->where('courses.id', '=', $id);
+            })->with(['entries' => function ($entrega) use ($pid) {
+                return $entrega->where('entries.id', $pid)->select('entries.id')
+                    ->withPivot('calificacion', 'archivo', 'Comentario', 'created_at');
+            }])
+            ->get(['foto', 'nombre', 'apellido_p', 'apellido_m', 'id']);
+
+            $nAlumnos = count($alumnos);
+            $nEntregas = count($entrada->users);
 
             return Inertia::render('Curso/Asignacion/Asignacion', [
-                'curso' => Course::findOrFail($id),
+                'curso' => $curso,
                 'modulo' => $modulo,
                 'asignacion' => $entrada,
+                'alumnos' => $alumnos,
+                'nAlumnos' => $nAlumnos,
+                'nEntregas' => $nEntregas
             ]);
         } else if (Auth::user()->roles[0]->name == 'Alumno') {
             \Gate::authorize('haveaccess', 'alumno.perm');
@@ -1214,7 +1300,7 @@ class CourseController extends Controller
             abort(403);
         }
     }
-
+    
     public function entregarAsignacion($id, $mid, $pid, Request $request){
         \Gate::authorize('haveaccess', 'alumno.perm');
 
@@ -1336,12 +1422,6 @@ class CourseController extends Controller
         if (Auth::user()->roles[0]->name == 'Ponente') {
             \Gate::authorize('haveaccess', 'ponente.perm');
 
-            //Verificar que el ponente sea dueño del curso
-            $curso_teacher=Course::where('id',$id)->first('teacher_id');
-            if(Auth::id() != $curso_teacher->teacher_id){
-                return abort(403);
-            }
-
             //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
             $modulo = Module::where('id',$mid)->where('course_id',$id)->first();
 
@@ -1370,9 +1450,34 @@ class CourseController extends Controller
                     'users.apellido_m',
                 )
                 ->first();
-            //si no encuentra la entrega algo anda mal y se cancela todo amigos    
+            //si no encuentra la entrega quiere decir que no la entregó el alumno o que es un examen 
             if(!$entrega){
-                return abort(404);
+                if($entrada->tipo=='Examen'){
+                    dd('soy examen');
+                }
+                else if($entrada->tipo=='Asignacion'){
+
+                    //se sacan los datos del usuario para mostrarlos en la vista
+                    $entrega=User::
+                        where('users.id',$eid)
+                        ->where('course_user.course_id',$id)
+                        ->leftJoin('course_user','users.id','=','course_user.user_id')
+                        ->select(
+                            'users.nombre',
+                            'users.apellido_p',
+                            'users.apellido_m',
+                            'users.id as id',
+                            'users.sexo as usuario'
+                        )
+                        ->first();
+
+                    return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
+                        'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id), 
+                        'modulo' => $modulo,
+                        'asignacion' => $entrada,
+                        'entrega' => $entrega,
+                    ]);
+                }
             } 
             if($entrega->tipo=='Asignacion'){
                 return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
@@ -1380,7 +1485,7 @@ class CourseController extends Controller
                 'modulo' => $modulo,
                 'asignacion' => $entrada,
                 'entrega' => $entrega,
-            ]);
+                ]);
             }
             else if($entrega->tipo == 'Examen'){
                 dd('soy examen');
