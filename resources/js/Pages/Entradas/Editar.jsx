@@ -8,6 +8,8 @@ import { Inertia } from '@inertiajs/inertia';
 import Alertas from '../../components/common/Alertas';
 
 import '../../styles/crearEntradas.css'
+import '/css/participantes.css'
+import '/css/modulos.css'
 import ModalEliminar from '../../components/common/ModalEliminar';
 
 const Editar = ({ cursos, entry }) => {
@@ -436,12 +438,17 @@ const Editar = ({ cursos, entry }) => {
 
     return (
         <>
-            <div className="container">
+            <div className="">
                 <div className="row">
                     <div className="col s12">
-                        <div className="card">
+                        <div className="card"> 
                             <div className="card-content card-entradas">
-                                <span className="card-title">AGREGAR ENTRADA</span>
+                                <div className="col s12 m9 l10 xl10 card-title left" style={{marginTop:"15px","padding":"0px 0px 0px 0px","display":"flex","alignItems":"center"}}>
+                                    {/* regresar */}
+                                    <InertiaLink  href={route('cursos')}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
+                                    EDITAR ENTRADA
+                                </div>
+                                {/* <span className="card-title">EDITAR ENTRADA</span> */}
                                 <Alertas />
                                 <form onSubmit={handleSubmit}>
                                     <div className="row">
@@ -960,7 +967,7 @@ const Editar = ({ cursos, entry }) => {
                                     <div className="row" style={{ marginBottom: "0px" }}>
                                         <div className="col s12" style={{ display: "flex" }}>
                                             <button data-target="modalEliminar" type="button" className="center-align modal-trigger" style={{ "border": "none", "backgroundColor": "transparent", "color": "#515B60", "cursor": "pointer", marginLeft: "0px", marginRight: "auto" }}><i className="material-icons">delete</i></button>
-                                            <button className="btn waves-effect waves-light btn-submit" type="submit" name="action">Agregar
+                                            <button className="btn waves-effect waves-light btn-submit" type="submit" name="action">Guardar
                                                 <i className="material-icons right">save</i>
                                             </button>
                                         </div>
