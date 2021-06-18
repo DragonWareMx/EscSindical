@@ -1215,6 +1215,48 @@ class CourseController extends Controller
         }
     }
 
+    public function asignacionEntrega($id,$mid,$pid,$eid)
+    {
+        //VERIFICA EL ROL DEL USUARIO
+        if (Auth::user()->roles[0]->name == 'Ponente') {
+            \Gate::authorize('haveaccess', 'ponente.perm');
+
+            //Verificar que el ponente sea dueño del curso
+            $curso_teacher=Course::where('id',$id)->first('teacher_id');
+            if(Auth::id() != $curso_teacher->teacher_id){
+                return abort(403);
+            }
+
+            //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
+            $modulo = Module::findOrFail($mid);
+
+            //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if(!$modulo){
+                return abort(404);
+            }
+
+            // Buscar la asignacion
+            $entrada=Entry::with('files:archivo,entry_id')->findOrFail($pid);
+
+            //verificar que la entrada sea asingacion o examen
+
+            //verificar que pertenezca al modulo
+
+            //si el usuario es ponente...
+                //verificar que el curso sea suyo
+            //si el usuario es estudiante...
+                //verificar que este registrado en el curso
+
+            //faltra tratar el $eid, id de la entrada
+
+            return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
+                'curso' => Course::findOrFail($id),
+                'modulo' => $modulo,
+                'asignacion' => $entrada,
+            ]);
+        }
+    }
+    
     public function entregarAsignacion($id, $mid, $pid, Request $request){
         \Gate::authorize('haveaccess', 'alumno.perm');
 
@@ -1353,29 +1395,32 @@ class CourseController extends Controller
             //Ahora buscar la entrega del alumno
             $entrega=Entry::where('entries.id',$pid)
                 ->leftJoin('entry_user','entries.id','=','entry_user.entry_id')
+                ->leftJoin('users','entry_user.user_id','=','users.id')
+                ->where('users.id',$eid)
                 ->where('entry_user.user_id',$eid)
-                ->select('entry_user.*','entries.tipo')
+                ->select(
+                    'entry_user.*',
+                    'entries.tipo',
+                    'users.nombre as nombre',
+                    'users.apellido_p',
+                    'users.apellido_m',
+                )
                 ->first();
             //si no encuentra la entrega algo anda mal y se cancela todo amigos    
             if(!$entrega){
                 return abort(404);
             } 
-            dd($entrega);  
-            //verificar que la entrada sea asingacion o examen
-
-            //verificar que pertenezca al modulo
-
-            //si el usuario es ponente...
-                //verificar que el curso sea suyo
-            //si el usuario es estudiante...
-                //verificar que este registrado en el curso
-
-            //faltra tratar el $eid, id de la entrada
-            return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
+            if($entrega->tipo=='Asignacion'){
+                return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
                 'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id), 
                 'modulo' => $modulo,
                 'asignacion' => $entrada,
+                'entrega' => $entrega,
             ]);
+            }
+            else if($entrega->tipo == 'Examen'){
+                dd('soy examen');
+            }       
         }
     }
 

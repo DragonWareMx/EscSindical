@@ -26,7 +26,7 @@ function cancelar(){
 }
 
 
-const AsignacionEntrega = ({curso, modulo, asignacion}) => {
+const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
     const { auth } = usePage().props;
 
     useEffect(() => {
@@ -56,13 +56,58 @@ const AsignacionEntrega = ({curso, modulo, asignacion}) => {
         return `${day} de ${monthNames[monthIndex]} de ${year} a las ${hour}:${minutes} ${formato}`;
     }
 
+    // / funcion para calcular el estatus de la entrega realizada o algo así
+    function realizadaEstatus(fecha_entrega,entregado){
+        const entrega=new Date(fecha_entrega);
+        const fecha = new Date(entregado);
+
+        if(fecha <= entrega){
+        return 'ENVIADA A TIEMPO'
+        }
+        else{
+        return 'ENVIADA CON RETRASO'
+        }
+    }
+
+    //errores de la validacion de laravel
+    const { errors } = usePage().props
+
+    //valores para formulario
+    const [values, setValues] = useState({
+        calificacion: "",
+        comentarios: "",
+    })
+
+    //actualiza los hooks cada vez que se modifica un input
+    function handleChange(e) {
+        const key = e.target.id;
+        const value = e.target.value
+        setValues(values => ({
+            ...values,
+            [key]: value,
+        }))
+    }
+
+    //manda el forumulario
+    function handleSubmit(e) {
+        e.preventDefault()
+        Inertia.post(route('entrada.create'), values,
+            {
+                onError: () => {
+                    // Inertia.reload({ only: ['cursos'], data: { regime: values.regimen } })
+                }
+            }
+        )
+    }
+
+    
     return (
         <>
             <div className="row">
                 {/* NOMBRE DEL MODULO */}
                 <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
                     <InertiaLink  href={route('cursos.asignacion', [curso.id, modulo.id, asignacion.id])}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
-                    MÓDULO. {modulo.nombre}
+                    MÓDULO {modulo.numero}. {modulo.nombre}
                 </div>
 
                     {/* Recuadro de la asignacion */}
@@ -80,43 +125,59 @@ const AsignacionEntrega = ({curso, modulo, asignacion}) => {
                     
                     <div className="col s12 padding-0px" style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center","marginTop":"15px"}}>
                         <img src={"/img/avatar1.png"} className="img-td-entregas" />
-                        <InertiaLink href="#!" className="link-profile-e">Oscar André Huerta García</InertiaLink>
+                        <InertiaLink href="#!" className="link-profile-e">{entrega.nombre} {entrega.apellido_p} {entrega.apellido_m}</InertiaLink>
                     </div>
 
                     {/* fecha del envio */}
-                    <div className="col s12 txt-date-as padding-0px" style={{"marginTop":"10px"}}>Fecha de envío 00/00/00 a las 00:00 am</div>
+                    <div className="col s12 txt-date-as padding-0px" style={{"marginTop":"10px"}}>{entrega.created_at && "Fecha de entrega " + transformaFecha(entrega.created_at)}</div>
                     
-                    <div className="td-estatus col s12 padding-0px" style={{"color":"#41AB59", "marginTop":"5px"}}>ENVIADA A TIEMPO</div>
+                    <div className='td-estatus col s12 padding-0px' style={{"color": asignacion.fecha_de_entrega >= entrega.created_at ?"#41AB59" : "#ffb90a", "marginTop":"5px"}}>{realizadaEstatus(asignacion.fecha_de_entrega, entrega.created_at)}</div>
                     {/* Enviada con retraso #134E39 */}
-                    {/* Sin enviar 1E1E1E */}
 
-                    {/* Archivos enviados */}
-                    <div className="col s12 padding-0px file-entrega">
-                        <i className="material-icons tiny" style={{"marginRight":"5px"}}>description</i>
-                        <InertiaLink href="#!" className="file-entregaLink">Nombre del archivo.pdf</InertiaLink>
-                    </div>
-                    <div className="col s12 padding-0px file-entrega">
-                        <i className="material-icons tiny" style={{"marginRight":"5px"}}>description</i>
-                        <InertiaLink href="#!" className="file-entregaLink">Nombre del archivo.pdf</InertiaLink>
-                    </div>
+                    {/* Archivo enviado */}
+                    {entrega.archivo &&
+                        <div className="col s12 padding-0px file-entrega">
+                            <i className="material-icons tiny" style={{"marginRight":"5px"}}>description</i>
+                            <a href={"/storage/entregas_asignaciones/"+entrega.archivo} target="_blank" className="file-entregaLink">.pdf</a>
+                        </div>
+                    }
 
                     {/* Comentarios, si no hay no se muestra esta parte */}
-                    <div className="col s12 txt-status-as">COMENTARIOS</div>
-                    <div className="col s12 txt-comentariosE padding-0px">Comentarios de envío lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.</div>
+                    {entrega.Comentario &&
+                        <>
+                            <div className="col s12 txt-status-as">COMENTARIOS</div>
+                            <div className="col s12 txt-comentariosE padding-0px">{entrega.Comentario}</div>
+                        </>
+                    }
                 
                     {/* Retroalimentación */}
                     <div className="col s12 txt-status-as">RETROALIMENTACIÓN</div>
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificación</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus">Sin revisar</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">
+                            {entrega.calificacion ?
+                                entrega.calificacion + '/' + asignacion.max_calif :
+                                'Sin calificar / ' + asignacion.max_calif
+                            }
+                        </div>
                     </div>
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificado el</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus">-</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">
+                            {entrega.fecha_calif ?
+                                transformaFecha(entrega.fecha_calif) :
+                                '-'
+                            }
+                        </div>
                     </div>
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Observaciones</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus">-</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">
+                            {entrega.comentario_retroalimentacion ?
+                                entrega.comentario_retroalimentacion :
+                                '-'
+                            }
+                        </div>
                     </div>
 
                     <div className="col s12 right paddingRight-0px" id="btn-calificar">
@@ -130,8 +191,8 @@ const AsignacionEntrega = ({curso, modulo, asignacion}) => {
                     <form className="col s12 padding-0px paddingRight-0px" id="div-calificar" style={{"display":"none", "marginTop":"30px"}}>
 
                         <div class="input-field col s12 padding-0px paddingRight-0px">
-                                <input id="grade" type="text" class="validate form-control" name="grade"  required />
-                                <label for="grade">Calificación obtenida</label> 
+                            <input id="calificacion" name="calificacion" type="text" className={errors.calificacion ? "validate form-control invalid" : "validate form-control"}  value={values.calificacion} onChange={handleChange} required />
+                            <label for="calificacion">Calificación obtenida</label> 
                         </div>
 
                         {/* Agregar comentarios */}
