@@ -31,7 +31,7 @@ function cancelar(){
 }
 
 
-const Asignacion = ({curso, modulo, asignacion}) => {
+const Asignacion = ({curso, modulo, asignacion, alumnos, nAlumnos, nEntregas}) => {
     //errores de la validacion de laravel
     const { errors } = usePage().props
     //errores de la validacion de laravel
@@ -206,6 +206,20 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             return true
     }
 
+    function bEstatus(fechaEntrega, fechaProgramada){
+        //fecha actual
+        var hoy = new Date(fechaEntrega);
+        //fecha de entrega
+        var entrega = new Date(fechaProgramada);
+
+        const total = Date.parse(entrega) - Date.parse(hoy);
+
+        if(total < 0)
+            return false
+        else
+            return true
+    }
+
     //manda el forumulario
     function handleSubmit(e) {
         e.preventDefault()
@@ -242,6 +256,10 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             divsToHide[i].style.visibility = "visible"; // or
             divsToHide[i].style.display = "flex"; // depending on what you're doing
         }
+    }
+
+    function verEntrega(e){
+
     }
     
     return (
@@ -293,23 +311,27 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                 {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Ponente" &&
                     <>
                     {/* VISTA PARA EL PONENTE */}
-                    <div className="col s12 txt-status-as">ESTATUS DE LA ASIGNACIÓN</div>
 
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus estatus-red estatus-bolder">Cerrado</div>
+                        <div className={pendienteEstatus(asignacion.fecha_de_entrega, false) == "Pendiente" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-green" : "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-red"}>{pendienteEstatus(asignacion.fecha_de_entrega, false)}</div>
                     </div>
+
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de entrega</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus">30 de Abril de 2021 a las 15:03</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">{transformaFecha(asignacion.fecha_de_entrega)}</div>
                     </div>
+
+                    {bTiempoRestante(asignacion.fecha_de_entrega) &&
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Tiempo restante</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus">0 minutos</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">{tiempoRestante(asignacion.fecha_de_entrega)}</div>
                     </div>
+                    }
+
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Total de entregas</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus">45/48 entregas</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">{nEntregas}/{nAlumnos} entregas</div>
                     </div>
 
                     <div className="col s12 txt-status-as">ENTREGAS</div>
@@ -325,24 +347,40 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                         </thead>
 
                         <tbody>
-                        <tr>
-                            <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}><img src={"/img/avatar1.png"} className="img-td-entregas" />Oscar André Huerta García</td>
-                            <td className="td-estatus" style={{"color":"#41AB59"}}>ENVIADA A TIEMPO</td>
-                            <td className="td-estatus">SIN REVISAR</td>
-                            <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>25/07/21 11:59</td>
+                        {alumnos && alumnos.length > 0 && alumnos.map(alumno => (
+                        <tr key={alumno.id} onClick={verEntrega}>
+                            <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}>
+                                <img src={alumno.foto ? "/storage/fotos_perfil/"+alumno.foto : "/storage/fotos_perfil/avatar1.jpg"} className="img-td-entregas" />
+                                {alumno.nombre} {alumno.apellido_p} {alumno.apellido_m}
+                            </td>
+                            {(alumno.entries && alumno.entries.length > 0) ?
+                                <>
+                                    {(alumno.entries[0].pivot.Comentario || alumno.entries[0].pivot.archivo) ?
+                                        bEstatus(alumno.entries[0].pivot.created_at ,asignacion.fecha_de_entrega) ?
+                                            <td className="td-estatus" style={{"color":"#41AB59"}}>ENVIADA A TIEMPO</td>
+                                        :
+                                            <td className="td-estatus" style={{"color":"#134E39"}}>ENVIADA CON RETRASO</td>
+                                    :
+                                        <td className="td-estatus" style={{"color":"#D3766A"}}>SIN ENVIAR</td>
+                                    }
+
+                                    {(alumno.entries[0].pivot.calificacion || alumno.entries[0].pivot.calificacion == 0) ?
+                                        <td className="td-estatus">{alumno.entries[0].pivot.calificacion} {asignacion.max_calif && "/"+asignacion.max_calif}</td>
+                                    :
+                                        <td className="td-estatus">SIN REVISAR</td>
+                                    }
+                                    <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>{transformaFecha(alumno.entries[0].pivot.created_at)}</td>
+                                </>
+                            :
+                                <>
+                                    <td className="td-estatus" style={{"color":"#D3766A"}}>SIN ENVIAR</td>
+                                    <td className="td-estatus">SIN REVISAR</td>
+                                    <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>-</td>
+                                </>
+                            }
                         </tr>
-                        <tr>
-                            <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}><img src={"/img/avatar2.png"} className="img-td-entregas" />José Agustín Aguilar Solórzano de Huerta</td>
-                            <td className="td-estatus" style={{"color":"#134E39"}}>ENVIADA CON RETRASO</td>
-                            <td className="td-estatus">SIN REVISAR</td>
-                            <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>25/07/21 11:59</td>
-                        </tr>
-                        <tr>
-                            <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}><img src={"/img/avatar3.png"} className="img-td-entregas" />Leopoldo Fernando Lemus Sanchez</td>
-                            <td className="td-estatus" style={{"color":"#D3766A"}}>SIN ENVIAR</td>
-                            <td className="td-estatus">0/100</td>
-                            <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>-</td>
-                        </tr>
+                        ))
+                        }
                         </tbody>
                     </table>
                     </>
@@ -384,7 +422,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
                                 {asignacion.users && asignacion.users.length > 0 ?
                                 asignacion.users[0].pivot.calificacion ?
-                                    asignacion.users[0].pivot.calificacion
+                                    "Calificado"
                                     :
                                     "Sin calificar"
                                 :
@@ -526,42 +564,39 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             }
                         </>
                         }
+                        {/* Retroalimentación, calificado */}
+                        {asignacion.users && asignacion.users.length > 0 &&
+                        <>
+                            {asignacion.max_calif &&
+                            <>
+                                {(asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion == 0) &&
+                                    <div className="col s12 padding-0px row-extatus">
+                                        <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificación</div>
+                                        <div className="col s12 m9 l9 xl9 txt-content-estatus">{asignacion.users[0].pivot.calificacion}/{asignacion.max_calif}</div>
+                                    </div>
+                                }
+                            </>
+                            }
+
+                            {asignacion.users[0].pivot.fecha_calif &&
+                            <div className="col s12 padding-0px row-extatus">
+                                <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificado el</div>
+                                <div className="col s12 m9 l9 xl9 txt-content-estatus">{transformaFecha(asignacion.users[0].pivot.fecha_calif)}</div>
+                            </div>
+                            }
+
+                            {asignacion.users[0].pivot.comentario_retroalimentacion &&
+                            <div className="col s12 padding-0px row-extatus">
+                                <div className="col s12 m3 l3 xl3 txt-title-estatus">Comentarios</div>
+                                <div className="col s12 m9 l9 xl9 txt-content-estatus">
+                                    {asignacion.users[0].pivot.comentario_retroalimentacion}
+                                </div>
+                            </div>
+                            }
+                        </>
+                        } 
                     </>   
                 }
-
-
-
-                {/* Retroalimentación, calificado */}
-                {asignacion.users && asignacion.users.length > 0 &&
-                <>
-                {asignacion.max_calif &&
-                <>
-                    {(asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion == 0) &&
-                        <div className="col s12 padding-0px row-extatus">
-                            <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificación</div>
-                            <div className="col s12 m9 l9 xl9 txt-content-estatus">{asignacion.users[0].pivot.calificacion}/{asignacion.max_calif}</div>
-                        </div>
-                    }
-                </>
-                }
-
-                {asignacion.users[0].pivot.fecha_calif &&
-                <div className="col s12 padding-0px row-extatus">
-                    <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificado el</div>
-                    <div className="col s12 m9 l9 xl9 txt-content-estatus">{transformaFecha(asignacion.users[0].pivot.fecha_calif)}</div>
-                </div>
-                }
-
-                {asignacion.users[0].pivot.comentario_retroalimentacion &&
-                <div className="col s12 padding-0px row-extatus">
-                    <div className="col s12 m3 l3 xl3 txt-title-estatus">Comentarios</div>
-                    <div className="col s12 m9 l9 xl9 txt-content-estatus">
-                        {asignacion.users[0].pivot.comentario_retroalimentacion}
-                    </div>
-                </div>
-                }
-                </>
-                } 
             </div>
 
             <ModalEliminar url={route('cursos.asignacion.cancelar', [curso.id, modulo.id, asignacion.id])} nombre="" tipo="registro de asignación" />
