@@ -87,7 +87,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
             {/* flechas para navegar */}
             <div className="col s3 m1 l1 center-align" style={{"marginTop":"16px"}}>
               {/* modulo anterior */}
-              { anterior!=null &&
+              { anterior!=null  &&
                 <InertiaLink href={route('cursos.modulo', [curso.id, anterior.id] )} className="tooltipped" data-position="top" data-tooltip="Anterior">
                   <i className="material-icons tiny" style={{"marginRight":"5px","color":"#134E39","fontSize":"22px"}}>navigate_before</i>
                 </InertiaLink>

@@ -25,6 +25,7 @@ const ModulosConfig = ({curso}) => {
         var sortable = Sortable.create(el,{
             handle: '.my-handle',
             animation: 150,
+            sort: false,
             group: "localStorage-example",
             store: {
                 /**
@@ -44,7 +45,7 @@ const ModulosConfig = ({curso}) => {
                 set: function (sortable) {
                     var order = sortable.toArray();
                     localStorage.setItem(sortable.options.group.name, order.join('|'));
-                    console.log(order)
+                    //console.log(order)
                     Inertia.post(route('cursos.modulos.order',curso.id), {order:order});
                 }
             }
@@ -66,17 +67,18 @@ const ModulosConfig = ({curso}) => {
                     MÓDULOS
                 </div>
             </div>
-            {curso.modules['0'] ? 
-                <ul id="items" className="col s12">
+            <ul id="items" className="col s12">
+            {curso.modules && curso.modules.length>0 && 
+                <>
                     {curso.modules.map((modulo) =>
-                        <li data-id={modulo.id} key={modulo.id} className="valign-wrapper">
-                            {/* solo se muestra el icono cuando se le da al boton de editar */}
+                        <li data-id={modulo.numero} key={modulo.id} className="valign-wrapper">
+                            {/* icono para mover el modulo */}
                             <span className="material-icons my-handle">drag_indicator</span>
 
                             <div className="col s12 div-modulo-config">
                                 <div className="col s12">
                                     <div className="div-info-modulo-c">
-                                        <InertiaLink href={route('cursos.modulo',[curso.id,modulo.id])} className="col s12 m11 l11 xl11 txt-titulo-modulo-card">{modulo.nombre}</InertiaLink>
+                                        <InertiaLink href={route('cursos.modulo',[curso.id,modulo.id])} className="col s12 m11 l11 xl11 txt-titulo-modulo-card">Módulo {modulo.numero}.{modulo.nombre}</InertiaLink>
                                         <div className="col s12 m1 l1 xl1"><a  className="dropdown-trigger right" data-target={'dropdown-option-module'+modulo.id}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                                         {/* Dropdown modulos */}
                                         <ul id={'dropdown-option-module'+modulo.id} className='dropdown-content dropdown_LC'>
@@ -92,10 +94,12 @@ const ModulosConfig = ({curso}) => {
                             <ModalEliminar nombre={modulo.nombre} tipo={'modulo'} url = {route('module.delete', modulo.id)}/>
                         </li>
                     )}
-                </ul>
-            :
+                </>
+            }
+            {curso.modules && curso.modules.length==0 &&
                 <p className="col s12 text-ins-module">Aún no hay módulos en este curso.</p>
             }
+            </ul>
 
 
             {/* esto es una prueba */}
