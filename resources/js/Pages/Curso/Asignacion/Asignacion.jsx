@@ -364,7 +364,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             }
                         </div>
                         <div className="col s12 padding-0px row-extatus">
-                            <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de entrega</div>
+                            <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de {asignacion.tipo == "Examen" ? "cierre" : "entrega"}</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">{asignacion.fecha_de_entrega && transformaFecha(asignacion.fecha_de_entrega)}</div>
                         </div>
                         {asignacion.permitir_envios_retrasados ? 
@@ -393,6 +393,8 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             </div>
                         </div>
                         {/* Para cuando ya se haya entregado-------------- */}
+
+                        {asignacion.tipo == 'Asignacion' &&
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Archivos enviados</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
@@ -406,6 +408,9 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             }
                             </div>
                         </div>
+                        }
+
+                        {asignacion.tipo == 'Asignacion' &&
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Comentarios del envío</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
@@ -419,14 +424,13 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                                 }
                             </div>
                         </div>
+                        }
+
                         {/*si la asignacion no se ha entregado o si se entrego pero no tiene calificacion */}
-                        {(asignacion.permitir_envios_retrasados || bTiempoRestante(asignacion.fecha_de_entrega)) && (asignacion.users && asignacion.users.length == 0 || (asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion != 0))) &&
+                        {asignacion.tipo == "Asignacion" && (asignacion.permitir_envios_retrasados || bTiempoRestante(asignacion.fecha_de_entrega)) && (asignacion.users && asignacion.users.length == 0 || (asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion != 0))) &&
                         <>
                             {asignacion.users && asignacion.users.length == 0 &&
                             <>
-                            <div className="col s12" style={{width: "100%", margin:"0px", marginTop: "10px"}}>
-                                <Alertas />
-                            </div>
 
                             {(errors.archivos || errors.comentario) &&
                                 <div className="col s12" style={{width: "100%", margin:"0px", marginTop: "10px"}}>
@@ -506,6 +510,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             </div>
                             </>
                             }
+
                             {asignacion.users && asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion && asignacion.users[0].pivot.calificacion != 0) &&
                             <div className="col s12 right container-btns-as paddingRight-0px">
                                 {/* Enviado pero no calificado */}
