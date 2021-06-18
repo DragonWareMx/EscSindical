@@ -19,6 +19,7 @@ class CreateNotificationsTable extends Migration
             $table->boolean('visto')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('link')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
