@@ -1011,6 +1011,21 @@ class CourseController extends Controller
         ]);
     }
 
+    public function calificaciones($id)
+    {
+        Gate::authorize('haveaccess', 'ponente.perm');
+        //verificar que el ponente sea dueño del curso
+        $curso_teacher=Course::where('id',$id)->first('teacher_id');
+        if(Auth::id() != $curso_teacher->teacher_id){
+            return abort(403);
+        }
+        $curso = Course::findOrFail($id);
+
+        return Inertia::render('Curso/Calificaciones', [
+            'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id)
+        ]);
+    }
+
     public function solicitudes($id)
     {
         \Gate::authorize('haveaccess', 'ponente.perm');
@@ -1150,7 +1165,7 @@ class CourseController extends Controller
                 abort(403);
 
             //Buscar el modulo con el mid
-            $modulo = Module::select('id', 'nombre', 'course_id')->findOrFail($mid);
+            $modulo = Module::select('id', 'nombre', 'course_id','numero')->findOrFail($mid);
 
             //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
             if (!$modulo) {
@@ -1168,7 +1183,7 @@ class CourseController extends Controller
                 'files:archivo,entry_id',
                 'users' => function ($entrega) {
                     return $entrega->where('entry_user.user_id', Auth::user()->id)->select('users.id')
-                        ->withPivot('calificacion', 'archivo', 'fecha', 'editado', 'Comentario', 'fecha_calif', 'comentario_retroalimentacion', 'created_at', 'updated_at');
+                        ->withPivot('calificacion', 'archivo', 'fecha', 'editado', 'Comentario', 'fecha_calif', 'comentario_retroalimentacion', 'nombre_original_archivo', 'created_at', 'updated_at');
                 }
             ])->select('id', 'titulo', 'created_at', 'contenido', 'tipo', 'module_id', 'permitir_envios_retrasados', 'fecha_de_entrega', 'max_calif')->findOrFail($pid);
 
@@ -1197,6 +1212,121 @@ class CourseController extends Controller
             \Gate::authorize('haveaccess', 'admin.perm');
         } else {
             abort(403);
+        }
+    }
+
+    public function entregarAsignacion($id, $mid, $pid, Request $request){
+        \Gate::authorize('haveaccess', 'alumno.perm');
+
+        //VALIDAMOS DATOS
+        $validated = $request->validate([
+            'archivos' => 'nullable:comentario|file',
+            'comentario' => 'required_without:archivos',
+        ]);
+
+        $archivos = null;
+        //COMIENZA TRANSACCIÓN
+        DB::beginTransaction();
+
+        try {
+
+            //busca el curso
+            $curso = Course::findOrFail($id);
+
+            //Si no existe el curso quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$curso) {
+                return abort(404);
+            }
+
+            //verifica que el usuario auth sea alumno del curso
+            $validador = false;
+            foreach (Auth::user()->courses()->get() as $cursoA) {
+                if ($cursoA->id == $curso->id)
+                    $validador = true;
+            }
+            if (!$validador)
+                abort(403);
+
+            //Buscar el modulo con el mid
+            $modulo = Module::findOrFail($mid);
+
+            //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$modulo) {
+                return abort(404);
+            }
+
+            //verifica que el modulo pertenezca al curso
+            if ($modulo->course_id != $curso->id) {
+                //si no está lo mandamos a la vista informacion -  solo si es alumno
+                abort(403);
+            }
+
+            // Buscar la asignacion
+            $entrada = Entry::findOrFail($pid);
+
+
+            //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$entrada) {
+                abort(404);
+            }
+
+            //verificar que la entrada sea asingacion
+            if ($entrada->tipo != 'Asignacion') {
+                abort(403);
+            }
+
+            //verifica que pertenezca al modulo
+            if ($entrada->module_id != $modulo->id) {
+                abort(403);
+            }
+
+            //verifica que no haya otra entrega ni este calificado
+            foreach ($entrada->users as $tarea) {
+                if($tarea->id == Auth::user()->id)
+                    return \Redirect::back()->with('error', 'Ya no puedes volver a enviar la asignación, primero cancela el envío anterior.');
+            }
+
+            //verifica que la fecha actual no se haya pasado en caso que no se acepten entregas tardías
+            if(!$entrada->permitir_envios_retrasados && $entrada->fecha_de_entrega){
+                $hoy = \Carbon\Carbon::now();
+                $fechaEntrega = \Carbon\Carbon::create($entrada->fecha_de_entrega);
+                if(!$hoy->lte($fechaEntrega))
+                    return \Redirect::back()->with('error', 'Ya no puedes enviar la asignación.');
+            }
+
+            //se crea y actualiza la asignacion
+            if($request->file('archivos')){
+                //guarda el archivo
+                $archivos = $request->file('archivos')->store('public/entregas_asignaciones');
+                $entrada->users()->sync([Auth::user()->id => ['Comentario' => $request->comentario, 'archivo' => $request->file('archivos')->hashName(), 'nombre_original_archivo' => $request->file('archivos')->getClientOriginalName()]]);
+            }
+            else{
+                $entrada->users()->sync([Auth::user()->id => ['Comentario' => $request->comentario]]);
+            }
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'create';
+            $newLog->user_id = Auth::id();
+            $newLog->accion = "{}";
+
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha entregado la asignacion de id: ' . $entrada->id;
+
+            // //SE GUARDA EL LOG
+            $newLog->save();
+
+            DB::commit();
+
+            return \Redirect::back()->with('success', 'Asignación entregada.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $entrada->users()->detach(Auth::user()->id);
+            if($archivos)
+            {
+                \Storage::delete($archivos);
+            }
+            return \Redirect::back()->with('error', 'No fue posible enviar la asignación, vuelve a intentarlo.');
         }
     }
 

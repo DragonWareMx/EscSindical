@@ -78,6 +78,8 @@ Route::get('/cursos/{id}/modulo/{mid}', [App\Http\Controllers\CourseController::
 
 // ASIGNACION
 Route::get('/cursos/{id}/modulo/{mid}/asignacion/{pid}', [App\Http\Controllers\CourseController::class, 'asignacion'])->name('cursos.asignacion');
+Route::post('/cursos/{id}/modulo/{mid}/asignacion/{pid}', [App\Http\Controllers\CourseController::class, 'entregarAsignacion'])->name('cursos.asignacion.entregar');
+Route::delete('/cursos/{id}/modulo/{mid}/asignacion/{pid}', [App\Http\Controllers\EntryController::class, 'cancelarEntrega'])->name('cursos.asignacion.cancelar');
 Route::get('/cursos/{id}/modulo/{mid}/asignacion/{pid}/entrega/{eid}', [App\Http\Controllers\CourseController::class, 'asignacionEntrega'])->name('cursos.asignacion.entrega');
 
 
@@ -89,6 +91,7 @@ Route::get('/cursos/{id}/mochila', [App\Http\Controllers\CourseController::class
 Route::get('/cursos/{id}/modulo/{mid}/publicacion/{pid}', [App\Http\Controllers\CourseController::class, 'verPublicacion'])->name('cursos.publicacion');
 Route::post('/cursos/{id}/inscribir', [App\Http\Controllers\CourseController::class, 'inscribir'])->name('cursos.inscribir');
 Route::get('/cursos/{id}/estadisticas', [App\Http\Controllers\CourseController::class, 'estadisticas'])->name('cursos.estadisticas');
+Route::get('/cursos/{id}/calificaciones', [App\Http\Controllers\CourseController::class, 'calificaciones'])->name('cursos.calificaciones');
 
 //----Solicitudes
 Route::post('/cursos/{id}/solicitudes', [App\Http\Controllers\RequestController::class, 'aprobar'])->name('solicitudes.aprobar');
