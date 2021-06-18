@@ -1214,7 +1214,7 @@ class CourseController extends Controller
             abort(403);
         }
     }
-
+    
     public function entregarAsignacion($id, $mid, $pid, Request $request){
         \Gate::authorize('haveaccess', 'alumno.perm');
 
@@ -1335,12 +1335,6 @@ class CourseController extends Controller
         //VERIFICA EL ROL DEL USUARIO
         if (Auth::user()->roles[0]->name == 'Ponente') {
             \Gate::authorize('haveaccess', 'ponente.perm');
-
-            //Verificar que el ponente sea dueño del curso
-            $curso_teacher=Course::where('id',$id)->first('teacher_id');
-            if(Auth::id() != $curso_teacher->teacher_id){
-                return abort(403);
-            }
 
             //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
             $modulo = Module::where('id',$mid)->where('course_id',$id)->first();

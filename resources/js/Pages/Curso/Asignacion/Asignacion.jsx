@@ -112,7 +112,6 @@ const Asignacion = ({curso, modulo, asignacion}) => {
 
             let total = Date.parse(fecha) - Date.parse(entrega);
 
-            let seconds = 0;
             let minutes = 0;
             let hours = 0;
             let days =0;
@@ -125,9 +124,6 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                 antes = " de retraso"
             }
 
-            if(( (total/1000) % 60 ) > 0){
-                seconds = Math.floor( (total/1000) % 60 );
-            }
             if(( (total/1000/60) % 60 ) > 0){
                 minutes = Math.floor( (total/1000/60) % 60 );
             }
@@ -150,7 +146,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             else
                 dias = " días y "
 
-            return retrasada + days + dias + hours + horas + minutes + " minutos " + seconds + " segundos " + antes
+            return retrasada + days + dias + hours + horas + minutes + " minutos " + antes
         }
         else{
             //fecha actual
@@ -158,37 +154,41 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             //fecha de entrega
             var entrega = new Date(fechaEntrega);
 
-            const total = Date.parse(entrega) - Date.parse(hoy);
+            let total = Date.parse(entrega) - Date.parse(hoy);
 
-            let hours = Math.floor( (total/(1000*60*60)) % 24 );
-            let days = Math.floor( total/(1000*60*60*24) );
-            const seconds = Math.floor( (total/1000) % 60 );
-            const minutes = Math.floor( (total/1000/60) % 60 );
+            let minutes = 0;
+            let hours = 0;
+            let days =0;
+            let retrasada = ""            
 
-            let retrasada = ""
-
-            if(hours < 0){
-                hours *= -1
+            if(total < 0){
+                total *= -1
                 retrasada = "Retrasada por "
             }
-            if(days < 0){
-                days *= -1
-                retrasada = "Retrasada por "
+
+            if(( (total/1000/60) % 60 ) > 0){
+                minutes = Math.floor( (total/1000/60) % 60 );
+            }
+            if(( (total/(1000*60*60)) % 24 ) > 0){
+                hours = Math.floor( (total/(1000*60*60)) % 24 );
+            }
+            if(( total/(1000*60*60*24) ) > 0){
+                days =  Math.floor( total/(1000*60*60*24) );
             }
 
             let horas
             let dias
             if(hours == 1)
-                horas = " hora"
+                horas = " hora "
             else
-                horas = " horas"
+                horas = " horas "
 
             if(days == 1)
                 dias = " día y "
             else
                 dias = " días y "
 
-            return retrasada + days + dias + hours + horas
+            return retrasada + days + dias + hours + horas + minutes + " minutos "
         }
     }
 
@@ -364,7 +364,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             }
                         </div>
                         <div className="col s12 padding-0px row-extatus">
-                            <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de entrega</div>
+                            <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de {asignacion.tipo == "Examen" ? "cierre" : "entrega"}</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">{asignacion.fecha_de_entrega && transformaFecha(asignacion.fecha_de_entrega)}</div>
                         </div>
                         {asignacion.permitir_envios_retrasados ? 
@@ -393,6 +393,8 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             </div>
                         </div>
                         {/* Para cuando ya se haya entregado-------------- */}
+
+                        {asignacion.tipo == 'Asignacion' &&
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Archivos enviados</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
@@ -406,6 +408,9 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             }
                             </div>
                         </div>
+                        }
+
+                        {asignacion.tipo == 'Asignacion' &&
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Comentarios del envío</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
@@ -419,14 +424,13 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                                 }
                             </div>
                         </div>
+                        }
+
                         {/*si la asignacion no se ha entregado o si se entrego pero no tiene calificacion */}
-                        {(asignacion.permitir_envios_retrasados || bTiempoRestante(asignacion.fecha_de_entrega)) && (asignacion.users && asignacion.users.length == 0 || (asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion != 0))) &&
+                        {asignacion.tipo == "Asignacion" && (asignacion.permitir_envios_retrasados || bTiempoRestante(asignacion.fecha_de_entrega)) && (asignacion.users && asignacion.users.length == 0 || (asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion != 0))) &&
                         <>
                             {asignacion.users && asignacion.users.length == 0 &&
                             <>
-                            <div className="col s12" style={{width: "100%", margin:"0px", marginTop: "10px"}}>
-                                <Alertas />
-                            </div>
 
                             {(errors.archivos || errors.comentario) &&
                                 <div className="col s12" style={{width: "100%", margin:"0px", marginTop: "10px"}}>
@@ -506,6 +510,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             </div>
                             </>
                             }
+
                             {asignacion.users && asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion && asignacion.users[0].pivot.calificacion != 0) &&
                             <div className="col s12 right container-btns-as paddingRight-0px">
                                 {/* Enviado pero no calificado */}
