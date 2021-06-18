@@ -112,7 +112,6 @@ const Asignacion = ({curso, modulo, asignacion}) => {
 
             let total = Date.parse(fecha) - Date.parse(entrega);
 
-            let seconds = 0;
             let minutes = 0;
             let hours = 0;
             let days =0;
@@ -125,9 +124,6 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                 antes = " de retraso"
             }
 
-            if(( (total/1000) % 60 ) > 0){
-                seconds = Math.floor( (total/1000) % 60 );
-            }
             if(( (total/1000/60) % 60 ) > 0){
                 minutes = Math.floor( (total/1000/60) % 60 );
             }
@@ -150,7 +146,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             else
                 dias = " días y "
 
-            return retrasada + days + dias + hours + horas + minutes + " minutos " + seconds + " segundos " + antes
+            return retrasada + days + dias + hours + horas + minutes + " minutos " + antes
         }
         else{
             //fecha actual
@@ -158,37 +154,41 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             //fecha de entrega
             var entrega = new Date(fechaEntrega);
 
-            const total = Date.parse(entrega) - Date.parse(hoy);
+            let total = Date.parse(entrega) - Date.parse(hoy);
 
-            let hours = Math.floor( (total/(1000*60*60)) % 24 );
-            let days = Math.floor( total/(1000*60*60*24) );
-            const seconds = Math.floor( (total/1000) % 60 );
-            const minutes = Math.floor( (total/1000/60) % 60 );
+            let minutes = 0;
+            let hours = 0;
+            let days =0;
+            let retrasada = ""            
 
-            let retrasada = ""
-
-            if(hours < 0){
-                hours *= -1
+            if(total < 0){
+                total *= -1
                 retrasada = "Retrasada por "
             }
-            if(days < 0){
-                days *= -1
-                retrasada = "Retrasada por "
+
+            if(( (total/1000/60) % 60 ) > 0){
+                minutes = Math.floor( (total/1000/60) % 60 );
+            }
+            if(( (total/(1000*60*60)) % 24 ) > 0){
+                hours = Math.floor( (total/(1000*60*60)) % 24 );
+            }
+            if(( total/(1000*60*60*24) ) > 0){
+                days =  Math.floor( total/(1000*60*60*24) );
             }
 
             let horas
             let dias
             if(hours == 1)
-                horas = " hora"
+                horas = " hora "
             else
-                horas = " horas"
+                horas = " horas "
 
             if(days == 1)
                 dias = " día y "
             else
                 dias = " días y "
 
-            return retrasada + days + dias + hours + horas
+            return retrasada + days + dias + hours + horas + minutes + " minutos "
         }
     }
 
