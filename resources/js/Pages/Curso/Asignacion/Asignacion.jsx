@@ -31,7 +31,7 @@ function cancelar(){
 }
 
 
-const Asignacion = ({curso, modulo, asignacion}) => {
+const Asignacion = ({curso, modulo, asignacion, alumnos, nAlumnos, nEntregas}) => {
     //errores de la validacion de laravel
     const { errors } = usePage().props
     //errores de la validacion de laravel
@@ -112,7 +112,6 @@ const Asignacion = ({curso, modulo, asignacion}) => {
 
             let total = Date.parse(fecha) - Date.parse(entrega);
 
-            let seconds = 0;
             let minutes = 0;
             let hours = 0;
             let days =0;
@@ -125,9 +124,6 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                 antes = " de retraso"
             }
 
-            if(( (total/1000) % 60 ) > 0){
-                seconds = Math.floor( (total/1000) % 60 );
-            }
             if(( (total/1000/60) % 60 ) > 0){
                 minutes = Math.floor( (total/1000/60) % 60 );
             }
@@ -150,7 +146,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             else
                 dias = " días y "
 
-            return retrasada + days + dias + hours + horas + minutes + " minutos " + seconds + " segundos " + antes
+            return retrasada + days + dias + hours + horas + minutes + " minutos " + antes
         }
         else{
             //fecha actual
@@ -158,37 +154,41 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             //fecha de entrega
             var entrega = new Date(fechaEntrega);
 
-            const total = Date.parse(entrega) - Date.parse(hoy);
+            let total = Date.parse(entrega) - Date.parse(hoy);
 
-            let hours = Math.floor( (total/(1000*60*60)) % 24 );
-            let days = Math.floor( total/(1000*60*60*24) );
-            const seconds = Math.floor( (total/1000) % 60 );
-            const minutes = Math.floor( (total/1000/60) % 60 );
+            let minutes = 0;
+            let hours = 0;
+            let days =0;
+            let retrasada = ""            
 
-            let retrasada = ""
-
-            if(hours < 0){
-                hours *= -1
+            if(total < 0){
+                total *= -1
                 retrasada = "Retrasada por "
             }
-            if(days < 0){
-                days *= -1
-                retrasada = "Retrasada por "
+
+            if(( (total/1000/60) % 60 ) > 0){
+                minutes = Math.floor( (total/1000/60) % 60 );
+            }
+            if(( (total/(1000*60*60)) % 24 ) > 0){
+                hours = Math.floor( (total/(1000*60*60)) % 24 );
+            }
+            if(( total/(1000*60*60*24) ) > 0){
+                days =  Math.floor( total/(1000*60*60*24) );
             }
 
             let horas
             let dias
             if(hours == 1)
-                horas = " hora"
+                horas = " hora "
             else
-                horas = " horas"
+                horas = " horas "
 
             if(days == 1)
                 dias = " día y "
             else
                 dias = " días y "
 
-            return retrasada + days + dias + hours + horas
+            return retrasada + days + dias + hours + horas + minutes + " minutos "
         }
     }
 
@@ -197,6 +197,20 @@ const Asignacion = ({curso, modulo, asignacion}) => {
         var hoy = new Date();
         //fecha de entrega
         var entrega = new Date(fechaEntrega);
+
+        const total = Date.parse(entrega) - Date.parse(hoy);
+
+        if(total < 0)
+            return false
+        else
+            return true
+    }
+
+    function bEstatus(fechaEntrega, fechaProgramada){
+        //fecha actual
+        var hoy = new Date(fechaEntrega);
+        //fecha de entrega
+        var entrega = new Date(fechaProgramada);
 
         const total = Date.parse(entrega) - Date.parse(hoy);
 
@@ -242,6 +256,10 @@ const Asignacion = ({curso, modulo, asignacion}) => {
             divsToHide[i].style.visibility = "visible"; // or
             divsToHide[i].style.display = "flex"; // depending on what you're doing
         }
+    }
+
+    function verEntrega(id){
+        Inertia.get(route('cursos.asignacion.entrega', [curso.id, modulo.id, asignacion.id, id]))
     }
     
     return (
@@ -293,23 +311,27 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                 {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Ponente" &&
                     <>
                     {/* VISTA PARA EL PONENTE */}
-                    <div className="col s12 txt-status-as">ESTATUS DE LA ASIGNACIÓN</div>
 
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus estatus-red estatus-bolder">Cerrado</div>
+                        <div className={pendienteEstatus(asignacion.fecha_de_entrega, false) == "Pendiente" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-green" : "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-red"}>{pendienteEstatus(asignacion.fecha_de_entrega, false)}</div>
                     </div>
+
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de entrega</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus">30 de Abril de 2021 a las 15:03</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">{transformaFecha(asignacion.fecha_de_entrega)}</div>
                     </div>
+
+                    {bTiempoRestante(asignacion.fecha_de_entrega) &&
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Tiempo restante</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus">0 minutos</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">{tiempoRestante(asignacion.fecha_de_entrega)}</div>
                     </div>
+                    }
+
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Total de entregas</div>
-                        <div className="col s12 m9 l9 xl9 txt-content-estatus">45/48 entregas</div>
+                        <div className="col s12 m9 l9 xl9 txt-content-estatus">{nEntregas}/{nAlumnos} entregas</div>
                     </div>
 
                     <div className="col s12 txt-status-as">ENTREGAS</div>
@@ -325,24 +347,40 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                         </thead>
 
                         <tbody>
-                        <tr>
-                            <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}><img src={"/img/avatar1.png"} className="img-td-entregas" />Oscar André Huerta García</td>
-                            <td className="td-estatus" style={{"color":"#41AB59"}}>ENVIADA A TIEMPO</td>
-                            <td className="td-estatus">SIN REVISAR</td>
-                            <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>25/07/21 11:59</td>
+                        {alumnos && alumnos.length > 0 && alumnos.map(alumno => (
+                        <tr key={alumno.id} onClick={() => {verEntrega(alumno.id)}}>
+                            <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}>
+                                <img src={alumno.foto ? "/storage/fotos_perfil/"+alumno.foto : "/storage/fotos_perfil/avatar1.jpg"} className="img-td-entregas" />
+                                {alumno.nombre} {alumno.apellido_p} {alumno.apellido_m}
+                            </td>
+                            {(alumno.entries && alumno.entries.length > 0) ?
+                                <>
+                                    {(alumno.entries[0].pivot.Comentario || alumno.entries[0].pivot.archivo) ?
+                                        bEstatus(alumno.entries[0].pivot.created_at ,asignacion.fecha_de_entrega) ?
+                                            <td className="td-estatus" style={{"color":"#41AB59"}}>ENVIADA A TIEMPO</td>
+                                        :
+                                            <td className="td-estatus" style={{"color":"#134E39"}}>ENVIADA CON RETRASO</td>
+                                    :
+                                        <td className="td-estatus" style={{"color":"#D3766A"}}>SIN ENVIAR</td>
+                                    }
+
+                                    {(alumno.entries[0].pivot.calificacion || alumno.entries[0].pivot.calificacion == 0) ?
+                                        <td className="td-estatus">{alumno.entries[0].pivot.calificacion} {asignacion.max_calif && "/"+asignacion.max_calif}</td>
+                                    :
+                                        <td className="td-estatus">SIN REVISAR</td>
+                                    }
+                                    <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>{transformaFecha(alumno.entries[0].pivot.created_at)}</td>
+                                </>
+                            :
+                                <>
+                                    <td className="td-estatus" style={{"color":"#D3766A"}}>SIN ENVIAR</td>
+                                    <td className="td-estatus">SIN REVISAR</td>
+                                    <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>-</td>
+                                </>
+                            }
                         </tr>
-                        <tr>
-                            <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}><img src={"/img/avatar2.png"} className="img-td-entregas" />José Agustín Aguilar Solórzano de Huerta</td>
-                            <td className="td-estatus" style={{"color":"#134E39"}}>ENVIADA CON RETRASO</td>
-                            <td className="td-estatus">SIN REVISAR</td>
-                            <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>25/07/21 11:59</td>
-                        </tr>
-                        <tr>
-                            <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}><img src={"/img/avatar3.png"} className="img-td-entregas" />Leopoldo Fernando Lemus Sanchez</td>
-                            <td className="td-estatus" style={{"color":"#D3766A"}}>SIN ENVIAR</td>
-                            <td className="td-estatus">0/100</td>
-                            <td style={{"fontSize":"13px", "color":"#1E1E1E"}}>-</td>
-                        </tr>
+                        ))
+                        }
                         </tbody>
                     </table>
                     </>
@@ -364,7 +402,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             }
                         </div>
                         <div className="col s12 padding-0px row-extatus">
-                            <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de entrega</div>
+                            <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de {asignacion.tipo == "Examen" ? "cierre" : "entrega"}</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">{asignacion.fecha_de_entrega && transformaFecha(asignacion.fecha_de_entrega)}</div>
                         </div>
                         {asignacion.permitir_envios_retrasados ? 
@@ -384,7 +422,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
                                 {asignacion.users && asignacion.users.length > 0 ?
                                 asignacion.users[0].pivot.calificacion ?
-                                    asignacion.users[0].pivot.calificacion
+                                    "Calificado"
                                     :
                                     "Sin calificar"
                                 :
@@ -393,6 +431,8 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             </div>
                         </div>
                         {/* Para cuando ya se haya entregado-------------- */}
+
+                        {asignacion.tipo == 'Asignacion' &&
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Archivos enviados</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
@@ -406,6 +446,9 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             }
                             </div>
                         </div>
+                        }
+
+                        {asignacion.tipo == 'Asignacion' &&
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Comentarios del envío</div>
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
@@ -419,14 +462,13 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                                 }
                             </div>
                         </div>
+                        }
+
                         {/*si la asignacion no se ha entregado o si se entrego pero no tiene calificacion */}
-                        {(asignacion.permitir_envios_retrasados || bTiempoRestante(asignacion.fecha_de_entrega)) && (asignacion.users && asignacion.users.length == 0 || (asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion != 0))) &&
+                        {asignacion.tipo == "Asignacion" && (asignacion.permitir_envios_retrasados || bTiempoRestante(asignacion.fecha_de_entrega)) && (asignacion.users && asignacion.users.length == 0 || (asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion != 0))) &&
                         <>
                             {asignacion.users && asignacion.users.length == 0 &&
                             <>
-                            <div className="col s12" style={{width: "100%", margin:"0px", marginTop: "10px"}}>
-                                <Alertas />
-                            </div>
 
                             {(errors.archivos || errors.comentario) &&
                                 <div className="col s12" style={{width: "100%", margin:"0px", marginTop: "10px"}}>
@@ -506,6 +548,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             </div>
                             </>
                             }
+
                             {asignacion.users && asignacion.users.length > 0  && (!asignacion.users[0].pivot.calificacion && asignacion.users[0].pivot.calificacion != 0) &&
                             <div className="col s12 right container-btns-as paddingRight-0px">
                                 {/* Enviado pero no calificado */}
@@ -513,50 +556,43 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                                 <a data-target="modalEliminar" className="no-uppercase modal-trigger" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}}>
                                     Cancelar envío
                                 </a>
-                                <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
-                                    Editar
-                                    <i className="material-icons right">edit</i>
-                                </button>
                             </div>
                             }
                         </>
                         }
+                        {/* Retroalimentación, calificado */}
+                        {asignacion.users && asignacion.users.length > 0 &&
+                        <>
+                            {asignacion.max_calif &&
+                            <>
+                                {(asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion == 0) &&
+                                    <div className="col s12 padding-0px row-extatus">
+                                        <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificación</div>
+                                        <div className="col s12 m9 l9 xl9 txt-content-estatus">{asignacion.users[0].pivot.calificacion}/{asignacion.max_calif}</div>
+                                    </div>
+                                }
+                            </>
+                            }
+
+                            {asignacion.users[0].pivot.fecha_calif &&
+                            <div className="col s12 padding-0px row-extatus">
+                                <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificado el</div>
+                                <div className="col s12 m9 l9 xl9 txt-content-estatus">{transformaFecha(asignacion.users[0].pivot.fecha_calif)}</div>
+                            </div>
+                            }
+
+                            {asignacion.users[0].pivot.comentario_retroalimentacion &&
+                            <div className="col s12 padding-0px row-extatus">
+                                <div className="col s12 m3 l3 xl3 txt-title-estatus">Comentarios</div>
+                                <div className="col s12 m9 l9 xl9 txt-content-estatus">
+                                    {asignacion.users[0].pivot.comentario_retroalimentacion}
+                                </div>
+                            </div>
+                            }
+                        </>
+                        } 
                     </>   
                 }
-
-
-
-                {/* Retroalimentación, calificado */}
-                {asignacion.users && asignacion.users.length > 0 &&
-                <>
-                {asignacion.max_calif &&
-                <>
-                    {(asignacion.users[0].pivot.calificacion || asignacion.users[0].pivot.calificacion == 0) &&
-                        <div className="col s12 padding-0px row-extatus">
-                            <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificación</div>
-                            <div className="col s12 m9 l9 xl9 txt-content-estatus">{asignacion.users[0].pivot.calificacion}/{asignacion.max_calif}</div>
-                        </div>
-                    }
-                </>
-                }
-
-                {asignacion.users[0].pivot.fecha_calif &&
-                <div className="col s12 padding-0px row-extatus">
-                    <div className="col s12 m3 l3 xl3 txt-title-estatus">Calificado el</div>
-                    <div className="col s12 m9 l9 xl9 txt-content-estatus">{transformaFecha(asignacion.users[0].pivot.fecha_calif)}</div>
-                </div>
-                }
-
-                {asignacion.users[0].pivot.comentario_retroalimentacion &&
-                <div className="col s12 padding-0px row-extatus">
-                    <div className="col s12 m3 l3 xl3 txt-title-estatus">Comentarios</div>
-                    <div className="col s12 m9 l9 xl9 txt-content-estatus">
-                        {asignacion.users[0].pivot.comentario_retroalimentacion}
-                    </div>
-                </div>
-                }
-                </>
-                } 
             </div>
 
             <ModalEliminar url={route('cursos.asignacion.cancelar', [curso.id, modulo.id, asignacion.id])} nombre="" tipo="registro de asignación" />
