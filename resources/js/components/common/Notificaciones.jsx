@@ -3,6 +3,7 @@ import { usePage } from '@inertiajs/inertia-react';
 import axios from 'axios';
 import { Inertia } from '@inertiajs/inertia'
 import moment from 'moment'
+import { InertiaLink } from '@inertiajs/inertia-react'
 
 import '/css/notificaciones.css'
 
@@ -87,7 +88,7 @@ export default function Notificaciones({ }) {
                         <div className="text">
                             <h4>{not.titulo}</h4>
                             {not.link &&
-                                <p >{not.link}</p>
+                                <p > <InertiaLink href={not.link}>Ver actividad</InertiaLink> </p>
                             }
                             <h5>{moment(not.created_at).fromNow()}</h5>
                         </div>
