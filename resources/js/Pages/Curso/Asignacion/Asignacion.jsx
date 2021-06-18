@@ -14,6 +14,8 @@ import route from 'ziggy-js';
 
 //componentes
 import Alertas from '../../../components/common/Alertas';
+import ModalEliminar from '../../../components/common/ModalEliminar';
+
 
 function tooltip(){
     var elems = document.querySelectorAll('.tooltipped');
@@ -207,7 +209,13 @@ const Asignacion = ({curso, modulo, asignacion}) => {
     //manda el forumulario
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.post(route('cursos.asignacion.entregar', [curso.id,modulo.id, asignacion.id]), values, {preserveScroll: true})
+        Inertia.post(route('cursos.asignacion.entregar', [curso.id,modulo.id, asignacion.id]), values, {preserveScroll: true, 
+            onSuccess: () => {
+            setValues(values => ({
+            ...values,
+            archivos: null,
+            comentario: ""
+        }))}})
     }
 
     function changeArchivo(e){
@@ -267,11 +275,12 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                 <div className="col s12 txt-date-as">{asignacion.created_at && "Publicado el " + transformaFecha(asignacion.created_at)} </div>
 
                 {/* contenido de la asignación, con formato del ckeditor */}
-                <div className="col s12 txt-ejm-as" style={{"marginTop":"15px"}}>{asignacion.contenido && asignacion.contenido}</div>
+                <div className="col s12 txt-ejm-as" style={{"marginTop":"15px"}}>{asignacion.contenido && <div dangerouslySetInnerHTML={{__html: asignacion.contenido}} />}</div>
                 
                 {/* Estatus de la asignación */}
                 <div className="col s12 txt-status-as">ESTATUS DE LA ASIGNACIÓN</div>
 
+                {asignacion.tipo == "Examen" &&
                 <div className="col s12 right paddingRight-0px" id="btn-comenzar">
                     {/* Botón para comenzar examen*/}
                     <InertiaLink href={route('cursos.examen', [curso.id,modulo.id,asignacion.id])} className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
@@ -279,6 +288,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                         <i className="material-icons right">send</i>
                     </InertiaLink>
                 </div>
+                }
 
                 {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Ponente" &&
                     <>
@@ -388,7 +398,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
                             {asignacion.users && asignacion.users.length > 0 ?
                             asignacion.users[0].pivot.archivo ?
-                                <a className="col s12 padding-0px paddingRight-0px" target="_blank" href={"/storage/entregas_asignaciones/"+asignacion.users[0].pivot.archivo} style={{"color":"#5A5A5A","marginBottom":"5px","display":"flex","alignItems":"center"}}>{asignacion.users[0].pivot.archivo}<i className="material-icons tiny" style={{"marginLeft":"5px"}}>description</i></a>
+                                <a className="col s12 padding-0px paddingRight-0px" target="_blank" href={"/storage/entregas_asignaciones/"+asignacion.users[0].pivot.archivo} style={{"color":"#5A5A5A","marginBottom":"5px","display":"flex","alignItems":"center"}}>{asignacion.users[0].pivot.nombre_original_archivo}<i className="material-icons tiny" style={{"marginLeft":"5px"}}>description</i></a>
                                 :
                                 "Sin archivos enviados"
                             :
@@ -500,7 +510,7 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                             <div className="col s12 right container-btns-as paddingRight-0px">
                                 {/* Enviado pero no calificado */}
                                 {/* Pedir confirmacion para cancelar el envio */}
-                                <a className="no-uppercase" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}}>
+                                <a data-target="modalEliminar" className="no-uppercase modal-trigger" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}}>
                                     Cancelar envío
                                 </a>
                                 <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
@@ -548,7 +558,8 @@ const Asignacion = ({curso, modulo, asignacion}) => {
                 </>
                 } 
             </div>
-            
+
+            <ModalEliminar url={route('cursos.asignacion.cancelar', [curso.id, modulo.id, asignacion.id])} nombre="" tipo="registro de asignación" />
         </div>
     </>
   )

@@ -67,15 +67,21 @@ Route::get('/cursos/{id}/modulo/{mid}', [App\Http\Controllers\CourseController::
 Route::get('/cursos/{id}/modulo/{mid}/examen/{eid}', [App\Http\Controllers\EntryController::class, 'doExam'])->name('cursos.examen');
 
 
+
 //------Rutas del layout cursos
 Route::get('/cursos/{id}/informacion', [App\Http\Controllers\CourseController::class, 'informacion'])->name('cursos.informacion');
 
+Route::get('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class, 'modulos'])->name('cursos.modulos');
+//ruta para reordenar los modulos
+Route::post('/cursos/{id}/modulos', [App\Http\Controllers\CourseController::class, 'ordenarModulos'])->name('cursos.modulos.order');
+Route::get('/cursos/{id}/modulo/{mid}', [App\Http\Controllers\CourseController::class, 'modulo'])->name('cursos.modulo');
 
 // ASIGNACION
 Route::get('/cursos/{id}/modulo/{mid}/asignacion/{pid}', [App\Http\Controllers\CourseController::class, 'asignacion'])->name('cursos.asignacion');
+Route::post('/cursos/{id}/modulo/{mid}/asignacion/{pid}', [App\Http\Controllers\CourseController::class, 'entregarAsignacion'])->name('cursos.asignacion.entregar');
+Route::delete('/cursos/{id}/modulo/{mid}/asignacion/{pid}', [App\Http\Controllers\EntryController::class, 'cancelarEntrega'])->name('cursos.asignacion.cancelar');
 Route::get('/cursos/{id}/modulo/{mid}/asignacion/{pid}/entrega/{eid}', [App\Http\Controllers\CourseController::class, 'asignacionEntrega'])->name('cursos.asignacion.entrega');
 
-Route::post('/cursos/{id}/modulo/{mid}/asignacion/{pid}', [App\Http\Controllers\CourseController::class, 'entregarAsignacion'])->name('cursos.asignacion.entregar');
 
 Route::get('/cursos/{id}/participantes', [App\Http\Controllers\CourseController::class, 'participantes'])->name('cursos.participantes');
 Route::get('/cursos/{id}/solicitudes', [App\Http\Controllers\CourseController::class, 'solicitudes'])->name('cursos.solicitudes');

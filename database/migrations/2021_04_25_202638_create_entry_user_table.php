@@ -21,6 +21,7 @@ class CreateEntryUserTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('calificacion')->nullable();
             $table->text('archivo')->nullable();
+            $table->text('nombre_original_archivo')->nullable();
             $table->dateTime('fecha')->nullable();
             $table->tinyInteger('editado')->default(0);
             $table->Text('Comentario')->nullable();
