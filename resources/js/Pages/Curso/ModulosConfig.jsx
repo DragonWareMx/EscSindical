@@ -45,7 +45,7 @@ const ModulosConfig = ({curso}) => {
                 set: function (sortable) {
                     var order = sortable.toArray();
                     localStorage.setItem(sortable.options.group.name, order.join('|'));
-                    //console.log(order)
+                    console.log(order)
                     Inertia.post(route('cursos.modulos.order',curso.id), {order:order});
                 }
             }
@@ -71,7 +71,7 @@ const ModulosConfig = ({curso}) => {
             {curso.modules && curso.modules.length>0 && 
                 <>
                     {curso.modules.map((modulo) =>
-                        <li data-id={modulo.numero} key={modulo.id} className="valign-wrapper">
+                        <li data-id={modulo.id} key={modulo.id} className="valign-wrapper">
                             {/* icono para mover el modulo */}
                             <span className="material-icons my-handle">drag_indicator</span>
 
