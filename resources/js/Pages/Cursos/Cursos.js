@@ -27,7 +27,7 @@ const Cursos = ({user, cursos, profesor, tags, finishedCourses}) => {
     cursos = {user.active_courses['0']}
     profesor = {profesor}
     tags = {tags}
-    />,
+    />
     <HistorialCursos 
     cursos = {user.finished_courses}
     solicitudes ={user.requests}/>
