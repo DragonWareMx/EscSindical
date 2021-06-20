@@ -1060,15 +1060,15 @@ class CourseController extends Controller
     public function calificaciones($id)
     {
         Gate::authorize('haveaccess', 'ponente.perm');
+
         //verificar que el ponente sea dueño del curso
-        $curso_teacher=Course::where('id',$id)->first('teacher_id');
-        if(Auth::id() != $curso_teacher->teacher_id){
+        $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id')->select('id', 'nombre','teacher_id')->findOrFail($id);
+        if(Auth::id() != $curso->teacher_id){
             return abort(403);
         }
-        $curso = Course::findOrFail($id);
 
         return Inertia::render('Curso/Calificaciones', [
-            'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id)
+            'curso' => $curso
         ]);
     }
 
