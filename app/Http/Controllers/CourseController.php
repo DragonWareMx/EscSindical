@@ -1072,6 +1072,129 @@ class CourseController extends Controller
         ]);
     }
 
+    public function storeCalificaciones($id, Request $request)
+    {
+        Gate::authorize('haveaccess', 'ponente.perm');
+
+        $validated = $request->validate([
+            'calificacion'    => [
+                'required',
+                'array',
+                'min:1',
+                //valida que existan los usuarios de las calificaciones
+                function($attribute, $value, $fail) {
+                    //arreglo de indices
+                    $ids = array_keys($value);
+
+                    // query to check if array keys is not valid
+                    $usersCountWithinArrIDs = User::whereIn('id', $ids)->count();
+                    if ($usersCountWithinArrIDs != count($ids))
+                        return $fail($attribute.' no es válido.');  // -> "quantity is invalid"
+                }
+            ],
+            'calificacion.*'    => [
+                'required',
+                'array',
+                'min:1',
+                //valida que existan los modulos de las calificaciones
+                function($attribute, $value, $fail) {
+                    //arreglo de indices
+                    $ids = array_keys($value);
+
+                    // query to check if array keys is not valid
+                    $modulesCountWithinArrIDs = Module::whereIn('id', $ids)->count();
+                    if ($modulesCountWithinArrIDs != count($ids))
+                        return $fail($attribute.' no es válido.');  // -> "quantity is invalid"
+                }
+            ],
+            'calificacion.*.*' => 'required|numeric|between:0,100|regex:/^\d*(\.\d{1,2})?$/',
+            'calificacion_final'    => [
+                'required',
+                'array',
+                'min:1',
+                //valida que existan los usuarios de las calificaciones
+                function($attribute, $value, $fail) {
+                    //arreglo de indices
+                    $ids = array_keys($value);
+
+                    // query to check if array keys is not valid
+                    $usersCountWithinArrIDs = User::whereIn('id', $ids)->count();
+                    if ($usersCountWithinArrIDs != count($ids))
+                        return $fail($attribute.' no es válido.');  // -> "quantity is invalid"
+                }
+            ],
+            'calificacion_final.*.*' => 'required|numeric|between:0,100|regex:/^\d*(\.\d{1,2})?$/',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            //verifica que el curso exista
+            $curso = Course::find($id);
+
+            if(!$curso){
+                DB::rollBack();
+                return \Redirect::route('cursos.calificaciones.store', $id)->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
+            }
+
+            //verifica que el usuario loggeado sea el maestro del curso
+            if($curso->teacher->id != Auth::User()->id){
+                DB::rollBack();
+                return \Redirect::route('cursos.calificaciones.store', $id)->with('error', 'No puedes subir calificaciones si no eres el maestro del curso.');
+            }
+
+            //user es el id del usuario en la iteracion
+            foreach ($request->calificacion as $user => $userModules) {
+                //module es el id del modulo
+                foreach ($userModules as $module => $calificacion) {
+                    $module = Module::find($module);
+
+                    //se actualiza el status de la solicitud
+                    $module->users()->sync([$user => ['calificacion' => $calificacion]], false);
+                }
+            }
+
+            //module es el id del modulo
+            foreach ($request->calificacion_final as $user => $calificacionFinal) {
+                //se actualiza el status de la solicitud
+                $curso->users()->sync([$user => ['calificacion_final' => $calificacionFinal]], false);
+            }
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'update';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{}';
+
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha subido calificaciones del curso de id: ' . $id;
+
+            //SE GUARDA EL LOG
+            $newLog->save();
+
+            if(!$newLog){
+                DB::rollBack();
+                return \Redirect::route('cursos.calificaciones.store', $id)->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
+            }
+
+            DB::commit();
+
+            if($request->aprobado){
+                $status = 'aceptado';
+            }
+            else{
+                $status = 'rechazado';
+            }
+
+            return \Redirect::route('cursos.calificaciones.store', $id)->with('success', 'Las calificaciones se han registrado de manera exitosa.');
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return \Redirect::route('cursos.calificaciones.store', $id)->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde.');
+        }
+    }
+
     public function solicitudes($id)
     {
         \Gate::authorize('haveaccess', 'ponente.perm');

@@ -136,7 +136,6 @@ class RequestController extends Controller
             }
             DB::rollback();
 
-            dd($e);
             return \Redirect::back()->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde.');
         }
     }

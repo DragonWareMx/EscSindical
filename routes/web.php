@@ -92,6 +92,7 @@ Route::get('/cursos/{id}/modulo/{mid}/publicacion/{pid}', [App\Http\Controllers\
 Route::post('/cursos/{id}/inscribir', [App\Http\Controllers\CourseController::class, 'inscribir'])->name('cursos.inscribir');
 Route::get('/cursos/{id}/estadisticas', [App\Http\Controllers\CourseController::class, 'estadisticas'])->name('cursos.estadisticas');
 Route::get('/cursos/{id}/calificaciones', [App\Http\Controllers\CourseController::class, 'calificaciones'])->name('cursos.calificaciones');
+Route::post('/cursos/{id}/calificaciones', [App\Http\Controllers\CourseController::class, 'storeCalificaciones'])->name('cursos.calificaciones.store');
 
 //----Solicitudes
 Route::post('/cursos/{id}/solicitudes', [App\Http\Controllers\RequestController::class, 'aprobar'])->name('solicitudes.aprobar');
