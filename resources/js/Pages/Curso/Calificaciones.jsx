@@ -146,10 +146,10 @@ const Calificaciones = ({curso, request}) => {
     <>
         <div className="row">
             {errors && Object.keys(errors).length > 0 && 
-                <div className="col s12" key={error}>
+                <div className="col s12">
                     <div className="errores">
                         <ul>
-                            <li className="alert_success">
+                            <li className="alert_error">
                                 <div className="col s11">Alguna calificación es incorrecta.</div>
                                 <div onClick={() => {closeAlert('alert_error')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
                             </li>

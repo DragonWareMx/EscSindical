@@ -1107,7 +1107,7 @@ class CourseController extends Controller
                         return $fail($attribute.' no es válido.');  // -> "quantity is invalid"
                 }
             ],
-            'calificacion.*.*' => 'required|numeric|between:0,100|regex:/^\d*(\.\d{1,2})?$/',
+            'calificacion.*.*' => 'nullable|numeric|between:0,100|regex:/^\d*(\.\d{1,2})?$/',
             'calificacion_final'    => [
                 'required',
                 'array',
@@ -1123,7 +1123,7 @@ class CourseController extends Controller
                         return $fail($attribute.' no es válido.');  // -> "quantity is invalid"
                 }
             ],
-            'calificacion_final.*.*' => 'required|numeric|between:0,100|regex:/^\d*(\.\d{1,2})?$/',
+            'calificacion_final.*.*' => 'nullable|numeric|between:0,100|regex:/^\d*(\.\d{1,2})?$/',
         ]);
 
         DB::beginTransaction();
