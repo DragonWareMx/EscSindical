@@ -298,16 +298,6 @@ const Asignacion = ({curso, modulo, asignacion, alumnos, nAlumnos, nEntregas}) =
                 {/* Estatus de la asignación */}
                 <div className="col s12 txt-status-as">ESTATUS DE LA ASIGNACIÓN</div>
 
-                {asignacion.tipo == "Examen" &&
-                <div className="col s12 right paddingRight-0px" id="btn-comenzar">
-                    {/* Botón para comenzar examen*/}
-                    <InertiaLink href={route('cursos.examen', [curso.id,modulo.id,asignacion.id])} className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
-                        Comenzar examen
-                        <i className="material-icons right">send</i>
-                    </InertiaLink>
-                </div>
-                }
-
                 {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Ponente" &&
                     <>
                     {/* VISTA PARA EL PONENTE */}
@@ -388,6 +378,16 @@ const Asignacion = ({curso, modulo, asignacion, alumnos, nAlumnos, nEntregas}) =
 
                 {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Alumno" &&
                     <>
+                        {asignacion.tipo == "Examen" && (asignacion.permitir_envios_retrasados || bTiempoRestante(asignacion.fecha_de_entrega)) &&
+                        <div className="col s12 right paddingRight-0px" id="btn-comenzar">
+                            {/* Botón para comenzar examen*/}
+                            <InertiaLink href={route('cursos.examen', [curso.id,modulo.id,asignacion.id])} className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
+                                Comenzar examen
+                                <i className="material-icons right">send</i>
+                            </InertiaLink>
+                        </div>
+                        }
+                        
                         {/* información para el estudiante antes de entregar la asignación */}
                         <div className="col s12 padding-0px row-extatus">
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus</div>
