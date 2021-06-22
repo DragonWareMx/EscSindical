@@ -9,8 +9,9 @@ import Alertas from '../../components/common/Alertas';
 import '../../styles/cursos.css'
 import '../../styles/inicios.css'
 import '/css/participantes.css'
+import route from 'ziggy-js';
 
-const inicioEstudiante = ({user, profesor, tags, participantes}) => {
+const inicioEstudiante = ({user, profesor, tags, participantes, entradas}) => {
 
     const { auth } = usePage().props;
 
@@ -98,27 +99,21 @@ const inicioEstudiante = ({user, profesor, tags, participantes}) => {
                                         </thead>
 
                                         <tbody>
-                                        <tr>
-                                            <td>Tarea</td>
-                                            <td>Lorem ipsum dolor sit amet...</td>
-                                            <td className="status-activity status-cerrado">CERRADO</td>
-                                        </tr>
-                                        <tr>
-                                        <td>Tarea</td>
-                                            <td>Lorem ipsum dolor sit amet...</td>
-                                            <td className="status-activity status-enviado">ENVIADO</td>
-                                        </tr>
-                                        <tr>
-                                        <td>Tarea</td>
-                                            <td>Lorem ipsum dolor sit amet...</td>
-                                            <td className="status-activity status-abierto">ABIERTO</td>
-                                        </tr>
+                                        {entradas && entradas.length > 0 &&
+                                            entradas.map((entrada , index)=>(
+                                            <tr>
+                                                <td>{entrada.tipo}</td>
+                                                <td>{entrada.titulo}</td>
+                                                <td className="status-activity status-cerrado">{}</td>
+                                            </tr>
+                                            ))
+                                        }
                                         </tbody>
                                     </table>
                                 </div>
 
                                 {/* Link a la mochila */}
-                                <InertiaLink className="col s12 link-ver-mas" href="#!">Ver más</InertiaLink>
+                                <InertiaLink className="col s12 link-ver-mas" href={route('cursos.mochila',user.active_courses['0'])}>Ver más</InertiaLink>
                                 
                             </div>
                         </div>

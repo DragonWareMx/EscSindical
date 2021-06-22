@@ -20,6 +20,7 @@ use App\Models\Training_type;
 use App\Models\Drop_requests;
 use App\Models\Delete_requests;
 use Illuminate\Support\Facades\Gate;
+use Carbon\Carbon;
 
 class CourseController extends Controller
 {
@@ -48,7 +49,7 @@ class CourseController extends Controller
             ]);
         } else {
             \Gate::authorize('haveaccess', 'alumno.perm');
-            $curso_actual = $user->courses[0];
+            $curso_actual = $user->activeCourses[0];
             $profesor = $curso_actual->teacher;
             $tags = $curso_actual->tags;
             return Inertia::render('Cursos/Cursos', [
@@ -70,6 +71,15 @@ class CourseController extends Controller
             $profesor = $curso_actual->teacher;
             $tags = $curso_actual->tags;
             $participantes=Course::where('id',$curso_actual->id)->with('users:id,nombre,apellido_p,apellido_m,foto,email')->first();
+            $hoy=Carbon::now();
+            $entradas = Course::where('courses.id', $curso_actual->id)->leftJoin('modules', 'courses.id', '=', 'modules.course_id')
+                ->leftJoin('entries', 'modules.id', '=', 'entries.module_id')
+                ->where('entries.visible', 1)
+                ->where('entries.fecha_de_entrega','>=',$hoy)
+                ->whereIn('entries.tipo', ['Asignacion', 'Examen'])
+                ->select('entries.*', 'modules.nombre as modulo', 'modules.numero as numero', 'modules.id as module_id')
+                ->orderBy('fecha_de_entrega', 'ASC')
+            ->get();
 
             return Inertia::render('Inicios/inicioEstudiante', [
                 'user' => fn () => User::with([
@@ -78,6 +88,7 @@ class CourseController extends Controller
                 'profesor' => $profesor,
                 'tags' => $tags,
                 'participantes' => $participantes,
+                'entradas' => $entradas,
             ]);
         } 
     }
