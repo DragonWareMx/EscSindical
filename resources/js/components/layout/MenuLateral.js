@@ -115,11 +115,11 @@ export default function MenuLateral() {
           <li><a className="subheader division-menu">SISTEMA</a></li>
           <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">assignment_late</i>Reportes</a></li>
           <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">create_new_folder</i>Solicitudes</a></li>
-          <li>
-            {/* <InertiaLink href={route('perfil').url()} className="icono-menu"> */}
-            <InertiaLink href={route('log.index')}><i className="material-icons icono-menu">history</i>Bitácora</InertiaLink>
-            {/* </InertiaLink> */}
-          </li>
+          {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
+            <li>
+              <InertiaLink href={route('log.index')}><i className="material-icons icono-menu">history</i>Bitácora</InertiaLink>
+            </li>
+          }
           <li>
             <InertiaLink href={route('perfil.edit')} className="icono-menu">
               <i className="material-icons icono-menu">settings</i>Configuración
@@ -178,11 +178,13 @@ export default function MenuLateral() {
         <div className="col s12">
           <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Solicitudes">create_new_folder</i>
         </div>
-        <div className="col s12">
-          <InertiaLink href={route('log.index')}>
-            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Bitácora">history</i>
-          </InertiaLink>
-        </div>
+        {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
+          <div className="col s12">
+            <InertiaLink href={route('log.index')}>
+              <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Bitácora">history</i>
+            </InertiaLink>
+          </div>
+        }
         <div className="col s12">
           <InertiaLink href={route('perfil.edit').url()} className="icono-menu">
             <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Configuración">settings</i>

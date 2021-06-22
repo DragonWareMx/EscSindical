@@ -304,7 +304,7 @@ const Asignacion = ({curso, modulo, asignacion, alumnos, nAlumnos, nEntregas}) =
 
                     <div className="col s12 padding-0px row-extatus">
                         <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus</div>
-                        <div className={pendienteEstatus(asignacion.fecha_de_entrega, false) == "Pendiente" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-green" : "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-red"}>{pendienteEstatus(asignacion.fecha_de_entrega, false)}</div>
+                        <div className={pendienteEstatus(asignacion.fecha_de_entrega, false) == "Pendiente" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-grey" : pendienteEstatus(asignacion.fecha_de_entrega, false) == "Retrasada" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-yellow" : "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-red"}>{pendienteEstatus(asignacion.fecha_de_entrega, false)}</div>
                     </div>
 
                     <div className="col s12 padding-0px row-extatus">
@@ -393,11 +393,11 @@ const Asignacion = ({curso, modulo, asignacion, alumnos, nAlumnos, nEntregas}) =
                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus</div>
                             {asignacion.users && asignacion.users.length > 0 ?
                             <>
-                                <div className={realizadaEstatus(asignacion.fecha_de_entrega, asignacion.users[0].pivot.created_at) == "Retrasada" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-red" : "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-green"}>{realizadaEstatus(asignacion.fecha_de_entrega, asignacion.users[0].pivot.created_at)}</div>
+                                <div className={realizadaEstatus(asignacion.fecha_de_entrega, asignacion.users[0].pivot.created_at) == "Enviado" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-green" : "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-yellow"}>{realizadaEstatus(asignacion.fecha_de_entrega, asignacion.users[0].pivot.created_at)}</div>
                             </>
                             :
                             <>
-                                <div className={pendienteEstatus(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados) == "Pendiente" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-green" : "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-red"}>{pendienteEstatus(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados)}</div>
+                                <div className={pendienteEstatus(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados) == "Pendiente" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-grey" : pendienteEstatus(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados) == "Retrasada" ? "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-yellow" : "col s12 m9 l9 xl9 txt-content-estatus estatus-bolder estatus-red"}>{pendienteEstatus(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados)}</div>
                             </>
                             }
                         </div>

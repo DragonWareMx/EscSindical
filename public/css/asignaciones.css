@@ -103,6 +103,12 @@
 .estatus-green{
     color:#108058 !important;
 }
+.estatus-yellow{
+    color:orange !important;
+}
+.estatus-grey{
+    color:#727272;
+}
 .paddingRight-0px{
     padding-right:0px !important;
 }
