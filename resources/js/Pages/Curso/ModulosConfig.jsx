@@ -25,7 +25,6 @@ const ModulosConfig = ({curso}) => {
         var sortable = Sortable.create(el,{
             handle: '.my-handle',
             animation: 150,
-            sort: false,
             group: "localStorage-example",
             store: {
                 /**
@@ -96,11 +95,10 @@ const ModulosConfig = ({curso}) => {
                     )}
                 </>
             }
+            </ul>
             {curso.modules && curso.modules.length==0 &&
                 <p className="col s12 text-ins-module">Aún no hay módulos en este curso.</p>
             }
-            </ul>
-
 
             {/* esto es una prueba */}
             {/* <div className="col s12">
