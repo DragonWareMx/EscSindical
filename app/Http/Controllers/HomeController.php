@@ -25,12 +25,12 @@ class HomeController extends Controller
     public function index()
     {
         //return view('home');
-        return redirect('/ejemplo');
+        return redirect('/inicio');
     }
 
-    public function ejemplo()
+    public function inicio()
     {
         //$users = User::factory()->count(80)->create();
-        return Inertia::render('Ejemplo');
+        return Inertia::render('Inicio');
     }
 }

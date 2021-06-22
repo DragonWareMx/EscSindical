@@ -178,7 +178,7 @@ const Calificaciones = ({curso, request}) => {
                                 <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}><img src={user.foto ? "/storage/fotos_perfil/"+user.foto : "/storage/fotos_perfil/avatar1.jpg"} className="img-td-entregas" />{user.nombre} {user.apellido_p} {user.apellido_m}</td>
                                 
                                 {curso.modules && curso.modules.length > 0 && curso.modules.map((module) => (
-                                    <td key={user.id + " " + module.id}><input type="number" className="inputs-calif" min="0" max="100" step={0.01} disabled={!editar} value={values.calificacion[user.id] && values.calificacion[user.id][module.id] && values.calificacion[user.id][module.id]} onChange={e => {handleChange(user.id, module.id, e)}} placeholder="sin calificación"/></td>
+                                    <td key={user.id + " " + module.id}><input type="number" className="inputs-calif" min="0" max="100" step={0.01} disabled={!editar} value={values.calificacion[user.id] && values.calificacion[user.id][module.id] && values.calificacion[user.id][module.id]} onChange={e => {handleChange(user.id, module.id, e)}} placeholder="-"/></td>
                                 ))
                                 }
                                 <td><input type="number" className="inputs-calif" min="0" max="100" step={0.01} disabled={!editar} value={values.calificacion_final[user.id] && values.calificacion_final[user.id]} onChange={e => {handleChangeCF(user.id, e)}} placeholder="sin calificación"/></td>
