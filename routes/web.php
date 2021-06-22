@@ -121,3 +121,8 @@ Route::delete('/entrada/eliminar/{id}', [App\Http\Controllers\EntryController::c
 
 //----------------NOTIFICACION----------------------
 Route::post('/notificacion/vista/{id}', [App\Http\Controllers\NotificationController::class, 'marcar'])->name('notif.vista');
+
+//LOG
+Route::name('log.')->group(function () {
+    Route::get('/log', [App\Http\Controllers\LogController::class, 'index'])->name('index');
+});
