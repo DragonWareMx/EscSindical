@@ -1,0 +1,26 @@
+.txt-subtitle-ini{
+    margin-top:6px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 17px;
+    color: #585858;
+}
+.link-ver-mas{
+    margin-top:6px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 17px;
+    color: #108058;
+    text-align:right;
+}
+.txt-not-found{
+    margin-top:10px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 17px;
+    color: #134E39;
+    text-align:center;
+}

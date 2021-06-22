@@ -61,6 +61,26 @@ class CourseController extends Controller
         }
     }
 
+    public function inicioEstudiante()
+    {
+        $user = User::find(Auth::id());
+
+        if ($user->roles[0]->name == 'Alumno') {
+            \Gate::authorize('haveaccess', 'alumno.perm');
+            $curso_actual = $user->courses[0];
+            $profesor = $curso_actual->teacher;
+            $tags = $curso_actual->tags;
+            return Inertia::render('Inicios/inicioEstudiante', [
+                'user' => fn () => User::with([
+                    'roles', 'requests', 'requests.course.images', 'requests.course.teacher', 'requests.course.tags', 'activeCourses', 'activeCourses.images', 'finishedCourses', 'finishedCourses.images', 'finishedCourses.teacher', 'finishedCourses.tags'
+                ])->where('id', Auth::id())->first(),
+                'profesor' => $profesor,
+                'tags' => $tags,
+            ]);
+        } 
+    }
+
+
     public function create()
     {
         \Gate::authorize('haveaccess', 'ponente.perm');
