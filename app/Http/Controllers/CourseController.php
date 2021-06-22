@@ -61,6 +61,7 @@ class CourseController extends Controller
         }
     }
 
+    //  funcion para ver el inicio como estudiante
     public function inicioEstudiante()
     {
         $user = User::find(Auth::id());
@@ -76,6 +77,26 @@ class CourseController extends Controller
                 ])->where('id', Auth::id())->first(),
                 'profesor' => $profesor,
                 'tags' => $tags,
+            ]);
+        } 
+    }
+
+    //  funcion para ver el inicio como ponente
+    public function inicioPonente()
+    {
+        $user = User::find(Auth::id());
+
+        if ($user->roles[0]->name == 'Ponente') {
+            \Gate::authorize('haveaccess', 'ponente.perm');
+            //$curso_actual = $user->courses[0];
+            //$profesor = $curso_actual->teacher;
+            //$tags = $curso_actual->tags;
+            return Inertia::render('Inicios/inicioPonente', [
+                //'user' => fn () => User::with([
+                //    'roles', 'requests', 'requests.course.images', 'requests.course.teacher', 'requests.course.tags', 'activeCourses', 'activeCourses.images', 'finishedCourses', 'finishedCourses.images', 'finishedCourses.teacher', 'finishedCourses.tags'
+                //])->where('id', Auth::id())->first(),
+                //'profesor' => $profesor,
+                //'tags' => $tags,
             ]);
         } 
     }
