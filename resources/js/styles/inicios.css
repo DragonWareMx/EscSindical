@@ -54,3 +54,39 @@
 .status-enviado{
     color: #41AB59 !important;
 }
+
+.txt-welcome-prov{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 30px;
+    color: #134E39;
+    margin-top:40px;
+    margin-bottom:10px;
+}
+.txt-sub-prov{
+    color: #7e7e7e;
+    font-weight: 500;
+    font-size:15px;
+}
+.txt-prov{
+    margin-top:25px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 20px;
+    color: #1E1E1E;
+}
+.btn-search-prov{
+    color:#134E39;
+    border-radius:50px;
+    border: solid 1px #134E39;
+    padding:10px;
+    font-size: 13px;
+    transition: all 0.50s ease;
+}
+.btn-search-prov:hover, .btn-search-prov:focus{
+    padding-left:18px;
+    padding-right:18px;
+    transition: all 0.50s ease;
+}

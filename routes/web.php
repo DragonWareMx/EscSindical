@@ -33,7 +33,7 @@ Route::get('/inicio', function () {
 Auth::routes();
 
 //--------RUTAS DE EJEMPLO
-Route::get('/ejemplo', [App\Http\Controllers\HomeController::class, 'ejemplo'])->name('ejemplo1');
+Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'inicio'])->name('inicio');
 //--------RUTAS DE EJEMPLO
 
 // INICIOS

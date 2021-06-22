@@ -81,7 +81,7 @@ export default function MenuLateral() {
             </div>
           </li>
           <li>
-            <InertiaLink href={route('ejemplo1').url()} className="icono-menu">
+            <InertiaLink href={route('inicio').url()} className="icono-menu">
               <i className="material-icons">home</i>
                   Inicio
             </InertiaLink>
@@ -136,7 +136,7 @@ export default function MenuLateral() {
           <img src="/img/imagenes/LogoNacional2.png" alt="logo" className="imagen-menu-compacto tooltipped" data-position="right" data-tooltip="Escuela Sindical" />
         </div>
         <div className="col s12">
-          <InertiaLink href={route('ejemplo1').url()} className="icono-menu">
+          <InertiaLink href={route('inicio').url()} className="icono-menu">
             <i className="material-icons tooltipped icono-menu-compacto" data-position="right" data-tooltip="Inicio">home</i>
           </InertiaLink>
         </div>
