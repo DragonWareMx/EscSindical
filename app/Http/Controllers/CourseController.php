@@ -61,6 +61,26 @@ class CourseController extends Controller
         }
     }
 
+    public function inicioEstudiante()
+    {
+        $user = User::find(Auth::id());
+
+        if ($user->roles[0]->name == 'Alumno') {
+            \Gate::authorize('haveaccess', 'alumno.perm');
+            $curso_actual = $user->courses[0];
+            $profesor = $curso_actual->teacher;
+            $tags = $curso_actual->tags;
+            return Inertia::render('Inicios/inicioEstudiante', [
+                'user' => fn () => User::with([
+                    'roles', 'requests', 'requests.course.images', 'requests.course.teacher', 'requests.course.tags', 'activeCourses', 'activeCourses.images', 'finishedCourses', 'finishedCourses.images', 'finishedCourses.teacher', 'finishedCourses.tags'
+                ])->where('id', Auth::id())->first(),
+                'profesor' => $profesor,
+                'tags' => $tags,
+            ]);
+        } 
+    }
+
+
     public function create()
     {
         \Gate::authorize('haveaccess', 'ponente.perm');
@@ -1165,30 +1185,70 @@ class CourseController extends Controller
         if (Auth::user()->roles[0]->name == 'Ponente') {
             \Gate::authorize('haveaccess', 'ponente.perm');
 
-            //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
-            $modulo = Module::findOrFail($mid);
+            //busca el curso
+            $curso = Course::with('modules:course_id,id,nombre,numero')->select('id', 'nombre','teacher_id')->findOrFail($id);
+
+            //Si no existe el curso quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$curso) {
+                return abort(404);
+            }
+
+            //verifica que el usuario auth sea profesor del curso
+            if($curso->teacher_id != Auth::user()->id){
+                return abort(403);
+            }
+
+            //Buscar el modulo con el mid
+            $modulo = Module::select('id', 'nombre', 'course_id','numero')->findOrFail($mid);
 
             //Si no existe el módulo quiere decir que algo anda mal y por eso se regresa a la vista de error
             if (!$modulo) {
                 return abort(404);
             }
 
+            //verifica que el modulo pertenezca al curso
+            if ($modulo->course_id != $curso->id) {
+                //si no está lo mandamos a la vista informacion -  solo si es alumno
+                abort(403);
+            }
+
             // Buscar la asignacion
-            $entrada = Entry::with('files:archivo,entry_id')->findOrFail($pid);
+            $entrada = Entry::with('users:id')->select('id', 'titulo', 'created_at', 'contenido', 'tipo', 'module_id', 'permitir_envios_retrasados', 'fecha_de_entrega', 'max_calif')->findOrFail($pid);
+
+            //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
+            if (!$entrada) {
+                return abort(404);
+            }
 
             //verificar que la entrada sea asingacion o examen
+            if ($entrada->tipo != 'Asignacion' && $entrada->tipo != 'Examen') {
+                abort(403);
+            }
 
-            //verificar que pertenezca al modulo
+            //verifica que pertenezca al modulo
+            if ($entrada->module_id != $modulo->id) {
+                abort(403);
+            }
 
-            //si el usuario es ponente...
-            //verificar que el curso sea suyo
-            //si el usuario es estudiante...
-            //verificar que este registrado en el curso
+            $alumnos =
+            User::whereHas('courses', function ($query) use ($id) {
+                $query->where('courses.id', '=', $id);
+            })->with(['entries' => function ($entrega) use ($pid) {
+                return $entrega->where('entries.id', $pid)->select('entries.id')
+                    ->withPivot('calificacion', 'archivo', 'Comentario', 'created_at');
+            }])
+            ->get(['foto', 'nombre', 'apellido_p', 'apellido_m', 'id']);
+
+            $nAlumnos = count($alumnos);
+            $nEntregas = count($entrada->users);
 
             return Inertia::render('Curso/Asignacion/Asignacion', [
-                'curso' => Course::findOrFail($id),
+                'curso' => $curso,
                 'modulo' => $modulo,
                 'asignacion' => $entrada,
+                'alumnos' => $alumnos,
+                'nAlumnos' => $nAlumnos,
+                'nEntregas' => $nEntregas
             ]);
         } else if (Auth::user()->roles[0]->name == 'Alumno') {
             \Gate::authorize('haveaccess', 'alumno.perm');

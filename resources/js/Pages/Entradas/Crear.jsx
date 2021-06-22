@@ -8,6 +8,8 @@ import { Inertia } from '@inertiajs/inertia';
 import Alertas from '../../components/common/Alertas';
 
 import '../../styles/crearEntradas.css'
+import '/css/participantes.css'
+import '/css/modulos.css'
 
 const Crear = ({ cursos }) => {
     //errores de la validacion de laravel
@@ -359,12 +361,16 @@ const Crear = ({ cursos }) => {
 
     return (
         <>
-            <div className="container">
+            <div className=" ">
                 <div className="row">
                     <div className="col s12">
                         <div className="card">
                             <div className="card-content card-entradas">
-                                <span className="card-title">AGREGAR ENTRADA</span>
+                                <div className="col s12 m9 l10 xl10 card-title left" style={{marginTop:"15px","padding":"0px 0px 0px 0px","display":"flex","alignItems":"center"}}>
+                                    {/* regresar */}
+                                    <InertiaLink  href={route('cursos')}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
+                                    AGREGAR ENTRADA
+                                </div>
                                 <Alertas />
                                 <form onSubmit={handleSubmit}>
                                     <div className="row">

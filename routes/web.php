@@ -36,6 +36,9 @@ Auth::routes();
 Route::get('/ejemplo', [App\Http\Controllers\HomeController::class, 'ejemplo'])->name('ejemplo1');
 //--------RUTAS DE EJEMPLO
 
+// INICIOS
+Route::get('/inicioEstudiante', [App\Http\Controllers\CourseController::class, 'inicioEstudiante'])->name('inicioEstudiante');
+
 //--------USUARIOS--------
 //VISTAS PARA ADMIN
 Route::get('/usuarios', [App\Http\Controllers\UserController::class, 'index'])->name('usuarios');

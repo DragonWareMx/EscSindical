@@ -123,7 +123,7 @@ class User extends Authenticatable
 
     public function entries()
     {
-        return $this->belongsToMany('App\Models\Entrie')->withPivot("calificacion", "archivo", "fecha", "editado", "comentario", "fecha_calif", "comentario_retroalimentacion");
+        return $this->belongsToMany('App\Models\Entry')->withPivot("calificacion", "archivo", "fecha", "editado", "comentario", "fecha_calif", "comentario_retroalimentacion");
     }
 
     public function modules()
