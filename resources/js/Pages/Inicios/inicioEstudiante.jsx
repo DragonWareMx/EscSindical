@@ -116,6 +116,7 @@ const inicioEstudiante = ({user, profesor, tags}) => {
                                     </div>
                                 </div>
 
+                                {/* Link a la vista de participantes */}
                                 {/* <InertiaLink className="col s12 link-ver-mas" href={route('cursos.participantes', curso.id)}>Ver más</InertiaLink> */}
                                 <InertiaLink className="col s12 link-ver-mas" href="#!">Ver más</InertiaLink>
 
@@ -132,7 +133,39 @@ const inicioEstudiante = ({user, profesor, tags}) => {
                                 <div className="col s12 txt-subtitle-ini">Lista de próximas asignaciones</div>
                                 
                                 <div className="txt-not-found col s12">NO TIENES NUEVAS ASIGNACIONES</div>
+                                {/* Solo mostrar 3 registros */}
+                                <div className="col s12">
+                                    <table className="responsive-table table-activities highlight">
+                                        <thead>
+                                        <tr>
+                                            <th>TIPO </th>
+                                            <th>NOMBRE</th>
+                                            <th>ESTATUS</th>
+                                        </tr>
+                                        </thead>
 
+                                        <tbody>
+                                        <tr>
+                                            <td>Tarea</td>
+                                            <td>Lorem ipsum dolor sit amet...</td>
+                                            <td className="status-activity status-cerrado">CERRADO</td>
+                                        </tr>
+                                        <tr>
+                                        <td>Tarea</td>
+                                            <td>Lorem ipsum dolor sit amet...</td>
+                                            <td className="status-activity status-enviado">ENVIADO</td>
+                                        </tr>
+                                        <tr>
+                                        <td>Tarea</td>
+                                            <td>Lorem ipsum dolor sit amet...</td>
+                                            <td className="status-activity status-abierto">ABIERTO</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                {/* Link a la mochila */}
+                                <InertiaLink className="col s12 link-ver-mas" href="#!">Ver más</InertiaLink>
                                 
                             </div>
                         </div>

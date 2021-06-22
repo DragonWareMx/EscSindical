@@ -24,3 +24,33 @@
     color: #134E39;
     text-align:center;
 }
+.table-activities thead tr th{
+    font-style: normal;
+    font-weight: 500 !important;
+    font-size: 11px;
+    line-height: 16px;
+    color: #6C6C6C;
+}
+.table-activities tbody tr td{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 17px;
+    color: #1E1E1E;
+    cursor:pointer !important;
+}
+.status-activity{
+    font-style: normal;
+    font-weight: 600 !important;
+    font-size: 8px !important;
+    line-height: 10px;
+}
+.status-cerrado{
+    color: #D14747 !important;
+}
+.status-abierto{
+    color: #AAAAAA !important;
+}
+.status-enviado{
+    color: #41AB59 !important;
+}
