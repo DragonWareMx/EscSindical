@@ -2,7 +2,8 @@ import React, {useEffect} from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import Layout from '../../layouts/Layout';
 import { InertiaLink, useRemember } from '@inertiajs/inertia-react';
-import CursoActual from '../../components/cursos/CursoActual';
+import CursoActualPonente from '../../components/cursos/CursoActualPonente';
+
 //COMPONENTS
 import Alertas from '../../components/common/Alertas'; 
 // Hojas de estilos
@@ -10,7 +11,7 @@ import '../../styles/cursos.css'
 import '../../styles/inicios.css'
 import '/css/participantes.css'
 
-const inicioPonente = ({user, profesor, tags}) => {
+const inicioPonente = ({cursos}) => {
 
     function initializeMaterialize(){
         var elems = document.querySelectorAll('.dropdown-trigger');
@@ -26,8 +27,15 @@ const inicioPonente = ({user, profesor, tags}) => {
                 <Alertas />
                 
                 <div className="row">                
-                    <div className="col m12 l5">
-                        Soy el inicio para el ponente owo
+                    <div className="col s12">
+                        {/* cursos del ponente */}
+                        <CursoActualPonente cursos = {cursos} />
+                        {/* graficas */}
+                        <div className="card">
+                            <div className="card-content">
+                                Aqui van a ir unas graficas bien chulas
+                            </div>
+                        </div>
                     </div>
                 </div>
             </>

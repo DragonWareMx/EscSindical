@@ -88,15 +88,9 @@ class CourseController extends Controller
 
         if ($user->roles[0]->name == 'Ponente') {
             \Gate::authorize('haveaccess', 'ponente.perm');
-            //$curso_actual = $user->courses[0];
-            //$profesor = $curso_actual->teacher;
-            //$tags = $curso_actual->tags;
+            $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users', 'images')->get();
             return Inertia::render('Inicios/inicioPonente', [
-                //'user' => fn () => User::with([
-                //    'roles', 'requests', 'requests.course.images', 'requests.course.teacher', 'requests.course.tags', 'activeCourses', 'activeCourses.images', 'finishedCourses', 'finishedCourses.images', 'finishedCourses.teacher', 'finishedCourses.tags'
-                //])->where('id', Auth::id())->first(),
-                //'profesor' => $profesor,
-                //'tags' => $tags,
+                'cursos' => fn () => $cursos,
             ]);
         } 
     }

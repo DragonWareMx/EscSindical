@@ -14,7 +14,7 @@ const Cursos = ({user, cursos, profesor, tags, finishedCourses}) => {
     return (
       <>
       <Alertas />
-      <CursoActualPonente cursos = {cursos} />,
+      <CursoActualPonente cursos = {cursos} />
       <HistorialCursosPonente finishedCourses = {finishedCourses}/>
       </>
     )
