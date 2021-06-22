@@ -61,6 +61,7 @@ class CourseController extends Controller
         }
     }
 
+    //  funcion para ver el inicio como estudiante
     public function inicioEstudiante()
     {
         \Gate::authorize('haveaccess', 'alumno.perm');
@@ -78,6 +79,20 @@ class CourseController extends Controller
                 'profesor' => $profesor,
                 'tags' => $tags,
                 'participantes' => $participantes,
+            ]);
+        } 
+    }
+
+    //  funcion para ver el inicio como ponente
+    public function inicioPonente()
+    {
+        $user = User::find(Auth::id());
+
+        if ($user->roles[0]->name == 'Ponente') {
+            \Gate::authorize('haveaccess', 'ponente.perm');
+            $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users', 'images')->get();
+            return Inertia::render('Inicios/inicioPonente', [
+                'cursos' => fn () => $cursos,
             ]);
         } 
     }
