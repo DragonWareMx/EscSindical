@@ -27,6 +27,18 @@ class RequestController extends Controller
         }
     }
 
+    public function verSolicitud($id){
+        $user = User::find(Auth::id());
+
+        if ($user->roles[0]->name == 'Administrador'){
+            return Inertia::render('Solicitudes/VerSolicitud');
+        }
+        else{
+            return abort(403);
+        }
+        
+    }
+
     public function aprobar($id, Request $request)
     {
         \Gate::authorize('haveaccess', 'ponente.perm');

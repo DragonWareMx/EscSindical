@@ -128,6 +128,8 @@ Route::get('/reportes/{id}', [App\Http\Controllers\ReportController::class, 'ver
 
 // SOLICITUDES
 Route::get('/solicitudes', [App\Http\Controllers\RequestController::class, 'index'])->name('solicitudes');
+Route::get('/solicitudes/{id}', [App\Http\Controllers\RequestController::class, 'verSolicitud'])->name('verSolicitud');
+
 //LOG
 Route::name('log.')->group(function () {
     Route::get('/log', [App\Http\Controllers\LogController::class, 'index'])->name('index');

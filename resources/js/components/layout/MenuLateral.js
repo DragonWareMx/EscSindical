@@ -114,7 +114,7 @@ export default function MenuLateral() {
           <li><InertiaLink href={route('cursosBuscar').url()} className="icono-menu"><i className="material-icons icono-menu">search</i>Buscar cursos</InertiaLink></li>
           <li><a className="subheader division-menu">SISTEMA</a></li>
           <li><InertiaLink href={route('reportes').url()} className="icono-menu"><i className="material-icons icono-menu">assignment_late</i>Reportes</InertiaLink></li>
-          <li><a href="#!" className="icono-menu"><i className="material-icons icono-menu">create_new_folder</i>Solicitudes</a></li>
+          <li><InertiaLink href={route('solicitudes').url()} className="icono-menu"><i className="material-icons icono-menu">create_new_folder</i>Solicitudes</InertiaLink></li>
           {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
             <li>
               <InertiaLink href={route('log.index')}><i className="material-icons icono-menu">history</i>Bitácora</InertiaLink>
@@ -178,7 +178,9 @@ export default function MenuLateral() {
           </InertiaLink>
         </div>
         <div className="col s12">
-          <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Solicitudes">create_new_folder</i>
+          <InertiaLink href={route('solicitudes').url()} className="icono-menu">
+            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Solicitudes">create_new_folder</i>
+          </InertiaLink>
         </div>
         {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
           <div className="col s12">
