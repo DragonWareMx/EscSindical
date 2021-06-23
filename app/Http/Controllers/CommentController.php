@@ -6,6 +6,7 @@ use App\Models\Comment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
@@ -29,16 +30,24 @@ class CommentController extends Controller
 
         //return redirect()->back()->with('error', 'Algo falló aquí we :\'v.');
 
-        //se consigue la fecha actual
-        $todayDate = Carbon::now();
-        //se crea el comentario
-        $comentario = new Comment();
-        $comentario->comentario = $request->comentario;
-        $comentario->entrie_id = $pid;
-        $comentario->user_id = Auth::user()->id;
-        $comentario->fecha = $todayDate->toDateTimeString();
-        $comentario->save();
+        try {
+            //se consigue la fecha actual
+            $todayDate = Carbon::now();
+            //se crea el comentario
+            $comentario = new Comment();
+            $comentario->comentario = $request->comentario;
+            $comentario->entrie_id = $pid;
+            $comentario->user_id = Auth::user()->id;
+            $comentario->fecha = $todayDate->toDateTimeString();
+            $comentario->save();
 
-        return redirect()->back();
+            DB::commit();
+            // all good
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return redirect()->back()->with('error', 'Ocurrió un error inesperado, vuelve a intentarlo.');
+        }
     }
 }

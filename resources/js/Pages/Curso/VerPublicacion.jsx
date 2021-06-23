@@ -156,7 +156,7 @@ const Informacion = ({ curso, modulo, entrada, comments }) => {
         {/* boton de regresar */}
         <div className="col s12 valign-wrapper" style={{ "color": "#134E39" }}>
           {values.visible &&
-            <Comments idCurso={curso.id} idModulo={modulo.id} idEntrada={entrada.id} comments={comments} />
+            <Comments idCurso={curso.id} idModulo={modulo.id} idEntrada={entrada.id} comments={comments} handleVisibleC={handleVisibleC} />
           }
 
         </div>

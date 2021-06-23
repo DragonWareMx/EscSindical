@@ -4,7 +4,7 @@ import { Inertia } from '@inertiajs/inertia'
 import moment from 'moment';
 import { usePage } from '@inertiajs/inertia-react'
 
-export default function Comments({ idModulo, idCurso, idEntrada, comments }) {
+export default function Comments({ idModulo, idCurso, idEntrada, comments, handleVisibleC }) {
     //errores de la validacion de laravel
     const { errors } = usePage().props;
 
@@ -25,7 +25,8 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments }) {
         setValues(values => ({
             ...values,
             visible: !values.visible,
-        }))
+        })),
+            handleVisibleC();
     }
 
     function handleChange(e) {
