@@ -131,3 +131,5 @@ Route::get('/solicitudes', [App\Http\Controllers\RequestController::class, 'inde
 Route::name('log.')->group(function () {
     Route::get('/log', [App\Http\Controllers\LogController::class, 'index'])->name('index');
 });
+//----------------COMENTARIOS--------------------
+Route::post('/cursos/{cid}/modulo/{mid}/publicacion/{pid}/comment', [App\Http\Controllers\CommentController::class, 'create'])->name('comment.create');
