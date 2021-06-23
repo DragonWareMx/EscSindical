@@ -81,6 +81,32 @@ class CourseController extends Controller
                 ->orderBy('fecha_de_entrega', 'ASC')
             ->get();
 
+            $realizadas = Course::where('courses.id', $curso_actual->id)->leftJoin('modules', 'courses.id', '=', 'modules.course_id')
+            ->leftJoin('entries', 'modules.id', '=', 'entries.module_id')
+            ->where('entries.visible', 1)
+            ->where('entries.fecha_de_entrega','>=',$hoy)
+            ->whereIn('entries.tipo', ['Asignacion', 'Examen'])
+            ->join('entry_user', 'entries.id', '=', 'entry_id')
+            ->where('entry_user.user_id', $user->id)
+            ->orderBy('fecha_de_entrega', 'ASC')
+            ->get();
+
+            $pendientes = [];
+            $i = 0;
+            foreach ($entradas as $entrada) {
+                $found = false;
+                foreach ($realizadas as $realizada) {
+                    if ($entrada->id == $realizada->id) {
+                        $found = true;
+                        break;
+                    }
+                }
+                if ($found == false) {
+                    $pendientes[$i] = $entrada;
+                    $i++;
+                }
+            }
+            
             return Inertia::render('Inicios/inicioEstudiante', [
                 'user' => fn () => User::with([
                     'roles', 'requests', 'requests.course.images', 'requests.course.teacher', 'requests.course.tags', 'activeCourses', 'activeCourses.images', 'finishedCourses', 'finishedCourses.images', 'finishedCourses.teacher', 'finishedCourses.tags'
@@ -88,7 +114,7 @@ class CourseController extends Controller
                 'profesor' => $profesor,
                 'tags' => $tags,
                 'participantes' => $participantes,
-                'entradas' => $entradas,
+                'pendientes' => $pendientes,
             ]);
         } 
     }

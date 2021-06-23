@@ -11,7 +11,7 @@ import '../../styles/inicios.css'
 import '/css/participantes.css'
 import route from 'ziggy-js';
 
-const inicioEstudiante = ({user, profesor, tags, participantes, entradas}) => {
+const inicioEstudiante = ({user, profesor, tags, participantes, pendientes}) => {
 
     var i=0;
 
@@ -87,7 +87,7 @@ const inicioEstudiante = ({user, profesor, tags, participantes, entradas}) => {
                                 <div className="col s12 txt-title-card">PRÓXIMAS ACTIVIDADES</div>
                                 <div className="col s12 txt-subtitle-ini">Lista de próximas asignaciones</div>
                                 
-                                <div className="txt-not-found col s12">NO TIENES NUEVAS ASIGNACIONES</div>
+                                
                                 {/* Solo mostrar 3 registros */}
                                 <div className="col s12">
                                     <table className="responsive-table table-activities highlight">
@@ -95,26 +95,28 @@ const inicioEstudiante = ({user, profesor, tags, participantes, entradas}) => {
                                         <tr>
                                             <th>TIPO </th>
                                             <th>NOMBRE</th>
-                                            <th>ESTATUS</th>
+                                            <th>ENTREGA</th>
                                         </tr>
                                         </thead>
 
                                         <tbody>
-                                        {entradas && entradas.length > 0 &&
-                                            entradas.map((entrada , index)=>(
+                                        {pendientes && pendientes.length > 0 ?
+                                            pendientes.map((pendiente , index)=>(
                                             <tr>
-                                                <td>{entrada.tipo}</td>
-                                                <td>{entrada.titulo}</td>
-                                                <td className="status-activity status-cerrado">{}</td>
+                                                <td><InertiaLink style={{textDecoration:'none',color:'#383838'}} href={route('cursos.asignacion',[user.active_courses['0'].id,pendiente.module_id,pendiente.id])}>{pendiente.tipo}</InertiaLink></td>
+                                                <td><InertiaLink style={{textDecoration:'none',color:'#383838'}} href={route('cursos.asignacion',[user.active_courses['0'].id,pendiente.module_id,pendiente.id])}>{pendiente.titulo}</InertiaLink></td>
+                                                <td><InertiaLink style={{textDecoration:'none',color:'#383838'}} href={route('cursos.asignacion',[user.active_courses['0'].id,pendiente.module_id,pendiente.id])}>{pendiente.fecha_de_entrega}</InertiaLink></td>
                                             </tr>
                                             ))
+                                            :
+                                            <div className="txt-not-found col s12">NO TIENES NUEVAS ASIGNACIONES</div>
                                         }
                                         </tbody>
                                     </table>
                                 </div>
 
                                 {/* Link a la mochila */}
-                                <InertiaLink className="col s12 link-ver-mas" href={route('cursos.mochila',user.active_courses['0'])}>Ver más</InertiaLink>
+                                <InertiaLink className="col s12 link-ver-mas" href={route('cursos.mochila',user.active_courses['0'].id)}>Ver más</InertiaLink>
                                 
                             </div>
                         </div>
