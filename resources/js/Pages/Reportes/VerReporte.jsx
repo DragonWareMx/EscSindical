@@ -13,7 +13,7 @@ import '/css/reporte.css'
 
 
 
-const VerReporte = () => {
+const VerReporte = ({reporte}) => {
   
 
         return (
@@ -30,12 +30,12 @@ const VerReporte = () => {
                                 <div className="col s12 div-data-reporte">
                                     <div style={{"marginBottom":"20px"}}>
                                         <div className="col s12 txt-title-report">ID DE REPORTE</div>
-                                        <div className="col s12 txt-report">12458</div>
+                                        <div className="col s12 txt-report">{reporte.id}</div>
                                     </div>
 
                                     <div style={{"marginBottom":"20px"}}>
                                         <div className="col s12 txt-title-report">FECHA DE REPORTE</div>
-                                        <div className="col s12 txt-report">00/00/2021 00:00</div>
+                                        <div className="col s12 txt-report">{reporte.fecha}</div>
                                     </div>
                                 </div>
 
@@ -47,7 +47,7 @@ const VerReporte = () => {
 
                                 <div className="col s12" style={{"marginBottom":"25px"}}>   
                                     <div className="col s12 txt-title-report">MOTIVO DEL REPORTE REPORTE</div>
-                                    <div className="col s12 txt-report">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod</div>
+                                    <div className="col s12 txt-report">{reporte.comentario}</div>
                                 </div>
 
 

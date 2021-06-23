@@ -33,9 +33,8 @@ class ReportController extends Controller
         $user = User::find(Auth::id());
 
         if ($user->roles[0]->name == 'Administrador'){
-            // $reportes=Report::orderBy('status', 'asc')->get();
-            // dd($reportes);
-            return Inertia::render('Reportes/VerReporte');
+            $reporte=Report::findOrFail($id);
+            return Inertia::render('Reportes/VerReporte', ['reporte' => $reporte]);
         }
         else{
             return abort(403);
