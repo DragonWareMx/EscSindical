@@ -1152,9 +1152,8 @@ class CourseController extends Controller
 
         $validated = $request->validate([
             'calificacion'    => [
-                'required',
+                'nullable',
                 'array',
-                'min:1',
                 //valida que existan los usuarios de las calificaciones
                 function($attribute, $value, $fail) {
                     //arreglo de indices
@@ -1167,9 +1166,8 @@ class CourseController extends Controller
                 }
             ],
             'calificacion.*'    => [
-                'required',
+                'nullable',
                 'array',
-                'min:1',
                 //valida que existan los modulos de las calificaciones
                 function($attribute, $value, $fail) {
                     //arreglo de indices
@@ -1183,9 +1181,8 @@ class CourseController extends Controller
             ],
             'calificacion.*.*' => 'nullable|numeric|between:0,100|regex:/^\d*(\.\d{1,2})?$/',
             'calificacion_final'    => [
-                'required',
+                'nullable',
                 'array',
-                'min:1',
                 //valida que existan los usuarios de las calificaciones
                 function($attribute, $value, $fail) {
                     //arreglo de indices

@@ -127,3 +127,7 @@ Route::get('/reportes', [App\Http\Controllers\ReportController::class, 'index'])
 
 // SOLICITUDES
 Route::get('/solicitudes', [App\Http\Controllers\RequestController::class, 'index'])->name('solicitudes');
+//LOG
+Route::name('log.')->group(function () {
+    Route::get('/log', [App\Http\Controllers\LogController::class, 'index'])->name('index');
+});
