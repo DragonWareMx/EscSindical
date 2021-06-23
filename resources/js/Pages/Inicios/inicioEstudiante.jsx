@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import Layout from '../../layouts/Layout';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
@@ -12,6 +12,8 @@ import '/css/participantes.css'
 import route from 'ziggy-js';
 
 const inicioEstudiante = ({user, profesor, tags, participantes, entradas}) => {
+
+    var i=0;
 
     const { auth } = usePage().props;
 
@@ -47,9 +49,8 @@ const inicioEstudiante = ({user, profesor, tags, participantes, entradas}) => {
                                 {participantes && participantes.users.length > 1 ?
                                     participantes.users.map((alumno, index)=>(
                                     <div key={index}>
-
-                                        {index < 3 && alumno.id != auth.user.id &&
-                                        <div className="col s12 div-collection-item">
+                                        {i < 3 && alumno.id != auth.user.id &&
+                                        <div key={i++} className="col s12 div-collection-item">
                                             <div className="col s12 m1 l1 xl1 right "><a className='dropdown-trigger right' data-target={'dropdown-option-classmate'+index}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                                             <ul id={'dropdown-option-classmate'+index} className='dropdown-content dropdown_LC'>
                                                 <li><a className="dropdown-text" href={"mailto:"+alumno.email}><i className="material-icons">mail</i>Enviar mensaje</a></li>
