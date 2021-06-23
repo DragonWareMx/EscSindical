@@ -126,3 +126,5 @@ Route::post('/notificacion/vista/{id}', [App\Http\Controllers\NotificationContro
 Route::name('log.')->group(function () {
     Route::get('/log', [App\Http\Controllers\LogController::class, 'index'])->name('index');
 });
+//----------------COMENTARIOS--------------------
+Route::post('/cursos/{cid}/modulo/{mid}/publicacion/{pid}/comment', [App\Http\Controllers\CommentController::class, 'create'])->name('comment.create');
