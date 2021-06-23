@@ -19,6 +19,7 @@ class CreateDropRequestsTable extends Migration
             $table->foreign('course_id')->references('id')->on('courses');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->enum('status', ['En espera', 'Aprobado', 'Rechazado']);
             $table->text('descripcion');
             $table->softDeletes();
             $table->timestamps();

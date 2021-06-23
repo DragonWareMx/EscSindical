@@ -128,6 +128,10 @@ Route::get('/reportes/{id}', [App\Http\Controllers\ReportController::class, 'ver
 
 // SOLICITUDES
 Route::get('/solicitudes', [App\Http\Controllers\RequestController::class, 'index'])->name('solicitudes');
+Route::post('/solicitudes/bajaCurso/{id}',[App\Http\Controllers\RequestController::class, 'bajaCurso'])->name('solicitudes.bajaCurso');
+Route::post('/solicitudes/bajaAlumno/{id}',[App\Http\Controllers\RequestController::class, 'bajaAlumno'])->name('solicitudes.bajaAlumno');
+
+
 //LOG
 Route::name('log.')->group(function () {
     Route::get('/log', [App\Http\Controllers\LogController::class, 'index'])->name('index');

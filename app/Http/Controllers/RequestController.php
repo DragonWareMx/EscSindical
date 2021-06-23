@@ -8,23 +8,26 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Log;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Notification;
+use App\Models\Drop_requests;
+use App\Models\Delete_requests;
+use Illuminate\Support\Facades\Gate;
+use Carbon\Carbon;
 
 class RequestController extends Controller
 {
 
-    public function index(){
-        $user = User::find(Auth::id());
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
-        if ($user->roles[0]->name == 'Administrador'){
-            // $reportes=Report::orderBy('status', 'asc')->get();
-            // dd($reportes);
-            return Inertia::render('Solicitudes/Solicitudes');
-        }
-        else{
-            return abort(403);
-        }
+    public function index(Request $request){
+        \Gate::authorize('haveaccess', 'admin.perm');
+        return Inertia::render('Solicitudes/Solicitudes', [
+            'solicitudesCurso' => Delete_requests::get(),
+            'solicitudesAlumno'=> Drop_requests::get(),
+        ]);
     }
 
     public function aprobar($id, Request $request)
@@ -272,5 +275,38 @@ class RequestController extends Controller
 
             return \Redirect::back()->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde.');
         }
+    }
+
+    public function bajaAlumno($id, Request $request)
+    {
+        \Gate::authorize('haveaccess', 'admin.perm');
+        //VALIDAMOS DATOS
+        DB::beginTransaction();
+        try {
+            //code...
+            DB::commit();
+            return \Redirect::route('solicitudes')->with('success', 'La acción se llevó a cabo con éxito');
+        } catch (\Exception $e) {
+            //throw $th;
+            DB::rollBack();
+            return \Redirect::route('solicitudes')->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
+        }
+
+    }
+    public function bajaCurso($id, Request $request)
+    {
+        \Gate::authorize('haveaccess', 'admin.perm');
+        //VALIDAMOS DATOS
+        DB::beginTransaction();
+        try {
+            //code...
+            DB::commit();
+            return \Redirect::route('solicitudes')->with('success', 'La acción se llevó a cabo con éxito');
+        } catch (\Exception $e) {
+            //throw $th;
+            DB::rollBack();
+            return \Redirect::route('solicitudes')->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
+        }
+        
     }
 }

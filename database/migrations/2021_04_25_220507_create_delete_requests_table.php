@@ -16,7 +16,7 @@ class CreateDeleteRequestsTable extends Migration
         Schema::create('delete_requests', function (Blueprint $table) {
             $table->id();
             $table->string('comentario')->nullable();
-            $table->string('status')->nullable();
+            $table->enum('status', ['En espera', 'Aprobado', 'Rechazado']);
             $table->unsignedBigInteger('course_id');
             $table->foreign('course_id')->references('id')->on('courses');
             $table->unsignedBigInteger('user_id');
