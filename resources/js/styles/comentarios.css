@@ -15,8 +15,8 @@
 
     width: 100%;
     display: flex;
-    padding-bottom: 15px;
     flex-wrap: wrap;
+    margin-bottom: 10px;
 }
 
 .user-pic{
@@ -74,6 +74,7 @@
     color: #383838;
 
     margin-top: 5px;
+    padding-bottom: 15px;
 }
 
 .comentario-card{

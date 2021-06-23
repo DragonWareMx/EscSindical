@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -1222,6 +1223,7 @@ class CourseController extends Controller
             'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
             'modulo' => $modulo,
             'entrada' => $entrada,
+            'comments' => Comment::with('user:id,nombre,apellido_p,apellido_m,foto')->where('entrie_id', $entrada->id)->orderBy('fecha', 'desc')->get()
         ]);
     }
 

@@ -15,11 +15,19 @@ class CommentController extends Controller
         $this->middleware('auth');
     }
     //
+    public function consultar($pid)
+    {
+        $comments = Comment::where('entrie_id', $pid);
+        return redirect()->back();
+    }
+
     public function create(Request $request, $cid, $mid, $pid)
     {
         $validated = $request->validate([
             'comentario' => 'required|max:280',
         ]);
+
+        //return redirect()->back()->with('error', 'Algo falló aquí we :\'v.');
 
         //se consigue la fecha actual
         $todayDate = Carbon::now();

@@ -1,6 +1,6 @@
 import { Inertia } from '@inertiajs/inertia';
 import { InertiaLink } from '@inertiajs/inertia-react';
-import React from 'react'
+import React, { useState } from 'react'
 import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
 import Comments from '../../components/common/Comments';
@@ -29,7 +29,18 @@ function getFileSize(archivo) {
   return 0
 }
 
-const Informacion = ({ curso, modulo, entrada }) => {
+const Informacion = ({ curso, modulo, entrada, comments }) => {
+  const [values, setValues] = useState({
+    visible: true,
+  })
+
+  function handleVisibleC() {
+    setValues(values => ({
+      ...values,
+      visible: !values.visible,
+    }))
+  }
+
   return (
     <>
       <div className="row">
@@ -66,10 +77,10 @@ const Informacion = ({ curso, modulo, entrada }) => {
                     {/* icono con cantidad de comentarios */}
                     <div className="col s3 l1" style={{ "marginTop": "10px" }}>
                       <div className="row center-align" style={{ display: "flex", alignContent: "center" }}>
-                        <span>
+                        <span style={{ cursor: "pointer" }} onClick={handleVisibleC}>
                           <i className="material-icons" style={{ "color": "#848484", "fontSize": "13px" }}>comment</i>
                         </span>
-                        <span style={{ "color": "#848484", "fontSize": "13px", "marginLeft": "3px", marginTop: "-1px" }}>4</span>
+                        <span style={{ "color": "#848484", "fontSize": "13px", "marginLeft": "3px", marginTop: "-1px", cursor: "pointer" }} onClick={handleVisibleC}>{comments && comments.length > 0 ? comments.length : 0}</span>
                       </div>
                     </div>
 
@@ -113,10 +124,10 @@ const Informacion = ({ curso, modulo, entrada }) => {
                     {/* icono con cantidad de comentarios */}
                     <div className="col s3 l1" style={{ "marginTop": "10px" }}>
                       <div className="row center-align" style={{ display: "flex", alignContent: "center" }}>
-                        <span>
+                        <span style={{ cursor: "pointer" }} onClick={handleVisibleC}>
                           <i className="material-icons" style={{ "color": "#848484", "fontSize": "13px" }}>comment</i>
                         </span>
-                        <span style={{ "color": "#848484", "fontSize": "13px", "marginLeft": "3px", marginTop: "-1px" }}>3</span>
+                        <span style={{ "color": "#848484", "fontSize": "13px", "marginLeft": "3px", marginTop: "-1px", cursor: "pointer" }} onClick={handleVisibleC}>{comments && comments.length > 0 ? comments.length : 0}</span>
                       </div>
                     </div>
 
@@ -144,8 +155,9 @@ const Informacion = ({ curso, modulo, entrada }) => {
 
         {/* boton de regresar */}
         <div className="col s12 valign-wrapper" style={{ "color": "#134E39" }}>
-
-          <Comments idCurso={curso.id} idModulo={modulo.id} idEntrada={entrada.id} />
+          {values.visible &&
+            <Comments idCurso={curso.id} idModulo={modulo.id} idEntrada={entrada.id} comments={comments} />
+          }
 
         </div>
 
