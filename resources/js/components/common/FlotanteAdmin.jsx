@@ -26,7 +26,7 @@ export default function FlotanteAdmin() {
                     <ul>
                         <li><a className="btn-floating purple modal-trigger lighten-2 tooltipped" href="#modalHelp" data-position="left" data-tooltip="Ayuda"><i className="material-icons">help_outline</i></a></li>
                         <li><InertiaLink href={route('usuarios.create')} className="btn-floating red lighten-3 tooltipped" data-position="left" data-tooltip="Agregar usuario"><i className="material-icons">add</i></InertiaLink></li>
-                        <li><InertiaLink href="#" className="btn-floating blue lighten-3 tooltipped" data-position="left" data-tooltip="Ver reportes"><i className="material-icons">report_gmailerrorred</i></InertiaLink></li>
+                        <li><InertiaLink href={route('reportes')} className="btn-floating blue lighten-3 tooltipped" data-position="left" data-tooltip="Ver reportes"><i className="material-icons">report_gmailerrorred</i></InertiaLink></li>
                     </ul>
                 </div>
             <div id="modalHelp" className="modal little-modal">

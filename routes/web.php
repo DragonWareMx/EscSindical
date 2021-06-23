@@ -120,3 +120,9 @@ Route::delete('/entrada/eliminar/{id}', [App\Http\Controllers\EntryController::c
 
 //----------------NOTIFICACION----------------------
 Route::post('/notificacion/vista/{id}', [App\Http\Controllers\NotificationController::class, 'marcar'])->name('notif.vista');
+
+// --------------------REPORTES--------------------
+Route::get('/reportes', [App\Http\Controllers\ReportController::class, 'index'])->name('reportes');
+
+// SOLICITUDES
+Route::get('/solicitudes', [App\Http\Controllers\RequestController::class, 'index'])->name('solicitudes');
