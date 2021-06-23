@@ -4,7 +4,7 @@ import { Inertia } from '@inertiajs/inertia'
 import moment from 'moment';
 import { usePage } from '@inertiajs/inertia-react'
 
-export default function Comments({ idModulo, idCurso, idEntrada, comments, handleVisibleC }) {
+export default function Comments({ idModulo, idCurso, idEntrada, comments, handleVisibleC, idTeacher }) {
     //errores de la validacion de laravel
     const { errors } = usePage().props;
 
@@ -106,7 +106,11 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
                                             </div>
                                             <div className="col s12 m11 comentario-card">
                                                 <div className="nombre-comment">
-                                                    <div className="name">{com.user.nombre + ' ' + com.user.apellido_p + ' ' + com.user.apellido_m}</div>
+                                                    {com.user.id == idTeacher ?
+                                                        <div className="name" style={{ color: "#134E39", fontWeight: 700 }}>{com.user.nombre + ' ' + com.user.apellido_p + ' ' + com.user.apellido_m}</div>
+                                                        :
+                                                        <div className="name">{com.user.nombre + ' ' + com.user.apellido_p + ' ' + com.user.apellido_m}</div>
+                                                    }
                                                     <div className="date">{moment(com.fecha).format('D [de] MMMM YYYY [a las] h:mm a')}</div>
                                                 </div>
                                                 <div className="comment-text">

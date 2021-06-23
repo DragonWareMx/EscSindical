@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Course;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,7 +30,16 @@ class CommentController extends Controller
         ]);
 
         //return redirect()->back()->with('error', 'Algo falló aquí we :\'v.');
+        $inscrito = Course::leftJoin('course_user', 'courses.id', '=', 'course_user.course_id')->where('course_user.course_id', $cid)->where('course_user.user_id', Auth::id())->first();
+        $profe = Course::where([
+            ['teacher_id', '=', Auth::id()],
+            ['id', '=', $cid],
+        ])->first();
+        if (!$inscrito && !$profe) {
+            return redirect()->back()->with('error', 'Ocurrió un error inesperado, vuelve a intentarlo.');
+        }
 
+        DB::beginTransaction();
         try {
             //se consigue la fecha actual
             $todayDate = Carbon::now();

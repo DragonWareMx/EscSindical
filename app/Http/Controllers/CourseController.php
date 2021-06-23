@@ -1219,8 +1219,11 @@ class CourseController extends Controller
         }
         //Se obtiene la entrada que se desea mostrar en la vista
         $entrada = Entry::with('files:archivo,entry_id')->findOrFail($pid);
+        if ($entrada->tipo == 'asignacion' || $entrada->tipo == 'examen') {
+            return abort(404);
+        }
         return Inertia::render('Curso/VerPublicacion', [
-            'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
+            'curso' => Course::with(['modules:course_id,id,nombre,numero', 'teacher:id'])->findOrFail($id),
             'modulo' => $modulo,
             'entrada' => $entrada,
             'comments' => Comment::with('user:id,nombre,apellido_p,apellido_m,foto')->where('entrie_id', $entrada->id)->orderBy('fecha', 'desc')->get()
@@ -1288,7 +1291,7 @@ class CourseController extends Controller
             \Gate::authorize('haveaccess', 'ponente.perm');
 
             //busca el curso
-            $curso = Course::with('modules:course_id,id,nombre,numero')->select('id', 'nombre', 'teacher_id')->findOrFail($id);
+            $curso = Course::with(['modules:course_id,id,nombre,numero', 'teacher:id'])->select('id', 'nombre', 'teacher_id')->findOrFail($id);
 
             //Si no existe el curso quiere decir que algo anda mal y por eso se regresa a la vista de error
             if (!$curso) {
@@ -1350,13 +1353,14 @@ class CourseController extends Controller
                 'asignacion' => $entrada,
                 'alumnos' => $alumnos,
                 'nAlumnos' => $nAlumnos,
-                'nEntregas' => $nEntregas
+                'nEntregas' => $nEntregas,
+                'comments' => Comment::with('user:id,nombre,apellido_p,apellido_m,foto')->where('entrie_id', $entrada->id)->orderBy('fecha', 'desc')->get()
             ]);
         } else if (Auth::user()->roles[0]->name == 'Alumno') {
             \Gate::authorize('haveaccess', 'alumno.perm');
 
             //busca el curso
-            $curso = Course::with('modules:course_id,id,nombre,numero')->select('id', 'nombre')->findOrFail($id);
+            $curso = Course::with(['modules:course_id,id,nombre,numero', 'teacher:id'])->select('id', 'nombre', 'teacher_id')->findOrFail($id);
 
             //Si no existe el curso quiere decir que algo anda mal y por eso se regresa a la vista de error
             if (!$curso) {
@@ -1415,6 +1419,7 @@ class CourseController extends Controller
                 'curso' => $curso,
                 'modulo' => $modulo,
                 'asignacion' => $entrada,
+                'comments' => Comment::with('user:id,nombre,apellido_p,apellido_m,foto')->where('entrie_id', $entrada->id)->orderBy('fecha', 'desc')->get()
             ]);
         } else if (Auth::user()->roles[0]->name == 'Administrador') {
             \Gate::authorize('haveaccess', 'admin.perm');
