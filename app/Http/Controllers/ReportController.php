@@ -28,4 +28,17 @@ class ReportController extends Controller
             return abort(403);
         }
     }
+
+    public function verReporte($id){
+        $user = User::find(Auth::id());
+
+        if ($user->roles[0]->name == 'Administrador'){
+            // $reportes=Report::orderBy('status', 'asc')->get();
+            // dd($reportes);
+            return Inertia::render('Reportes/VerReporte');
+        }
+        else{
+            return abort(403);
+        }
+    }
 }
