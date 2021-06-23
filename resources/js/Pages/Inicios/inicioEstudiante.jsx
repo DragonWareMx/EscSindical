@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import Layout from '../../layouts/Layout';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
@@ -9,8 +9,11 @@ import Alertas from '../../components/common/Alertas';
 import '../../styles/cursos.css'
 import '../../styles/inicios.css'
 import '/css/participantes.css'
+import route from 'ziggy-js';
 
-const inicioEstudiante = ({user, profesor, tags, participantes}) => {
+const inicioEstudiante = ({user, profesor, tags, participantes, pendientes}) => {
+
+    var i=0;
 
     const { auth } = usePage().props;
 
@@ -46,9 +49,8 @@ const inicioEstudiante = ({user, profesor, tags, participantes}) => {
                                 {participantes && participantes.users.length > 1 ?
                                     participantes.users.map((alumno, index)=>(
                                     <div key={index}>
-
-                                        {index < 3 && alumno.id != auth.user.id &&
-                                        <div className="col s12 div-collection-item">
+                                        {i < 3 && alumno.id != auth.user.id &&
+                                        <div key={i++} className="col s12 div-collection-item">
                                             <div className="col s12 m1 l1 xl1 right "><a className='dropdown-trigger right' data-target={'dropdown-option-classmate'+index}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                                             <ul id={'dropdown-option-classmate'+index} className='dropdown-content dropdown_LC'>
                                                 <li><a className="dropdown-text" href={"mailto:"+alumno.email}><i className="material-icons">mail</i>Enviar mensaje</a></li>
@@ -85,7 +87,7 @@ const inicioEstudiante = ({user, profesor, tags, participantes}) => {
                                 <div className="col s12 txt-title-card">PRÓXIMAS ACTIVIDADES</div>
                                 <div className="col s12 txt-subtitle-ini">Lista de próximas asignaciones</div>
                                 
-                                <div className="txt-not-found col s12">NO TIENES NUEVAS ASIGNACIONES</div>
+                                
                                 {/* Solo mostrar 3 registros */}
                                 <div className="col s12">
                                     <table className="responsive-table table-activities highlight">
@@ -93,32 +95,28 @@ const inicioEstudiante = ({user, profesor, tags, participantes}) => {
                                         <tr>
                                             <th>TIPO </th>
                                             <th>NOMBRE</th>
-                                            <th>ESTATUS</th>
+                                            <th>ENTREGA</th>
                                         </tr>
                                         </thead>
 
                                         <tbody>
-                                        <tr>
-                                            <td>Tarea</td>
-                                            <td>Lorem ipsum dolor sit amet...</td>
-                                            <td className="status-activity status-cerrado">CERRADO</td>
-                                        </tr>
-                                        <tr>
-                                        <td>Tarea</td>
-                                            <td>Lorem ipsum dolor sit amet...</td>
-                                            <td className="status-activity status-enviado">ENVIADO</td>
-                                        </tr>
-                                        <tr>
-                                        <td>Tarea</td>
-                                            <td>Lorem ipsum dolor sit amet...</td>
-                                            <td className="status-activity status-abierto">ABIERTO</td>
-                                        </tr>
+                                        {pendientes && pendientes.length > 0 ?
+                                            pendientes.map((pendiente , index)=>(
+                                            <tr>
+                                                <td><InertiaLink style={{textDecoration:'none',color:'#383838'}} href={route('cursos.asignacion',[user.active_courses['0'].id,pendiente.module_id,pendiente.id])}>{pendiente.tipo}</InertiaLink></td>
+                                                <td><InertiaLink style={{textDecoration:'none',color:'#383838'}} href={route('cursos.asignacion',[user.active_courses['0'].id,pendiente.module_id,pendiente.id])}>{pendiente.titulo}</InertiaLink></td>
+                                                <td><InertiaLink style={{textDecoration:'none',color:'#383838'}} href={route('cursos.asignacion',[user.active_courses['0'].id,pendiente.module_id,pendiente.id])}>{pendiente.fecha_de_entrega}</InertiaLink></td>
+                                            </tr>
+                                            ))
+                                            :
+                                            <div className="txt-not-found col s12">NO TIENES NUEVAS ASIGNACIONES</div>
+                                        }
                                         </tbody>
                                     </table>
                                 </div>
 
                                 {/* Link a la mochila */}
-                                <InertiaLink className="col s12 link-ver-mas" href="#!">Ver más</InertiaLink>
+                                <InertiaLink className="col s12 link-ver-mas" href={route('cursos.mochila',user.active_courses['0'].id)}>Ver más</InertiaLink>
                                 
                             </div>
                         </div>
