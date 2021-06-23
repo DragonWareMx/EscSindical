@@ -38,6 +38,7 @@ Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'inicio'])->n
 
 // INICIOS
 Route::get('/inicioEstudiante', [App\Http\Controllers\CourseController::class, 'inicioEstudiante'])->name('inicioEstudiante');
+Route::get('/inicioPonente', [App\Http\Controllers\CourseController::class, 'inicioPonente'])->name('inicioPonente');
 
 //--------USUARIOS--------
 //VISTAS PARA ADMIN
