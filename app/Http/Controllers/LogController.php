@@ -27,108 +27,108 @@ class LogController extends Controller
 
         return Inertia::render('Log/Log', [
             'logs' => fn () => Log::with('user:id,nombre,apellido_p,apellido_m')
-                // ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
+                ->leftJoin('users', 'logs.user_id', '=', 'users.id')
                 // ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
                 // ->leftJoin('categories', 'categories.id', '=', 'users.category_id')
                 // ->leftJoin('units', 'units.id', '=', 'users.unit_id')
                 // ->when($request->filter == 'eliminado', function ($query) {
                 //     return $query->onlyTrashed();
                 // })
-                // ->when($request->user_search, function ($query, $search) use ($request) {
-                //     if ($request->filter) {
-                //         switch ($request->filter) {
-                //             case 'matricula':
-                //                 return $query->where('users.matricula', 'LIKE', '%' . $search . '%');
-                //                 break;
-                //             case 'rol':
-                //                 if ($search == "Sin Rol")
-                //                     return $query->whereNull('role_user.role_id');
-                //                 else
-                //                     return $query->where('roles.name', 'LIKE', '%' . $search . '%');
-                //                 break;
-                //             case 'unidad':
-                //                 if ($search == "Sin unidad")
-                //                     return $query->whereNull('users.unit_id');
-                //                 else
-                //                     return $query->where('units.nombre', 'LIKE', '%' . $search . '%');
-                //                 break;
-                //             case 'nombre':
-                //                 return $query->WhereRaw(
-                //                                 "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
-                //                             )->orWhereRaw(
-                //                                 "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
-                //                             );
-                //                 break;
-                //             case 'categoria':
-                //                 return $query->where('categories.nombre', 'LIKE', '%' . $search . '%');
-                //                 break;
-                //             case 'eliminado':
-                //                 return $query->WhereRaw(
-                //                                 "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
-                //                             )->orWhereRaw(
-                //                                 "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
-                //                             )
-                //                             ->onlyTrashed();
-                //                 break;
+                ->when($request->log_search, function ($query, $search) use ($request) {
+                    if ($request->filter) {
+                        switch ($request->filter) {
+                            case 'matricula':
+                                return $query->where('users.matricula', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'rol':
+                                if ($search == "Sin Rol")
+                                    return $query->whereNull('role_user.role_id');
+                                else
+                                    return $query->where('roles.name', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'unidad':
+                                if ($search == "Sin unidad")
+                                    return $query->whereNull('users.unit_id');
+                                else
+                                    return $query->where('units.nombre', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'nombre':
+                                return $query->WhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                            )->orWhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                            );
+                                break;
+                            case 'categoria':
+                                return $query->where('categories.nombre', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'eliminado':
+                                return $query->WhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                            )->orWhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                            )
+                                            ->onlyTrashed();
+                                break;
 
-                //             default:
-                //                 return $query->where('users.nombre', 'LIKE', '%' . $search . '%');
-                //                 break;
-                //         }
-                //     } else
-                //         return $query->WhereRaw(
-                //             "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
-                //         )->orWhereRaw(
-                //             "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
-                //         );
-                // })
-                // ->when($request->sort, function ($query, $sort) use ($request) {
-                //     switch ($sort) {
-                //         case 'matricula':
-                //             if ($request->order == 'asc')
-                //                 return $query->orderBy('matricula', 'ASC');
-                //             else if ($request->order == 'desc')
-                //                 return $query->orderBy('matricula', 'DESC');
-                //             else
-                //                 return $query;
-                //             break;
-                //         case 'rol':
-                //             if ($request->order == 'asc')
-                //                 return $query->orderBy('roles.name', 'ASC');
-                //             else if ($request->order == 'desc')
-                //                 return $query->orderBy('roles.name', 'DESC');
-                //             else
-                //                 return $query;
-                //             break;
-                //         case 'nombre':
-                //             if ($request->order == 'asc')
-                //                 return $query->orderBy('nombre', 'ASC');
-                //             else if ($request->order == 'desc')
-                //                 return $query->orderBy('nombre', 'DESC');
-                //             else
-                //                 return $query;
-                //             break;
-                //         case 'unidad':
-                //             if($request->order == 'asc')
-                //                 return $query->orderBy('units.nombre', 'ASC');
-                //             else if($request->order == 'desc')
-                //                 return $query->orderBy('units.nombre', 'DESC');
-                //             else
-                //                 return $query;
-                //             break;
-                //         case 'categoria':
-                //             if ($request->order == 'asc')
-                //                 return $query->orderBy('categories.nombre', 'ASC');
-                //             else if ($request->order == 'desc')
-                //                 return $query->orderBy('categories.nombre', 'DESC');
-                //             else
-                //                 return $query;
-                //             break;
-                //         default:
-                //             # code...
-                //             break;
-                //     }
-                // })
+                            default:
+                                return $query->where('users.nombre', 'LIKE', '%' . $search . '%');
+                                break;
+                        }
+                    } else
+                        return $query->WhereRaw(
+                            "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                        )->orWhereRaw(
+                            "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                        );
+                })
+                ->when($request->sort, function ($query, $sort) use ($request) {
+                    switch ($sort) {
+                        case 'id':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('logs.id', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('logs.id', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'usuario':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('users.nombre', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('users.nombre', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'descripcion':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('descripcion', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('descripcion', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'categoria':
+                            if($request->order == 'asc')
+                                return $query->orderBy('logs.categoria', 'ASC');
+                            else if($request->order == 'desc')
+                                return $query->orderBy('logs.categoria', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'fecha':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('logs.created_at', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('logs.created_at', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                })
                 ->select('logs.id', 'logs.descripcion','logs.categoria','logs.created_at','logs.user_id')
                 ->orderBy('logs.created_at','desc')
                 ->paginate(20)

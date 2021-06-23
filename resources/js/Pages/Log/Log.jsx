@@ -20,10 +20,10 @@ const Log = ({ logs, request }) => {
     const [state, setState] = useState({
         typingTimeout: 0,
         sortId: true,
-        sortRol: true,
-        sortNombre: true,
-        sortUnidad: true,
+        sortUsuario: true,
+        sortDescripcion: true,
         sortCategoria: true,
+        sortFecha: true,
         filter: "nombre",
         newUser: true
     })
@@ -40,11 +40,11 @@ const Log = ({ logs, request }) => {
         setState({
             typingTimeout: setTimeout(function () {
                 data = {
-                    user_search: search
+                    log_search: search
                 }
                 if (request.filter)
                 data.filter = request.filter
-                Inertia.replace(route('usuarios').url(), { data: data })
+                Inertia.replace(route('log.index').url(), { data: data })
             }, 250)
         });
     }
@@ -59,20 +59,20 @@ const Log = ({ logs, request }) => {
                     setState(state => ({
                         ...state,
                         sortId: true,
-                        sortRol: true,
-                        sortNombre: true,
-                        sortUnidad: true,
+                        sortUsuario: true,
+                        sortDescripcion: true,
                         sortCategoria: true,
+                        sortFecha: true,
                     })
                     )
                 else
                     setState(state => ({
                         ...state,
                         sortId: !state.sortId,
-                        sortRol: true,
-                        sortNombre: true,
-                        sortUnidad: true,
+                        sortUsuario: true,
+                        sortDescripcion: true,
                         sortCategoria: true,
+                        sortFecha: true,
                     })
                     )
 
@@ -100,141 +100,94 @@ const Log = ({ logs, request }) => {
                         preserveState: true,
                     })
                 break;
-            case "rol":
+            case "usuario":
                 //si no hay order en el request entonces el orden es de AZ
                 if (!request.order)
                     setState(state => ({
                         ...state,
-                        sortMatricula: true,
-                        sortRol: true,
-                        sortNombre: true,
-                        sortUnidad: true,
+                        sortId: true,
+                        sortUsuario: true,
+                        sortDescripcion: true,
                         sortCategoria: true,
+                        sortFecha: true,
                     })
                     )
                 else
                     setState(state => ({
                         ...state,
-                        sortMatricula: true,
-                        sortRol: !state.sortRol,
-                        sortNombre: true,
-                        sortUnidad: true,
+                        sortId: true,
+                        sortUsuario: !state.sortUsuario,
+                        sortDescripcion: true,
                         sortCategoria: true,
+                        sortFecha: true,
                     })
                     )
 
                 //se inicializan los datos del request
                 data = {
-                    sort: "rol"
+                    sort: "usuario"
                 }
 
                 //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
-                if (!state.sortRol)
+                if (!state.sortUsuario)
                     data.order = "asc"
                 else
                     data.order = "desc"
 
-                if (request.user_search)
-                    data.user_search = request.user_search
+                if (request.log_search)
+                    data.log_search = request.log_search
 
                 if (request.filter)
                     data.filter = request.filter
 
-                Inertia.replace(route('usuarios').url(),
+                Inertia.replace(route('log.index').url(),
                     {
                         data: data,
                         preserveScroll: true,
                         preserveState: true,
                     })
                 break;
-            case "nombre":
+            case "descripcion":
                 //si no hay order en el request entonces el orden es de AZ
                 if (!request.order)
                     setState(state => ({
                         ...state,
-                        sortMatricula: true,
-                        sortRol: true,
-                        sortNombre: true,
-                        sortUnidad: true,
+                        sortId: true,
+                        sortUsuario: true,
+                        sortDescripcion: true,
                         sortCategoria: true,
+                        sortFecha: true,
                     })
                     )
                 else
                     setState(state => ({
                         ...state,
-                        sortMatricula: true,
-                        sortRol: true,
-                        sortNombre: !state.sortNombre,
-                        sortUnidad: true,
+                        sortId: true,
+                        sortUsuario: true,
+                        sortDescripcion: !state.sortDescripcion,
                         sortCategoria: true,
+                        sortFecha: true,
                     })
                     )
 
                 //se inicializan los datos del request
                 data = {
-                    sort: "nombre"
+                    sort: "descripcion"
                 }
 
                 //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
-                if (!state.sortNombre)
+                if (!state.sortDescripcion)
                     data.order = "asc"
                 else
                     data.order = "desc"
 
-                if (request.user_search)
-                    data.user_search = request.user_search
+                if (request.log_search)
+                    data.log_search = request.log_search
 
                 if (request.filter)
                     data.filter = request.filter
 
-                Inertia.replace(route('usuarios').url(),
-                    {
-                        data: data,
-                        preserveScroll: true,
-                        preserveState: true,
-                    })
-                break;
-            case "unidad":
-                //si no hay order en el request entonces el orden es de AZ
-                if (!request.order)
-                    setState(state => ({
-                        ...state,
-                        sortMatricula: true,
-                        sortRol: true,
-                        sortNombre: true,
-                        sortUnidad: true,
-                        sortCategoria: true,
-                    })
-                    )
-                else
-                    setState(state => ({
-                        ...state,
-                        sortMatricula: true,
-                        sortRol: true,
-                        sortNombre: true,
-                        sortUnidad: !state.sortUnidad,
-                        sortCategoria: true,
-                    })
-                    )
-
-                //se inicializan los datos del request
-                data = {
-                    sort: "unidad"
-                }
-
-                //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
-                if (!state.sortUnidad)
-                    data.order = "asc"
-                else
-                    data.order = "desc"
-
-                if (request.user_search)
-                    data.user_search = request.user_search
-
-                if (request.filter)
-                    data.filter = request.filter
-
-                Inertia.replace(route('usuarios').url(),
+                Inertia.replace(route('log.index').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -246,21 +199,21 @@ const Log = ({ logs, request }) => {
                 if (!request.order)
                     setState(state => ({
                         ...state,
-                        sortMatricula: true,
-                        sortRol: true,
-                        sortNombre: true,
-                        sortUnidad: true,
+                        sortId: true,
+                        sortUsuario: true,
+                        sortDescripcion: true,
                         sortCategoria: true,
+                        sortFecha: true,
                     })
                     )
                 else
                     setState(state => ({
                         ...state,
-                        sortMatricula: true,
-                        sortRol: true,
-                        sortNombre: true,
-                        sortUnidad: true,
+                        sortId: true,
+                        sortUsuario: true,
+                        sortDescripcion: true,
                         sortCategoria: !state.sortCategoria,
+                        sortFecha: true,
                     })
                     )
 
@@ -275,13 +228,60 @@ const Log = ({ logs, request }) => {
                 else
                     data.order = "desc"
 
-                if (request.user_search)
-                    data.user_search = request.user_search
+                if (request.log_search)
+                    data.log_search = request.log_search
 
                 if (request.filter)
                     data.filter = request.filter
 
-                Inertia.replace(route('usuarios').url(),
+                Inertia.replace(route('log.index').url(),
+                    {
+                        data: data,
+                        preserveScroll: true,
+                        preserveState: true,
+                    })
+                break;
+            case "fecha":
+                //si no hay order en el request entonces el orden es de AZ
+                if (!request.order)
+                    setState(state => ({
+                        ...state,
+                        sortId: true,
+                        sortUsuario: true,
+                        sortDescripcion: true,
+                        sortCategoria: true,
+                        sortFecha: true,
+                    })
+                    )
+                else
+                    setState(state => ({
+                        ...state,
+                        sortId: true,
+                        sortUsuario: true,
+                        sortDescripcion: true,
+                        sortCategoria: true,
+                        sortFecha: !state.sortFecha,
+                    })
+                    )
+
+                //se inicializan los datos del request
+                data = {
+                    sort: "fecha"
+                }
+
+                //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
+                if (!state.sortFecha)
+                    data.order = "asc"
+                else
+                    data.order = "desc"
+
+                if (request.log_search)
+                    data.log_search = request.log_search
+
+                if (request.filter)
+                    data.filter = request.filter
+
+                Inertia.replace(route('log.index').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -305,10 +305,10 @@ const Log = ({ logs, request }) => {
                     filter: "matricula"
                 }
 
-                if (request.user_search)
-                    data.user_search = request.user_search
+                if (request.log_search)
+                    data.log_search = request.log_search
 
-                Inertia.replace(route('usuarios').url(),
+                Inertia.replace(route('log.index').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -321,10 +321,10 @@ const Log = ({ logs, request }) => {
                     filter: "rol"
                 }
 
-                if (request.user_search)
-                    data.user_search = request.user_search
+                if (request.log_search)
+                    data.log_search = request.log_search
 
-                Inertia.replace(route('usuarios').url(),
+                Inertia.replace(route('log.index').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -337,10 +337,10 @@ const Log = ({ logs, request }) => {
                     filter: "nombre"
                 }
 
-                if (request.user_search)
-                    data.user_search = request.user_search
+                if (request.log_search)
+                    data.log_search = request.log_search
 
-                Inertia.replace(route('usuarios').url(),
+                Inertia.replace(route('log.index').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -353,10 +353,10 @@ const Log = ({ logs, request }) => {
                     filter: "unidad"
                 }
 
-                if (request.user_search)
-                    data.user_search = request.user_search
+                if (request.log_search)
+                    data.log_search = request.log_search
 
-                Inertia.replace(route('usuarios').url(),
+                Inertia.replace(route('log.index').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -369,10 +369,10 @@ const Log = ({ logs, request }) => {
                     filter: "categoria"
                 }
 
-                if (request.user_search)
-                    data.user_search = request.user_search
+                if (request.log_search)
+                    data.log_search = request.log_search
 
-                Inertia.replace(route('usuarios').url(),
+                Inertia.replace(route('log.index').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -385,10 +385,10 @@ const Log = ({ logs, request }) => {
                     filter: "eliminado"
                 }
 
-                if (request.user_search)
-                    data.user_search = request.user_search
+                if (request.log_search)
+                    data.log_search = request.log_search
 
-                Inertia.replace(route('usuarios').url(),
+                Inertia.replace(route('log.index').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -422,9 +422,9 @@ const Log = ({ logs, request }) => {
         initializeMat();
 
         //si hay una busqueda en el url se pone en el input
-        if (request.user_search) {
-            const elem = document.getElementById('user_search');
-            elem.value = request.user_search;
+        if (request.log_search) {
+            const elem = document.getElementById('log_search');
+            elem.value = request.log_search;
         }
     }, [])
 
@@ -475,7 +475,7 @@ const Log = ({ logs, request }) => {
                                         </ul>
                                     </div>
                                     <div className="input-field col s11" style={{ marginLeft: "0px" }}>
-                                        <input id="user_search" type="search" onChange={changeName} autoComplete="off" />
+                                        <input id="log_search" type="search" onChange={changeName} autoComplete="off" />
                                         <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
                                         <i className="material-icons">close</i>
                                     </div>
@@ -502,13 +502,13 @@ const Log = ({ logs, request }) => {
                                             </a>
                                         </th>
                                         <th>
-                                            <a onClick={() => { sort("rol") }} style={{ cursor: "pointer", userSelect: "none" }} className={request.sort == "rol" && request.order ? "icon-active" : ""}>
+                                            <a onClick={() => { sort("usuario") }} style={{ cursor: "pointer", userSelect: "none" }} className={request.sort == "usuario" && request.order ? "icon-active" : ""}>
                                                 <div>
                                                     USUARIO
                                                 </div>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d={
                                                     request.sort ?
-                                                        request.sort == "rol" ?
+                                                        request.sort == "usuario" ?
                                                             request.order ?
                                                                 request.order == "desc" ? iconDESC
                                                                     : iconASC
@@ -519,30 +519,13 @@ const Log = ({ logs, request }) => {
                                             </a>
                                         </th>
                                         <th>
-                                            <a onClick={() => { sort("nombre") }} style={{ cursor: "pointer", userSelect: "none" }} className={request.sort == "nombre" && request.order ? "icon-active" : ""}>
+                                            <a onClick={() => { sort("descripcion") }} style={{ cursor: "pointer", userSelect: "none" }} className={request.sort == "descripcion" && request.order ? "icon-active" : ""}>
                                                 <div>
                                                     DESCRIPCIÓN
                                                 </div>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d={
                                                     request.sort ?
-                                                        request.sort == "nombre" ?
-                                                            request.order ?
-                                                                request.order == "desc" ? iconDESC
-                                                                    : iconASC
-                                                                : iconDESC
-                                                            : iconASC
-                                                        : iconASC
-                                                } /></svg>
-                                            </a>
-                                        </th>
-                                        <th>
-                                            <a onClick={() => { sort("unidad") }} style={{ cursor: "pointer", userSelect: "none" }} className={request.sort == "unidad" && request.order ? "icon-active" : ""}>
-                                                <div>
-                                                    CATEGORÍA
-                                                </div>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d={
-                                                    request.sort ?
-                                                        request.sort == "unidad" ?
+                                                        request.sort == "descripcion" ?
                                                             request.order ?
                                                                 request.order == "desc" ? iconDESC
                                                                     : iconASC
@@ -555,11 +538,28 @@ const Log = ({ logs, request }) => {
                                         <th>
                                             <a onClick={() => { sort("categoria") }} style={{ cursor: "pointer", userSelect: "none" }} className={request.sort == "categoria" && request.order ? "icon-active" : ""}>
                                                 <div>
-                                                    FECHA
+                                                    CATEGORÍA
                                                 </div>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d={
                                                     request.sort ?
                                                         request.sort == "categoria" ?
+                                                            request.order ?
+                                                                request.order == "desc" ? iconDESC
+                                                                    : iconASC
+                                                                : iconDESC
+                                                            : iconASC
+                                                        : iconASC
+                                                } /></svg>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a onClick={() => { sort("fecha") }} style={{ cursor: "pointer", userSelect: "none" }} className={request.sort == "fecha" && request.order ? "icon-active" : ""}>
+                                                <div>
+                                                    FECHA
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24"><path d={
+                                                    request.sort ?
+                                                        request.sort == "fecha" ?
                                                             request.order ?
                                                                 request.order == "desc" ? iconDESC
                                                                     : iconASC
