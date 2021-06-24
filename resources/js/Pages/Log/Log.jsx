@@ -352,11 +352,6 @@ const Log = ({ logs, request }) => {
         }
     }
 
-    //onClick de cada elemento de la tabla, obtiene el usuario y abre el modal para editar usuario
-    function getUser(id) {
-        Inertia.get(route('usuarios.edit', id))
-    }
-
     //inicializa Materialize
     function initializeMat() {
         var elems = document.querySelectorAll('.dropdown-trigger');
@@ -407,7 +402,6 @@ const Log = ({ logs, request }) => {
             <div className="row contenedor">
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
-                        <InertiaLink className="btn-floating btn-large waves-effect waves-light green-sind button-addUser" href={route('usuarios.create')}><i className="material-icons">add</i></InertiaLink>
                         <div className="card-content">
                             <span className="card-title">Bitácora</span>
                             <Alertas/>
@@ -517,19 +511,17 @@ const Log = ({ logs, request }) => {
                                                 } /></svg>
                                             </a>
                                         </th>
-                                        <th></th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     {logs.data.length > 0 && logs.data.map(log => (
-                                        <tr style={{"cursor":"pointer"}} key={log.id} onClick={() => getUser(log.id)}>
+                                        <tr style={{"cursor":"pointer"}} key={log.id}>
                                             <td>{log.id}</td>
                                             <td>{log.user ? log.user.nombre + " " + log.user.apellido_p + " " + log.user.apellido_m : "Sin Usuario"}</td>
                                             <td>{log.descripcion}</td>
                                             <td>{log.categoria ? log.categoria : "Sin Categoría"}</td>
                                             <td>{transformaFecha(log.created_at)}</td>
-                                            <td><button><i className="material-icons">edit</i> </button></td>
                                         </tr>
                                     ))}
                                 </tbody>
