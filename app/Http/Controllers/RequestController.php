@@ -30,16 +30,15 @@ class RequestController extends Controller
         ]);
     }
 
-    public function verSolicitud($id){
-        $user = User::find(Auth::id());
+    public function verSolicitud($id, $type){
+        \Gate::authorize('haveaccess', 'admin.perm');
+        if ($type == 'delete') $solicitud = Delete_requests::with('course')->find($id);
+        else $solicitud = Drop_requests::with('course')->find($id);
 
-        if ($user->roles[0]->name == 'Administrador'){
-            return Inertia::render('Solicitudes/VerSolicitud');
-        }
-        else{
-            return abort(403);
-        }
-        
+        return Inertia::render('Solicitudes/VerSolicitud', [
+             'solicitud'=>$solicitud,
+             'tipo'=>$type,
+        ]);
     }
 
     public function aprobar($id, Request $request)
@@ -294,7 +293,7 @@ class RequestController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
         //VALIDAMOS DATOS
         $validated= $request->validate([
-            'respuesta' => 'required|boolean'
+            'respuesta' => 'required'
         ]);
 
         DB::beginTransaction();
@@ -304,16 +303,17 @@ class RequestController extends Controller
             $notificacion->user_id = $myRequest->user_id;
 
             //cambiamos estatus de solicitud de baja de alumno
-            if($request->respuesta) {
+            if($request->respuesta == 'true') {
                 $myRequest->status = 'Aprobado';
                 $user = User::find($myRequest->user_id);//buscamos el usuario
-                $user->courses->detach($myRequest->course_id);//eliminamos la relación del usuario con el curso
-                $notificacion->titulo = "Tu baja del curso "+$myRequest->course->nombre+ " ha sido aprobada";//creamos notificación
+                $user->courses()->detach($myRequest->course_id);//eliminamos la relación del usuario con el curso
+                
+                $notificacion->titulo = "Tu baja del curso ".$myRequest->course->nombre. " ha sido aprobada";//creamos notificación
                 
             }
             else {
                 $myRequest->status ='Rechazado';
-                $notificacion->titulo = "Tu baja del curso "+$myRequest->course->nombre+ " ha sido rechazada";
+                $notificacion->titulo = "Tu baja del curso ".$myRequest->course->nombre. " ha sido rechazada";
             }
             
             $myRequest->save();
@@ -327,6 +327,7 @@ class RequestController extends Controller
             return \Redirect::route('solicitudes')->with('success', 'La acción se llevó a cabo con éxito'); //poner info del alumno
         } catch (\Exception $e) {
             //throw $th;
+            dd($e);
             DB::rollBack();
             return \Redirect::route('solicitudes')->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
         }
@@ -337,7 +338,7 @@ class RequestController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
         //VALIDAMOS DATOS
         $validated= $request->validate([
-            'respuesta' => 'required|boolean'
+            'respuesta' => 'required'
         ]);
         DB::beginTransaction();
         try {
@@ -346,15 +347,15 @@ class RequestController extends Controller
             $notificacion->user_id = $myRequest->user_id;
 
             //cambiamos estatus de solicitud de baja de alumno
-            if($request->respuesta) {
+            if($request->respuesta == "true") {
                 $myRequest->status = 'Aprobado';
                 $curso = Course::find($myRequest->course_id);
-                $notificacion->titulo = "Tu solicitud de eliminación del curso "+$curso->nombre+ " ha sido aprobada";//creamos notificación
+                $notificacion->titulo = "Tu solicitud de eliminación del curso ".$curso->nombre. " ha sido aprobada";//creamos notificación
                 $curso->delete();
             }
             else {
                 $myRequest->status ='Rechazado';
-                $notificacion->titulo = "Tu solicitud de eliminación del curso "+$myRequest->course->nombre+ " ha sido rechazada";
+                $notificacion->titulo = "Tu solicitud de eliminación del curso ".$myRequest->course->nombre. " ha sido rechazada";
             }
             
             $myRequest->save();
@@ -366,11 +367,12 @@ class RequestController extends Controller
 
             
             DB::commit();
-            return \Redirect::route('solicitudes')->with('success', 'La acción se llevó a cabo con éxito');//poner info del curso
+            return \Redirect::route('Solicitudes')->with('success', 'La acción se llevó a cabo con éxito');//poner info del curso
         } catch (\Exception $e) {
             //throw $th;
+            dd($e);
             DB::rollBack();
-            return \Redirect::route('solicitudes')->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
+            return \Redirect::back('Solicitudes')->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
         }
         
     }
