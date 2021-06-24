@@ -20,6 +20,7 @@ use App\Models\Training_type;
 use App\Models\Drop_requests;
 use App\Models\Delete_requests;
 use Illuminate\Support\Facades\Gate;
+use Carbon\Carbon;
 
 class CourseController extends Controller
 {
@@ -48,7 +49,7 @@ class CourseController extends Controller
             ]);
         } else {
             \Gate::authorize('haveaccess', 'alumno.perm');
-            $curso_actual = $user->courses[0];
+            $curso_actual = $user->activeCourses[0];
             $profesor = $curso_actual->teacher;
             $tags = $curso_actual->tags;
             return Inertia::render('Cursos/Cursos', [
@@ -64,19 +65,57 @@ class CourseController extends Controller
     //  funcion para ver el inicio como estudiante
     public function inicioEstudiante()
     {
+        \Gate::authorize('haveaccess', 'alumno.perm');
         $user = User::find(Auth::id());
-
         if ($user->roles[0]->name == 'Alumno') {
-            \Gate::authorize('haveaccess', 'alumno.perm');
-            $curso_actual = $user->courses[0];
+            $curso_actual = $user->activeCourses[0];
             $profesor = $curso_actual->teacher;
             $tags = $curso_actual->tags;
+            $participantes=Course::where('id',$curso_actual->id)->with('users:id,nombre,apellido_p,apellido_m,foto,email')->first();
+            $hoy=Carbon::now();
+            $entradas = Course::where('courses.id', $curso_actual->id)->leftJoin('modules', 'courses.id', '=', 'modules.course_id')
+                ->leftJoin('entries', 'modules.id', '=', 'entries.module_id')
+                ->where('entries.visible', 1)
+                ->where('entries.fecha_de_entrega','>=',$hoy)
+                ->whereIn('entries.tipo', ['Asignacion', 'Examen'])
+                ->select('entries.*', 'modules.nombre as modulo', 'modules.numero as numero', 'modules.id as module_id')
+                ->orderBy('fecha_de_entrega', 'ASC')
+            ->get();
+
+            $realizadas = Course::where('courses.id', $curso_actual->id)->leftJoin('modules', 'courses.id', '=', 'modules.course_id')
+            ->leftJoin('entries', 'modules.id', '=', 'entries.module_id')
+            ->where('entries.visible', 1)
+            ->where('entries.fecha_de_entrega','>=',$hoy)
+            ->whereIn('entries.tipo', ['Asignacion', 'Examen'])
+            ->join('entry_user', 'entries.id', '=', 'entry_id')
+            ->where('entry_user.user_id', $user->id)
+            ->orderBy('fecha_de_entrega', 'ASC')
+            ->get();
+
+            $pendientes = [];
+            $i = 0;
+            foreach ($entradas as $entrada) {
+                $found = false;
+                foreach ($realizadas as $realizada) {
+                    if ($entrada->id == $realizada->id) {
+                        $found = true;
+                        break;
+                    }
+                }
+                if ($found == false) {
+                    $pendientes[$i] = $entrada;
+                    $i++;
+                }
+            }
+            
             return Inertia::render('Inicios/inicioEstudiante', [
                 'user' => fn () => User::with([
                     'roles', 'requests', 'requests.course.images', 'requests.course.teacher', 'requests.course.tags', 'activeCourses', 'activeCourses.images', 'finishedCourses', 'finishedCourses.images', 'finishedCourses.teacher', 'finishedCourses.tags'
                 ])->where('id', Auth::id())->first(),
                 'profesor' => $profesor,
                 'tags' => $tags,
+                'participantes' => $participantes,
+                'pendientes' => $pendientes,
             ]);
         } 
     }
@@ -1095,16 +1134,139 @@ class CourseController extends Controller
     public function calificaciones($id)
     {
         Gate::authorize('haveaccess', 'ponente.perm');
+
         //verificar que el ponente sea dueño del curso
-        $curso_teacher=Course::where('id',$id)->first('teacher_id');
-        if(Auth::id() != $curso_teacher->teacher_id){
+        $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id')->select('id', 'nombre','teacher_id')->findOrFail($id);
+        if(Auth::id() != $curso->teacher_id){
             return abort(403);
         }
-        $curso = Course::findOrFail($id);
 
         return Inertia::render('Curso/Calificaciones', [
-            'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id)
+            'curso' => $curso
         ]);
+    }
+
+    public function storeCalificaciones($id, Request $request)
+    {
+        Gate::authorize('haveaccess', 'ponente.perm');
+
+        $validated = $request->validate([
+            'calificacion'    => [
+                'required',
+                'array',
+                'min:1',
+                //valida que existan los usuarios de las calificaciones
+                function($attribute, $value, $fail) {
+                    //arreglo de indices
+                    $ids = array_keys($value);
+
+                    // query to check if array keys is not valid
+                    $usersCountWithinArrIDs = User::whereIn('id', $ids)->count();
+                    if ($usersCountWithinArrIDs != count($ids))
+                        return $fail($attribute.' no es válido.');  // -> "quantity is invalid"
+                }
+            ],
+            'calificacion.*'    => [
+                'required',
+                'array',
+                'min:1',
+                //valida que existan los modulos de las calificaciones
+                function($attribute, $value, $fail) {
+                    //arreglo de indices
+                    $ids = array_keys($value);
+
+                    // query to check if array keys is not valid
+                    $modulesCountWithinArrIDs = Module::whereIn('id', $ids)->count();
+                    if ($modulesCountWithinArrIDs != count($ids))
+                        return $fail($attribute.' no es válido.');  // -> "quantity is invalid"
+                }
+            ],
+            'calificacion.*.*' => 'nullable|numeric|between:0,100|regex:/^\d*(\.\d{1,2})?$/',
+            'calificacion_final'    => [
+                'required',
+                'array',
+                'min:1',
+                //valida que existan los usuarios de las calificaciones
+                function($attribute, $value, $fail) {
+                    //arreglo de indices
+                    $ids = array_keys($value);
+
+                    // query to check if array keys is not valid
+                    $usersCountWithinArrIDs = User::whereIn('id', $ids)->count();
+                    if ($usersCountWithinArrIDs != count($ids))
+                        return $fail($attribute.' no es válido.');  // -> "quantity is invalid"
+                }
+            ],
+            'calificacion_final.*.*' => 'nullable|numeric|between:0,100|regex:/^\d*(\.\d{1,2})?$/',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            //verifica que el curso exista
+            $curso = Course::find($id);
+
+            if(!$curso){
+                DB::rollBack();
+                return \Redirect::route('cursos.calificaciones.store', $id)->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
+            }
+
+            //verifica que el usuario loggeado sea el maestro del curso
+            if($curso->teacher->id != Auth::User()->id){
+                DB::rollBack();
+                return \Redirect::route('cursos.calificaciones.store', $id)->with('error', 'No puedes subir calificaciones si no eres el maestro del curso.');
+            }
+
+            //user es el id del usuario en la iteracion
+            foreach ($request->calificacion as $user => $userModules) {
+                //module es el id del modulo
+                foreach ($userModules as $module => $calificacion) {
+                    $module = Module::find($module);
+
+                    //se actualiza el status de la solicitud
+                    $module->users()->sync([$user => ['calificacion' => $calificacion]], false);
+                }
+            }
+
+            //module es el id del modulo
+            foreach ($request->calificacion_final as $user => $calificacionFinal) {
+                //se actualiza el status de la solicitud
+                $curso->users()->sync([$user => ['calificacion_final' => $calificacionFinal]], false);
+            }
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'update';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{}';
+
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha subido calificaciones del curso de id: ' . $id;
+
+            //SE GUARDA EL LOG
+            $newLog->save();
+
+            if(!$newLog){
+                DB::rollBack();
+                return \Redirect::route('cursos.calificaciones.store', $id)->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
+            }
+
+            DB::commit();
+
+            if($request->aprobado){
+                $status = 'aceptado';
+            }
+            else{
+                $status = 'rechazado';
+            }
+
+            return \Redirect::route('cursos.calificaciones.store', $id)->with('success', 'Las calificaciones se han registrado de manera exitosa.');
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return \Redirect::route('cursos.calificaciones.store', $id)->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde.');
+        }
     }
 
     public function solicitudes($id)
