@@ -13,9 +13,30 @@ import '/css/reporte.css'
 
 
 
-const VerReporte = ({reporte}) => {
+const VerReporte = ({reporte, reported, reporter}) => {
   
+    function transformaFecha(fecha) {
+        const dob = new Date(fecha);
+        const monthNames = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+            'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        const day = dob.getDate();
+        const monthIndex = dob.getMonth();
+        const year = dob.getFullYear();
+        let hour = ("0" + dob.getHours()).slice(-2);
+        const minutes = ("0" + dob.getMinutes()).slice(-2);
+        let formato
 
+        if(hour > 12){
+            hour = hour - 12
+            formato = "pm"
+        }
+        else
+            formato = "am"
+
+        return `${day} de ${monthNames[monthIndex]} de ${year} a las ${hour}:${minutes} ${formato}`;
+    }
         return (
             <>
 
@@ -35,13 +56,13 @@ const VerReporte = ({reporte}) => {
 
                                     <div style={{"marginBottom":"20px"}}>
                                         <div className="col s12 txt-title-report">FECHA DE REPORTE</div>
-                                        <div className="col s12 txt-report">{reporte.fecha}</div>
+                                        <div className="col s12 txt-report">{transformaFecha(reporte.created_at)}</div>
                                     </div>
                                 </div>
 
                                 <div className="col s12" style={{"marginBottom":"20px"}}>
-                                    <div className="col s12 txt-report">
-                                        El usuario <a>Dulce Gabriela Marìn Rendón</a> (ESTUDIANTE) reportó al usuario <a>Oscar Andre Huerta García</a> (PONENTE) con el siguiente motivo
+                                    <div className="col s12 txt-report" style={{"display":"flex", "flexWrap":"wrap"}}>
+                                        El usuario &nbsp;<InertiaLink href={route('perfil.public',reporter.id)}>{reporter.nombre}&nbsp;{reporter.apellido_p}&nbsp;{reporter.apellido_m}</InertiaLink>&nbsp;<div className="div-rol-reporte">({reporter.name})&nbsp;</div> reportó al usuario &nbsp;<InertiaLink href={route('perfil.public',reported.id)}>{reported.nombre}&nbsp;{reported.apellido_p}&nbsp;{reported.apellido_m}</InertiaLink>&nbsp; <div className="div-rol-reporte">({reported.name})&nbsp;</div> con el siguiente motivo
                                     </div>
                                 </div>
 
