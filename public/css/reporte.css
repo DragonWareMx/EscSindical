@@ -1,0 +1,48 @@
+.div-data-reporte{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap: wrap;
+}
+.txt-title-report{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: #848484;
+    margin-bottom:5px;
+}
+.txt-report{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 17px;
+    letter-spacing: 0.05em;
+    color: #2E2E2E;
+}
+.txt-report a{
+    font-weight: 500;
+    color: #108058;
+    cursor:pointer;
+    transition: all ease 0.2s;
+}
+.txt-report a:hover{
+    color: #134E39;
+    transition: all ease 0.2s;
+}
+.input-check-reporte{
+    text-align:right;
+}
+.input-check-reporte-span{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px !important;
+    padding-left:25px !important;
+    line-height: 16px;
+    color: #108058 !important;
+}
+.div-rol-reporte{
+    width:min-content;
+    height:min-content;
+    text-transform:uppercase;
+    font-size: 10px;
+}

@@ -121,3 +121,18 @@ Route::delete('/entrada/eliminar/{id}', [App\Http\Controllers\EntryController::c
 
 //----------------NOTIFICACION----------------------
 Route::post('/notificacion/vista/{id}', [App\Http\Controllers\NotificationController::class, 'marcar'])->name('notif.vista');
+
+// --------------------REPORTES--------------------
+Route::get('/reportes', [App\Http\Controllers\ReportController::class, 'index'])->name('reportes');
+Route::get('/reportes/{id}', [App\Http\Controllers\ReportController::class, 'verReporte'])->name('VerReportes');
+
+// SOLICITUDES
+Route::get('/solicitudes', [App\Http\Controllers\RequestController::class, 'index'])->name('solicitudes');
+Route::get('/solicitudes/{id}', [App\Http\Controllers\RequestController::class, 'verSolicitud'])->name('verSolicitud');
+
+//LOG
+Route::name('log.')->group(function () {
+    Route::get('/log', [App\Http\Controllers\LogController::class, 'index'])->name('index');
+});
+//----------------COMENTARIOS--------------------
+Route::post('/cursos/{cid}/modulo/{mid}/publicacion/{pid}/comment', [App\Http\Controllers\CommentController::class, 'create'])->name('comment.create');

@@ -17,8 +17,8 @@ const Calificaciones = ({curso, request}) => {
     //calificacion es una matriz, donde el primer valor es el id del usuario y el segundo valor es el id del modulo
     //calificaciones finales solo guarda el id del usuario
     const [values, setValues] = useState({
-        calificacion: [[]],
-        calificacion_final: []
+        calificacion: {},
+        calificacion_final: {}
     })
 
     const [editar, setEditar] = useState(false)

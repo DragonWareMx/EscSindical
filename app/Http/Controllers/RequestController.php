@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Course;
@@ -12,6 +13,32 @@ use App\Models\Notification;
 
 class RequestController extends Controller
 {
+
+    public function index(){
+        $user = User::find(Auth::id());
+
+        if ($user->roles[0]->name == 'Administrador'){
+            // $reportes=Report::orderBy('status', 'asc')->get();
+            // dd($reportes);
+            return Inertia::render('Solicitudes/Solicitudes');
+        }
+        else{
+            return abort(403);
+        }
+    }
+
+    public function verSolicitud($id){
+        $user = User::find(Auth::id());
+
+        if ($user->roles[0]->name == 'Administrador'){
+            return Inertia::render('Solicitudes/VerSolicitud');
+        }
+        else{
+            return abort(403);
+        }
+        
+    }
+
     public function aprobar($id, Request $request)
     {
         \Gate::authorize('haveaccess', 'ponente.perm');
