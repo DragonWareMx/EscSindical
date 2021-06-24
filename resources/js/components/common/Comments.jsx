@@ -95,6 +95,29 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
         )
     }
 
+    function handleSubmitDelete(e) {
+        e.preventDefault()
+        Inertia.post(route('comment.delete', { id: values.id_edit }),
+            {
+                onError: () => {
+                    //Inertia.reload({ only: ['comments'] })
+
+                },
+                onSuccess: () => {
+                    //esto es para borrar el input al poner el comentario
+                    setValues(values => ({
+                        ...values,
+                        comentario_editado: '',
+                        id_edit: '',
+                        visibleEdit: false
+                    }));
+                    Inertia.reload({ only: ['comments'] })
+                },
+                preserveScroll: (page) => Object.keys([page.props.status, page.props.errors]).length,
+            }
+        )
+    }
+
     function handleEdit(e) {
         var id = e.target.dataset.id;
         if (values.id_edit == id) {
@@ -109,6 +132,15 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
                 comentario_editado: comentario.innerText
             }));
         }
+    }
+
+    function handleDelete(e) {
+        var id = e.target.dataset.id;
+        setValues(values => ({
+            ...values,
+            id_edit: id,
+        }));
+
     }
 
     function ocultarEdit(e) {
@@ -165,7 +197,7 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
                                                 {com.user_id == auth.user.id &&
                                                     <div className="LC_more tres_puntos">
                                                         <a className="dropdown-text" data-id={com.id} onClick={handleEdit}><i className="material-icons" data-id={com.id}>edit</i></a>
-                                                        <a className="dropdown-text" data-id={com.id}><i className="material-icons" data-id={com.id}>delete</i></a>
+                                                        <a className="dropdown-text modal-trigger" data-id={com.id} onClick={handleDelete} data-target="modalEliminarComment"><i className="material-icons" data-id={com.id}>delete</i></a>
                                                     </div>
                                                 }
 
@@ -179,7 +211,7 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
                                                     }
                                                     <div className="date">{moment(com.fecha).format('D [de] MMMM YYYY [a las] h:mm a')}</div>
                                                     {com.editado == 1 &&
-                                                        <div className="date" style={{ color: "#134E39", fontWeight: 700 }}>Editado</div>
+                                                        <div className="date" style={{ color: "#134E39", fontWeight: 400 }}>(editado)</div>
                                                     }
                                                 </div>
                                                 {values.id_edit != com.id ?
@@ -260,6 +292,16 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
                     </div>
                 </div>
             }
+            <div id='modalEliminarComment' className="modal">
+                <div className="modal-content">
+                    <h4 style={{ "color": "#c62828" }}>Eliminar comentario</h4>
+                    <p>¿Estás seguro de que deseas eliminar este comentario?</p>
+                </div>
+                <div className="modal-footer">
+                    <a className="modal-close waves-effect waves-green btn-flat">Cancelar</a>
+                    <a className="modal-close waves-effect waves-green btn-flat" style={{ "color": "#c62828" }} onClick={handleSubmitDelete}>Eliminar</a>
+                </div>
+            </div>
         </div >
     )
 }

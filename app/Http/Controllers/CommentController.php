@@ -53,7 +53,7 @@ class CommentController extends Controller
 
             DB::commit();
             // all good
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Comentario creado con éxito.');
         } catch (\Exception $e) {
             DB::rollback();
             // something went wrong
@@ -90,7 +90,25 @@ class CommentController extends Controller
 
             DB::commit();
             // all good
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Comentario editado con éxito.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return redirect()->back()->with('error', 'Ocurrió un error inesperado, vuelve a intentarlo.');
+        }
+    }
+
+    public function delete($id)
+    {
+        DB::beginTransaction();
+        try {
+            //se elimina el comentario
+            $comentario = Comment::findOrFail($id);
+            $comentario->delete();
+
+            DB::commit();
+            // all good
+            return redirect()->back()->with('success', 'Comentario eliminado con éxito.');
         } catch (\Exception $e) {
             DB::rollback();
             // something went wrong
