@@ -33,6 +33,9 @@ const inicioPonente = ({cursos}) => {
                         {/* graficas */}
                         <div className="card">
                             <div className="card-content">
+                                <div className="col s12" style={{ "marginBottom": "10px"}}>
+                                    <span className="txt-title-card">ESTUDIANTES</span>
+                                </div>
                                 Aqui van a ir unas graficas bien chulas
                             </div>
                         </div>

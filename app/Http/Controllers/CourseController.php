@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use App\Models\User;
+use App\Permission\Models\Role;
 use App\Models\Request as Application;
 use App\Models\Course;
 use App\Models\Module;
@@ -133,6 +134,40 @@ class CourseController extends Controller
                 'cursos' => fn () => $cursos,
             ]);
         } 
+    }
+
+    //  funcion para ver el inicio como admin
+    public function inicioAdmin()
+    {
+        \Gate::authorize('haveaccess', 'admin.perm');
+        //  cantidad de usuarios separados por rol
+        $usuariosRoles = Role::
+                            join('role_user','roles.id','=','role_user.role_id')
+                            ->select('roles.name',DB::raw('count(roles.id) as cantidad'))
+                            ->groupBy('roles.name')
+                            ->get();
+        
+        //  cantidad de estudiantes inscritos a un curso
+        $inscritos = Course::
+                        leftJoin('course_user','courses.id','=','course_user.course_id')
+                        ->where('estatus','=','Activo')
+                        ->select(DB::raw('count(user_id) as cantidad'))
+                        ->first();
+
+        //  cantida de ponentes que estan dando al menos un curso
+        $cantidadPonentes = Course::
+                            where('estatus','=','Activo')
+                            ->select(DB::raw('count(teacher_id) as cantidad'))
+                            ->groupBy('teacher_id')
+                            ->get();
+
+        //dd($usuariosRoles->all());
+        return Inertia::render('Inicios/inicioAdmin', [
+            'usuariosRoles' => $usuariosRoles,
+            'inscritos' => $inscritos,
+            'cantidadPonentes' => $cantidadPonentes->count(),
+        ]);
+        
     }
 
 
