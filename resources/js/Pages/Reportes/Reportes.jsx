@@ -21,7 +21,7 @@ const Reportes = ({reportes}) => {
     }, [])
 
     function getReport(id) {
-        Inertia.get(route('usuarios.edit', id))
+        Inertia.get(route('VerReportes', id))
     }
 
         return (
@@ -94,15 +94,15 @@ const Reportes = ({reportes}) => {
                                 </thead>
 
                                 <tbody>
-                                    {/* {reportes.data.length > 0 && reportes.data.map(reportes, index => ( */}
-                                        <tr style={{"cursor":"pointer"}} key={reportes.id} onClick={() => getReport(reportes.id)}>
-                                            <td>17121037</td>
-                                            <td>Oscar Andre Huerta...</td>
-                                            <td>Lorem ipsum dolor sit amet, consectetur adi...</td>
-                                            <td>Sin revisar</td>
-                                            <td><button ><i className="material-icons tiny" style={{"color":"#134E39"}}>edit</i> </button></td>
-                                        </tr>
-                                    {/* ))} */}
+                                {reportes && reportes.length > 0 && reportes.map((reporte , index)=>(
+                                    <tr style={{"cursor":"pointer"}} key={reporte.id} onClick={() => getReport(reporte.id)}>
+                                        <td>{reporte.reported.matricula}</td>
+                                        <td>{reporte.reported.nombre} {reporte.reported.apellido_p}</td>
+                                        <td>{reporte.comentario}</td>
+                                        <td>{reporte.status == 0 ? 'Sin revisar' : 'Revisado'}</td>
+                                        <td><button ><i className="material-icons tiny" style={{"color":"#134E39"}}>edit</i> </button></td>
+                                    </tr>
+                                ))}
                                 </tbody>
                             </table>
 

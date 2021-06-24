@@ -40,3 +40,9 @@
     line-height: 16px;
     color: #108058 !important;
 }
+.div-rol-reporte{
+    width:min-content;
+    height:min-content;
+    text-transform:uppercase;
+    font-size: 10px;
+}
