@@ -171,13 +171,16 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
 
                                                 <div className="nombre-comment">
                                                     {com.user.id == idTeacher ?
-                                                        <div className="name valign-wrapper" style={{ color: "#134E39", fontWeight: 700 }}>{com.user.nombre + ' ' + com.user.apellido_p + ' ' + com.user.apellido_m} <span className="material-icons" style={{ "color": "#134E39", "fontSize": "13px", marginLeft: "5px" }}>
+                                                        <div className="name valign-wrapper" style={{ color: "#134E39", fontWeight: 300 }}>{com.user.nombre + ' ' + com.user.apellido_p + ' ' + com.user.apellido_m} <span className="material-icons" style={{ "color": "#134E39", "fontSize": "13px", marginLeft: "5px" }}>
                                                             check_circle
                                                         </span></div>
                                                         :
                                                         <div className="name">{com.user.nombre + ' ' + com.user.apellido_p + ' ' + com.user.apellido_m}</div>
                                                     }
                                                     <div className="date">{moment(com.fecha).format('D [de] MMMM YYYY [a las] h:mm a')}</div>
+                                                    {com.editado == 1 &&
+                                                        <div className="date" style={{ color: "#134E39", fontWeight: 700 }}>Editado</div>
+                                                    }
                                                 </div>
                                                 {values.id_edit != com.id ?
                                                     <div className="comment-text" id={"comment-" + com.id}>
