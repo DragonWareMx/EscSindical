@@ -171,7 +171,7 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
 
                                                 <div className="nombre-comment">
                                                     {com.user.id == idTeacher ?
-                                                        <div className="name valign-wrapper" style={{ color: "#134E39", fontWeight: 300 }}>{com.user.nombre + ' ' + com.user.apellido_p + ' ' + com.user.apellido_m} <span className="material-icons" style={{ "color": "#134E39", "fontSize": "13px", marginLeft: "5px" }}>
+                                                        <div className="name valign-wrapper" style={{ color: "#134E39", fontWeight: 700 }}>{com.user.nombre + ' ' + com.user.apellido_p + ' ' + com.user.apellido_m} <span className="material-icons" style={{ "color": "#134E39", "fontSize": "13px", marginLeft: "5px" }}>
                                                             check_circle
                                                         </span></div>
                                                         :
