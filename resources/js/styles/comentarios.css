@@ -150,6 +150,26 @@ textarea#comentario{
     resize: none;
 }
 
+textarea#comentario_editado{
+    border: 1px solid #134E39;
+    box-sizing: border-box;
+    border-radius: 3px;
+
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    /* identical to box height */
+
+    color: #8E8E8E;
+    outline: none;
+
+    margin-top: 15px;
+    margin-bottom: 20px;
+    resize: none;
+}
+
 .tres_puntos{
     position: absolute;
     top: 10px;
@@ -158,4 +178,9 @@ textarea#comentario{
 
 .tres_puntos a{
     cursor: pointer;
+    display: none;
+}
+
+.comment-container:hover .tres_puntos a{
+    display: block;
 }
