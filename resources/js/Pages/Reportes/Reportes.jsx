@@ -15,7 +15,204 @@ function materialize(){
 }
 
 const Reportes = ({reportes}) => {
+
+    //iconos de sort asc y desc
+    const iconASC = "M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z"
+    const iconDESC = "M6 2l-6 8h4v12h4v-12h4l-6-8zm11.694.003h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z"
   
+
+    //sort de la tabla
+    function sort(campo) {
+        let data;
+        switch (campo) {
+            case "matricula":
+                //si no hay order en el request entonces el orden es de AZ
+                if (!request.order)
+                    setState(state => ({
+                        ...state,
+                        sortMatricula: true,
+                        sortUsuario: true,
+                        sortMotivo: true,
+                        sortEstatus: true,
+                    })
+                    )
+                else
+                    setState(state => ({
+                        ...state,
+                        sortMatricula: !state.sortMatricula,
+                        sortUsuario: true,
+                        sortMotivo: true,
+                        sortEstatus: true,
+                    })
+                    )
+
+                //se inicializan los datos del request
+                data = {
+                    sort: "matricula"
+                }
+
+                //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
+                if (!state.sortMatricula)
+                    data.order = "asc"
+                else
+                    data.order = "desc"
+
+                // if (request.reporte_search)
+                //     data.reporte_search = request.reporte_search
+
+                if (request.filter)
+                    data.filter = request.filter
+
+                Inertia.replace(route('reportes.index').url(),
+                    {
+                        data: data,
+                        preserveScroll: true,
+                        preserveState: true,
+                    })
+                break;
+            case "usuario":
+                //si no hay order en el request entonces el orden es de AZ
+                if (!request.order)
+                    setState(state => ({
+                        ...state,
+                        sortMatricula: true,
+                        sortUsuario: true,
+                        sortMotivo: true,
+                        sortEstatus: true,
+                    })
+                    )
+                else
+                    setState(state => ({
+                        ...state,
+                        sortMatricula: true,
+                        sortUsuario: !state.sortUsuario,
+                        sortMotivo: true,
+                        sortEstatus: true,
+                    })
+                    )
+
+                //se inicializan los datos del request
+                data = {
+                    sort: "usuario"
+                }
+
+                //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
+                if (!state.sortUsuario)
+                    data.order = "asc"
+                else
+                    data.order = "desc"
+
+                // if (request.reporte_search)
+                //     data.reporte_search = request.reporte_search
+
+                if (request.filter)
+                    data.filter = request.filter
+
+                Inertia.replace(route('reportes.index').url(),
+                    {
+                        data: data,
+                        preserveScroll: true,
+                        preserveState: true,
+                    })
+                break;
+            case "motivo":
+                //si no hay order en el request entonces el orden es de AZ
+                if (!request.order)
+                    setState(state => ({
+                        ...state,
+                        sortMatricula: true,
+                        sortUsuario: true,
+                        sortMotivo: true,
+                        sortEstatus: true,
+                    })
+                    )
+                else
+                    setState(state => ({
+                        ...state,
+                        sortMatricula: true,
+                        sortUsuario: true,
+                        sortMotivo: !state.sortMotivo,
+                        sortEstatus: true,
+                    })
+                    )
+
+                //se inicializan los datos del request
+                data = {
+                    sort: "motivo"
+                }
+
+                //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
+                if (!state.sortMotivo)
+                    data.order = "asc"
+                else
+                    data.order = "desc"
+
+                // if (request.reporte_search)
+                //     data.reporte_search = request.reporte_search
+
+                if (request.filter)
+                    data.filter = request.filter
+
+                Inertia.replace(route('reportes.index').url(),
+                    {
+                        data: data,
+                        preserveScroll: true,
+                        preserveState: true,
+                    })
+                break;
+            case "estatus":
+                //si no hay order en el request entonces el orden es de AZ
+                if (!request.order)
+                    setState(state => ({
+                        ...state,
+                        sortMatricula: true,
+                        sortUsuario: true,
+                        sortMotivo: true,
+                        sortEstatus: true,
+                    })
+                    )
+                else
+                    setState(state => ({
+                        ...state,
+                        sortMatricula: true,
+                        sortUsuario: true,
+                        sortMotivo: true,
+                        sortEstatus: !state.sortEstatus,
+                    })
+                    )
+
+                //se inicializan los datos del request
+                data = {
+                    sort: "estatus"
+                }
+
+                //state.sortMatricula debe ir negado porque el state no se ha actualizado en este momento
+                if (!state.sortEstatus)
+                    data.order = "asc"
+                else
+                    data.order = "desc"
+
+                // if (request.reporte_search)
+                //     data.reporte_search = request.reporte_search
+
+                if (request.filter)
+                    data.filter = request.filter
+
+                Inertia.replace(route('reportes.index').url(),
+                    {
+                        data: data,
+                        preserveScroll: true,
+                        preserveState: true,
+                    })
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
+
     useEffect(() => {
         materialize();
     }, [])
