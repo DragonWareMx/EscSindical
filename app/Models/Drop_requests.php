@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Drop_requests extends Model
 {
     use HasFactory;
-
     use SoftDeletes;
+
+    public function course()
+    {
+        return $this->belongsTo('App\Models\Course');
+    }
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
 }

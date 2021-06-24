@@ -281,11 +281,38 @@ class RequestController extends Controller
     {
         \Gate::authorize('haveaccess', 'admin.perm');
         //VALIDAMOS DATOS
+        $validated= $request->validate([
+            'respuesta' => 'required|boolean'
+        ]);
+
         DB::beginTransaction();
         try {
-            //code...
+            $myRequest = Drop_requests::find($id);
+            $notificacion = new Notification;
+            $notificacion->user_id = $myRequest->user_id;
+
+            //cambiamos estatus de solicitud de baja de alumno
+            if($request->respuesta) {
+                $myRequest->status = 'Aprobado';
+                $user = User::find($myRequest->user_id);//buscamos el usuario
+                $user->courses->detach($myRequest->course_id);//eliminamos la relación del usuario con el curso
+                $notificacion->titulo = "Tu baja del curso "+$myRequest->course->nombre+ " ha sido aprobada";//creamos notificación
+                
+            }
+            else {
+                $myRequest->status ='Rechazado';
+                $notificacion->titulo = "Tu baja del curso "+$myRequest->course->nombre+ " ha sido rechazada";
+            }
+            
+            $myRequest->save();
+            $notificacion->save();
+
+            $newLog = new Log;
+
+            //debemos el LOG
+
             DB::commit();
-            return \Redirect::route('solicitudes')->with('success', 'La acción se llevó a cabo con éxito');
+            return \Redirect::route('solicitudes')->with('success', 'La acción se llevó a cabo con éxito'); //poner info del alumno
         } catch (\Exception $e) {
             //throw $th;
             DB::rollBack();
@@ -297,11 +324,37 @@ class RequestController extends Controller
     {
         \Gate::authorize('haveaccess', 'admin.perm');
         //VALIDAMOS DATOS
+        $validated= $request->validate([
+            'respuesta' => 'required|boolean'
+        ]);
         DB::beginTransaction();
         try {
-            //code...
+            $myRequest = Delete_requests::find($id);
+            $notificacion = new Notification;
+            $notificacion->user_id = $myRequest->user_id;
+
+            //cambiamos estatus de solicitud de baja de alumno
+            if($request->respuesta) {
+                $myRequest->status = 'Aprobado';
+                $curso = Course::find($myRequest->course_id);
+                $notificacion->titulo = "Tu solicitud de eliminación del curso "+$curso->nombre+ " ha sido aprobada";//creamos notificación
+                $curso->delete();
+            }
+            else {
+                $myRequest->status ='Rechazado';
+                $notificacion->titulo = "Tu solicitud de eliminación del curso "+$myRequest->course->nombre+ " ha sido rechazada";
+            }
+            
+            $myRequest->save();
+            $notificacion->save();
+
+            $newLog = new Log;
+
+            //debemos el LOG
+
+            
             DB::commit();
-            return \Redirect::route('solicitudes')->with('success', 'La acción se llevó a cabo con éxito');
+            return \Redirect::route('solicitudes')->with('success', 'La acción se llevó a cabo con éxito');//poner info del curso
         } catch (\Exception $e) {
             //throw $th;
             DB::rollBack();
