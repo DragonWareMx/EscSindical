@@ -29,7 +29,7 @@ class CommentController extends Controller
             'comentario' => 'required|max:280',
         ]);
 
-        //return redirect()->back()->with('error', 'Algo falló aquí we :\'v.');
+        //return redirect()->back()->with('error', 'Algo falló aquí  :\'v.');
         $inscrito = Course::leftJoin('course_user', 'courses.id', '=', 'course_user.course_id')->where('course_user.course_id', $cid)->where('course_user.user_id', Auth::id())->first();
         $profe = Course::where([
             ['teacher_id', '=', Auth::id()],
@@ -48,6 +48,43 @@ class CommentController extends Controller
             $comentario->comentario = $request->comentario;
             $comentario->entrie_id = $pid;
             $comentario->user_id = Auth::user()->id;
+            $comentario->fecha = $todayDate->toDateTimeString();
+            $comentario->save();
+
+            DB::commit();
+            // all good
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+            return redirect()->back()->with('error', 'Ocurrió un error inesperado, vuelve a intentarlo.');
+        }
+    }
+
+    public function update(Request $request, $cid, $mid, $pid)
+    {
+        $validated = $request->validate([
+            'comentario_editado' => 'required|max:280',
+        ]);
+
+        //return redirect()->back()->with('error', 'Algo falló aquí  :\'v.');
+        $inscrito = Course::leftJoin('course_user', 'courses.id', '=', 'course_user.course_id')->where('course_user.course_id', $cid)->where('course_user.user_id', Auth::id())->first();
+        $profe = Course::where([
+            ['teacher_id', '=', Auth::id()],
+            ['id', '=', $cid],
+        ])->first();
+        if (!$inscrito && !$profe) {
+            return redirect()->back()->with('error', 'Ocurrió un error inesperado, vuelve a intentarlo.');
+        }
+
+        DB::beginTransaction();
+        try {
+            //se consigue la fecha actual
+            $todayDate = Carbon::now();
+            //se crea el comentario
+            $comentario = Comment::findOrFail($request->id_edit);
+            $comentario->comentario = $request->comentario_editado;
+            $comentario->editado = 1;
             $comentario->fecha = $todayDate->toDateTimeString();
             $comentario->save();
 

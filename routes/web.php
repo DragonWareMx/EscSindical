@@ -120,3 +120,4 @@ Route::post('/notificacion/vista/{id}', [App\Http\Controllers\NotificationContro
 
 //----------------COMENTARIOS--------------------
 Route::post('/cursos/{cid}/modulo/{mid}/publicacion/{pid}/comment', [App\Http\Controllers\CommentController::class, 'create'])->name('comment.create');
+Route::post('/cursos/{cid}/modulo/{mid}/publicacion/{pid}/comment/update', [App\Http\Controllers\CommentController::class, 'update'])->name('comment.update');
