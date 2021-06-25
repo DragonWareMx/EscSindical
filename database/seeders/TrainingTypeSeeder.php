@@ -33,5 +33,30 @@ class TrainingTypeSeeder extends Seeder
         DB::table('training_types')->insert([
             'nombre' => 'Intendencia',
         ]);
+
+        DB::table('course_training_type')->insert([
+            'course_id' => 1,
+            'training_type_id' => 1 
+        ]);
+
+        DB::table('course_training_type')->insert([
+            'course_id' => 1,
+            'training_type_id' => 2
+        ]);
+
+        DB::table('course_training_type')->insert([
+            'course_id' => 2,
+            'training_type_id' => 2
+        ]);
+
+        DB::table('course_training_type')->insert([
+            'course_id' => 3,
+            'training_type_id' => 3
+        ]);
+
+        DB::table('course_training_type')->insert([
+            'course_id' => 4,
+            'training_type_id' => 4
+        ]);
     }
 }

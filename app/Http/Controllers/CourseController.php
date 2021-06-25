@@ -142,30 +142,56 @@ class CourseController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
         //  cantidad de usuarios separados por rol
         $usuariosRoles = Role::
-                            join('role_user','roles.id','=','role_user.role_id')
-                            ->select('roles.name',DB::raw('count(roles.id) as cantidad'))
-                            ->groupBy('roles.name')
-                            ->get();
+            join('role_user','roles.id','=','role_user.role_id')
+            ->select('roles.name',DB::raw('count(roles.id) as cantidad'))
+            ->groupBy('roles.name')
+            ->get();
         
         //  cantidad de estudiantes inscritos a un curso
         $inscritos = Course::
-                        leftJoin('course_user','courses.id','=','course_user.course_id')
-                        ->where('estatus','=','Activo')
-                        ->select(DB::raw('count(user_id) as cantidad'))
-                        ->first();
+            leftJoin('course_user','courses.id','=','course_user.course_id')
+            ->where('estatus','=','Activo')
+            ->select(DB::raw('count(user_id) as cantidad'))
+            ->first();
 
         //  cantida de ponentes que estan dando al menos un curso
         $cantidadPonentes = Course::
-                            where('estatus','=','Activo')
-                            ->select(DB::raw('count(teacher_id) as cantidad'))
-                            ->groupBy('teacher_id')
-                            ->get();
+            where('estatus','=','Activo')
+            ->select(DB::raw('count(teacher_id) as cantidad'))
+            ->groupBy('teacher_id')
+            ->limit(5);
 
         //dd($usuariosRoles->all());
+
+
+        $totalCursosActuales=Course::where('estatus','Activo')->get();
+        $totalCursosActuales=$totalCursosActuales->count();
+
+        $cursosActuales=Course::where('courses.estatus','=','Activo')
+            ->join('course_training_type','courses.id','=','course_training_type.course_id')
+            ->join('training_types','course_training_type.training_type_id','=','training_types.id')
+            ->select(DB::raw('count(training_types.id) as total'),'training_types.nombre')
+            ->groupBy('training_types.nombre')
+            ->get();
+
+        $totalCursosTerminados=Course::where('estatus','Terminado')->get();
+        $totalCursosTerminados=$totalCursosTerminados->count();
+
+        $cursosTerminados=Course::where('courses.estatus','=','Terminado')
+            ->join('course_training_type','courses.id','=','course_training_type.course_id')
+            ->join('training_types','course_training_type.training_type_id','=','training_types.id')
+            ->select(DB::raw('count(training_types.id) as total'),'training_types.nombre')
+            ->groupBy('training_types.nombre')
+            ->get();
+
         return Inertia::render('Inicios/inicioAdmin', [
             'usuariosRoles' => $usuariosRoles,
             'inscritos' => $inscritos,
             'cantidadPonentes' => $cantidadPonentes->count(),
+            'cursosActuales' => $cursosActuales,
+            'totalCursosActuales' =>$totalCursosActuales,
+            'cursosTerminados' =>$cursosTerminados,
+            'totalCursosTerminados' =>$totalCursosTerminados
         ]);
         
     }
