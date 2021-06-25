@@ -14,7 +14,7 @@ function materialize(){
         var instances = M.Dropdown.init(elems);
 }
 
-const Solicitudes = () => {
+const Solicitudes = ({solicitudes}) => {
   
     useEffect(() => {
         materialize();
