@@ -103,16 +103,24 @@ export default function MenuLateral() {
               CURSOS
             </a>
           </li>
-
+          {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name != "Administrador" &&
           <li>
             <InertiaLink href={route('cursos').url()} className="icono-menu">
               <i className={isUrl("cursos") ? "material-icons icono-menu current-menu" : "material-icons icono-menu"}>school</i>
               Mis cursos
             </InertiaLink>
           </li>
+          }
 
-          <li><InertiaLink href={route('cursosBuscar').url()} className="icono-menu"><i className="material-icons icono-menu">search</i>Buscar cursos</InertiaLink></li>
+          <li>
+            <InertiaLink href={route('cursosBuscar').url()} className="icono-menu">
+              <i className="material-icons icono-menu">search</i>Buscar cursos
+            </InertiaLink>
+          </li>
+
+          {/* SISTEMA */}
           <li><a className="subheader division-menu">SISTEMA</a></li>
+
           <li><InertiaLink href={route('reportes').url()} className="icono-menu"><i className="material-icons icono-menu">assignment_late</i>Reportes</InertiaLink></li>
           <li><InertiaLink href={route('solicitudes').url()} className="icono-menu"><i className="material-icons icono-menu">create_new_folder</i>Solicitudes</InertiaLink></li>
           {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&

@@ -43,7 +43,7 @@ const Log = ({ logs, request }) => {
                     log_search: search
                 }
                 if (request.filter)
-                data.filter = request.filter
+                    data.filter = request.filter
                 Inertia.replace(route('log.index').url(), { data: data })
             }, 250)
         });
@@ -299,10 +299,10 @@ const Log = ({ logs, request }) => {
         state.filter = filtro
         let data
         switch (filtro) {
-            case "matricula":
+            case "usuario":
                 //se inicializan los datos del request
                 data = {
-                    filter: "matricula"
+                    filter: "usuario"
                 }
 
                 if (request.log_search)
@@ -315,42 +315,10 @@ const Log = ({ logs, request }) => {
                         preserveState: true,
                     })
                 break;
-            case "rol":
+            case "descripcion":
                 //se inicializan los datos del request
                 data = {
-                    filter: "rol"
-                }
-
-                if (request.log_search)
-                    data.log_search = request.log_search
-
-                Inertia.replace(route('log.index').url(),
-                    {
-                        data: data,
-                        preserveScroll: true,
-                        preserveState: true,
-                    })
-                break;
-            case "nombre":
-                //se inicializan los datos del request
-                data = {
-                    filter: "nombre"
-                }
-
-                if (request.log_search)
-                    data.log_search = request.log_search
-
-                Inertia.replace(route('log.index').url(),
-                    {
-                        data: data,
-                        preserveScroll: true,
-                        preserveState: true,
-                    })
-                break;
-            case "unidad":
-                //se inicializan los datos del request
-                data = {
-                    filter: "unidad"
+                    filter: "descripcion"
                 }
 
                 if (request.log_search)
@@ -379,31 +347,9 @@ const Log = ({ logs, request }) => {
                         preserveState: true,
                     })
                 break;
-            case "eliminado":
-                //se inicializan los datos del request
-                data = {
-                    filter: "eliminado"
-                }
-
-                if (request.log_search)
-                    data.log_search = request.log_search
-
-                Inertia.replace(route('log.index').url(),
-                    {
-                        data: data,
-                        preserveScroll: true,
-                        preserveState: true,
-                    })
-                break;
-
             default:
                 break;
         }
-    }
-
-    //onClick de cada elemento de la tabla, obtiene el usuario y abre el modal para editar usuario
-    function getUser(id) {
-        Inertia.get(route('usuarios.edit', id))
     }
 
     //inicializa Materialize
@@ -456,7 +402,6 @@ const Log = ({ logs, request }) => {
             <div className="row contenedor">
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
-                        <InertiaLink className="btn-floating btn-large waves-effect waves-light green-sind button-addUser" href={route('usuarios.create')}><i className="material-icons">add</i></InertiaLink>
                         <div className="card-content">
                             <span className="card-title">Bitácora</span>
                             <Alertas/>
@@ -466,12 +411,9 @@ const Log = ({ logs, request }) => {
                                         {/* Dropdown Structure */}
                                         <a className="dropdown-trigger" href="#!" data-target="dropdown-filter"><i className="material-icons">filter_alt</i></a>
                                         <ul id="dropdown-filter" className="dropdown-content" style={{ top: "0px" }}>
-                                            <li><a onClick={() => { filter("matricula") }} className={request.filter == "matricula" ? "selected" : ""}>Matrícula</a></li>
-                                            <li><a onClick={() => { filter("rol") }} className={request.filter == "rol" ? "selected" : ""}>Rol</a></li>
-                                            <li><a onClick={() => { filter("nombre") }} className={request.hasOwnProperty('filter') ? request.filter == "nombre" ? "selected" : "" : "selected"}>Nombre</a></li>
-                                            <li><a onClick={() => { filter("unidad") }} className={request.filter == "unidad" ? "selected" : ""}>Unidad</a></li>
+                                            <li><a onClick={() => { filter("usuario") }} className={request.hasOwnProperty('filter') ? request.filter == "usuario" ? "selected" : "" : "selected"}>Usuario</a></li>
+                                            <li><a onClick={() => { filter("descripcion") }} className={request.filter == "descripcion" ? "selected" : ""}>Descripción</a></li>
                                             <li><a onClick={() => { filter("categoria") }} className={request.filter == "categoria" ? "selected" : ""}>Categoría</a></li>
-                                            <li><a onClick={() => { filter("eliminado") }} className={request.filter == "eliminado" ? "selected" : ""}>Eliminado</a></li>
                                         </ul>
                                     </div>
                                     <div className="input-field col s11" style={{ marginLeft: "0px" }}>
@@ -569,19 +511,17 @@ const Log = ({ logs, request }) => {
                                                 } /></svg>
                                             </a>
                                         </th>
-                                        <th></th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     {logs.data.length > 0 && logs.data.map(log => (
-                                        <tr style={{"cursor":"pointer"}} key={log.id} onClick={() => getUser(log.id)}>
+                                        <tr style={{"cursor":"pointer"}} key={log.id}>
                                             <td>{log.id}</td>
                                             <td>{log.user ? log.user.nombre + " " + log.user.apellido_p + " " + log.user.apellido_m : "Sin Usuario"}</td>
                                             <td>{log.descripcion}</td>
                                             <td>{log.categoria ? log.categoria : "Sin Categoría"}</td>
                                             <td>{transformaFecha(log.created_at)}</td>
-                                            <td><button><i className="material-icons">edit</i> </button></td>
                                         </tr>
                                     ))}
                                 </tbody>

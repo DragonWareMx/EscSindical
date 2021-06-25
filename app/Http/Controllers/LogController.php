@@ -28,31 +28,13 @@ class LogController extends Controller
         return Inertia::render('Log/Log', [
             'logs' => fn () => Log::with('user:id,nombre,apellido_p,apellido_m')
                 ->leftJoin('users', 'logs.user_id', '=', 'users.id')
-                // ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
-                // ->leftJoin('categories', 'categories.id', '=', 'users.category_id')
-                // ->leftJoin('units', 'units.id', '=', 'users.unit_id')
-                // ->when($request->filter == 'eliminado', function ($query) {
-                //     return $query->onlyTrashed();
-                // })
                 ->when($request->log_search, function ($query, $search) use ($request) {
                     if ($request->filter) {
                         switch ($request->filter) {
-                            case 'matricula':
-                                return $query->where('users.matricula', 'LIKE', '%' . $search . '%');
+                            case 'descripcion':
+                                return $query->where('logs.descripcion', 'LIKE', '%' . $search . '%');
                                 break;
-                            case 'rol':
-                                if ($search == "Sin Rol")
-                                    return $query->whereNull('role_user.role_id');
-                                else
-                                    return $query->where('roles.name', 'LIKE', '%' . $search . '%');
-                                break;
-                            case 'unidad':
-                                if ($search == "Sin unidad")
-                                    return $query->whereNull('users.unit_id');
-                                else
-                                    return $query->where('units.nombre', 'LIKE', '%' . $search . '%');
-                                break;
-                            case 'nombre':
+                            case 'usuario':
                                 return $query->WhereRaw(
                                                 "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
                                             )->orWhereRaw(
@@ -60,17 +42,8 @@ class LogController extends Controller
                                             );
                                 break;
                             case 'categoria':
-                                return $query->where('categories.nombre', 'LIKE', '%' . $search . '%');
+                                return $query->where('logs.categoria', 'LIKE', '%' . $search . '%');
                                 break;
-                            case 'eliminado':
-                                return $query->WhereRaw(
-                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
-                                            )->orWhereRaw(
-                                                "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
-                                            )
-                                            ->onlyTrashed();
-                                break;
-
                             default:
                                 return $query->where('users.nombre', 'LIKE', '%' . $search . '%');
                                 break;
