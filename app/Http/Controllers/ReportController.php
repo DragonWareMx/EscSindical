@@ -32,7 +32,8 @@ class ReportController extends Controller
         
 
         return Inertia::render('Reportes/Reportes', [
-            'reportes' => fn () => Report::with('reported:id,nombre,apellido_p,apellido_m,matricula','reporter:id,nombre,apellido_p,apellido_m,matricula')
+            // 'reportes' => fn () => Report::with('reported:id,nombre,apellido_p,apellido_m,matricula','reporter:id,nombre,apellido_p,apellido_m,matricula')
+            'reportes' => fn () => Report::join('users', 'reports.reported', '=', 'users.id')->select(DB::raw("concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) as nombre"), 'users.matricula', 'reports.id', 'reports.status', 'reports.comentario', 'reports.created_at')
             ->when($request->sort, function ($query, $sort) use ($request) {
                 switch ($sort) {
                     case 'matricula':
@@ -72,13 +73,42 @@ class ReportController extends Controller
                         break;
                 }
             })
-            
-            
-            
+            ->when($request->reporte_search, function ($query, $search) use ($request) {
+                if ($request->filter) {
+                    switch ($request->filter) {
+                        case 'matricula':
+                            return $query->where('matricula', 'LIKE', '%' . $search . '%');
+                            break;
+                        case 'usuario':
+                                return $query->WhereRaw(
+                                    "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                )->orWhereRaw(
+                                    "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                );
+                            break;
+                        case 'comentario':
+                                return $query->where('reports.comentario', 'LIKE', '%' . $search . '%');
+                            break;
+                        default:
+                                return $query->WhereRaw(
+                                    "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                )->orWhereRaw(
+                                    "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                );
+                            break;
+                    }
+                } else
+                    // Si no tiene ningun filtro solo se busca por el nombre
+                    return $query->WhereRaw(
+                        "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                    )->orWhereRaw(
+                        "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                    );
+            })
             
             ->orderBy('created_at', 'desc')
-            ->get()
-            ,
+            ->paginate(20)
+            ->withQueryString(),
             'request' => $request
         ]);
 

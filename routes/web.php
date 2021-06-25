@@ -123,11 +123,11 @@ Route::delete('/entrada/eliminar/{id}', [App\Http\Controllers\EntryController::c
 Route::post('/notificacion/vista/{id}', [App\Http\Controllers\NotificationController::class, 'marcar'])->name('notif.vista');
 
 // --------------------REPORTES--------------------
-// Route::get('/reportes', [App\Http\Controllers\ReportController::class, 'index'])->name('reportes');
+Route::get('/reportes', [App\Http\Controllers\ReportController::class, 'index'])->name('reportes');
 
-Route::name('reportes.')->group(function () {
-    Route::get('/reportes', [App\Http\Controllers\ReportController::class, 'index'])->name('index');
-});
+// Route::name('reportes.')->group(function () {
+//     Route::get('/reportes', [App\Http\Controllers\ReportController::class, 'index'])->name('index');
+// });
 
 Route::get('/reportes/{id}', [App\Http\Controllers\ReportController::class, 'verReporte'])->name('VerReportes');
 

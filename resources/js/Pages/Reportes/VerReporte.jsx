@@ -62,7 +62,7 @@ const VerReporte = ({reporte, reported, reporter}) => {
 
                                 <div className="col s12" style={{"marginBottom":"20px"}}>
                                     <div className="col s12 txt-report" style={{"display":"flex", "flexWrap":"wrap"}}>
-                                        El usuario &nbsp;<InertiaLink href={route('perfil.public',reporter.id)}>{reporter.nombre}&nbsp;{reporter.apellido_p}&nbsp;{reporter.apellido_m}</InertiaLink>&nbsp;<div className="div-rol-reporte">({reporter.name})&nbsp;</div> reportó al usuario &nbsp;<InertiaLink href={route('perfil.public',reported.id)}>{reported.nombre}&nbsp;{reported.apellido_p}&nbsp;{reported.apellido_m}</InertiaLink>&nbsp; <div className="div-rol-reporte">({reported.name})&nbsp;</div> con el siguiente motivo
+                                        El usuario &nbsp;<InertiaLink href={route('usuarios.edit',reporter.id)}>{reporter.nombre}&nbsp;{reporter.apellido_p}&nbsp;{reporter.apellido_m}</InertiaLink>&nbsp;<div className="div-rol-reporte">({reporter.name})&nbsp;</div> reportó al usuario &nbsp;<InertiaLink href={route('usuarios.edit',reported.id)}>{reported.nombre}&nbsp;{reported.apellido_p}&nbsp;{reported.apellido_m}</InertiaLink>&nbsp; <div className="div-rol-reporte">({reported.name})&nbsp;</div> con el siguiente motivo
                                     </div>
                                 </div>
 
