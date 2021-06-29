@@ -4,6 +4,7 @@ import LayoutCursos from '../../layouts/LayoutCursos';
 import { InertiaLink, useRemember } from '@inertiajs/inertia-react';
 import { usePage } from '@inertiajs/inertia-react'
 import ModalDarBaja from '../../components/common/ModalDarBaja';
+import Alertas from '../../components/common/Alertas'; 
 
 import '/css/participantes.css'
 import '/css/modulos.css'

@@ -1843,8 +1843,43 @@ class CourseController extends Controller
             // Encontrar curso al que pertenece
             $curso_actual = $user->activeCourses[0];
 
-            // Iniciar eliminacion
-            $user->courses()->detach($curso_actual->course_id);//eliminamos la relación del usuario con el curso
+            DB::beginTransaction();
+            try {
+                // Iniciar eliminacion
+                $user->courses()->detach($curso_actual->course_id);//eliminamos la relación del usuario con el curso
+            
+                //SE CREA EL LOG
+                // $newLog = new Log;
+                // $newLog->categoria = 'delete';
+                // $newLog->user_id = Auth::id();
+                // $newLog->accion =
+                // '{
+                //     reports: {
+                //         id: ' . $reporte->id . ',\n
+                //         reported: ' . $reporte->reported . ',\n
+                //         reporter: ' . $reporte->reporter . ',\n
+                //         comentario: ' . $reporte->comentario . ',\n
+                //         fecha: '. $reporte->created_at. ',\n
+                //         status: '. $reporte->status. ',\n
+                //     }
+                // }';
+                // $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha dado del baja al estudiante '.$user->name.' del curso '.$curso_actual->id;
+                
+                // //SE GUARDA EL LOG
+                // $newLog->save();
+
+
+
+                //SE HACE COMMIT
+                DB::commit();
+                
+                //REDIRECCIONA A LA VISTA
+                return \Redirect::back()->with('success','Se ha dado de baja al estudiante con éxito!');
+            
+            } catch (\Exception $e) {
+                DB::rollBack();            
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar dar de baja al estudiante, inténtelo más tarde.');
+            }
         }
         else{
             return abort(403);
