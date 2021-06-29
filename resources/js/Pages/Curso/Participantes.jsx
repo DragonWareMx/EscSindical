@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout';
 import LayoutCursos from '../../layouts/LayoutCursos';
 import { InertiaLink, useRemember } from '@inertiajs/inertia-react';
 import { usePage } from '@inertiajs/inertia-react'
+import ModalDarBaja from '../../components/common/ModalDarBaja';
 
 import '/css/participantes.css'
 import '/css/modulos.css'
@@ -62,7 +63,7 @@ const Participantes = ({curso}) => {
                         {/* Opción exclusiva para el ponente */}
                         { auth.roles['0'].name == 'Ponente' &&
                             <div>
-                                <li><a className="dropdown-text modal-trigger" href="#modalEliminar"><i className="material-icons">error_outline</i>Dar de baja del curso</a></li>
+                                <li><a className="dropdown-text modal-trigger" data-target={'modalDarBaja'+user.id}><i className="material-icons">error_outline</i>Dar de baja del curso</a></li>
                                 <li className="divider" tabIndex="-1"></li>
                             </div>
                         }
@@ -76,8 +77,11 @@ const Participantes = ({curso}) => {
                             <div className="P_collection_subtitle">Estudiante</div>
                         </div>
                     </div>
+                    <ModalDarBaja url={route('dar-baja-estudiante', user.id)} nombre={user.nombre+' '+user.apellido_p+' '+user.apellido_m} id={user.id} curso={curso.nombre} />
                 </div>
+                
             )}
+            
         </div>
     </>
   )

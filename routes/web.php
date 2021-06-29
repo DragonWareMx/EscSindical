@@ -140,3 +140,7 @@ Route::name('log.')->group(function () {
 });
 //----------------COMENTARIOS--------------------
 Route::post('/cursos/{cid}/modulo/{mid}/publicacion/{pid}/comment', [App\Http\Controllers\CommentController::class, 'create'])->name('comment.create');
+
+
+// DAR DE BAJA ESTUDIANTE DEL CURSO
+Route::post('/dar-baja-estudiante/{id}', [App\Http\Controllers\CourseController::class, 'darBajaEstudiante'])->name('dar-baja-estudiante');

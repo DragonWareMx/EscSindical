@@ -17,7 +17,6 @@ const VerReporte = ({reporte, reported, reporter}) => {
 
     function enviarForm(){
         Inertia.post(route('MarcarReporte', reporte.id));
-        // Inertia.post(route('cursos.modulos.order',curso.id), {order:order});
     }
   
     function transformaFecha(fecha) {

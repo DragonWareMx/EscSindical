@@ -1834,4 +1834,20 @@ class CourseController extends Controller
             return \Redirect::back()->with('error', 'Ha ocurrido un problema, vuela a intentarlo más tarde.');
         }
     }
+
+    public function darBajaEstudiante($id){
+        // Confirmar los permisos para esta accion
+        if (Auth::user()->roles[0]->name == 'Ponente' || Auth::user()->roles[0]->name == 'Administrador') {
+            // Encontrar usuario estudiante
+            $user=User::findOrFail($id);
+            // Encontrar curso al que pertenece
+            $curso_actual = $user->activeCourses[0];
+
+            // Iniciar eliminacion
+            $user->courses()->detach($curso_actual->course_id);//eliminamos la relación del usuario con el curso
+        }
+        else{
+            return abort(403);
+        }
+    }
 }
