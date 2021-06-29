@@ -1747,21 +1747,37 @@ class CourseController extends Controller
             ->first();
 
         DB::beginTransaction();
-        try {
-            
-        if($entrada){
-        
-        }
-
-
-        DB::commit();
-        } catch (\Exception $e) {
+        try { 
+            if($entrada){
+                // \DB::table('entry_user')->where('id',$entrada->id)->update([
+                //     [
+                //         'calificacion'                      => $request->calificacion,
+                //         'comentario_retroalimentacion'      => $request->comentario,
+                //     ]
+                // ]);
+                $usuario=User::findOrFail($eid);
+                $todayDate = Carbon::now();
+                $asignacion->users()->updateExistingPivot($usuario->id,[
+                    'calificacion'                      => $request->calificacion,
+                    'fecha_calif'                       => $todayDate->toDateTimeString(),
+                    'comentario_retroalimentacion'      => $request->comentario,
+                ]);
+            }
+            else{
+                $usuario=User::findOrFail($eid);
+                $todayDate = Carbon::now();
+                $asignacion->users()->attach($usuario->id,[
+                    'calificacion'                      => $request->calificacion,
+                    'fecha_calif'                       => $todayDate->toDateTimeString(),
+                    'comentario_retroalimentacion'      => $request->comentario,
+                ]);
+            }
+            DB::commit();
+            return \Redirect::back()->with('success', 'La calificación se guardó correctamente.');
+        } catch (\Throwable $th) {
             DB::rollback();
+            return \Redirect::back()->with('error', 'Ocurrió un error inesperado, inténtelo más tarde.');
         }
-
-
-
-        dd($entrada);
     }
 
     public function inscribir($id)
