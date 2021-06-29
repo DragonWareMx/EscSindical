@@ -13,7 +13,7 @@ import '../../styles/cursos.css'
 import '../../styles/inicios.css'
 import '/css/participantes.css'
 
-const inicioAdmin = ({usuariosRoles, inscritos, cantidadPonentes}) => {
+const inicioAdmin = ({usuariosRoles, inscritos, cantidadPonentes, cursosActuales, totalCursosActuales, cursosTerminados, totalCursosTerminados}) => {
 
     function initializeMaterialize(){
         var elems = document.querySelectorAll('.dropdown-trigger');
@@ -162,6 +162,114 @@ const inicioAdmin = ({usuariosRoles, inscritos, cantidadPonentes}) => {
         },
         maintainAspectRatio: false
     };
+
+
+    //    datos de la grafica 4
+    var labelsGraphic4 = [];
+    var dataGraphic4 = [];
+    cursosActuales.map(cursoActual => {
+      labelsGraphic4.push(cursoActual.nombre)
+      dataGraphic4.push(cursoActual.total)
+    });
+
+    const data4 = {
+      labels: labelsGraphic4,
+      datasets: [
+        {
+          label: 'CURSOS1',
+          data: dataGraphic4,
+          backgroundColor: [
+            '#FFF06B',
+            '#108058',
+            '#FF935A',
+            '#81B2D6',
+            '#D3766A',
+          ],
+          borderColor: [
+            '#FFF06B',
+            '#108058',
+            '#FF935A',
+            '#81B2D6',
+            '#D3766A',
+          ],
+          borderWidth: 1,
+        },
+      ],
+    };
+
+  //  opciones de la grafica 4
+  const options4 = {
+      plugins: {
+      title: {
+          display: true,
+          text: 'CATEGORÍAS',
+          position: 'bottom',
+          font: {
+          family: "Montserrat",
+          size: 13,
+          weight: "500"
+          }
+      },
+      legend: {
+          position: "right"
+      }
+      },
+      maintainAspectRatio: false
+  };
+
+  //    datos de la grafica 5
+  var labelsGraphic5 = [];
+  var dataGraphic5 = [];
+  cursosTerminados.map(cursoTerminado => {
+    labelsGraphic5.push(cursoTerminado.nombre)
+    dataGraphic5.push(cursoTerminado.total)
+  });
+
+  const data5 = {
+    labels: labelsGraphic5,
+    datasets: [
+      {
+        label: 'CURSOS2',
+        data: dataGraphic5,
+        backgroundColor: [
+          '#FFF06B',
+          '#108058',
+          '#FF935A',
+          '#81B2D6',
+          '#D3766A',
+        ],
+        borderColor: [
+          '#FFF06B',
+          '#108058',
+          '#FF935A',
+          '#81B2D6',
+          '#D3766A',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+//  opciones de la grafica 5
+const options5 = {
+    plugins: {
+    title: {
+        display: true,
+        text: 'CATEGORÍAS',
+        position: 'bottom',
+        font: {
+        family: "Montserrat",
+        size: 13,
+        weight: "500"
+        }
+    },
+    legend: {
+        position: "right"
+    }
+    },
+    maintainAspectRatio: false
+};
+    
   
         return (
             <>
@@ -214,7 +322,25 @@ const inicioAdmin = ({usuariosRoles, inscritos, cantidadPonentes}) => {
                                 <div className="col s12" style={{ "marginBottom": "10px"}}>
                                     <span className="txt-title-card">CURSOS</span>
                                 </div>
-                                Aqui van a ir unas graficas de cursos
+                                <div className="row">
+                                    {/* grafica 4 -> cursos activos separados por training_types */}
+                                    <span>Total de cursos actuales: {totalCursosActuales}</span>
+                                    <div className="col s12 l4">
+                                        <Pie
+                                            data={data4}
+                                            width={400}
+                                            height={400}
+                                            options={options4} />
+                                    </div>
+                                    <span>Total de cursos terminados: {totalCursosTerminados}</span>
+                                    <div className="col s12 l4">
+                                        <Pie
+                                            data={data5}
+                                            width={400}
+                                            height={400}
+                                            options={options5} />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
