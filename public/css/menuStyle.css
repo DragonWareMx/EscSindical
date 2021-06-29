@@ -186,6 +186,13 @@ body
 .current-menu
 {
     color: #134E39 !important;
+    text-decoration: underline;
+}
+
+.current-menu-text
+{
+    color: #134E39 !important;
+    font-weight: bold !important;
 }
 
 .division-menu

@@ -90,7 +90,7 @@ export default function MenuLateral() {
           {/* USUARIOS */}
           {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
             <li>
-              <InertiaLink href={route('usuarios').url()} className="icono-menu">
+              <InertiaLink href={route('usuarios').url()} className={isUrl("usuarios") ? "icono-menu current-menu-text" : "icono-menu"}>
                 <i className={isUrl("usuarios") ? "material-icons icono-menu current-menu" : "material-icons icono-menu"}>people</i>
                     Usuarios
                 </InertiaLink>
@@ -105,7 +105,7 @@ export default function MenuLateral() {
           </li>
           {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name != "Administrador" &&
           <li>
-            <InertiaLink href={route('cursos').url()} className="icono-menu">
+            <InertiaLink href={route('cursos').url()} className="icono-menu" className={isUrl("cursos") ? "icono-menu current-menu-text" : "icono-menu"}>
               <i className={isUrl("cursos") ? "material-icons icono-menu current-menu" : "material-icons icono-menu"}>school</i>
               Mis cursos
             </InertiaLink>
@@ -123,16 +123,23 @@ export default function MenuLateral() {
 
           <li><InertiaLink href={route('reportes').url()} className="icono-menu"><i className="material-icons icono-menu">assignment_late</i>Reportes</InertiaLink></li>
           <li><InertiaLink href={route('solicitudes').url()} className="icono-menu"><i className="material-icons icono-menu">create_new_folder</i>Solicitudes</InertiaLink></li>
+  
+          {/* BITACORA */}
           {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
             <li>
-              <InertiaLink href={route('log.index')}><i className="material-icons icono-menu">history</i>Bitácora</InertiaLink>
+              <InertiaLink href={route('log.index')} className={isUrl("log") ? "icono-menu current-menu-text" : "icono-menu"}>
+                <i className={isUrl("log") ? "material-icons icono-menu current-menu" : "material-icons icono-menu"}>history</i>Bitácora
+              </InertiaLink>
             </li>
           }
+
+          {/* PERFIL */}
           <li>
-            <InertiaLink href={route('perfil.edit')} className="icono-menu">
-              <i className="material-icons icono-menu">settings</i>Configuración
+            <InertiaLink href={route('perfil.edit')} className="icono-menu" className={isUrl("perfil") ? "icono-menu current-menu-text" : "icono-menu"}>
+              <i className={isUrl("perfil") ? "material-icons icono-menu current-menu" : "material-icons icono-menu"}>settings</i>Configuración
               </InertiaLink>
           </li>
+
           <li>
             <button className="icono-menu logout-grande modal-trigger" data-target="modalCerrarSesion" type="button"><i className="material-icons icono-menu">logout</i>Cerrar sesión</button>
           </li>
@@ -197,11 +204,14 @@ export default function MenuLateral() {
             </InertiaLink>
           </div>
         }
+
+        {/* PERFIL */}
         <div className="col s12">
           <InertiaLink href={route('perfil.edit').url()} className="icono-menu">
-            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Configuración">settings</i>
+            <i className={isUrl("perfil") ? "material-icons tooltipped icono-menu-compacto current-menu" : "material-icons tooltipped icono-menu-compacto"} data-position="right" data-tooltip="Configuración">settings</i>
           </InertiaLink>
         </div>
+
         <div className="col s12">
           <button data-target="modalCerrarSesion" className="icono-menu logout-chico modal-trigger" >
             <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Cerrar sesión">logout</i>
