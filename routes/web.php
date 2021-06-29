@@ -125,11 +125,18 @@ Route::post('/notificacion/vista/{id}', [App\Http\Controllers\NotificationContro
 
 // --------------------REPORTES--------------------
 Route::get('/reportes', [App\Http\Controllers\ReportController::class, 'index'])->name('reportes');
+
+// Route::name('reportes.')->group(function () {
+//     Route::get('/reportes', [App\Http\Controllers\ReportController::class, 'index'])->name('index');
+// });
+
 Route::get('/reportes/{id}', [App\Http\Controllers\ReportController::class, 'verReporte'])->name('VerReportes');
 
 // SOLICITUDES
 Route::get('/solicitudes', [App\Http\Controllers\RequestController::class, 'index'])->name('solicitudes');
-Route::get('/solicitudes/{id}', [App\Http\Controllers\RequestController::class, 'verSolicitud'])->name('verSolicitud');
+Route::post('/solicitudes/bajaCurso/{id}',[App\Http\Controllers\RequestController::class, 'bajaCurso'])->name('solicitudes.bajaCurso');
+Route::post('/solicitudes/bajaAlumno/{id}',[App\Http\Controllers\RequestController::class, 'bajaAlumno'])->name('solicitudes.bajaAlumno');
+Route::get('/solicitudes/{id}/{type}', [App\Http\Controllers\RequestController::class, 'verSolicitud'])->name('verSolicitud');
 
 //LOG
 Route::name('log.')->group(function () {

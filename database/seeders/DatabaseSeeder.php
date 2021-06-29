@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
             EntrySeeder::class,
             FileSeeder::class,
             TrainingTypeSeeder::class,
+            DeleteSeeder::class,
+            DropSeeder::class,
         ]);
     }
 }
