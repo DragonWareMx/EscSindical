@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Log;
@@ -25,20 +26,235 @@ class RequestController extends Controller
     public function index(Request $request){
         \Gate::authorize('haveaccess', 'admin.perm');
         return Inertia::render('Solicitudes/Solicitudes', [
-            'solicitudesCurso' => Delete_requests::get(),
-            'solicitudesAlumno'=> Drop_requests::get(),
+            'solicitudes' => fn () => Delete_requests::with('course', 'user')
+                ->leftJoin('users', 'users.id', '=', 'delete_requests.user_id')
+                ->leftJoin('courses', 'courses.id', '=', 'delete_requests.course_id')
+                ->when($request->filter == 'eliminado', function ($query) {
+                    return $query->where('status', 'Aprobado');
+                })
+                ->when($request->user_search, function ($query, $search) use ($request) {
+                    if ($request->filter) {
+                        switch ($request->filter) {
+                            case 'matricula':
+                                return $query->where('users.matricula', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'estatus':
+                                return $query->where('delete_requests.status', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'curso':
+                                return $query->where('courses.nombre', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'usuario':
+                                return $query->WhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                            )->orWhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                            );
+                                break;
+                            case 'eliminado':
+                                return $query->where('courses.nombre', 'LIKE', '%' . $search . '%')
+                                            ->onlyTrashed(); //PROBAR DESPUÉS
+                                break;
+
+                            default:
+                                return $query->where('users.nombre', 'LIKE', '%' . $search . '%');
+                                break;
+                        }
+                    } else 
+                        return $query->WhereRaw(
+                            "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                        )->orWhereRaw(
+                            "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                        );
+                })
+                ->when($request->sort, function ($query, $sort) use ($request) {
+                    switch ($sort) {
+                        case 'matricula':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('users.matricula', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('users.matricula', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'id':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('delete_requests.id', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('delete_requests.id', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'usuario':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('users.nombre', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('users.nombre', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'curso':
+                            if($request->order == 'asc')
+                                return $query->orderBy('courses.nombre', 'ASC');
+                            else if($request->order == 'desc')
+                                return $query->orderBy('courses.nombre', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'fecha':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('delete_requests.created_at', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('delete_requests.created_at', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                })
+                ->select('delete_requests.id', 'users.matricula', 'users.nombre', 'apellido_p', 'apellido_m', 'course_id','user_id', 'courses.nombre', 'delete_requests.created_at', 'status')
+                ->orderBy('delete_requests.created_at','desc')
+                ->paginate(20)
+                ->withQueryString(),
+            'request' => $request
         ]);
     }
 
+    public function indexAlumno(Request $request){
+        \Gate::authorize('haveaccess', 'admin.perm');
+        return Inertia::render('Solicitudes/SolicitudesAlumno', [
+            'solicitudes' => fn () => Drop_requests::with('course', 'user')
+                ->leftJoin('users', 'users.id', '=', 'drop_requests.user_id')
+                ->leftJoin('courses', 'courses.id', '=', 'drop_requests.course_id')
+                ->when($request->filter == 'eliminado', function ($query) {
+                    return $query->where('status', 'Aprobado');
+                })
+                ->when($request->user_search, function ($query, $search) use ($request) {
+                    if ($request->filter) {
+                        switch ($request->filter) {
+                            case 'matricula':
+                                return $query->where('users.matricula', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'estatus':
+                                return $query->where('drop_requests.status', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'curso':
+                                return $query->where('courses.nombre', 'LIKE', '%' . $search . '%');
+                                break;
+                            case 'usuario':
+                                return $query->WhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                                            )->orWhereRaw(
+                                                "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                                            );
+                                break;
+                            case 'eliminado':
+                                return $query->where('courses.nombre', 'LIKE', '%' . $search . '%')
+                                            ->onlyTrashed(); //PROBAR DESPUÉS
+                                break;
+
+                            default:
+                                return $query->where('users.nombre', 'LIKE', '%' . $search . '%');
+                                break;
+                        }
+                    } else 
+                        return $query->WhereRaw(
+                            "concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) like '%" . $search . "%' "
+                        )->orWhereRaw(
+                            "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
+                        );
+                })
+                ->when($request->sort, function ($query, $sort) use ($request) {
+                    switch ($sort) {
+                        case 'matricula':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('users.matricula', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('users.matricula', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'id':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('drop_requests.id', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('drop_requests.id', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'usuario':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('users.nombre', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('users.nombre', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'curso':
+                            if($request->order == 'asc')
+                                return $query->orderBy('courses.nombre', 'ASC');
+                            else if($request->order == 'desc')
+                                return $query->orderBy('courses.nombre', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        case 'fecha':
+                            if ($request->order == 'asc')
+                                return $query->orderBy('drop_requests.created_at', 'ASC');
+                            else if ($request->order == 'desc')
+                                return $query->orderBy('drop_requests.created_at', 'DESC');
+                            else
+                                return $query;
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                })
+                ->select('drop_requests.id', 'users.matricula', 'users.nombre', 'apellido_p', 'apellido_m', 'course_id','user_id', 'courses.nombre', 'drop_requests.created_at', 'status')
+                ->orderBy('drop_requests.created_at','desc')
+                ->paginate(20)
+                ->withQueryString(),
+            'request' => $request
+        ]);
+    }
+
+
     public function verSolicitud($id, $type){
         \Gate::authorize('haveaccess', 'admin.perm');
-        if ($type == 'delete') $solicitud = Delete_requests::with('course')->find($id);
-        else $solicitud = Drop_requests::with('course')->find($id);
+        
+        if ($type == 'delete') {
+            $curso="";
+            $relacion="";
+            $solicitud = Delete_requests::with('course','user')->find($id);
+            if(!$solicitud->course){
+                $curso = Course::onlyTrashed()->find($solicitud->course_id);
+            }
+            return Inertia::render('Solicitudes/VerSolicitud', [
+                'solicitud'=>$solicitud,
+                'tipo'=>$type,
+                'curso'=>$curso,
+           ]);
+        }
+        else {
+            $solicitud = Drop_requests::with('course','user')->find($id);
+            $curso="";
+            $relacion="";
+            $alumno = User::find($solicitud->user_id);
+           
+            if(count($alumno->activeCourses)>0){
+                if ($alumno->activeCourses[0]->id == $solicitud->course_id) $relacion=true;
+            }
 
-        return Inertia::render('Solicitudes/VerSolicitud', [
-             'solicitud'=>$solicitud,
-             'tipo'=>$type,
+            return Inertia::render('Solicitudes/VerSolicitud', [
+                'solicitud'=>$solicitud,
+                'tipo'=>$type,
+                'curso'=>$curso,
+                'relacion'=>$relacion
         ]);
+        }
     }
 
     public function aprobar($id, Request $request)
@@ -296,6 +512,7 @@ class RequestController extends Controller
             'respuesta' => 'required'
         ]);
 
+
         DB::beginTransaction();
         try {
             $myRequest = Drop_requests::find($id);
@@ -310,26 +527,48 @@ class RequestController extends Controller
                 
                 $notificacion->titulo = "Tu baja del curso ".$myRequest->course->nombre. " ha sido aprobada";//creamos notificación
                 
+                $newLog = new Log;
+                $newLog->categoria = 'update';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                    '{
+                        drop_requests: {
+                        status = Aprobado
+                        }
+                    }';
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha dado de baja al alumno: '. $user->nombre .' del curso '.$myRequest->course->nombre;
+                
             }
             else {
                 $myRequest->status ='Rechazado';
+                $user = User::find($myRequest->user_id);
                 $notificacion->titulo = "Tu baja del curso ".$myRequest->course->nombre. " ha sido rechazada";
+
+                $newLog = new Log;
+                $newLog->categoria = 'update';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                    '{
+                        drop_requests: {
+                        status = Rechazado
+                        }
+                    }';
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' rechazó la solicitud de baja de '. $user->nombre .' del curso '.$myRequest->course->nombre;
+                
             }
             
             $myRequest->save();
             $notificacion->save();
+            $newLog->save();
 
-            $newLog = new Log;
-
-            //debemos el LOG
-
+            
             DB::commit();
-            return \Redirect::route('solicitudes')->with('success', 'La acción se llevó a cabo con éxito'); //poner info del alumno
+            return \Redirect::route('solicitudes.alumno')->with('success', 'La acción se llevó a cabo con éxito'); //poner info del alumno
         } catch (\Exception $e) {
             //throw $th;
             dd($e);
             DB::rollBack();
-            return \Redirect::route('solicitudes')->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
+            return \Redirect::route('solicitudes.alumno')->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
         }
 
     }
@@ -349,31 +588,142 @@ class RequestController extends Controller
             //cambiamos estatus de solicitud de baja de alumno
             if($request->respuesta == "true") {
                 $myRequest->status = 'Aprobado';
+                $user = User::find($myRequest->user_id);
                 $curso = Course::find($myRequest->course_id);
+
                 $notificacion->titulo = "Tu solicitud de eliminación del curso ".$curso->nombre. " ha sido aprobada";//creamos notificación
                 $curso->delete();
+
+                $newLog = new Log;
+                $newLog->categoria = 'update';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                    '{
+                        delete_requests: {
+                        status = Aprobado
+                        }
+                    }';
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' aprobó la solicitud de '. $user->nombre .' para eliminar el curso '.$myRequest->course->nombre;
+                
             }
             else {
                 $myRequest->status ='Rechazado';
                 $notificacion->titulo = "Tu solicitud de eliminación del curso ".$myRequest->course->nombre. " ha sido rechazada";
+                $user = User::find($myRequest->user_id);
+
+                $newLog = new Log;
+                $newLog->categoria = 'update';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                    '{
+                        delete_requests: {
+                        status = Rechazado
+                        }
+                    }';
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' rechazó la solicitud de '. $user->nombre .' para eliminar el curso '.$myRequest->course->nombre;
+
             }
             
             $myRequest->save();
             $notificacion->save();
-
-            $newLog = new Log;
-
-            //debemos el LOG
-
+            $newLog->save();
             
             DB::commit();
-            return \Redirect::route('Solicitudes')->with('success', 'La acción se llevó a cabo con éxito');//poner info del curso
+            return \Redirect::route('solicitudes')->with('success', 'La acción se llevó a cabo con éxito');//poner info del curso
         } catch (\Exception $e) {
             //throw $th;
             dd($e);
             DB::rollBack();
-            return \Redirect::back('Solicitudes')->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
+            return \Redirect::back('solicitudes')->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
         }
         
+    }
+
+    public function restoreCourse($id)
+    {
+        //valida el rol del usuario
+        \Gate::authorize('haveaccess', 'admin.perm');
+
+        DB::beginTransaction();
+        try{
+            $curso = Course::withTrashed()->find($id);
+
+            if(!$curso){
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el curso, inténtelo más tarde.');
+            }
+
+
+            $curso->restore();
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'restore';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                courses: {
+                    id: ' . $id .
+                '}
+            }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha restaurado el curso: '. $curso->nombre;
+
+            $newLog->save();
+
+            DB::commit();
+            return \Redirect::back()->with('success','¡Curso restaurado con éxito!');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el curso, inténtelo más tarde.');
+        }
+    }
+
+    public function restoreAlumno($id)
+    {
+        //valida el rol del usuario
+        \Gate::authorize('haveaccess', 'admin.perm');
+
+        DB::beginTransaction();
+        try{
+            $solicitud = Drop_requests::find($id);
+            $user = User::find($solicitud->user_id);
+
+
+            if(!$user){
+                DB::rollBack();
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el alumno, inténtelo más tarde.');
+            }
+
+            $user->courses()->attach($solicitud->course_id);
+
+            //SE CREA EL LOG
+            $newLog = new Log;
+
+            $newLog->categoria = 'restore';
+            $newLog->user_id = Auth::id();
+            $newLog->accion =
+            '{
+                user_course: {
+                    course_id: ' . $solicitud->course_id .
+                    'user_id: ' .$user->id .
+                '}
+            }';
+
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha restaurado al alumno: '. $user->nombre. 'al curso '. $solicitud->course->nombre;
+
+            $newLog->save();
+
+            DB::commit();
+            return \Redirect::back()->with('success','¡Alumno restaurado con éxito!');
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el alumno, inténtelo más tarde.');
+        }
     }
 }

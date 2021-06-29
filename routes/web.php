@@ -129,10 +129,14 @@ Route::get('/reportes/{id}', [App\Http\Controllers\ReportController::class, 'ver
 Route::post('/reportes/{id}', [App\Http\Controllers\ReportController::class, 'marcarReporte'])->name('MarcarReporte');
 
 // SOLICITUDES
-Route::get('/solicitudes', [App\Http\Controllers\RequestController::class, 'index'])->name('solicitudes');
+Route::get('/solicitudes/bajaCurso', [App\Http\Controllers\RequestController::class, 'index'])->name('solicitudes');
+Route::get('/solicitudes/bajaAlumno', [App\Http\Controllers\RequestController::class, 'indexAlumno'])->name('solicitudes.alumno');
 Route::post('/solicitudes/bajaCurso/{id}',[App\Http\Controllers\RequestController::class, 'bajaCurso'])->name('solicitudes.bajaCurso');
 Route::post('/solicitudes/bajaAlumno/{id}',[App\Http\Controllers\RequestController::class, 'bajaAlumno'])->name('solicitudes.bajaAlumno');
 Route::get('/solicitudes/{id}/{type}', [App\Http\Controllers\RequestController::class, 'verSolicitud'])->name('verSolicitud');
+Route::put('/cursos/{id}/restore',  [App\Http\Controllers\RequestController::class, 'restoreCourse'])->name('cursos.restore');
+Route::put('/alumno/{id}/restore',  [App\Http\Controllers\RequestController::class, 'restoreAlumno'])->name('alumnos.restore');
+
 
 //LOG
 Route::name('log.')->group(function () {
