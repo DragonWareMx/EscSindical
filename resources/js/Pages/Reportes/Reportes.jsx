@@ -421,7 +421,6 @@ const Reportes = ({reportes, request}) => {
                                     <tr style={{"cursor":"pointer"}} key={reporte.id} onClick={() => getReport(reporte.id)}>
                                         <td>{reporte.matricula}</td>
                                         <td>{reporte.nombre}</td>
-                                        {/* <td>Soy un nombre we</td> */}
                                         <td>{reporte.comentario}</td>
                                         <td>{reporte.status == 0 ? 'Sin revisar' : 'Revisado'}</td>
                                         <td><button ><i className="material-icons tiny" style={{"color":"#134E39"}}>edit</i> </button></td>

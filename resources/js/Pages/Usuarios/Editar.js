@@ -252,8 +252,10 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                 EDITAR USUARIO
                             </div>
 
-
+                            <div className="col s12">
                             <Alertas />
+                            </div>
+                            
 
                             {user.deleted_at &&
                             <div className="errores">

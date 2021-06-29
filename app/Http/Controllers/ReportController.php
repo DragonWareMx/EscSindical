@@ -132,4 +132,54 @@ class ReportController extends Controller
         return Inertia::render('Reportes/VerReporte', ['reporte' => $reporte, 'reported' => $reported, 'reporter' => $reporter]);
         
     }
+
+    public function marcarReporte($id){
+        \Gate::authorize('haveaccess', 'admin.perm');
+
+        $reporte=Report::findOrFail($id);
+        
+        //COMIENZA LA TRANSACCION
+        DB::beginTransaction();
+
+        try {
+            // revisar que el estatus sea cero
+            if($reporte->status == 0){
+                $reporte->status = 1;
+                $reporte->save();
+
+                //SE CREA EL LOG
+                $newLog = new Log;
+                $newLog->categoria = 'update';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                '{
+                    reports: {
+                        id: ' . $reporte->id . ',\n
+                        reported: ' . $reporte->reported . ',\n
+                        reporter: ' . $reporte->reporter . ',\n
+                        comentario: ' . $reporte->comentario . ',\n
+                        fecha: '. $reporte->created_at. ',\n
+                        status: '. $reporte->status. ',\n
+                    }
+                }';
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha actualizado el reporte con id '.$reporte->id.' como leído';
+                
+                //SE GUARDA EL LOG
+                $newLog->save();
+
+                //SE HACE COMMIT
+                DB::commit();
+                
+                //REDIRECCIONA A LA VISTA DE REPORTE
+                return \Redirect::back()->with('success','Reporte actualizado con éxito!');
+            }
+            else{
+                DB::rollBack();            
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar actualizar el reporte, inténtelo más tarde.');
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();            
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar actualizar el reporte, inténtelo más tarde.');
+        }
+    }
 }
