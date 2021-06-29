@@ -20,11 +20,6 @@ function calificar(){
     document.getElementById("btn-calificar").style.display = "none";
     document.getElementById("div-calificar").style.display = "block";
 }
-function cancelar(){
-    document.getElementById("btn-calificar").style.display = "block";
-    document.getElementById("div-calificar").style.display = "none";
-}
-
 
 const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
     const { auth } = usePage().props;
@@ -56,6 +51,16 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
         return `${day} de ${monthNames[monthIndex]} de ${year} a las ${hour}:${minutes} ${formato}`;
     }
 
+    function cancelar(){
+        document.getElementById("btn-calificar").style.display = "block";
+        document.getElementById("div-calificar").style.display = "none";
+        setValues(values => ({
+            ...values,
+            calificacion: '',
+            comentario: '',
+        }))
+    }
+
     // / funcion para calcular el estatus de la entrega realizada o algo así
     function realizadaEstatus(fecha_entrega,entregado){
         const entrega=new Date(fecha_entrega);
@@ -75,7 +80,7 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
     //valores para formulario
     const [values, setValues] = useState({
         calificacion: "",
-        comentarios: "",
+        comentario: "",
     })
 
     //actualiza los hooks cada vez que se modifica un input
@@ -91,7 +96,7 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
     //manda el forumulario
     function handleSubmit(e) {
         e.preventDefault()
-        Inertia.post(route('entrada.create'), values,
+        Inertia.post(route('cursos.asignacion.entrega.calificar',[asignacion.id,entrega.id]), values,
             {
                 onError: () => {
                     // Inertia.reload({ only: ['cursos'], data: { regime: values.regimen } })
@@ -124,14 +129,16 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
                     
                     
                     <div className="col s12 padding-0px" style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center","marginTop":"15px"}}>
-                        <img src={"/img/avatar1.png"} className="img-td-entregas" />
-                        <InertiaLink href="#!" className="link-profile-e">{entrega.nombre} {entrega.apellido_p} {entrega.apellido_m}</InertiaLink>
+                        <img src={entrega.foto ? '/storage/fotos_perfil/'+entrega.foto : '/img/avatar1.png'} className="img-td-entregas" />
+                        <InertiaLink href={route('perfil.public',entrega.id)} className="link-profile-e">{entrega.nombre} {entrega.apellido_p} {entrega.apellido_m}</InertiaLink>
                     </div>
 
                     {/* fecha del envio */}
                     <div className="col s12 txt-date-as padding-0px" style={{"marginTop":"10px"}}>{entrega.created_at && "Fecha de entrega " + transformaFecha(entrega.created_at)}</div>
                     
-                    <div className='td-estatus col s12 padding-0px' style={{"color": entrega.usuario ? 'red' :asignacion.fecha_de_entrega >= entrega.created_at ?"#41AB59" : "#ffb90a", "marginTop":"5px"}}>{entrega.usuario ? 'SIN ENVÍO' : realizadaEstatus(asignacion.fecha_de_entrega, entrega.created_at)}</div>
+                    {asignacion.tipo != 'Examen' &&
+                        <div className='td-estatus col s12 padding-0px' style={{"color": entrega.usuario ? 'red' :asignacion.fecha_de_entrega >= entrega.created_at ?"#41AB59" : "#ffb90a", "marginTop":"5px"}}>{entrega.usuario ? 'SIN ENVÍO' : realizadaEstatus(asignacion.fecha_de_entrega, entrega.created_at)}</div>
+                    }
                     {/* Enviada con retraso #134E39 */}
 
                     {/* Archivo enviado */}
@@ -146,7 +153,7 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
                     {entrega.Comentario &&
                         <>
                             <div className="col s12 txt-status-as">COMENTARIOS</div>
-                            <div className="col s12 txt-comentariosE padding-0px">{entrega.Comentario}</div>
+                            <div className="col s12 txt-comentariosE padding-0px" dangerouslySetInnerHTML={{__html:entrega.Comentario}}></div>
                         </>
                     }
                 
@@ -188,10 +195,10 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
                         </button>
                     </div>
 
-                    <form className="col s12 padding-0px paddingRight-0px" id="div-calificar" style={{"display":"none", "marginTop":"30px"}}>
+                    <form onSubmit={handleSubmit} className="col s12 padding-0px paddingRight-0px" id="div-calificar" style={{"display":"none", "marginTop":"30px"}}>
 
                         <div class="input-field col s12 padding-0px paddingRight-0px">
-                            <input id="calificacion" name="calificacion" type="text" className={errors.calificacion ? "validate form-control invalid" : "validate form-control"}  value={values.calificacion} onChange={handleChange} required />
+                            <input id="calificacion" name="calificacion" type="number" min="0" max ={asignacion.max_calif} className={errors.calificacion ? "validate form-control invalid" : "validate form-control"}  value={values.calificacion} onChange={handleChange} required />
                             <label for="calificacion">Calificación obtenida</label> 
                         </div>
 
@@ -200,23 +207,15 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
                         <div className="col s12 padding-0px paddingRight-0px">
                             <CKEditor
                                 editor={ ClassicEditor }
+                                data={values.comentario}
                                 id="editorCK"
-                                // data={values.descripcion}
-                                onReady={ editor => {
-                                    // You can store the "editor" and use when it is needed.
-                                    // console.log( 'Editor is ready to use!', editor );
-                                } }
-                                onChange={ 
-                                    ( event, editor ) => {
-                                    changeCK(editor.getData());
-                                    }
-                                }
-                                onBlur={ ( event, editor ) => {
-                                    // console.log( 'Blur.', editor );
-                                } }
-                                onFocus={ ( event, editor ) => {
-                                    // console.log( 'Focus.', editor );
-                                } }
+                                onChange={(event, editor) => {
+                                    const data = editor.getData();
+                                    setValues(values => ({
+                                        ...values,
+                                        comentario: data,
+                                    }))
+                                }}
                             />
                         </div>
 

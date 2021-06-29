@@ -1701,46 +1701,67 @@ class CourseController extends Controller
                     'users.nombre as nombre',
                     'users.apellido_p',
                     'users.apellido_m',
+                    'users.id as id',
+                    'users.foto as foto',
                 )
                 ->first();
             //si no encuentra la entrega quiere decir que no la entregó el alumno o que es un examen
-            if (!$entrega) {
-                if ($entrada->tipo == 'Examen') {
-                    dd('soy examen');
-                } else if ($entrada->tipo == 'Asignacion') {
-
-                    //se sacan los datos del usuario para mostrarlos en la vista
-                    $entrega = User::where('users.id', $eid)
-                        ->where('course_user.course_id', $id)
-                        ->leftJoin('course_user', 'users.id', '=', 'course_user.user_id')
-                        ->select(
-                            'users.nombre',
-                            'users.apellido_p',
-                            'users.apellido_m',
-                            'users.id as id',
-                            'users.sexo as usuario'
-                        )
-                        ->first();
-
-                    return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
-                        'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
-                        'modulo' => $modulo,
-                        'asignacion' => $entrada,
-                        'entrega' => $entrega,
-                    ]);
-                }
+            if (!$entrega) { 
+                //se sacan los datos del usuario para mostrarlos en la vista
+                $entrega = User::where('users.id', $eid)
+                    ->where('course_user.course_id', $id)
+                    ->leftJoin('course_user', 'users.id', '=', 'course_user.user_id')
+                    ->select(
+                        'users.nombre',
+                        'users.apellido_p',
+                        'users.apellido_m',
+                        'users.id as id',
+                        'users.sexo as usuario',
+                        'users.foto as foto',
+                    )
+                    ->first();
             }
-            if ($entrega->tipo == 'Asignacion') {
-                return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
-                    'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
-                    'modulo' => $modulo,
-                    'asignacion' => $entrada,
-                    'entrega' => $entrega,
-                ]);
-            } else if ($entrega->tipo == 'Examen') {
-                dd('soy examen');
-            }
+            return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
+                'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
+                'modulo' => $modulo,
+                'asignacion' => $entrada,
+                'entrega' => $entrega,
+            ]);
         }
+    }
+
+    public function asignacionEntregaCalificar($aid, $eid, Request $request){
+        $validated = $request->validate([
+            'calificacion' => ['required','numeric'],
+            'comentario' => ['max:65000'],
+        ]);
+        $asignacion=Entry::findOrFail($aid);
+        if($asignacion->max_calif < $request->calificacion){
+            return \Redirect::back()->with('error', 'La calificación máxima permitida es: '.$asignacion->max_calif.'.');
+        }
+        $entrada=Entry::
+            leftJoin('entry_user','entries.id','=','entry_user.entry_id')
+            ->where('entry_user.user_id',$eid)
+            ->where('entry_user.entry_id',$aid)
+            ->select('entry_user.id as id')
+            ->first();
+
+        DB::beginTransaction();
+        try {
+            
+        if($entrada){
+        
+        }
+
+
+        DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+
+
+        dd($entrada);
     }
 
     public function inscribir($id)
