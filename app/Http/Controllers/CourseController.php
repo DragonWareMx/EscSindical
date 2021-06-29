@@ -125,15 +125,25 @@ class CourseController extends Controller
     //  funcion para ver el inicio como ponente
     public function inicioPonente()
     {
-        $user = User::find(Auth::id());
+        \Gate::authorize('haveaccess', 'ponente.perm');
+        
+        $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users', 'images')->get();
 
-        if ($user->roles[0]->name == 'Ponente') {
-            \Gate::authorize('haveaccess', 'ponente.perm');
-            $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users', 'images')->get();
-            return Inertia::render('Inicios/inicioPonente', [
-                'cursos' => fn () => $cursos,
-            ]);
-        } 
+        $estudiantes = Course::
+            leftJoin('course_user','courses.id','=','course_user.course_id')
+            ->leftJoin('users','course_user.course_id','=','users.id')
+            ->leftJoin('categories','users.id','=','categories.id')
+            ->where('teacher_id', Auth::id())
+            ->where('estatus', 'Activo')
+            ->select('categories.nombre',DB::raw('count(categories.nombre) as cantidad'))
+            ->groupBy('categories.nombre')
+            ->get();
+
+        return Inertia::render('Inicios/inicioPonente', [
+            'cursos' => fn () => $cursos,
+            'estudiantes' => $estudiantes,
+        ]);
+        
     }
 
     //  funcion para ver el inicio como admin
