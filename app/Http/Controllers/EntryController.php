@@ -1327,7 +1327,7 @@ class EntryController extends Controller
             return \Redirect::back()->with('success', 'Entrega eliminada.');
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
+            // dd($e);
             return \Redirect::back()->with('error', 'No fue posible enviar la asignación, vuelve a intentarlo.');
         }
     }

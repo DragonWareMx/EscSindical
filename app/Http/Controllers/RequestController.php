@@ -566,7 +566,7 @@ class RequestController extends Controller
             return \Redirect::route('solicitudes.alumno')->with('success', 'La acción se llevó a cabo con éxito'); //poner info del alumno
         } catch (\Exception $e) {
             //throw $th;
-            dd($e);
+            // dd($e);
             DB::rollBack();
             return \Redirect::route('solicitudes.alumno')->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
         }
@@ -632,7 +632,7 @@ class RequestController extends Controller
             return \Redirect::route('solicitudes')->with('success', 'La acción se llevó a cabo con éxito');//poner info del curso
         } catch (\Exception $e) {
             //throw $th;
-            dd($e);
+            // dd($e);
             DB::rollBack();
             return \Redirect::back('solicitudes')->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
         }
@@ -677,7 +677,7 @@ class RequestController extends Controller
             
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
+            // dd($e);
             return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el curso, inténtelo más tarde.');
         }
     }
@@ -722,7 +722,7 @@ class RequestController extends Controller
             
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
+            // dd($e);
             return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el alumno, inténtelo más tarde.');
         }
     }

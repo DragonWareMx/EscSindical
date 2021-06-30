@@ -975,7 +975,6 @@ class CourseController extends Controller
             return \Redirect::route('cursos.modulos', $module->course_id)->with('success', '¡Modulo eliminado con éxito!');
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
         }
     }
@@ -1890,32 +1889,30 @@ class CourseController extends Controller
             // Encontrar curso al que pertenece
             $curso_actual = $user->activeCourses[0];
 
+            // curso-usuario
+            $cursoUser=DB::table('course_user')->where('user_id',$id)->get();
+
             DB::beginTransaction();
             try {
                 // Iniciar eliminacion
                 $user->courses()->detach($curso_actual->course_id);//eliminamos la relación del usuario con el curso
             
                 //SE CREA EL LOG
-                // $newLog = new Log;
-                // $newLog->categoria = 'delete';
-                // $newLog->user_id = Auth::id();
-                // $newLog->accion =
-                // '{
-                //     reports: {
-                //         id: ' . $reporte->id . ',\n
-                //         reported: ' . $reporte->reported . ',\n
-                //         reporter: ' . $reporte->reporter . ',\n
-                //         comentario: ' . $reporte->comentario . ',\n
-                //         fecha: '. $reporte->created_at. ',\n
-                //         status: '. $reporte->status. ',\n
-                //     }
-                // }';
-                // $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha dado del baja al estudiante '.$user->name.' del curso '.$curso_actual->id;
+                $newLog = new Log;
+                $newLog->categoria = 'update';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                '{
+                    course_user: {
+                        course_id: ' . $curso_actual->id . ',\n
+                        user_id: ' . $id . ',\n
+                        calificacion_final: ' . $cursoUser[0]->calificacion_final . ',\n
+                    }
+                }';
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha dado del baja al estudiante '.$user->nombre.' '.$user->apellido_p.' del curso '.$curso_actual->id;
                 
-                // //SE GUARDA EL LOG
-                // $newLog->save();
-
-
+                //SE GUARDA EL LOG
+                $newLog->save();
 
                 //SE HACE COMMIT
                 DB::commit();

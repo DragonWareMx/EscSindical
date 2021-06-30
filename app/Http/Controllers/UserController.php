@@ -835,7 +835,7 @@ class UserController extends Controller
             
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
+            // dd($e);
             return \Redirect::back()->with('error','Ha ocurrido un error al intentar restaurar el usuario, inténtelo más tarde.');
         }
     }

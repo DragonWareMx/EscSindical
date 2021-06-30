@@ -29,7 +29,6 @@ class ReportController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
 
         return Inertia::render('Reportes/Reportes', [
-            // 'reportes' => fn () => Report::with('reported:id,nombre,apellido_p,apellido_m,matricula','reporter:id,nombre,apellido_p,apellido_m,matricula')
             'reportes' => fn () => Report::join('users', 'reports.reported', '=', 'users.id')->select(DB::raw("concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) as nombre"), 'users.matricula', 'reports.id', 'reports.status', 'reports.comentario', 'reports.created_at')
             ->when($request->sort, function ($query, $sort) use ($request) {
                 switch ($sort) {
