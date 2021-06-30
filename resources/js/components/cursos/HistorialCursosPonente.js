@@ -72,7 +72,7 @@ export default function HistorialCursosPonente({finishedCourses}) {
                                                     <div className="col s1"><a className='dropdown-trigger'  data-target={'download-report'+course.id}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                                                     {/* DROPDOWN CON OPCIONES */}
                                                     <ul id={'download-report'+course.id} className='dropdown-content dropdown_LC'>
-                                                        <li><a className="dropdown-text" ><i className="material-icons">file_download</i>Descargar reporte</a></li>
+                                                        {/* <li><a className="dropdown-text" ><i className="material-icons">file_download</i>Descargar reporte</a></li> */}
                                                     </ul>
                                                 </div>
 

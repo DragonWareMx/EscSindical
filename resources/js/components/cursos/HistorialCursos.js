@@ -69,7 +69,7 @@ export default function HistorialCursos({cursos, solicitudes}) {
                                                         <div className="col s1"><a className='dropdown-trigger'  data-target={'download-certificate'+curso.id}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                                                         {/* DROPDOWN CON OPCIONES */}
                                                         <ul id={'download-certificate'+curso.id} className='dropdown-content dropdown_LC'>
-                                                            <li><a className="dropdown-text" ><i className="material-icons">file_download</i>Descargar certificado</a></li>
+                                                            {/* <li><a className="dropdown-text" ><i className="material-icons">file_download</i>Descargar certificado</a></li> */}
                                                         </ul>
                                                     </div>
 
