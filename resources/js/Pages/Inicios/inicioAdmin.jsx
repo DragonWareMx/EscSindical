@@ -324,22 +324,28 @@ const options5 = {
                                 </div>
                                 <div className="row">
                                     {/* grafica 4 -> cursos activos separados por training_types */}
-                                    <span>Total de cursos actuales: {totalCursosActuales}</span>
                                     <div className="col s12 l4">
-                                        <Pie
-                                            data={data4}
-                                            width={400}
-                                            height={400}
-                                            options={options4} />
+                                      <span className="col s12 txt-sub-prov">Total de cursos actuales: {totalCursosActuales}</span>
+                                      <div className="col s12">
+                                          <Pie
+                                              data={data4}
+                                              width={400}
+                                              height={400}
+                                              options={options4} />
+                                      </div>
                                     </div>
-                                    <span>Total de cursos terminados: {totalCursosTerminados}</span>
                                     <div className="col s12 l4">
-                                        <Pie
-                                            data={data5}
-                                            width={400}
-                                            height={400}
-                                            options={options5} />
+                                      <span className="col s12 txt-sub-prov">Total de cursos terminados: {totalCursosTerminados}</span>
+                                      <div className="col s12">
+                                          <Pie
+                                              data={data5}
+                                              width={400}
+                                              height={400}
+                                              options={options5} />
+                                      </div>
                                     </div>
+
+                                    
                                 </div>
                             </div>
                         </div>
