@@ -3,6 +3,7 @@ import { Inertia } from '@inertiajs/inertia'
 import Layout from '../../layouts/Layout';
 import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import CursoActual from '../../components/cursos/CursoActual';
+import ModalReportar from '../../components/common/ModalReportar';
 //COMPONENTS
 import Alertas from '../../components/common/Alertas'; 
 // Hojas de estilos
@@ -28,7 +29,8 @@ const inicioEstudiante = ({user, profesor, tags, participantes, pendientes}) => 
   
         return (
             <>
-            <Alertas />
+            <div style={{"width":"100%"}}><Alertas /></div>
+            
             <CursoActual  
             cursos = {user.active_courses['0']}
             profesor = {profesor}
@@ -55,7 +57,7 @@ const inicioEstudiante = ({user, profesor, tags, participantes, pendientes}) => 
                                             <ul id={'dropdown-option-classmate'+index} className='dropdown-content dropdown_LC'>
                                                 <li><a className="dropdown-text" href={"mailto:"+alumno.email}><i className="material-icons">mail</i>Enviar mensaje</a></li>
                                                 <li className="divider" tabIndex="-1"></li>
-                                                <li><a className="dropdown-text modal-trigger" href="#modalReportar"><i className="material-icons">report_problem</i>Reportar</a></li>
+                                                <li><a className="dropdown-text modal-trigger" data-target={'modalReportar'+alumno.id}><i className="material-icons">report_problem</i>Reportar</a></li>
                                             </ul>
 
                                             {/* Información del usuario */}
@@ -68,6 +70,7 @@ const inicioEstudiante = ({user, profesor, tags, participantes, pendientes}) => 
                                             </div>    
                                         </div>
                                         }
+                                        <ModalReportar url={route('CrearReporte')} nombre={alumno.nombre+' '+alumno.apellido_p+' '+user.apellido_m} id={alumno.id} />
                                     </div>
                                     ))
                                     :
