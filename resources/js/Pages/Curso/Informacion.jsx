@@ -100,7 +100,7 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
                 <div className="col s12" style={{marginTop:15}}></div>
                 {/* Enlace a las videoconferencias */}
                 {inscrito ?
-                <div className="col s12">
+                <div className="col s12" style={{"padding":"0px 0px 0px 0px"}}>
                   <a href={curso.link} className="txt-video-course" style={{"marginTop":"10px"}}>
                       <i className="material-icons tiny" >videocam</i>
                       <a href={curso.link} target="_blank" style={{"marginLeft": "5px", "textDecoration": "underline",color:"#185E45"}}>Clic para acceder</a>
