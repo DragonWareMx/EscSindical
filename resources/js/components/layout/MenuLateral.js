@@ -121,8 +121,23 @@ export default function MenuLateral() {
           {/* SISTEMA */}
           <li><a className="subheader division-menu">SISTEMA</a></li>
 
-          <li><InertiaLink href={route('reportes').url()} className="icono-menu"><i className="material-icons icono-menu">assignment_late</i>Reportes</InertiaLink></li>
-          <li><InertiaLink href={route('solicitudes').url()} className="icono-menu"><i className="material-icons icono-menu">create_new_folder</i>Solicitudes</InertiaLink></li>
+          {/* REPORTES */}
+          {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
+          <li>
+            <InertiaLink href={route('reportes').url()} className="icono-menu">
+              <i className="material-icons icono-menu">assignment_late</i>Reportes
+            </InertiaLink>
+          </li>
+          }
+          
+          {/* SOLICITUDES */}
+          {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
+          <li>
+            <InertiaLink href={route('solicitudes').url()} className="icono-menu">
+              <i className="material-icons icono-menu">create_new_folder</i>Solicitudes
+            </InertiaLink>
+          </li>
+          }
   
           {/* BITACORA */}
           {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
@@ -187,20 +202,28 @@ export default function MenuLateral() {
             <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Buscar cursos">search</i>
           </InertiaLink>
         </div>
+
+        {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
         <div className="col s12">
           <InertiaLink href={route('reportes').url()} className="icono-menu">
             <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Reportes">assignment_late</i>
           </InertiaLink>
         </div>
+        }
+
+        {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
         <div className="col s12">
           <InertiaLink href={route('solicitudes').url()} className="icono-menu">
-            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Solicitudes">create_new_folder</i>
+            <i className={isUrl("solicitudes") ? "material-icons tooltipped icono-menu-compacto current-menu" : "material-icons tooltipped icono-menu-compacto"} data-position="right" data-tooltip="Solicitudes">create_new_folder</i>
           </InertiaLink>
         </div>
+        }
+
+        {/* BITACORA */}
         {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
           <div className="col s12">
-            <InertiaLink href={route('log.index')}>
-              <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Bitácora">history</i>
+            <InertiaLink href={route('log.index')} className="icono-menu">
+              <i className={isUrl("log") ? "material-icons tooltipped icono-menu-compacto current-menu" : "material-icons tooltipped icono-menu-compacto"} data-position="right" data-tooltip="Bitácora">history</i>
             </InertiaLink>
           </div>
         }
@@ -217,6 +240,7 @@ export default function MenuLateral() {
             <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Cerrar sesión">logout</i>
           </button>
         </div>
+
         <div className="col s12 center-align" style={{ marginTop: '10px' }}>
           <a onClick={openNav} data-target="slide-out" className="btn-floating btn-medium waves-effect waves-light sidenav-trigger tooltipped" style={{ backgroundColor: '#108058' }} data-position="right" data-tooltip="Abrir menú"><i className="material-icons">arrow_forward</i></a>
         </div>

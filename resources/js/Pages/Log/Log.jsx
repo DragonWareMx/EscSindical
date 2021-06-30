@@ -527,7 +527,7 @@ const Log = ({ logs, request }) => {
                                             }</td>
                                             <td>{log.descripcion}</td>
                                             <td>{log.categoria ? log.categoria : "Sin Categoría"}</td>
-                                            <td>{transformaFecha(log.created_at)}</td>
+                                            <td>{log.created_at ? transformaFecha(log.created_at) : "Sin fecha"}</td>
                                         </tr>
                                     ))}
                                 </tbody>
