@@ -108,7 +108,7 @@ class PerfilController extends Controller
             //guarda la foto
             if(!is_null($request->file('foto'))){
                 if($user->foto){
-                    \Storage::delete('public/fotos_perfil'.$user->foto);
+                    \Storage::delete('public/fotos_perfil/'.$user->foto);
                 }
                 $foto = $request->file('foto')->store('public/fotos_perfil');
                 $user->foto = $request->file('foto')->hashName();
