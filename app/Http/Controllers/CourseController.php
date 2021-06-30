@@ -1701,45 +1701,82 @@ class CourseController extends Controller
                     'users.nombre as nombre',
                     'users.apellido_p',
                     'users.apellido_m',
+                    'users.id as id',
+                    'users.foto as foto',
                 )
                 ->first();
             //si no encuentra la entrega quiere decir que no la entregó el alumno o que es un examen
-            if (!$entrega) {
-                if ($entrada->tipo == 'Examen') {
-                    dd('soy examen');
-                } else if ($entrada->tipo == 'Asignacion') {
-
-                    //se sacan los datos del usuario para mostrarlos en la vista
-                    $entrega = User::where('users.id', $eid)
-                        ->where('course_user.course_id', $id)
-                        ->leftJoin('course_user', 'users.id', '=', 'course_user.user_id')
-                        ->select(
-                            'users.nombre',
-                            'users.apellido_p',
-                            'users.apellido_m',
-                            'users.id as id',
-                            'users.sexo as usuario'
-                        )
-                        ->first();
-
-                    return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
-                        'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
-                        'modulo' => $modulo,
-                        'asignacion' => $entrada,
-                        'entrega' => $entrega,
-                    ]);
-                }
+            if (!$entrega) { 
+                //se sacan los datos del usuario para mostrarlos en la vista
+                $entrega = User::where('users.id', $eid)
+                    ->where('course_user.course_id', $id)
+                    ->leftJoin('course_user', 'users.id', '=', 'course_user.user_id')
+                    ->select(
+                        'users.nombre',
+                        'users.apellido_p',
+                        'users.apellido_m',
+                        'users.id as id',
+                        'users.sexo as usuario',
+                        'users.foto as foto',
+                    )
+                    ->first();
             }
-            if ($entrega->tipo == 'Asignacion') {
-                return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
-                    'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
-                    'modulo' => $modulo,
-                    'asignacion' => $entrada,
-                    'entrega' => $entrega,
+            return Inertia::render('Curso/Asignacion/RevisarAsignacion', [
+                'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
+                'modulo' => $modulo,
+                'asignacion' => $entrada,
+                'entrega' => $entrega,
+            ]);
+        }
+    }
+
+    public function asignacionEntregaCalificar($aid, $eid, Request $request){
+        $validated = $request->validate([
+            'calificacion' => ['required','numeric'],
+            'comentario' => ['max:65000'],
+        ]);
+        $asignacion=Entry::findOrFail($aid);
+        if($asignacion->max_calif < $request->calificacion){
+            return \Redirect::back()->with('error', 'La calificación máxima permitida es: '.$asignacion->max_calif.'.');
+        }
+        $entrada=Entry::
+            leftJoin('entry_user','entries.id','=','entry_user.entry_id')
+            ->where('entry_user.user_id',$eid)
+            ->where('entry_user.entry_id',$aid)
+            ->select('entry_user.id as id')
+            ->first();
+
+        DB::beginTransaction();
+        try { 
+            if($entrada){
+                // \DB::table('entry_user')->where('id',$entrada->id)->update([
+                //     [
+                //         'calificacion'                      => $request->calificacion,
+                //         'comentario_retroalimentacion'      => $request->comentario,
+                //     ]
+                // ]);
+                $usuario=User::findOrFail($eid);
+                $todayDate = Carbon::now();
+                $asignacion->users()->updateExistingPivot($usuario->id,[
+                    'calificacion'                      => $request->calificacion,
+                    'fecha_calif'                       => $todayDate->toDateTimeString(),
+                    'comentario_retroalimentacion'      => $request->comentario,
                 ]);
-            } else if ($entrega->tipo == 'Examen') {
-                dd('soy examen');
             }
+            else{
+                $usuario=User::findOrFail($eid);
+                $todayDate = Carbon::now();
+                $asignacion->users()->attach($usuario->id,[
+                    'calificacion'                      => $request->calificacion,
+                    'fecha_calif'                       => $todayDate->toDateTimeString(),
+                    'comentario_retroalimentacion'      => $request->comentario,
+                ]);
+            }
+            DB::commit();
+            return \Redirect::back()->with('success', 'La calificación se guardó correctamente.');
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return \Redirect::back()->with('error', 'Ocurrió un error inesperado, inténtelo más tarde.');
         }
     }
 
