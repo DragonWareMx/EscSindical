@@ -127,6 +127,7 @@ Route::post('/notificacion/vista/{id}', [App\Http\Controllers\NotificationContro
 Route::get('/reportes', [App\Http\Controllers\ReportController::class, 'index'])->name('reportes');
 Route::get('/reportes/{id}', [App\Http\Controllers\ReportController::class, 'verReporte'])->name('VerReportes');
 Route::post('/reportes/{id}', [App\Http\Controllers\ReportController::class, 'marcarReporte'])->name('MarcarReporte');
+Route::post('/reportes/crear/{id}', [App\Http\Controllers\ReportController::class, 'crearReporte'])->name('CrearReporte');
 
 // SOLICITUDES
 Route::get('/solicitudes/bajaCurso', [App\Http\Controllers\RequestController::class, 'index'])->name('solicitudes');

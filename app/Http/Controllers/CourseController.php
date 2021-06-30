@@ -616,7 +616,7 @@ class CourseController extends Controller
     public function deleteRequest($id, Request $request)
     {
         //metodo para que alumno solicite baja de curso
-
+        
         \Gate::authorize('haveaccess', 'alumno.perm');
         //VALIDAMOS DATOS
         $validated = $request->validate([

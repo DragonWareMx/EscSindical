@@ -4,6 +4,7 @@ import LayoutCursos from '../../layouts/LayoutCursos';
 import { InertiaLink, useRemember } from '@inertiajs/inertia-react';
 import { usePage } from '@inertiajs/inertia-react'
 import ModalDarBaja from '../../components/common/ModalDarBaja';
+import ModalReportar from '../../components/common/ModalReportar';
 import Alertas from '../../components/common/Alertas'; 
 
 import '/css/participantes.css'
@@ -68,7 +69,7 @@ const Participantes = ({curso}) => {
                                 <li className="divider" tabIndex="-1"></li>
                             </div>
                         }
-                        <li><a className="dropdown-text modal-trigger" href="#modalReportar"><i className="material-icons">report_problem</i>Reportar</a></li>
+                        <li><a className="dropdown-text modal-trigger" data-target={'modalReportar'+user.id}><i className="material-icons">report_problem</i>Reportar</a></li>
                     </ul>
                     {/* Información del usuario */}
                     <div className=" P_collection_item col s12 m11 l11 xl11 left">
@@ -79,6 +80,7 @@ const Participantes = ({curso}) => {
                         </div>
                     </div>
                     <ModalDarBaja url={route('dar-baja-estudiante', user.id)} nombre={user.nombre+' '+user.apellido_p+' '+user.apellido_m} id={user.id} curso={curso.nombre} />
+                    <ModalReportar url={route('CrearReporte')} nombre={user.nombre+' '+user.apellido_p+' '+user.apellido_m} id={user.id} />
                 </div>
                 
             )}

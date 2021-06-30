@@ -8,6 +8,7 @@ use Auth;
 use App\Models\User;
 use App\Models\Report;
 use App\Models\Log;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
@@ -22,8 +23,7 @@ class ReportController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
-
+     */    
     public function index(Request $request){
         // Valida el permiso
         \Gate::authorize('haveaccess', 'admin.perm');
@@ -179,4 +179,61 @@ class ReportController extends Controller
             return \Redirect::back()->with('error','Ha ocurrido un error al intentar actualizar el reporte, inténtelo más tarde.');
         }
     }
+
+    public function crearReporte($id, Request $request){
+        // Cualquier tipo de usuario puede levantar un reporte
+        //VALIDAMOS DATOS
+        $validated = $request->validate([
+            'descripcion' => 'required',
+        ]);
+
+        $reporter=Auth::id();
+        if($reporter != $id){
+            //COMIENZA LA TRANSACCION
+            DB::beginTransaction();
+
+            try {
+                $reporte=new Report;
+                $reporte->reported=$id;
+                $reporte->reporter=$reporter;
+                $reporte->status=0;
+                $reporte->comentario=$request->descripcion;
+                $reporte->fecha=Carbon::now();
+                $reporte->save();
+
+                // Crear el log
+                $newLog = new Log;
+                $newLog->categoria = 'create';
+                $newLog->user_id = Auth::id();
+                $newLog->accion =
+                '{
+                    reports: {
+                        id: ' . $reporte->id . ',\n
+                        reported: ' . $reporte->reported . ',\n
+                        reporter: ' . $reporte->reporter . ',\n
+                        comentario: ' . $reporte->comentario . ',\n
+                        fecha: '. $reporte->created_at. ',\n
+                        status: '. $reporte->status. ',\n
+                    }
+                }';
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha levantado un reporte al usuario con id '.$reporte->id;
+                
+                //SE GUARDA EL LOG
+                $newLog->save();
+
+
+                DB::commit();
+                return \Redirect::back()->with('success', 'Se creó el reporte correctamente!');
+
+            } catch (\Exception $e) {
+                DB::rollBack();            
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar crear el reporte, inténtelo más tarde.');
+            }
+        }
+        else{
+            return \Redirect::back()->with('message','No es posible crear un reporte a éste usuario!');
+        }
+    }
+
+    
 }
