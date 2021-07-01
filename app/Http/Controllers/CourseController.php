@@ -656,7 +656,7 @@ class CourseController extends Controller
     public function deleteRequest($id, Request $request)
     {
         //metodo para que alumno solicite baja de curso
-        
+
         \Gate::authorize('haveaccess', 'alumno.perm');
         //VALIDAMOS DATOS
         $validated = $request->validate([
@@ -1005,6 +1005,7 @@ class CourseController extends Controller
             return \Redirect::route('cursos.modulos', $module->course_id)->with('success', '¡Modulo eliminado con éxito!');
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
         }
     }
@@ -1786,37 +1787,21 @@ class CourseController extends Controller
             ->first();
 
         DB::beginTransaction();
-        try { 
-            if($entrada){
-                // \DB::table('entry_user')->where('id',$entrada->id)->update([
-                //     [
-                //         'calificacion'                      => $request->calificacion,
-                //         'comentario_retroalimentacion'      => $request->comentario,
-                //     ]
-                // ]);
-                $usuario=User::findOrFail($eid);
-                $todayDate = Carbon::now();
-                $asignacion->users()->updateExistingPivot($usuario->id,[
-                    'calificacion'                      => $request->calificacion,
-                    'fecha_calif'                       => $todayDate->toDateTimeString(),
-                    'comentario_retroalimentacion'      => $request->comentario,
-                ]);
-            }
-            else{
-                $usuario=User::findOrFail($eid);
-                $todayDate = Carbon::now();
-                $asignacion->users()->attach($usuario->id,[
-                    'calificacion'                      => $request->calificacion,
-                    'fecha_calif'                       => $todayDate->toDateTimeString(),
-                    'comentario_retroalimentacion'      => $request->comentario,
-                ]);
-            }
-            DB::commit();
-            return \Redirect::back()->with('success', 'La calificación se guardó correctamente.');
-        } catch (\Throwable $th) {
-            DB::rollback();
-            return \Redirect::back()->with('error', 'Ocurrió un error inesperado, inténtelo más tarde.');
+        try {
+            
+        if($entrada){
+        
         }
+
+
+        DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+
+
+        dd($entrada);
     }
 
     public function inscribir($id)
@@ -1908,55 +1893,6 @@ class CourseController extends Controller
         } catch (\Throwable $th) {
             DB::rollback();
             return \Redirect::back()->with('error', 'Ha ocurrido un problema, vuela a intentarlo más tarde.');
-        }
-    }
-
-    public function darBajaEstudiante($id){
-        // Confirmar los permisos para esta accion
-        if (Auth::user()->roles[0]->name == 'Ponente' || Auth::user()->roles[0]->name == 'Administrador') {
-            // Encontrar usuario estudiante
-            $user=User::findOrFail($id);
-            // Encontrar curso al que pertenece
-            $curso_actual = $user->activeCourses[0];
-
-            // curso-usuario
-            $cursoUser=DB::table('course_user')->where('user_id',$id)->get();
-
-            DB::beginTransaction();
-            try {
-                // Iniciar eliminacion
-                $user->courses()->detach($curso_actual->course_id);//eliminamos la relación del usuario con el curso
-            
-                //SE CREA EL LOG
-                $newLog = new Log;
-                $newLog->categoria = 'update';
-                $newLog->user_id = Auth::id();
-                $newLog->accion =
-                '{
-                    course_user: {
-                        course_id: ' . $curso_actual->id . ',\n
-                        user_id: ' . $id . ',\n
-                        calificacion_final: ' . $cursoUser[0]->calificacion_final . ',\n
-                    }
-                }';
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha dado del baja al estudiante '.$user->nombre.' '.$user->apellido_p.' del curso '.$curso_actual->id;
-                
-                //SE GUARDA EL LOG
-                $newLog->save();
-
-                //SE HACE COMMIT
-                DB::commit();
-                
-                //REDIRECCIONA A LA VISTA
-                return \Redirect::back()->with('success','Se ha dado de baja al estudiante con éxito!');
-            
-            } catch (\Exception $e) {
-                DB::rollBack();            
-                return \Redirect::back()->with('error','Ha ocurrido un error al intentar dar de baja al estudiante, inténtelo más tarde.');
-            }
-        }
-        else{
-            return abort(403);
         }
     }
 }

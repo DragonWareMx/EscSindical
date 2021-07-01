@@ -106,7 +106,7 @@ const inicioAdmin = ({usuariosRoles, inscritos, cantidadPonentes, cursosActuales
         plugins: {
         title: {
             display: true,
-            text: 'INSCRITOS A CURSOS',
+            text: 'ALUMNOS INSCRITOS A CURSOS',
             position: 'bottom',
             font: {
             family: "Montserrat",
@@ -123,7 +123,7 @@ const inicioAdmin = ({usuariosRoles, inscritos, cantidadPonentes, cursosActuales
 
     //  datos de la grafica 3
     var cantPonentes = dataGraphic1[2];
-    var dataGraphic3 = [cantidadPonentes, (cantPonentes-cantidadPonentes)];
+    var dataGraphic3 = [cantidadPonentes, (cantidadPonentes-cantPonentes)];
     const data3 = {
         labels: ['1 o más cursos','0 cursos'],
         datasets: [
@@ -148,7 +148,7 @@ const inicioAdmin = ({usuariosRoles, inscritos, cantidadPonentes, cursosActuales
         plugins: {
         title: {
             display: true,
-            text: 'PONENTES EN CURSOS',
+            text: 'PONENTES QUE IMPARTEN CURSOS',
             position: 'bottom',
             font: {
             family: "Montserrat",
