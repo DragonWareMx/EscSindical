@@ -604,7 +604,6 @@ class RequestController extends Controller
                         }
                     }';
                 $newLog->descripcion = 'El usuario '.Auth::user()->email.' aprobó la solicitud de '. $user->nombre .' para eliminar el curso '.$myRequest->course->nombre.' de id: '.$myRequest->course->id;
-                
             }
             else {
                 $myRequest->status ='Rechazado';

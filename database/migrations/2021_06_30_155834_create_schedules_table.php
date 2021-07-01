@@ -26,6 +26,8 @@ class CreateSchedulesTable extends Migration
             $table->string('viernes')->nullable();
             $table->string('sabado')->nullable();
             $table->string('domingo')->nullable();
+
+            //$table->softDeletes();
         });
     }
 
