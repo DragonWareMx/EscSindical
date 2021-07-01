@@ -17,6 +17,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 10px;
+    position: relative;
 }
 
 .user-pic{
@@ -24,6 +25,8 @@
     width: 40px;
     height: 40px;
     object-fit: cover;
+    margin-left: auto;
+    margin-right: 0px;
 }
 
 .nombre-comment{
@@ -91,6 +94,10 @@
     .nombre-comment{
         padding: 0px 0.75rem;
     }
+    .user-pic{
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
   }
 
   .container-buttons{
@@ -141,4 +148,39 @@ textarea#comentario{
     margin-top: 15px;
     margin-bottom: 20px;
     resize: none;
+}
+
+textarea#comentario_editado{
+    border: 1px solid #134E39;
+    box-sizing: border-box;
+    border-radius: 3px;
+
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    /* identical to box height */
+
+    color: #8E8E8E;
+    outline: none;
+
+    margin-top: 15px;
+    margin-bottom: 20px;
+    resize: none;
+}
+
+.tres_puntos{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.tres_puntos a{
+    cursor: pointer;
+    display: none;
+}
+
+.comment-container:hover .tres_puntos a{
+    display: block;
 }

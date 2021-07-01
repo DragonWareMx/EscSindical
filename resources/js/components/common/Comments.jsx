@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import '../../styles/comentarios.css';
-import { Inertia } from '@inertiajs/inertia'
+import { Inertia } from '@inertiajs/inertia';
+import { InertiaLink } from '@inertiajs/inertia-react';
 import moment from 'moment';
 import { usePage } from '@inertiajs/inertia-react'
 
-export default function Comments({ idModulo, idCurso, idEntrada, comments, handleVisibleC }) {
+export default function Comments({ idModulo, idCurso, idEntrada, comments, handleVisibleC, idTeacher }) {
     //errores de la validacion de laravel
-    const { errors } = usePage().props;
+    const { errors, auth } = usePage().props;
 
     const [values, setValues] = useState({
         visible: true,
-        visibleForm: false
+        visibleForm: false,
+        comentario: '',
+        id_edit: '',
+        visibleEdit: false,
+        comentario_editado: '',
     })
 
     function handleForm() {
@@ -18,6 +23,8 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
             ...values,
             visibleForm: !values.visibleForm,
             comentario: '',
+            id_edit: '',
+            comentario_editado: '',
         }))
     }
 
@@ -62,6 +69,88 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
         )
     }
 
+    function handleSubmitEdit(e) {
+        const button = document.getElementById('button-enviar-edit');
+        button.disabled = true;
+        e.preventDefault()
+        Inertia.post(route('comment.update', { cid: idCurso, mid: idModulo, pid: idEntrada }), values,
+            {
+                onError: () => {
+                    //Inertia.reload({ only: ['comments'] })
+                    button.disabled = false;
+                },
+                onSuccess: () => {
+                    //esto es para borrar el input al poner el comentario
+                    button.disabled = false;
+                    setValues(values => ({
+                        ...values,
+                        comentario_editado: '',
+                        id_edit: '',
+                        visibleEdit: false
+                    }));
+                    Inertia.reload({ only: ['comments'] })
+                },
+                preserveScroll: (page) => Object.keys([page.props.status, page.props.errors]).length,
+            }
+        )
+    }
+
+    function handleSubmitDelete(e) {
+        e.preventDefault()
+        Inertia.post(route('comment.delete', { id: values.id_edit }),
+            {
+                onError: () => {
+                    //Inertia.reload({ only: ['comments'] })
+
+                },
+                onSuccess: () => {
+                    //esto es para borrar el input al poner el comentario
+                    setValues(values => ({
+                        ...values,
+                        comentario_editado: '',
+                        id_edit: '',
+                        visibleEdit: false
+                    }));
+                    Inertia.reload({ only: ['comments'] })
+                },
+                preserveScroll: (page) => Object.keys([page.props.status, page.props.errors]).length,
+            }
+        )
+    }
+
+    function handleEdit(e) {
+        var id = e.target.dataset.id;
+        if (values.id_edit == id) {
+            ocultarEdit();
+        }
+        else {
+            var comentario = document.getElementById("comment-" + id);
+            setValues(values => ({
+                ...values,
+                id_edit: id,
+                visibleEdit: !values.visibleEdit,
+                comentario_editado: comentario.innerText
+            }));
+        }
+    }
+
+    function handleDelete(e) {
+        var id = e.target.dataset.id;
+        setValues(values => ({
+            ...values,
+            id_edit: id,
+        }));
+
+    }
+
+    function ocultarEdit(e) {
+        setValues(values => ({
+            ...values,
+            visibleEdit: !values.visibleEdit,
+            id_edit: '',
+        }));
+    }
+
     return (
         <div className="col s12" style={{ margin: "10px 0px 5px 0px", padding: "0px" }}>
             {values.visible &&
@@ -102,16 +191,53 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
                                     {comments && comments.length > 0 && comments.map((com, index) => (
                                         <div className="comment-container" key={index}>
                                             <div className="col s12 m1" style={{ display: "flex" }}>
-                                                <img style={{ margin: "10px auto" }} src={'/storage/fotos_perfil/' + com.user.foto} alt="" className="user-pic" />
+                                                <img style={{ marginTop: "10px", marginBottom: "10px" }} src={'/storage/fotos_perfil/' + com.user.foto} alt="" className="user-pic" />
                                             </div>
                                             <div className="col s12 m11 comentario-card">
+                                                {com.user_id == auth.user.id &&
+                                                    <div className="LC_more tres_puntos">
+                                                        <a className="dropdown-text" data-id={com.id} onClick={handleEdit}><i className="material-icons" data-id={com.id}>edit</i></a>
+                                                        <a className="dropdown-text modal-trigger" data-id={com.id} onClick={handleDelete} data-target="modalEliminarComment"><i className="material-icons" data-id={com.id}>delete</i></a>
+                                                    </div>
+                                                }
+
                                                 <div className="nombre-comment">
-                                                    <div className="name">{com.user.nombre + ' ' + com.user.apellido_p + ' ' + com.user.apellido_m}</div>
+                                                    {com.user.id == idTeacher ?
+                                                        <div className="name valign-wrapper" style={{ color: "#134E39", fontWeight: 700 }}>{com.user.nombre + ' ' + com.user.apellido_p + ' ' + com.user.apellido_m} <span className="material-icons" style={{ "color": "#134E39", "fontSize": "13px", marginLeft: "5px" }}>
+                                                            check_circle
+                                                        </span></div>
+                                                        :
+                                                        <div className="name">{com.user.nombre + ' ' + com.user.apellido_p + ' ' + com.user.apellido_m}</div>
+                                                    }
                                                     <div className="date">{moment(com.fecha).format('D [de] MMMM YYYY [a las] h:mm a')}</div>
+                                                    {com.editado == 1 &&
+                                                        <div className="date" style={{ color: "#134E39", fontWeight: 400 }}>(editado)</div>
+                                                    }
                                                 </div>
-                                                <div className="comment-text">
-                                                    {com.comentario}
-                                                </div>
+                                                {values.id_edit != com.id ?
+                                                    <div className="comment-text" id={"comment-" + com.id}>
+                                                        {com.comentario}
+                                                    </div>
+                                                    : !values.visibleEdit &&
+                                                    <div className="comment-text" id={"comment-" + com.id}>
+                                                        {com.comentario}
+                                                    </div>
+                                                }
+                                                {values.id_edit == com.id && values.visibleEdit &&
+                                                    <form onSubmit={handleSubmitEdit}>
+                                                        {errors.comentario_editado &&
+                                                            <label htmlFor="comentario" style={{ color: "red" }}>{errors.comentario_editado}</label>
+                                                        }
+                                                        <textarea name="comentario_editado" id="comentario_editado" placeholder="Máximo 280 caracteres" maxLength="280" value={values.comentario_editado} onChange={handleChange} style={{ marginTop: "10px", marginBottom: "0px" }}></textarea>
+                                                        <div className="row container-buttons" style={{ marginBottom: "10px", marginTop: "5px" }}>
+                                                            <button type="button" className=" center-align  btn waves-effect waves-light cancelar" style={{ marginRight: "15px" }} onClick={ocultarEdit}>Cancelar</button>
+                                                            < button type="submit" id="button-enviar-edit" className=" center-align btn waves-effect waves-light guardar" style={{ marginRight: "0%", marginLeft: "0" }}>
+                                                                Guardar
+                                                                <i className="material-icons right">send</i>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                }
                                             </div>
                                         </div>
                                     ))}
@@ -166,6 +292,16 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
                     </div>
                 </div>
             }
+            <div id='modalEliminarComment' className="modal">
+                <div className="modal-content">
+                    <h4 style={{ "color": "#c62828" }}>Eliminar comentario</h4>
+                    <p>¿Estás seguro de que deseas eliminar este comentario?</p>
+                </div>
+                <div className="modal-footer">
+                    <a className="modal-close waves-effect waves-green btn-flat">Cancelar</a>
+                    <a className="modal-close waves-effect waves-green btn-flat" style={{ "color": "#c62828" }} onClick={handleSubmitDelete}>Eliminar</a>
+                </div>
+            </div>
         </div >
     )
 }
