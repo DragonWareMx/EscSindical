@@ -73,7 +73,7 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch, changeTim
                 <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Horario semanal</p>
 
                 <div id="div_time" className="div-row-horario" style={{"marginTop":"5px"}}>
-                    <select multiple="multiple" id="dias_de_la_semana" onChange={changeTime}>
+                    <select multiple="multiple" id="dias_de_la_semana" className="schedule" onChange={changeTime}>
                         <option value="0" disabled>Selecciona los días con el mismo horario</option>
                         <option id="lunes" value='lunes'>Lunes</option>
                         <option id="martes" value='martes'>Martes</option>

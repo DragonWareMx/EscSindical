@@ -16,5 +16,5 @@ class Schedule extends Model
         return $this->belongsTo('App\Models\Course');
     }
 
-    use SoftDeletes;
+    //use SoftDeletes;
 }

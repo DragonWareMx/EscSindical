@@ -19,9 +19,10 @@ function initializeModals() {
 }
 
 var instances;
+var instances3;
 var instancesDate;
 var instancesDate2;
-var instances3;
+var instanceSchedule;
 
 
 const FormCurso = ({capacitaciones}) => {
@@ -57,6 +58,10 @@ const FormCurso = ({capacitaciones}) => {
         var elems3 = document.querySelectorAll('select');
         var options3;
         instances3 = M.FormSelect.init(elems3, options3);
+
+        var elemsSchedule = document.querySelectorAll('select.schedule');
+        var optionsSchedule;
+        instanceSchedule = M.FormSelect.init(elemsSchedule, optionsSchedule);
     }
     
     function initializeDatePicker() {
@@ -104,76 +109,80 @@ const FormCurso = ({capacitaciones}) => {
                 cancel: 'Cancelar',
             },
             onCloseEnd: ()=>{
-                var dias = instances3[1].getSelectedValues();
-                
+                if (instanceSchedule[0].getSelectedValues().length >0){
+                    var dias = instanceSchedule[0].getSelectedValues();
+                    console.log(instanceSchedule);
                     dias.forEach(dia => {
-                        if(!document.getElementById(dia).disabled){
-                                document.getElementById('horario_'+dia).innerHTML="";
-                        }
                         if (!document.getElementById(dia).disabled){
-                        switch (dia) {
-                            case 'lunes':
-                            setValues (values =>({
-                                ... values,
-                                lunes : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
-                            }))
-                                document.getElementById('horario_lunes').innerHTML = "<p> Lunes: "+ document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
-                                document.getElementById('horario_lunes').style.display= 'block';
+                        
+                            document.getElementById('horario_'+dia).innerHTML="";
+                            switch (dia) {
+                                case 'lunes':
+                                setValues (values =>({
+                                    ... values,
+                                    lunes : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
+                                }))
+                                    document.getElementById('horario_lunes').innerHTML = "<p> Lunes: "+ document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
+                                    document.getElementById('horario_lunes').style.display= 'block';
+                                    break;
+                                case 'martes':
+                                setValues (values =>({
+                                    ... values,
+                                    martes : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
+                                }))   
+                                    document.getElementById('horario_martes').innerHTML = "<p> Martes: "+ document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
+                                    document.getElementById('horario_martes').style.display= 'block'; 
+                                    break;
+                                case 'miercoles':
+                                setValues (values =>({
+                                    ... values,
+                                    miercoles : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
+                                }))
+                                    document.getElementById('horario_miercoles').innerHTML = "<p> Miercoles: "+ document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
+                                    document.getElementById('horario_miercoles').style.display= 'block';
                                 break;
-                            case 'martes':
-                            setValues (values =>({
-                                ... values,
-                                martes : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
-                            }))   
-                                document.getElementById('horario_martes').innerHTML = "<p> Martes: "+ document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
-                                document.getElementById('horario_martes').style.display= 'block'; 
+                                case 'jueves':
+                                setValues (values =>({
+                                    ... values,
+                                    jueves : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
+                                }))
+                                    document.getElementById('horario_jueves').innerHTML = "<p> Jueves: "    + document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
+                                    document.getElementById('horario_jueves').style.display= 'block';    
+                                
                                 break;
-                            case 'miercoles':
-                            setValues (values =>({
-                                ... values,
-                                miercoles : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
-                            }))
-                                document.getElementById('horario_miercoles').innerHTML = "<p> Miercoles: "+ document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
-                                document.getElementById('horario_miercoles').style.display= 'block';
-                            break;
-                            case 'jueves':
-                            setValues (values =>({
-                                ... values,
-                                jueves : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
-                            }))
-                                document.getElementById('horario_jueves').innerHTML = "<p> Jueves: "    + document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
-                                document.getElementById('horario_jueves').style.display= 'block';    
-                            
-                            break;
-                            case 'viernes':
-                            setValues (values =>({
-                                ... values,
-                                viernes : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
-                            }))
-                                document.getElementById('horario_viernes').innerHTML = "<p> Viernes: "+ document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
-                                document.getElementById('horario_viernes').style.display= 'block';
-                            break;
-                            case 'sabado':
-                            setValues (values =>({
-                                ... values,
-                                sabado : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
-                            }))
-                            document.getElementById('horario_sabado').innerHTML = "<p> Sábado: "+ document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
-                            document.getElementById('horario_sabado').style.display= 'block';
-                            break;
-                            case 'domingo':
-                            setValues (values =>({
-                                ... values,
-                                domingo : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
-                            }))
-                            document.getElementById('horario_domingo').innerHTML = "<p> Domingo: "+ document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
-                            document.getElementById('horario_domingo').style.display= 'block';
-                            break;
-                            default:
+                                case 'viernes':
+                                setValues (values =>({
+                                    ... values,
+                                    viernes : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
+                                }))
+                                    document.getElementById('horario_viernes').innerHTML = "<p> Viernes: "+ document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
+                                    document.getElementById('horario_viernes').style.display= 'block';
                                 break;
-                        }
+                                case 'sabado':
+                                setValues (values =>({
+                                    ... values,
+                                    sabado : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
+                                }))
+                                document.getElementById('horario_sabado').innerHTML = "<p> Sábado: "+ document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
+                                document.getElementById('horario_sabado').style.display= 'block';
+                                break;
+                                case 'domingo':
+                                setValues (values =>({
+                                    ... values,
+                                    domingo : document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value,
+                                }))
+                                document.getElementById('horario_domingo').innerHTML = "<p> Domingo: "+ document.getElementById("hora_inicio").value +" - "+ document.getElementById("hora_final").value+"</p>";
+                                document.getElementById('horario_domingo').style.display= 'block';
+                                break;
+                                default:
+                                    break;
+                            }
                         }
                     });
+                }
+                else{
+                    alert("Selecciona primero al menos un día");
+                }    
                 
             },
           };
@@ -261,7 +270,6 @@ const FormCurso = ({capacitaciones}) => {
     }
 
     function changeSelect(){
-       console.log(instances3),
         setValues (values =>({
             ... values,
             tipos_de_capacitacion: instances3[0].getSelectedValues(),
@@ -279,7 +287,7 @@ const FormCurso = ({capacitaciones}) => {
             sa:false,
             do:false, 
         }));
-        var dias = instances3[1].getSelectedValues();
+        var dias = instanceSchedule[0].getSelectedValues();
         
         dias.forEach(dia => {
             switch (dia) {
@@ -332,8 +340,8 @@ const FormCurso = ({capacitaciones}) => {
     }
 
    function addSchedule() {
-        var dias = instances3[1].getSelectedValues();
-        instances3[1] ="";
+        var dias = instanceSchedule[0].getSelectedValues();
+        //instances3[1] ="";
         document.getElementById('dias_de_la_semana').value ="";
         dias.forEach(dia => {
             document.getElementById(dia).disabled = true;

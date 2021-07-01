@@ -507,6 +507,20 @@ class CourseController extends Controller
             if ($request->final_inscripciones) $myCourse->fecha_limite = $request->final_inscripciones;
 
 
+            if($request->lunes || $request->martes || $request->miercoles||
+            $request->jueves|| $request->viernes|| $request->sabado || $request->domingo){
+                $horario = Schedule::where('course_id', $myCourse->id)->first();
+                $horario->lunes = $request->lunes;
+                $horario->martes = $request->martes;
+                $horario->miercoles = $request->miercoles;
+                $horario->jueves = $request->jueves;
+                $horario->viernes = $request->viernes;
+                $horario->sabado = $request->sabado;
+                $horario->domingo = $request->domingo;
+                
+                $horario->save();    
+            }
+
             $myCourse->save();
             //SE AGREGAN REGISTROS A SUS RELACIONES
             //TAGS
@@ -593,7 +607,7 @@ class CourseController extends Controller
             DB::commit();
             return \Redirect::route('cursos.informacion', $id)->with('success', 'El curso se ha editado exitosamente');
         } catch (\Exception $e) {
-
+            dd($e);
             DB::rollBack();
             return \Redirect::route('cursos.informacion', $id)->with('error', 'Hubo un problema con tu solicitud, inténtalo más tarde');
             //return response()->json(["status" => $e]);
