@@ -73,24 +73,32 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch, changeTim
                 <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Horario semanal</p>
 
                 <div id="div_time" className="div-row-horario" style={{"marginTop":"5px"}}>
-                    <select multiple="multiple" id="dias_de_la_semana" className="schedule" onChange={changeTime}>
-                        <option value="0" disabled>Selecciona los días con el mismo horario</option>
-                        <option id="lunes" value='lunes'>Lunes</option>
-                        <option id="martes" value='martes'>Martes</option>
-                        <option id="miercoles" value='miercoles'>Miercoles</option>
-                        <option id="jueves" value='jueves'>Jueves</option>
-                        <option id="viernes" value='viernes'>Viernes</option>
-                        <option id="sabado" value='sabado'>Sabado</option>
-                        <option id="domingo" value='domingo'>Domingo</option>
-                    </select>
-                    
-                    <div className="input-field col s6 m3 l3 xl3">
-                        <input id="hora_inicio" type="text" className="timepicker input-hora" style={{"width":"100px"}} />
-                        <label htmlFor="">Hr inicio</label>
+                    {/* select para los dias de las semana */}
+                    <div className="col s12 m4 l4">
+                        <select multiple="multiple" id="dias_de_la_semana" className="schedule" onChange={changeTime}>
+                            <option value="0" disabled>Selecciona los días con el mismo horario</option>
+                            <option id="lunes" value='lunes'>Lunes</option>
+                            <option id="martes" value='martes'>Martes</option>
+                            <option id="miercoles" value='miercoles'>Miercoles</option>
+                            <option id="jueves" value='jueves'>Jueves</option>
+                            <option id="viernes" value='viernes'>Viernes</option>
+                            <option id="sabado" value='sabado'>Sabado</option>
+                            <option id="domingo" value='domingo'>Domingo</option>
+                        </select>
                     </div>
-                    <div className="input-field col s6 m3 l3 xl3">
-                        <input id="hora_final" type="text" className="timepicker input-hora" style={{"width":"100px"}} />
-                        <label htmlFor="">Hr fin</label>
+                    {/* div para hora de inicio */}
+                    <div className="col s12 m4 l4 center-align">
+                        <div className="input-field">
+                            <input id="hora_inicio" type="text" className="timepicker input-hora" />
+                            <label htmlFor="">Hr inicio</label>
+                        </div>
+                    </div>
+                    {/* div para hora de finalizacion */}
+                    <div className="col s12 m4 l4 center-align">
+                        <div className="input-field">
+                            <input id="hora_final" type="text" className="timepicker input-hora" />
+                            <label htmlFor="">Hr fin</label>
+                        </div>
                     </div>
                     
                     {/* <i onClick={deleteTime} className="days material-icons" style={{"color":"#D3766A", "cursor":"pointer", "marginRight":"13px"}}>do_not_disturb_on</i>
@@ -133,6 +141,7 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch, changeTim
                     </div> */}
                     
                 </div>
+                
                 <div id="div_contenedor" className="input-field col s12">
                     <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>HORARIOS SELECCIONADOS</p>
                     <div id="horario_lunes" style={{"display": "none"}}></div>
@@ -143,9 +152,14 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch, changeTim
                     <div id="horario_sabado" style={{"display": "none"}}></div>
                     <div id="horario_domingo" style={{"display": "none"}}></div>    
                 </div>
-                <p>Agrega otro horario<i id="btnAdd" className="material-icons tiny" onClick={addSchedule} style={{"color":"#108058", "cursor":"pointer", "marginLeft":"5px"}}>add_circle</i></p>
-                <p>Volver a empezar<i onClick={refreshSchedule} className="days material-icons" style={{"color":"#D3766A", "cursor":"pointer", "marginRight":"13px"}}>do_not_disturb_on</i></p>
-                
+                {/* botones para agregar horario y volver a empezar */}
+                <div className="col s12 valign-wrapper">
+                    Agrega otro horario<i id="btnAdd" className="material-icons" onClick={addSchedule} style={{"color":"#108058", "cursor":"pointer", "marginLeft":"5px", "fontSize":"16px"}}>add_circle</i>
+                </div>
+                <div className="col s12 valign-wrapper">
+                    Volver a empezar<i onClick={refreshSchedule} className="days material-icons" style={{"color":"#D3766A", "cursor":"pointer", "marginRight":"13px", "fontSize":"16px"}}>do_not_disturb_on</i>
+                </div>
+
             </div>
             
         </div>
