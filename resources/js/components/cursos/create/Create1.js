@@ -4,149 +4,8 @@ import {useState, useEffect } from 'react'
 
 var i=0;
 
-const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
+const Create1 = ({ change, values, onChangeTags, errors, changeSwitch, changeTime, addSchedule, refreshSchedule}) => {
     
-    const [valores, setValues] = useState({
-        Lu:false,
-        Ma:false,
-        Mi:false,
-        Jue:false,
-        Vie:false,
-        Sa:false,
-        Do:false,
-    })
-    
-    function addTime() { 
-        if(valores.Lu ==true && valores.Ma ==true && valores.Mi ==true 
-            && valores.Jue ==true && valores.Vie ==true && valores.Sa ==true && valores.Do ==true){
-            alert("Ya has seleccionado todos los días disponibles")
-        }
-        else {
-            var elemento = document.getElementById("div_time"); //obtiene el elemento a clonar
-            var newElemento = elemento.cloneNode(true); //clona el elemeno
-            var btnLess = newElemento.getElementsByClassName("days")[0];//obtiene el icono de borrar 
-            btnLess.onclick = function(){deleteTime()}; //le agrega la función de borrar
-            
-            var dias = newElemento.getElementsByClassName("group1"); //seleccionamos el grupo de radios 
-            var valueDays = ['Lu', 'Ma', 'Mi', 'Jue', 'Vie', 'Sa', 'Do'];
-            for (let index = 0; index < dias.length; index++) {//les agregamos el evento
-                dias[index].addEventListener("click", onDayChange);        
-            }
-            
-            var contenedor = document.getElementById("div_contenedor");//obtiene el div padre
-            contenedor.appendChild(newElemento);  //inserta elemento en div padre
-        }
-        
-    }
-
-    function deleteTime(){
-        var contenedor = document.getElementById("div_contenedor");
-        if(i>0){
-            i--;
-            document.getElementById("btnAdd").style.display = "inline";
-            var ultimo = contenedor.lastChild;
-            contenedor.removeChild(ultimo);
-        }  
-    }
-
-    function onDayChange(e){
-        var dia = e.target.value;
-
-        switch (dia) {
-            case "Lu":
-                if (valores.Lu){
-                    alert("Ya elegiste ese día");
-                    e.target.disabled = true;
-                }
-                else {
-                    setValues (valores =>({
-                        ... valores,
-                        Lu : true,
-                    }));
-                }
-                break;
-            
-            case "Ma":
-                if (valores.Ma){
-                    alert("Ya elegiste ese día");
-                }
-                else {
-                    setValues (valores =>({
-                        ... valores,
-                        Ma : true,
-                    }));
-                }
-                
-                break;
-            case "Mi":
-                if (valores.Mi){
-                    alert("Ya elegiste ese día");
-                    console.log("Ya elegiste ese día");
-                    e.target.disabled = true;
-                }
-                else {
-                    setValues (valores =>({
-                        ... valores,
-                        Mi : true,
-                    }))
-                }
-                
-                break;
-        
-            case "Jue":
-                if (valores.Jue){
-                    alert("Ya elegiste ese día");
-                }
-                else {
-                    setValues (valores =>({
-                        ... valores,
-                        Jue : true,
-                    }))
-
-                }
-                
-                break;
-            case "Vie":
-                if (valores.Vie){
-                    alert("Ya elegiste ese día");
-                }
-                else {
-                    setValues (valores =>({
-                        ... valores,
-                        Vie : true,
-                    }))
-                }
-                
-                break;
-            case "Sa":
-                if (valores.Sa){
-                    alert("Ya elegiste ese día");
-                }
-                else {
-                    setValues (valores =>({
-                        ... valores,
-                        Sa : true,
-                    }))
-
-                }
-                
-                break;
-            case "Do":
-                if (valores.Do){
-                    alert("Ya elegiste ese día");
-                }
-                else {
-                    setValues (valores =>({
-                        ... valores,
-                        Do : true,
-                    }))
-                }
-                
-                break;
-        }
-        
-    }
-
     return (
         <div className="row" style={{"marginLeft": "-1.5rem", "marginRight": "-1.5rem"}}>
             <div className="input-field col s12" >
@@ -211,9 +70,30 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
             </div>
 
             <div id="div_contenedor" className="input-field col s12">
-                <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Horario semanal<i id="btnAdd" className="material-icons tiny" onClick={addTime} style={{"color":"#108058", "cursor":"pointer", "marginLeft":"5px"}}>add_circle</i></p>
+                <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>Horario semanal</p>
+
                 <div id="div_time" className="div-row-horario" style={{"marginTop":"5px"}}>
-                    <i onClick={deleteTime} className="days material-icons" style={{"color":"#D3766A", "cursor":"pointer", "marginRight":"13px"}}>do_not_disturb_on</i>
+                    <select multiple="multiple" id="dias_de_la_semana" className="schedule" onChange={changeTime}>
+                        <option value="0" disabled>Selecciona los días con el mismo horario</option>
+                        <option id="lunes" value='lunes'>Lunes</option>
+                        <option id="martes" value='martes'>Martes</option>
+                        <option id="miercoles" value='miercoles'>Miercoles</option>
+                        <option id="jueves" value='jueves'>Jueves</option>
+                        <option id="viernes" value='viernes'>Viernes</option>
+                        <option id="sabado" value='sabado'>Sabado</option>
+                        <option id="domingo" value='domingo'>Domingo</option>
+                    </select>
+                    
+                    <div className="input-field col s6 m3 l3 xl3">
+                        <input id="hora_inicio" type="text" className="timepicker input-hora" style={{"width":"100px"}} />
+                        <label htmlFor="">Hr inicio</label>
+                    </div>
+                    <div className="input-field col s6 m3 l3 xl3">
+                        <input id="hora_final" type="text" className="timepicker input-hora" style={{"width":"100px"}} />
+                        <label htmlFor="">Hr fin</label>
+                    </div>
+                    
+                    {/* <i onClick={deleteTime} className="days material-icons" style={{"color":"#D3766A", "cursor":"pointer", "marginRight":"13px"}}>do_not_disturb_on</i>
                     <label>
                         <input className="group1" type="radio" value = "Lu" onClick={onDayChange}/>
                         <span className="span-radio-courses">Lu</span>
@@ -250,9 +130,22 @@ const Create1 = ({ change, values, onChangeTags, errors, changeSwitch}) => {
                     <div className="input-field col s6 m3 l3 xl3">
                         <input type="text" className="timepicker input-hora" style={{"width":"100px"}} />
                         <label htmlFor="">Hr fin</label>
-                    </div>
+                    </div> */}
                     
                 </div>
+                <div id="div_contenedor" className="input-field col s12">
+                    <p style={{"marginTop":"0px", "marginBottom":"0px", "fontFamily":"Montserrat", "fontSize":"13px"}}>HORARIOS SELECCIONADOS</p>
+                    <div id="horario_lunes" style={{"display": "none"}}></div>
+                    <div id="horario_martes" style={{"display": "none"}}></div>
+                    <div id="horario_miercoles" style={{"display": "none"}}></div>
+                    <div id="horario_jueves" style={{"display": "none"}}></div>
+                    <div id="horario_viernes" style={{"display": "none"}}></div>
+                    <div id="horario_sabado" style={{"display": "none"}}></div>
+                    <div id="horario_domingo" style={{"display": "none"}}></div>    
+                </div>
+                <p>Agrega otro horario<i id="btnAdd" className="material-icons tiny" onClick={addSchedule} style={{"color":"#108058", "cursor":"pointer", "marginLeft":"5px"}}>add_circle</i></p>
+                <p>Volver a empezar<i onClick={refreshSchedule} className="days material-icons" style={{"color":"#D3766A", "cursor":"pointer", "marginRight":"13px"}}>do_not_disturb_on</i></p>
+                
             </div>
             
         </div>
