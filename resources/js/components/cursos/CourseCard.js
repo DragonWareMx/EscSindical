@@ -48,7 +48,7 @@ export default function InfoAlumno({ curso, actuales }) {
                             <div className="col s1"><a className='dropdown-trigger'  data-target={'baja-curso'+curso.id}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                             {/* DROPDOWN CON OPCIONES */}
                             <ul id={'baja-curso'+curso.id} className='dropdown-content dropdown_LC'>
-                                <li><a className="dropdown-text modal-trigger" data-target="modalDarBaja" ><i className="material-icons">error_outline</i>Dar de baja del curso</a></li>
+                                <li><a className="dropdown-text modal-trigger" data-target={'modalDarBaja'+curso.id} ><i className="material-icons">error_outline</i>Dar de baja del curso</a></li>
                             </ul>
                         </div>
                         

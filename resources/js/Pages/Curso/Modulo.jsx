@@ -143,8 +143,8 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
             {/* avisos */}
             {avisos && avisos.length>0 && 
                avisos.map( (aviso , index) => (
-                <div key={index} className="col s12" style={{"margin":"5px"}}>
-                  <div className="col s2 l1 center-align">
+                <div key={index} className="col s12" style={{"margin":"5px","padding":"0px 0px 0px 0px"}}>
+                  <div className="col s2 l1 center-align" style={{"padding":"0px 0px 0px 0px"}}>
                     <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,aviso.id])}>
                       <i className="material-icons" style={{"color":"#D14747"}}>announcement</i>
                     </InertiaLink>
@@ -186,11 +186,11 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
 
             {entradas && entradas.length > 0 &&
               entradas.map((entrada, index) =>(
-                <div key={index} className="col s12" style={{"margin":"5px"}}>
+                <div key={index} className="col s12" style={{"margin":"5px", "padding":"0px 0px 0px 0px"}}>
                   {/* archivos */}
                   {entrada.tipo == 'Archivo' &&
                     <div>
-                      <div className="col s2 l1 center-align">
+                      <div className="col s2 l1 center-align" style={{"padding":"0px 0px 0px 0px"}}>
                         <i className="material-icons" style={{"color":"#134E39"}}>description</i>
                       </div>
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
@@ -224,7 +224,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                   {/* enlaces */}
                   {entrada.tipo == 'Enlace' &&
                     <div>
-                      <div className="col s2 l1 center-align">
+                      <div className="col s2 l1 center-align" style={{"padding":"0px 0px 0px 0px"}}>
                         <i className="material-icons" style={{"color":"#134E39"}}>link</i>
                       </div>
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
@@ -261,7 +261,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                   {/* informacion */}
                   {entrada.tipo == 'Informacion' && 
                     <div>
-                      <div className="col s2 l1 center-align">
+                      <div className="col s2 l1 center-align" style={{"padding":"0px 0px 0px 0px"}}>
                         <i className="material-icons" style={{"color":"#134E39"}}>assignment</i>
                       </div>
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>

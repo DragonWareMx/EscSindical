@@ -21,9 +21,13 @@ const Perfil = ({ user }) => {
         const day = dob.getDate();
         const monthIndex = dob.getMonth();
         const year = dob.getFullYear();
-        return `${day} de ${monthNames[monthIndex]} del ${year}`;
-    }
 
+        var del = "del"
+        if(year < 2000)
+            del = "de"
+
+        return `${day} de ${monthNames[monthIndex]} `+ del +` ${year}`;
+    }
 
     useEffect(() => {
         initializeMat();
@@ -40,7 +44,7 @@ const Perfil = ({ user }) => {
                                     <div className="row">
                                         <div className="col s12 center-align">
                                             <div className="center-align">
-                                                <img src={"/storage/fotos_perfil/" + user.foto} alt="foto de perfil" className="img-profile" />
+                                                <img src={user.foto ? "/storage/fotos_perfil/"+user.foto : "/storage/fotos_perfil/avatar1.jpg"} alt="foto de perfil" className="img-profile" />
                                             </div>
                                         </div>
                                         <div className="col s12 center-align">
@@ -82,10 +86,10 @@ const Perfil = ({ user }) => {
                                                 INFORMACIÓN PERSONAL
                                             </div>
                                             <div className="info-txt-format">
-                                                Fecha de Nacimiento: {user.fecha_nac}
+                                                <b>Fecha de Nacimiento:</b> {transformaFecha(user.fecha_nac)}
                                             </div>
                                             <div className="info-txt-format">
-                                                Sexo: {user.sexo == 'h' && "Hombre"}{user.sexo == 'm' && "Mujer"}{user.sexo == 'o' && "Otro"}
+                                                <b>Sexo:</b> {user.sexo == 'h' && "Hombre"}{user.sexo == 'm' && "Mujer"}{user.sexo == 'o' && "Otro"}
                                             </div>
                                         </div>
                                         <div className="col s12 m6" style={{ "marginTop": "15px" }}>
@@ -93,16 +97,16 @@ const Perfil = ({ user }) => {
                                                 INFORMACIÓN INSTITUCIONAL
                                             </div>
                                             <div className="info-txt-format">
-                                                Matrícula: {user.matricula}
+                                                <b>Matrícula:</b> {user.matricula}
                                             </div>
                                             <div className="info-txt-format">
-                                                Regimen:
+                                                <b>Régimen:</b> {user.unit ? user.unit.regime ? user.unit.regime.nombre ?? "Sin régimen" : "Sin régimen" : "Sin régimen"}
                                             </div>
                                             <div className="info-txt-format">
-                                                Unidad:
+                                                <b>Unidad:</b> {user.unit ? user.unit.nombre ?? "Sin unidad" : "Sin unidad"}
                                             </div>
                                             <div className="info-txt-format">
-                                                Categoría: {user.category ? user.category.nombre : "Sin categoría"}
+                                                <b>Categoría:</b> {user.category ? user.category.nombre : "Sin categoría"}
                                             </div>
                                         </div>
                                         <div className="col s12 m6" style={{ "marginTop": "15px" }}>
@@ -110,22 +114,27 @@ const Perfil = ({ user }) => {
                                                 DIRECCIÓN
                                             </div>
                                             <div className="info-txt-format">
-                                                Estado: {user.estado}
+                                                <b>Estado:</b> {user.estado}
                                             </div>
                                             <div className="info-txt-format">
-                                                Ciudad: {user.ciudad}
+                                                <b>Ciudad:</b> {user.ciudad}
                                             </div>
                                             <div className="info-txt-format">
-                                                Colonia: {user.colonia}
+                                                <b>Colonia:</b> {user.colonia}
                                             </div>
                                             <div className="info-txt-format">
-                                                Calle: {user.calle}
+                                                <b>Calle:</b> {user.calle}
                                             </div>
                                             <div className="info-txt-format">
-                                                No. Exterior: {user.num_ext}
+                                                <b>No. Exterior:</b> {user.num_ext}
                                             </div>
+                                            {user.num_int &&
                                             <div className="info-txt-format">
-                                                Código Postal: {user.cp}
+                                                <b>No. Exterior:</b> {user.num_int}
+                                            </div>
+                                            }
+                                            <div className="info-txt-format">
+                                                <b>Código Postal:</b> {user.cp}
                                             </div>
                                         </div>
                                         {/* Boton de editar */}

@@ -518,10 +518,16 @@ const Log = ({ logs, request }) => {
                                     {logs.data.length > 0 && logs.data.map(log => (
                                         <tr style={{"cursor":"pointer"}} key={log.id}>
                                             <td>{log.id}</td>
-                                            <td>{log.user ? log.user.nombre + " " + log.user.apellido_p + " " + log.user.apellido_m : "Sin Usuario"}</td>
+                                            <td>{
+                                            log.user ? 
+                                            <>
+                                                {log.user.nombre} {log.user.apellido_p} {log.user.apellido_m} 
+                                            </>
+                                            : "Sin Usuario"
+                                            }</td>
                                             <td>{log.descripcion}</td>
                                             <td>{log.categoria ? log.categoria : "Sin Categoría"}</td>
-                                            <td>{transformaFecha(log.created_at)}</td>
+                                            <td>{log.created_at ? transformaFecha(log.created_at) : "Sin fecha"}</td>
                                         </tr>
                                     ))}
                                 </tbody>

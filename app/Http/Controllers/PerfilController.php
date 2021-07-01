@@ -19,7 +19,7 @@ class PerfilController extends Controller
 
     public function index()
     {
-        $usuario = User::with('category:nombre,id','roles:name')
+        $usuario = User::with('category:nombre,id','roles:name','unit:id,nombre,regime_id','unit.regime:nombre,id')
                     ->where('users.id',Auth::id())
                     ->first();
 
@@ -108,7 +108,7 @@ class PerfilController extends Controller
             //guarda la foto
             if(!is_null($request->file('foto'))){
                 if($user->foto){
-                    \Storage::delete('public/fotos_perfil'.$user->foto);
+                    \Storage::delete('public/fotos_perfil/'.$user->foto);
                 }
                 $foto = $request->file('foto')->store('public/fotos_perfil');
                 $user->foto = $request->file('foto')->hashName();

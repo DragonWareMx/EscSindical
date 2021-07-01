@@ -106,7 +106,7 @@ export default function BarraBusqueda() {
     return (
         <div>
             {/* bara de busqueda superior */}
-            <div className="main-bar">
+            <div className="main-bar yellow">
 
                 <a id="amburger" onClick={openNav} data-target="slide-out" className="menu-celular waves-effect waves-light sidenav-trigger"><i className="material-icons">menu</i></a>
 
@@ -128,7 +128,7 @@ export default function BarraBusqueda() {
                 <div className="main-bar-right" id="main-bar-right">
                     <div className="main-bar-right-leftSide" id="main-bar-backNoti">
                         <a href="#">
-                            <i className="material-icons icono-notificaciones" style={{ marginTop: "20px" }}>backpack</i>
+                            <i className="material-icons icono-notificaciones" style={{ marginTop: "5px" }}>backpack</i>
                         </a>
                         < Notificaciones />
                     </div>

@@ -75,7 +75,7 @@ export default function Notificaciones({ }) {
     return (
         <>
             <a style={{ cursor: "pointer" }} id="icono-notif" onClick={toggleNotif}>
-                <i className="material-icons icono-notificaciones" style={{ marginTop: "20px" }}>notifications</i>
+                <i className="material-icons icono-notificaciones" style={{ marginTop: "5px"}}>notifications</i>
                 {values.notif && Object.keys(values.notif).length > 0 &&
                     <div style={sStyle}>{Object.keys(values.notif).length}</div>
                 }

@@ -75,7 +75,7 @@ body
     justify-content: space-between;
     padding-left:25px;
     padding-right:25px;
-
+    padding-top:8px;
     background: linear-gradient(90deg, #1F7A5A 0%, #134E39 100%);
     /*box-shadow: 0px 4px 4px rgba(120, 120, 120, 0.25);*/
     background-color: beige;
@@ -186,6 +186,13 @@ body
 .current-menu
 {
     color: #134E39 !important;
+    text-decoration: underline;
+}
+
+.current-menu-text
+{
+    color: #134E39 !important;
+    font-weight: bold !important;
 }
 
 .division-menu

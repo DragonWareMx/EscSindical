@@ -28,7 +28,7 @@ export default function FlotanteAyuda() {
                             <img src="img/imagenes/ActiveSupport-amico1.png"></img>
                         </div>
                         <div className="col s12 center-align modal-title">¿Necesitas ayuda? Contáctanos</div>
-                        <div className="col s12 modal-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod </div>
+                        <div className="col s12 modal-text">Comunicate con nosostros y mantente en contacto</div>
                         <div className="row" style={{ "margin": "0px" }}>
                             <a href="https://www.sntssseccionxxmichoacan.org/" target="_blank">
                                 <div className="col s1">

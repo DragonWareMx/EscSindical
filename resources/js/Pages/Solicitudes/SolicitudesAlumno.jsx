@@ -15,7 +15,7 @@ function materialize(){
         var instances = M.Dropdown.init(elems);
 }
 
-const Solicitudes = ({solicitudes, request}) => {
+const SolicitudesAlumno = ({solicitudes, request}) => {
     //iconos de sort asc y desc
     const iconASC = "M6 22l6-8h-4v-12h-4v12h-4l6 8zm11.694-19.997h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z"
     const iconDESC = "M6 2l-6 8h4v12h4v-12h4l-6-8zm11.694.003h2.525l3.781 10.997h-2.421l-.705-2.261h-3.935l-.723 2.261h-2.336l3.814-10.997zm-.147 6.841h2.736l-1.35-4.326-1.386 4.326zm-.951 11.922l3.578-4.526h-3.487v-1.24h5.304v1.173l-3.624 4.593h3.633v1.234h-5.404v-1.234z"
@@ -47,7 +47,7 @@ const Solicitudes = ({solicitudes, request}) => {
                 }
                 if (request.filter)
                 data.filter = request.filter
-                Inertia.replace(route('solicitudes').url(), { data: data })
+                Inertia.replace(route('solicitudes.alumno').url(), { data: data })
             }, 250)
         });
     }
@@ -96,7 +96,7 @@ const Solicitudes = ({solicitudes, request}) => {
                 if (request.filter)
                     data.filter = request.filter
 
-                Inertia.replace(route('solicitudes').url(),
+                Inertia.replace(route('solicitudes.alumno').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -143,7 +143,7 @@ const Solicitudes = ({solicitudes, request}) => {
                 if (request.filter)
                     data.filter = request.filter
 
-                Inertia.replace(route('solicitudes').url(),
+                Inertia.replace(route('solicitudes.alumno').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -190,7 +190,7 @@ const Solicitudes = ({solicitudes, request}) => {
                 if (request.filter)
                     data.filter = request.filter
 
-                Inertia.replace(route('solicitudes').url(),
+                Inertia.replace(route('solicitudes.alumno').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -237,7 +237,7 @@ const Solicitudes = ({solicitudes, request}) => {
                 if (request.filter)
                     data.filter = request.filter
 
-                Inertia.replace(route('solicitudes').url(),
+                Inertia.replace(route('solicitudes.alumno').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -284,7 +284,7 @@ const Solicitudes = ({solicitudes, request}) => {
                 if (request.filter)
                     data.filter = request.filter
 
-                Inertia.replace(route('solicitudes').url(),
+                Inertia.replace(route('solicitudes.alumno').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -311,7 +311,7 @@ const Solicitudes = ({solicitudes, request}) => {
                 if (request.user_search)
                     data.user_search = request.user_search
 
-                Inertia.replace(route('solicitudes').url(),
+                Inertia.replace(route('solicitudes.alumno').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -327,7 +327,7 @@ const Solicitudes = ({solicitudes, request}) => {
                 if (request.user_search)
                     data.user_search = request.user_search
 
-                Inertia.replace(route('solicitudes').url(),
+                Inertia.replace(route('solicitudes.alumno').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -343,7 +343,7 @@ const Solicitudes = ({solicitudes, request}) => {
                 if (request.user_search)
                     data.user_search = request.user_search
 
-                Inertia.replace(route('solicitudes').url(),
+                Inertia.replace(route('solicitudes.alumno').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -359,7 +359,7 @@ const Solicitudes = ({solicitudes, request}) => {
                 if (request.user_search)
                     data.user_search = request.user_search
 
-                Inertia.replace(route('solicitudes').url(),
+                Inertia.replace(route('solicitudes.alumno').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -391,7 +391,7 @@ const Solicitudes = ({solicitudes, request}) => {
                 if (request.user_search)
                     data.user_search = request.user_search
 
-                Inertia.replace(route('solicitudes').url(),
+                Inertia.replace(route('solicitudes.alumno').url(),
                     {
                         data: data,
                         preserveScroll: true,
@@ -403,10 +403,10 @@ const Solicitudes = ({solicitudes, request}) => {
                 break;
         }
     }
-
+    console.log(solicitudes);
     //onClick de cada elemento de la tabla, obtiene el usuario y abre el modal para editar usuario
     function getSolicitud(id) {
-        Inertia.get(route('verSolicitud', [id, 'delete']))
+        Inertia.get(route('verSolicitud', [id, 'drop']))
     }
 
     //inicializa Materialize
@@ -439,7 +439,7 @@ const Solicitudes = ({solicitudes, request}) => {
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
                         <div className="card-content">
-                            <span className="card-title">Solicitudes al sistema (eliminación de curso)</span>
+                            <span className="card-title">Solicitudes al sistema (baja de curso)</span>
                             <Alertas/>
                             
                             <nav className="searchUsers">
@@ -590,6 +590,6 @@ const Solicitudes = ({solicitudes, request}) => {
         </>)
 }
 
-Solicitudes.layout = page => <Layout children={page} title="Solicitudes" pageTitle="SOLICITUDES"/>
+SolicitudesAlumno.layout = page => <Layout children={page} title="Solicitudes" pageTitle="SOLICITUDES"/>
 
-export default Solicitudes
+export default SolicitudesAlumno

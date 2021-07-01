@@ -174,7 +174,11 @@ const Configuracion = ({ user }) => {
                                 CONFIGURACIÓN
                             </div>
                             
-                            <Alertas />
+                            <div className="col s12">
+                                <div style={{margin: "auto"}}>
+                                    <Alertas />
+                                </div>
+                            </div>
 
                             {/* ----Formulario---- */}
                             <form onSubmit={handleSubmit}>
@@ -217,7 +221,7 @@ const Configuracion = ({ user }) => {
 
                                         <div className="input-field col s12 input-50-re">
                                             <input disabled={false} id="apellido_materno" type="text" className={errors.apellido_materno ? "validate form-control invalid" : "validate form-control"} name="apellido_materno" value={values.apellido_materno} onChange={handleChange} autoComplete="apellido_materno" maxLength="255" />
-                                            <label htmlFor="apellido_materno">Apellido Materno</label>
+                                            <label htmlFor="apellido_materno">Apellido Materno (opcional)</label>
                                             {
                                                 errors.apellido_materno &&
                                                 <span className="helper-text" data-error={errors.apellido_materno} style={{ "marginBottom": "10px" }}>{errors.apellido_materno}</span>
@@ -308,7 +312,7 @@ const Configuracion = ({ user }) => {
 
                                         <div className="input-field col s6 input-50-re">
                                             <input disabled={false} maxLength="10" id="numero_interior" type="text" className={errors.numero_interior ? "validate form-control invalid" : "validate"} name="numero_interior" value={values.numero_interior} autoComplete="numero_interior" onChange={handleChange} />
-                                            <label htmlFor="numero_interior">No. Interior</label>
+                                            <label htmlFor="numero_interior">No. Interior (opcional)</label>
                                             {
                                                 errors.numero_interior &&
                                                 <span className="helper-text" data-error={errors.numero_interior} style={{ "marginBottom": "10px" }}>{errors.numero_interior}</span>

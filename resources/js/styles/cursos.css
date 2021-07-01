@@ -279,6 +279,12 @@
     flex-wrap:wrap-reverse;
     margin-bottom:5px;
 }
+.img-course{
+    max-height: 120px;
+    /* border: solid 4px red; */
+    object-fit:cover;
+    object-position: center center;
+}
 
 @media(max-width:600px){
     .img-course{

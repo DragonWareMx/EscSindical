@@ -127,18 +127,19 @@ Route::post('/notificacion/vista/{id}', [App\Http\Controllers\NotificationContro
 
 // --------------------REPORTES--------------------
 Route::get('/reportes', [App\Http\Controllers\ReportController::class, 'index'])->name('reportes');
-
-// Route::name('reportes.')->group(function () {
-//     Route::get('/reportes', [App\Http\Controllers\ReportController::class, 'index'])->name('index');
-// });
-
 Route::get('/reportes/{id}', [App\Http\Controllers\ReportController::class, 'verReporte'])->name('VerReportes');
+Route::post('/reportes/{id}', [App\Http\Controllers\ReportController::class, 'marcarReporte'])->name('MarcarReporte');
+Route::post('/reportes/crear/{id}', [App\Http\Controllers\ReportController::class, 'crearReporte'])->name('CrearReporte');
 
 // SOLICITUDES
-Route::get('/solicitudes', [App\Http\Controllers\RequestController::class, 'index'])->name('solicitudes');
+Route::get('/solicitudes/bajaCurso', [App\Http\Controllers\RequestController::class, 'index'])->name('solicitudes');
+Route::get('/solicitudes/bajaAlumno', [App\Http\Controllers\RequestController::class, 'indexAlumno'])->name('solicitudes.alumno');
 Route::post('/solicitudes/bajaCurso/{id}',[App\Http\Controllers\RequestController::class, 'bajaCurso'])->name('solicitudes.bajaCurso');
 Route::post('/solicitudes/bajaAlumno/{id}',[App\Http\Controllers\RequestController::class, 'bajaAlumno'])->name('solicitudes.bajaAlumno');
 Route::get('/solicitudes/{id}/{type}', [App\Http\Controllers\RequestController::class, 'verSolicitud'])->name('verSolicitud');
+Route::put('/cursos/{id}/restore',  [App\Http\Controllers\RequestController::class, 'restoreCourse'])->name('cursos.restore');
+Route::put('/alumno/{id}/restore',  [App\Http\Controllers\RequestController::class, 'restoreAlumno'])->name('alumnos.restore');
+
 
 //LOG
 Route::name('log.')->group(function () {
@@ -146,3 +147,7 @@ Route::name('log.')->group(function () {
 });
 //----------------COMENTARIOS--------------------
 Route::post('/cursos/{cid}/modulo/{mid}/publicacion/{pid}/comment', [App\Http\Controllers\CommentController::class, 'create'])->name('comment.create');
+
+
+// DAR DE BAJA ESTUDIANTE DEL CURSO
+Route::post('/dar-baja-estudiante/{id}', [App\Http\Controllers\CourseController::class, 'darBajaEstudiante'])->name('dar-baja-estudiante');

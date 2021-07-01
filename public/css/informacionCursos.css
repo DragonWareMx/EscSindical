@@ -41,3 +41,14 @@
     border: none;
     padding: 10px;
 }
+
+.slider .slides{
+    background-color:transparent !important;
+}
+.slider .indicators .indicator-item.active{
+    background-color:#134E39 !important;
+}
+.slider .indicators .indicator-item{
+    width:10px !important;
+    height:10px !important;
+}

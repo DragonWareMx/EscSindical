@@ -14,6 +14,10 @@ import '/css/reporte.css'
 
 
 const VerReporte = ({reporte, reported, reporter}) => {
+
+    function enviarForm(){
+        Inertia.post(route('MarcarReporte', reporte.id));
+    }
   
     function transformaFecha(fecha) {
         const dob = new Date(fecha);
@@ -45,7 +49,8 @@ const VerReporte = ({reporte, reported, reporter}) => {
                     <div className="card darken-1 cardUsers">
                         <div className="card-content">
                             <span className="card-title" style={{"display":"flex", "alignItems":"center"}}><InertiaLink  href={route('reportes')}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>Reportes de usuarios</span>
-                            
+
+                            <Alertas />
                             <div className="row">
 
                                 <div className="col s12 div-data-reporte">
@@ -57,6 +62,13 @@ const VerReporte = ({reporte, reported, reporter}) => {
                                     <div style={{"marginBottom":"20px"}}>
                                         <div className="col s12 txt-title-report">FECHA DE REPORTE</div>
                                         <div className="col s12 txt-report">{transformaFecha(reporte.created_at)}</div>
+                                    </div>
+                                </div>
+
+                                <div className="col s12 div-data-reporte">
+                                    <div style={{"marginBottom":"20px"}}>
+                                        <div className="col s12 txt-title-report">ESTATUS</div>
+                                        <div className="col s12 txt-report">{reporte.status == 0 ? 'Sin revisar' : 'Revisado'}</div>
                                     </div>
                                 </div>
 
@@ -75,10 +87,11 @@ const VerReporte = ({reporte, reported, reporter}) => {
                                 <div className="col s12 ">
                                     <form action="#" className="col s12">
                                         <p className="input-check-reporte">
-                                        <label>
-                                            <input type="checkbox" />
+                                        {reporte.status == 0 ? <label>
+                                            <input type="checkbox" onClick={enviarForm} />
                                             <span className="input-check-reporte-span">Marcar como leído</span>
                                         </label>
+                                        : null}
                                         </p>
                                     </form>
                                 </div>
