@@ -33,13 +33,15 @@ Route::get('/inicio', function () {
 Auth::routes();
 
 //--------RUTAS DE EJEMPLO
-Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'inicio'])->name('inicio');
+//Route::get('/inicio', [App\Http\Controllers\HomeController::class, 'inicio'])->name('inicio');
 //--------RUTAS DE EJEMPLO
 
 // INICIOS
 Route::get('/inicioEstudiante', [App\Http\Controllers\CourseController::class, 'inicioEstudiante'])->name('inicioEstudiante');
 Route::get('/inicioPonente', [App\Http\Controllers\CourseController::class, 'inicioPonente'])->name('inicioPonente');
 Route::get('/inicioAdmin', [App\Http\Controllers\CourseController::class, 'inicioAdmin'])->name('inicioAdmin');
+
+Route::get('/inicio', [App\Http\Controllers\CourseController::class, 'inicio'])->name('inicio');
 
 //--------USUARIOS--------
 //VISTAS PARA ADMIN
