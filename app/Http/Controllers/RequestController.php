@@ -603,7 +603,7 @@ class RequestController extends Controller
                         status = Aprobado
                         }
                     }';
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' aprobó la solicitud de '. $user->nombre .' para eliminar el curso '.$myRequest->course->nombre;
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' aprobó la solicitud de '. $user->nombre .' para eliminar el curso ';
                 
             }
             else {
