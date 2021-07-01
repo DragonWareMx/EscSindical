@@ -163,10 +163,15 @@ class CourseController extends Controller
             ->select('categories.nombre',DB::raw('count(categories.nombre) as cantidad'))
             ->groupBy('categories.nombre')
             ->get();
+        
+
+        $participantes=Course::where('id',$cursos[0]->id)->with('users:id,nombre,apellido_p,apellido_m,foto,email')->first();
+        
 
         return Inertia::render('Inicios/inicioPonente', [
             'cursos' => fn () => $cursos,
             'estudiantes' => $estudiantes,
+            'participantes' => $participantes,
         ]);
         
     }
