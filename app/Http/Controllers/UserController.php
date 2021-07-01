@@ -597,7 +597,7 @@ class UserController extends Controller
             //guarda la foto
             if(!is_null($request->file('foto'))){
                 if($user->foto){
-                    \Storage::delete('public/fotos_perfil'.$user->foto);
+                    \Storage::delete('public/fotos_perfil/'.$user->foto);
                 }
                 $foto = $request->file('foto')->store('public/fotos_perfil');
                 $user->foto = $request->file('foto')->hashName();
@@ -676,7 +676,7 @@ class UserController extends Controller
                 '}
             }';
 
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha registrado un nuevo usuario: '. $user->email;
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha actualizado los datos del usuario: '. $user->email;
                 
             //SE GUARDA EL LOG
             $newLog->save();

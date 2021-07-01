@@ -253,9 +253,10 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                             </div>
 
                             <div className="col s12">
-                            <Alertas />
+                                <div style={{margin: "auto"}}>
+                                    <Alertas />
+                                </div>
                             </div>
-                            
 
                             {user.deleted_at &&
                             <div className="errores">
