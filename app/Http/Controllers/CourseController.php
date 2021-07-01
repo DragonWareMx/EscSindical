@@ -64,12 +64,32 @@ class CourseController extends Controller
         }
     }
 
+    public function inicio()
+    {
+        
+        $user = User::find(Auth::id());
+        if ($user->roles[0]->name == 'Alumno') {
+            return $this->inicioEstudiante();
+        }
+        if ($user->roles[0]->name == 'Administrador') {
+            return $this->inicioAdmin();
+        }
+        if ($user->roles[0]->name == 'Ponente') {
+            return $this->inicioPonente();
+        }
+    }
+
     //  funcion para ver el inicio como estudiante
     public function inicioEstudiante()
     {
         \Gate::authorize('haveaccess', 'alumno.perm');
         $user = User::find(Auth::id());
         if ($user->roles[0]->name == 'Alumno') {
+            //  Si el estudiante no tiene un curso activo le muestra la vista de inicio alternativa
+            if(count($user->activeCourses) == 0){
+                return Inertia::render('Inicio');
+            }
+            
             $curso_actual = $user->activeCourses[0];
             $profesor = $curso_actual->teacher;
             $tags = $curso_actual->tags;
@@ -128,6 +148,11 @@ class CourseController extends Controller
         \Gate::authorize('haveaccess', 'ponente.perm');
         
         $cursos = Course::where('teacher_id', Auth::id())->where('estatus', 'Activo')->with('users', 'images')->get();
+
+        //  Si el ponente no tiene un curso activo le muestra la vista de inicio alternativa
+        if(count($cursos) == 0){
+            return Inertia::render('Inicio');
+        }
 
         $estudiantes = Course::
             leftJoin('course_user','courses.id','=','course_user.course_id')

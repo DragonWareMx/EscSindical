@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout';
 import { InertiaLink, useRemember } from '@inertiajs/inertia-react';
 import '../styles/inicios.css'
 
-const Home = () => {
+const Home = (usuario) => {
   return (
     <>
       <div className="row">                
