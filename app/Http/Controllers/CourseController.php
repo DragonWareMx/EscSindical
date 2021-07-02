@@ -1152,6 +1152,22 @@ class CourseController extends Controller
                 })
                 ->select('entries.*', 'entry_user.calificacion as calificacion', 'entry_user.fecha as fecha')
                 ->get();
+            
+            $avisos = Entry::with('files:archivo,entry_id')
+                ->where('module_id', $mid)
+                ->where('tipo', 'Aviso')
+                ->where('visible', 1)
+                ->orderBy('id', 'DESC')
+                ->get();
+
+            $entradas = Entry::with('files:archivo,entry_id')
+                ->where('module_id', $mid)
+                ->where('tipo', '!=', 'Aviso')
+                ->where('tipo', '!=', 'Asignacion')
+                ->where('tipo', '!=', 'Examen')
+                ->where('visible', 1)
+                ->orderBy('id', 'DESC')
+                ->get();
         }
         //Si es un ponente se verifica que sea el dueño del curso
         else if ($tipo == 'Ponente') {
@@ -1175,6 +1191,20 @@ class CourseController extends Controller
                 ->where('tipo', '!=', 'Archivo')
                 ->orderBy('id', 'ASC')
                 ->get();
+            
+            $avisos = Entry::with('files:archivo,entry_id')
+                ->where('module_id', $mid)
+                ->where('tipo', 'Aviso')
+                ->orderBy('id', 'DESC')
+                ->get();
+
+            $entradas = Entry::with('files:archivo,entry_id')
+                ->where('module_id', $mid)
+                ->where('tipo', '!=', 'Aviso')
+                ->where('tipo', '!=', 'Asignacion')
+                ->where('tipo', '!=', 'Examen')
+                ->orderBy('id', 'DESC')
+                ->get();
         } 
         else if ($tipo == 'Administrador') {
             $curso_teacher = Course::where('id', $id)->first('teacher_id');
@@ -1192,26 +1222,23 @@ class CourseController extends Controller
                 ->where('tipo', '!=', 'Archivo')
                 ->orderBy('id', 'ASC')
                 ->get();
+            $avisos = Entry::with('files:archivo,entry_id')
+                ->where('module_id', $mid)
+                ->where('tipo', 'Aviso')
+                ->orderBy('id', 'DESC')
+                ->get();
+
+            $entradas = Entry::with('files:archivo,entry_id')
+                ->where('module_id', $mid)
+                ->where('tipo', '!=', 'Aviso')
+                ->where('tipo', '!=', 'Asignacion')
+                ->where('tipo', '!=', 'Examen')
+                ->orderBy('id', 'DESC')
+                ->get();
         }
         if (!$inscrito) {
             return \Redirect::route('cursos.informacion', $id);
         }
-        $avisos = Entry::with('files:archivo,entry_id')
-            ->where('module_id', $mid)
-            ->where('tipo', 'Aviso')
-            ->where('visible', 1)
-            ->orderBy('id', 'DESC')
-            ->get();
-
-        $entradas = Entry::with('files:archivo,entry_id')
-            ->where('module_id', $mid)
-            ->where('tipo', '!=', 'Aviso')
-            ->where('tipo', '!=', 'Asignacion')
-            ->where('tipo', '!=', 'Examen')
-            ->where('visible', 1)
-            ->orderBy('id', 'DESC')
-            ->get();
-
 
         $actual = Module::findOrFail($mid);
         $numeroActual = $actual->numero;
