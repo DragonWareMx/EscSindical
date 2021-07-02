@@ -338,15 +338,35 @@ class CourseController extends Controller
 
     public function moduleEdit($id)
     {
-        \Gate::authorize('haveaccess', 'ponente.perm');
-        return Inertia::render('Cursos/ModuleEdit', [
-            'cursos' => Course::where('teacher_id', Auth::id())->get(),
-            'modulo' => Module::with('course')->findOrFail($id),
-        ]);
+        if (Auth::user()->roles[0]->name == 'Ponente') {
+            \Gate::authorize('haveaccess', 'ponente.perm');
+            return Inertia::render('Cursos/ModuleEdit', [
+                'cursos' => Course::where('teacher_id', Auth::id())->get(),
+                'modulo' => Module::with('course')->findOrFail($id),
+            ]);
+        }
+        elseif (Auth::user()->roles[0]->name == 'Administrador') {
+            \Gate::authorize('haveaccess', 'admin.perm');
+            $modulo = Module::with('course')->findOrFail($id);
+            $teacherId = $modulo->course->teacher_id;
+            return Inertia::render('Cursos/ModuleEdit', [
+                'cursos' => Course::where('teacher_id', $teacherId),
+                'modulo' => $modulo,
+            ]);
+        } else {
+            return abort(403);
+        }
     }
     public function updateModule($id, Request $request)
     {
-        \Gate::authorize('haveaccess', 'ponente.perm');
+        if (Auth::user()->roles[0]->name == 'Ponente') {
+            \Gate::authorize('haveaccess', 'ponente.perm');
+        }
+        elseif (Auth::user()->roles[0]->name == 'Administrador') {
+            \Gate::authorize('haveaccess', 'admin.perm');
+        } else {
+            return abort(403);
+        }
         $validated = $request->validate([
             'nombre' => ['required', 'max:255', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'objetivo' => "required",
@@ -545,7 +565,7 @@ class CourseController extends Controller
                 'capacitaciones' => Training_type::get(),
             ]);
         } else {
-            abort(403);
+            return abort(403);
         }
     }
 
@@ -557,7 +577,7 @@ class CourseController extends Controller
         elseif (Auth::user()->roles[0]->name == 'Administrador') {
             \Gate::authorize('haveaccess', 'admin.perm');
         } else {
-            abort(403);
+            return abort(403);
         }
 
         //VALIDAMOS DATOS
@@ -945,6 +965,19 @@ class CourseController extends Controller
 
     public function modulos($id)
     {
+        if(Auth::user()->roles[0]->name=='Ponente'){
+            \Gate::authorize('haveaccess', 'ponente.perm');
+            $curso = Course::findOrFail($id);
+            if($curso->teacher_id != Auth::id()){
+                return abort(403);
+            }
+        }
+        else if(Auth::user()->roles[0]->name=='Administrador'){
+            \Gate::authorize('haveaccess', 'admin.perm');
+        } else {
+            return abort(403);
+        }
+
         return Inertia::render('Curso/ModulosConfig', [
             'curso' => Course::with('modules')->findOrFail($id),
         ]);
@@ -953,7 +986,15 @@ class CourseController extends Controller
     //  funcion para reordenar los modulos
     public function ordenarModulos($id, Request $request)
     {
-        \Gate::authorize('haveaccess', 'ponente.perm');
+        if(Auth::user()->roles[0]->name=='Ponente'){
+            \Gate::authorize('haveaccess', 'ponente.perm');
+        }
+        else if(Auth::user()->roles[0]->name=='Administrador'){
+            \Gate::authorize('haveaccess', 'admin.perm');
+        } else {
+            return abort(403);
+        }
+
         $validated = $request->validate([
             'order.*' => "required | numeric",
         ]);
@@ -964,8 +1005,12 @@ class CourseController extends Controller
         try {
             //  se valida que el ponente sea el del curso
             $curso = Course::findOrFail($id);
-            if ($curso->teacher_id != Auth::user()->id) {
-                return abort(403);
+
+            if(Auth::user()->roles[0]->name=='Ponente'){
+                \Gate::authorize('haveaccess', 'ponente.perm');
+                if($curso->teacher_id != Auth::id()){
+                    return abort(403);
+                }
             }
 
             //  se valida que los modulos pertezcan al curso
@@ -1347,7 +1392,7 @@ class CourseController extends Controller
             \Gate::authorize('haveaccess', 'admin.perm');
         }
         else {
-            abort (403);
+            return abort (403);
         }
 
         $validated = $request->validate([
@@ -1478,7 +1523,7 @@ class CourseController extends Controller
             \Gate::authorize('haveaccess', 'admin.perm');
         }
         else {
-            abort (403);
+            return abort (403);
         }
 
         $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto', 'modules:course_id,id,nombre,numero')
@@ -1611,7 +1656,7 @@ class CourseController extends Controller
             //verifica que el modulo pertenezca al curso
             if ($modulo->course_id != $curso->id) {
                 //si no está lo mandamos a la vista informacion -  solo si es alumno
-                abort(403);
+                return abort(403);
             }
 
             // Buscar la asignacion
@@ -1624,12 +1669,12 @@ class CourseController extends Controller
 
             //verificar que la entrada sea asingacion o examen
             if ($entrada->tipo != 'Asignacion' && $entrada->tipo != 'Examen') {
-                abort(403);
+                return abort(403);
             }
 
             //verifica que pertenezca al modulo
             if ($entrada->module_id != $modulo->id) {
-                abort(403);
+                return abort(403);
             }
 
             $alumnos =
@@ -1671,7 +1716,7 @@ class CourseController extends Controller
                     $validador = true;
             }
             if (!$validador)
-                abort(403);
+                return abort(403);
 
             //Buscar el modulo con el mid
             $modulo = Module::select('id', 'nombre', 'course_id', 'numero')->findOrFail($mid);
@@ -1684,7 +1729,7 @@ class CourseController extends Controller
             //verifica que el modulo pertenezca al curso
             if ($modulo->course_id != $curso->id) {
                 //si no está lo mandamos a la vista informacion -  solo si es alumno
-                abort(403);
+                return abort(403);
             }
 
             // Buscar la asignacion
@@ -1704,12 +1749,12 @@ class CourseController extends Controller
 
             //verificar que la entrada sea asingacion o examen
             if ($entrada->tipo != 'Asignacion' && $entrada->tipo != 'Examen') {
-                abort(403);
+                return abort(403);
             }
 
             //verifica que pertenezca al modulo
             if ($entrada->module_id != $modulo->id) {
-                abort(403);
+                return abort(403);
             }
 
             return Inertia::render('Curso/Asignacion/Asignacion', [
@@ -1740,7 +1785,7 @@ class CourseController extends Controller
             //verifica que el modulo pertenezca al curso
             if ($modulo->course_id != $curso->id) {
                 //si no está lo mandamos a la vista informacion -  solo si es alumno
-                abort(403);
+                return abort(403);
             }
 
             // Buscar la asignacion
@@ -1753,12 +1798,12 @@ class CourseController extends Controller
 
             //verificar que la entrada sea asingacion o examen
             if ($entrada->tipo != 'Asignacion' && $entrada->tipo != 'Examen') {
-                abort(403);
+                return abort(403);
             }
 
             //verifica que pertenezca al modulo
             if ($entrada->module_id != $modulo->id) {
-                abort(403);
+                return abort(403);
             }
             
             $alumnos =
@@ -1784,7 +1829,7 @@ class CourseController extends Controller
             ]);
 
         } else {
-            abort(403);
+            return abort(403);
         }
     }
 
@@ -1819,7 +1864,7 @@ class CourseController extends Controller
                     $validador = true;
             }
             if (!$validador)
-                abort(403);
+                return abort(403);
 
             //Buscar el modulo con el mid
             $modulo = Module::findOrFail($mid);
@@ -1832,7 +1877,7 @@ class CourseController extends Controller
             //verifica que el modulo pertenezca al curso
             if ($modulo->course_id != $curso->id) {
                 //si no está lo mandamos a la vista informacion -  solo si es alumno
-                abort(403);
+                return abort(403);
             }
 
             // Buscar la asignacion
@@ -1841,17 +1886,17 @@ class CourseController extends Controller
 
             //Si no existe la entrada quiere decir que algo anda mal y por eso se regresa a la vista de error
             if (!$entrada) {
-                abort(404);
+                return abort(404);
             }
 
             //verificar que la entrada sea asingacion
             if ($entrada->tipo != 'Asignacion') {
-                abort(403);
+                return abort(403);
             }
 
             //verifica que pertenezca al modulo
             if ($entrada->module_id != $modulo->id) {
-                abort(403);
+                return abort(403);
             }
 
             //verifica que no haya otra entrega ni este calificado
