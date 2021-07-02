@@ -74,8 +74,9 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: auto !important;
-  margin-bottom: 0px !important;
+  margin-top: 40px;
+  /* margin-top: auto !important; */
+  /* margin-bottom: 0px !important; */
 
 }
 
@@ -205,6 +206,10 @@ max-width:100%;height:auto;
 
   .form-login .row{
     margin-bottom: 0px;
+  }
+  .footer-login{
+    margin-top: 20px;
+    font-size: 13px;
   }
 }
 
