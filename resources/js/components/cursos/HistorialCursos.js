@@ -132,7 +132,7 @@ export default function HistorialCursos({cursos, solicitudes}) {
                                                 {/* DROPDOWN CON OPCIONES */}
                                                 <ul id={'more-info-history'+solicitud.id} className='dropdown-content dropdown_LC'>
                                                     <li><a className="dropdown-text" >Fecha de solicitud: {transformaFecha(solicitud.created_at)}</a></li>
-                                                    <li><a className="dropdown-text" ><i className="material-icons">close</i>Cancelar solicitud</a></li>
+                                                    {/* <li><a className="dropdown-text" ><i className="material-icons">close</i>Cancelar solicitud</a></li> */}
                                                 </ul>
                                             </div>
 
