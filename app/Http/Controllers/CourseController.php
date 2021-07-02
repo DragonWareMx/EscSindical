@@ -1905,9 +1905,13 @@ class CourseController extends Controller
     public function asignacionEntrega($id, $mid, $pid, $eid)
     {
         //VERIFICA EL ROL DEL USUARIO
-        if (Auth::user()->roles[0]->name == 'Ponente') {
-            \Gate::authorize('haveaccess', 'ponente.perm');
-
+        if (Auth::user()->roles[0]->name == 'Ponente' || Auth::user()->roles[0]->name == 'Administrador') {
+            if(Auth::user()->roles[0]->name == 'Ponente'){
+                //verifica que el ponente pertenezca al curso
+                $curso = Course::findOrFail($id);
+                if($curso->teacher_id != Auth::id())
+                    return abort(403);
+            }
             //Buscar el modulo con el mid (module id) que llega y que este tenga en course_id la relación al curso que está llegando $id
             $modulo = Module::where('id', $mid)->where('course_id', $id)->first();
 
@@ -1960,56 +1964,71 @@ class CourseController extends Controller
                 'asignacion' => $entrada,
                 'entrega' => $entrega,
             ]);
+        } else{
+            return abort(403);
         }
     }
 
     public function asignacionEntregaCalificar($aid, $eid, Request $request){
-        $validated = $request->validate([
-            'calificacion' => ['required','numeric'],
-            'comentario' => ['max:65000'],
-        ]);
-        $asignacion=Entry::findOrFail($aid);
-        if($asignacion->max_calif < $request->calificacion){
-            return \Redirect::back()->with('error', 'La calificación máxima permitida es: '.$asignacion->max_calif.'.');
-        }
-        $entrada=Entry::
-            leftJoin('entry_user','entries.id','=','entry_user.entry_id')
-            ->where('entry_user.user_id',$eid)
-            ->where('entry_user.entry_id',$aid)
-            ->select('entry_user.id as id')
-            ->first();
+        if (Auth::user()->roles[0]->name == 'Ponente' || Auth::user()->roles[0]->name == 'Administrador') {
+            $validated = $request->validate([
+                'calificacion' => ['required','numeric'],
+                'comentario' => ['max:65000'],
+            ]);
+            
+            DB::beginTransaction();
+            try { 
+                $asignacion=Entry::findOrFail($aid);
 
-        DB::beginTransaction();
-        try { 
-            if($entrada){
-                // \DB::table('entry_user')->where('id',$entrada->id)->update([
-                //     [
-                //         'calificacion'                      => $request->calificacion,
-                //         'comentario_retroalimentacion'      => $request->comentario,
-                //     ]
-                // ]);
-                $usuario=User::findOrFail($eid);
-                $todayDate = Carbon::now();
-                $asignacion->users()->updateExistingPivot($usuario->id,[
-                    'calificacion'                      => $request->calificacion,
-                    'fecha_calif'                       => $todayDate->toDateTimeString(),
-                    'comentario_retroalimentacion'      => $request->comentario,
-                ]);
+                if(Auth::user()->roles[0]->name == 'Ponente'){
+                    //verifica que el ponente pertenezca al curso
+                    if($asignacion->module->course->teacher_id != Auth::id())
+                        return abort(403);
+                }
+
+                if($asignacion->max_calif < $request->calificacion){
+                    return \Redirect::back()->with('error', 'La calificación máxima permitida es: '.$asignacion->max_calif.'.');
+                }
+                $entrada=Entry::
+                    leftJoin('entry_user','entries.id','=','entry_user.entry_id')
+                    ->where('entry_user.user_id',$eid)
+                    ->where('entry_user.entry_id',$aid)
+                    ->select('entry_user.id as id')
+                    ->first();
+
+                if($entrada){
+                    // \DB::table('entry_user')->where('id',$entrada->id)->update([
+                    //     [
+                    //         'calificacion'                      => $request->calificacion,
+                    //         'comentario_retroalimentacion'      => $request->comentario,
+                    //     ]
+                    // ]);
+                    $usuario=User::findOrFail($eid);
+                    $todayDate = Carbon::now();
+                    $asignacion->users()->updateExistingPivot($usuario->id,[
+                        'calificacion'                      => $request->calificacion,
+                        'fecha_calif'                       => $todayDate->toDateTimeString(),
+                        'comentario_retroalimentacion'      => $request->comentario,
+                    ]);
+                }
+                else{
+                    $usuario=User::findOrFail($eid);
+                    $todayDate = Carbon::now();
+                    $asignacion->users()->attach($usuario->id,[
+                        'calificacion'                      => $request->calificacion,
+                        'fecha_calif'                       => $todayDate->toDateTimeString(),
+                        'comentario_retroalimentacion'      => $request->comentario,
+                    ]);
+                }
+                DB::commit();
+                return \Redirect::back()->with('success', 'La calificación se guardó correctamente.');
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return \Redirect::back()->with('error', 'Ocurrió un error inesperado, inténtelo más tarde.');
             }
-            else{
-                $usuario=User::findOrFail($eid);
-                $todayDate = Carbon::now();
-                $asignacion->users()->attach($usuario->id,[
-                    'calificacion'                      => $request->calificacion,
-                    'fecha_calif'                       => $todayDate->toDateTimeString(),
-                    'comentario_retroalimentacion'      => $request->comentario,
-                ]);
-            }
-            DB::commit();
-            return \Redirect::back()->with('success', 'La calificación se guardó correctamente.');
-        } catch (\Throwable $th) {
-            DB::rollback();
-            return \Redirect::back()->with('error', 'Ocurrió un error inesperado, inténtelo más tarde.');
+        }
+        else{
+            return abort(403);
         }
     }
 
