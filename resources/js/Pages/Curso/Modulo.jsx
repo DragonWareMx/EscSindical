@@ -104,7 +104,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
           <div className="col s12 l2 push-l10">
             {/* calificacion */}
             <div className="col s6 l12  push-s6">
-              <div className="subtitulo-modulo">{auth.roles[0].name == 'Ponente' ? 'CALIFICACIÓN GRUPAL' : auth.roles[0].name == 'Alumno' && 'CALIFICACIÓN'}</div>
+              <div className="subtitulo-modulo">{auth.roles[0].name == 'Alumno' ? 'CALIFICACIÓN' : 'CALIFICACIÓN GRUPAL'}</div>
               {calificacion && calificacion.calificacion ? calificacion.calificacion : 'Sin evaluar'}
             </div>
             {/* duracion */}
@@ -155,7 +155,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                         {aviso.titulo}
                       </InertiaLink>
                       {/* dropdown para editar */}
-                      { auth.roles[0].name=='Ponente' &&
+                      { auth.roles[0].name!='Alumno' &&
                         <div>
                           <a href="#" className="dropdown-trigger" data-target={'aviso'+aviso.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
                           <ul id={'aviso'+aviso.id} className="dropdown-content drop-size2">
@@ -197,7 +197,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                         <div className="col s12 valign-wrapper">
                           <a href={entrada.files && entrada.files.length > 0 && "/storage/archivos_cursos/"+entrada.files[0].archivo} target="_blank" className="nombre-subrayado">{entrada.titulo}</a>
                           {/* dropdown para editar */}
-                          { auth.roles[0].name=='Ponente' &&
+                          { auth.roles[0].name!='Alumno' &&
                             <div>
                               <a href="#" className="dropdown-trigger" data-target={'archivo'+entrada.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
                               <ul id={'archivo'+entrada.id} className="dropdown-content drop-size2">
@@ -233,7 +233,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                             {entrada.titulo}
                           </a>
                           {/* dropdown para editar */}
-                          { auth.roles[0].name=='Ponente' &&
+                          { auth.roles[0].name!='Alumno' &&
                             <div>
                               <a href="#" className="dropdown-trigger" data-target={'enlace'+entrada.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
                               <ul id={'enlace'+entrada.id} className="dropdown-content drop-size2">
@@ -270,7 +270,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                             {entrada.titulo}
                           </InertiaLink>
                           {/* dropdown para editar */}
-                          { auth.roles[0].name == 'Ponente' &&
+                          { auth.roles[0].name != 'Alumno'  &&
                             <div>
                               <a href="#" className="dropdown-trigger" data-target={'info'+entrada.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px"}}>more_vert</i></a>
                               <ul id={'info'+entrada.id} className="dropdown-content drop-size2">
@@ -345,7 +345,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                               <div><span className={'texto-estatus '+pendienteEstatus(actividad.fecha_de_entrega, actividad.permitir_envios_retrasados)}>{pendienteEstatus(actividad.fecha_de_entrega, actividad.permitir_envios_retrasados)}</span></div>
                             }
                             {/* dropdown para editar */}
-                            { auth.roles[0].name=='Ponente' &&
+                            { auth.roles[0].name!='Alumno' &&
                               <div>
                                 <a href="#" className="dropdown-trigger" data-target={"dropdown"+actividad.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px","marginLeft":"10px"}}>more_vert</i></a>
                                 <ul id={"dropdown"+actividad.id} className="dropdown-content drop-size2">
@@ -397,7 +397,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                               <div><span className={'texto-estatus '+pendienteEstatus(actividad.fecha_de_entrega, actividad.permitir_envios_retrasados)}>{pendienteEstatus(actividad.fecha_de_entrega, actividad.permitir_envios_retrasados)}</span></div>
                             }
                             {/* dropdown para editar */}
-                            { auth.roles[0].name=='Ponente' &&
+                            { auth.roles[0].name!='Alumno'  &&
                               <div>
                                 <a href="#" className="dropdown-trigger" data-target={"dropdown"+actividad.id}><i className="material-icons" style={{"color":"#7D7D7D","fontSize":"18px","marginLeft":"10px"}}>more_vert</i></a>
                                 <ul id={"dropdown"+actividad.id} className="dropdown-content drop-size2">

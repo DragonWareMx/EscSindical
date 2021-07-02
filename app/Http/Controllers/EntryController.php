@@ -543,28 +543,35 @@ class EntryController extends Controller
 
     public function edit($id)
     {
-        Gate::authorize('haveaccess', 'ponente.perm');
-        $entry = Entry::with(['module:id,nombre,course_id', 'module.course:id,nombre', 'files:entry_id,original,archivo'])->findOrFail($id);
-        $cursos = Course::with('modules')->where('teacher_id', Auth::user()->id)->get();
-        $viledruid = false;
-        foreach ($cursos as $curso) {
-            foreach ($curso->modules()->get() as $modulo) {
-                if ($modulo->id == $entry->module_id) {
-                    $viledruid = true;
+        if(Auth::user()->roles[0]->name=='Ponente'){
+            Gate::authorize('haveaccess', 'ponente.perm');
+            $entry = Entry::with(['module:id,nombre,course_id', 'module.course:id,nombre', 'files:entry_id,original,archivo'])->findOrFail($id);
+            $cursos = Course::with('modules')->where('teacher_id', Auth::user()->id)->get();
+            $viledruid = false;
+            foreach ($cursos as $curso) {
+                foreach ($curso->modules()->get() as $modulo) {
+                    if ($modulo->id == $entry->module_id) {
+                        $viledruid = true;
+                    }
                 }
             }
+            if (!$viledruid) {
+                abort(403);
+            }
         }
-        if (!$viledruid) {
-            abort(403);
+        else if(Auth::user()->roles[0]->name == 'Administrador'){
+            Gate::authorize('haveaccess', 'admin.perm');
+            $entry = Entry::with(['module:id,nombre,course_id', 'module.course:id,nombre,teacher_id','files:entry_id,original,archivo'])->findOrFail($id);
+            $cursos = Course::with('modules')->where('teacher_id', $entry->module->course->teacher_id)->get();
         }
+        
         return Inertia::render('Entradas/Editar', ['cursos' => fn () => $cursos, 'entry' => fn () => $entry]);
     }
 
     public function delete($id)
     {
-        Gate::authorize('haveaccess', 'ponente.perm');
-        DB::beginTransaction();
-        try {
+        if(Auth::user()->roles[0]->name=='Ponente'){
+            Gate::authorize('haveaccess', 'ponente.perm');
             $entry = Entry::with(['module:id,nombre,course_id', 'module.course:id,nombre'])->findOrFail($id);
             $cursos = Course::with('modules')->where('teacher_id', Auth::user()->id)->get();
             $viledruid = false;
@@ -578,7 +585,15 @@ class EntryController extends Controller
             if (!$viledruid) {
                 return Redirect::back()->with('error', 'Ha ocurrido un error al intentar eliminar la entrada, inténtelo más tarde.');
             }
-
+        }
+        else if(Auth::user()->roles[0]->name == 'Administrador'){
+            Gate::authorize('haveaccess', 'admin.perm');
+            $entry = Entry::with(['module:id,nombre,course_id', 'module.course:id,nombre,teacher_id','files:entry_id,original,archivo'])->findOrFail($id);
+            $cursos = Course::with('modules')->where('teacher_id', $entry->module->course->teacher_id)->get();
+        }
+        DB::beginTransaction();
+        try {
+            
             $entry->delete();
 
             //SE CREA EL LOG

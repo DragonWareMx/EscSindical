@@ -82,7 +82,7 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
               {/* Calificacion */}
               {inscrito &&
               <div className="col s12">
-                <div className="info-title">{auth.roles[0].name == 'Ponente' ? 'CALIFICACIÓN GRUPAL' : auth.roles[0].name == 'Alumno' && 'CALIFICACIÓN'}</div>
+                <div className="info-title">{auth.roles[0].name == 'Alumno' ? 'CALIFICACIÓN' : 'CALIFICACIÓN GRUPAL'}</div>
                 {calificacion && calificacion.calificacion_final ? calificacion.calificacion_final : 'Sin evaluar'}
               </div>
               }
@@ -181,12 +181,11 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
           {/* Aquí va la descripcion pero se pone en el dangerouslySetInnerHTML */}
         </div>
         {/* Evaluacion y bibliografia */}
-        { inscrito &&
+        {/*{inscrito &&
           <div className="col s12">
             <div className="section-title">
               EVALUACIÓN Y BIBLIOGRAFÍA
             </div>
-            {/* collapsible de la bibliografia */}
             <div style={{"marginTop":"15px"}}>
               <ul className="collapsible">
                 <li>
@@ -198,7 +197,7 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
               </ul>
             </div>
           </div>
-        }
+        }*/}
       </div>
     </>
   )
