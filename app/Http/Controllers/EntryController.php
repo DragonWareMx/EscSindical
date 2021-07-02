@@ -893,10 +893,11 @@ class EntryController extends Controller
                 'curso' => 'required|numeric|exists:courses,id',
                 'modulo' => 'required|numeric|exists:modules,id',
                 'titulo' =>  ['required', 'max:255'],
-                'archivos' => 'required|file',
+                'archivos' => 'nullable|file',
                 'visible' => 'required|boolean',
                 'modFiles' => 'required|boolean',
             ]);
+
             //comprobar curso y modulo
             $curso = Course::with('modules')->where([
                 ['teacher_id', $tId,],
