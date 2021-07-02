@@ -60,26 +60,19 @@ const Calificaciones = ({curso, request}) => {
                     users[user.id] = userModules
                 }
 
-                curso.users.forEach(usuarioCurso => {
-                    //si existe la relacion entre el usuario y el modulo
-                    if(user.id == usuarioCurso.id){
-                        //si existe la calificacion del usuario en el modulo
-                        if(usuarioCurso.pivot.calificacion_final || usuarioCurso.pivot.calificacion_final == 0){
-                            //se agrega el modulo en el json
-                            calificacionFinal[user.id] = usuarioCurso.pivot.calificacion_final
-                        }
-                    }
-                });
+                //si existe la calificacion final
+                if(user.pivot.calificacion_final || user.pivot.calificacion_final == 0){
+                    //se agrega el modulo en el json
+                    calificacionFinal[user.id] = user.pivot.calificacion_final
+                }
             })
 
             //si al menos un usuario tiene al menos una calificacion de modulo inicializamos la calificacion
-            if(Object.keys(users).length > 0){
-                setValues(values => ({
-                    ...values,
-                    calificacion: users,
-                    calificacion_final: calificacionFinal
-                }))
-            }
+            setValues(values => ({
+                ...values,
+                calificacion: users,
+                calificacion_final: calificacionFinal
+            }))
         }
     }
 
