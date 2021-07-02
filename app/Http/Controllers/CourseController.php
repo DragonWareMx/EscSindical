@@ -1518,7 +1518,7 @@ class CourseController extends Controller
         return Inertia::render('Curso/AgregarParticipante', [
             'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
             'users' =>
-            fn () => User::with('activeCourses:id', 'courses:id')->select('users.id', 'nombre', 'apellido_p', 'apellido_m', 'email', 'matricula')
+            fn () => User::with('activeCourses:id', 'courses:id')->select('users.id', 'nombre', 'apellido_p', 'apellido_m', 'email', 'matricula','foto')
                 ->leftJoin('role_user', 'role_user.user_id', '=', 'users.id')
                 ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
                 ->where('roles.name', 'Alumno')
