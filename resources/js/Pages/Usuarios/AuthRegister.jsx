@@ -244,7 +244,7 @@ const Usuarios = ({ categories, regimes, units }) => {
 
                             <div className="input-field col s6 input-50-re">
                                 <input id="apellido_paterno" type="text" className={errors.apellido_paterno ? "validate form-control invalid" : "validate form-control"} name="apellido_paterno" value={values.apellido_paterno} onChange={handleChange} required autoComplete="apellido_paterno" maxLength="255" />
-                                <label htmlFor="apellido_paterno">Apellido Paterno</label>
+                                <label htmlFor="apellido_paterno">Ap. Paterno</label>
                                 {
                                     errors.apellido_paterno &&
                                     <span className="helper-text" data-error={errors.apellido_paterno} style={{ "marginBottom": "10px" }}>{errors.apellido_paterno}</span>
@@ -253,7 +253,7 @@ const Usuarios = ({ categories, regimes, units }) => {
 
                             <div className="input-field col s6 input-50-re">
                                 <input id="apellido_materno" type="text" className={errors.apellido_materno ? "validate form-control invalid" : "validate form-control"} name="apellido_materno" value={values.apellido_materno} onChange={handleChange} autoComplete="apellido_materno" maxLength="255" />
-                                <label htmlFor="apellido_materno">Apellido Materno (opcional)</label>
+                                <label htmlFor="apellido_materno">Ap. Materno (Op)</label>
                                 {
                                     errors.apellido_materno &&
                                     <span className="helper-text" data-error={errors.apellido_materno} style={{ "marginBottom": "10px" }}>{errors.apellido_materno}</span>
@@ -271,7 +271,7 @@ const Usuarios = ({ categories, regimes, units }) => {
 
                             <div className="input-field col s6 input-50-re">
                                 <select id="sexo" name="sexo" autoComplete="sexo" value={values.sexo} onChange={handleChange} className={errors.sexo ? "input-field invalid" : "input-field"}>
-                                    <option value="" disabled>Selecciona una opción</option>
+                                    <option value="" disabled>Seleccionar</option>
                                     <option value="m">Femenino</option>
                                     <option value="h">Masculino</option>
                                     <option value="o">Otro</option>
