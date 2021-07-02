@@ -530,31 +530,51 @@ class CourseController extends Controller
 
     public function editCourse($id)
     {
-        \Gate::authorize('haveaccess', 'ponente.perm');
-        return Inertia::render('Cursos/FormCursoEdit', [
-            'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id),
-            'capacitaciones' => Training_type::get(),
-        ]);
+        //VERIFICA EL ROL DEL USUARIO
+        if (Auth::user()->roles[0]->name == 'Ponente') {
+            \Gate::authorize('haveaccess', 'ponente.perm');
+
+            return Inertia::render('Cursos/FormCursoEdit', [
+                'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id),
+                'capacitaciones' => Training_type::get(),
+            ]);
+        } else if (Auth::user()->roles[0]->name == 'Administrador') {
+            \Gate::authorize('haveaccess', 'admin.perm');
+
+            return Inertia::render('Cursos/FormCursoEdit', [
+                'curso' => Course::with(['images:imagen', 'tags:nombre'])->findOrFail($id),
+                'capacitaciones' => Training_type::get(),
+            ]);
+        } else {
+            abort(403);
+        }
     }
 
     public function update($id, Request $request)
     {
-        \Gate::authorize('haveaccess', 'ponente.perm');
+        if (Auth::user()->roles[0]->name == 'Ponente') {
+            \Gate::authorize('haveaccess', 'ponente.perm');
+        }
+        elseif (Auth::user()->roles[0]->name == 'Administrador') {
+            \Gate::authorize('haveaccess', 'admin.perm');
+        } else {
+            abort(403);
+        }
 
         //VALIDAMOS DATOS
         $validated = $request->validate([
             'nombre' => ['required', 'max:100', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'tags' => 'nullable',
-            'fecha_inicio' => 'required|date|after:today',
+            'fecha_inicio' => 'required|date',
             'fecha_final' => 'required|date|after:fecha_inicio',
             'link' => 'required|url',
             'vc' => 'required|boolean',
             'tipos_de_capacitacion' => 'nullable',
-            'tipo_inscripcion' => 'required|exists:courses,tipo_acceso',
+            'tipo_inscripcion' => 'required|in:Automática,Solicitud,Sólo yo',
             'descripcion' => 'required',
             'imgs' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
             'maximo' => 'required|digits_between:1,3|numeric',
-            'inicio_inscripciones' => 'nullable|date|after:today|before:fecha_inicio',
+            'inicio_inscripciones' => 'nullable|date|before:fecha_inicio',
             'final_inscripciones' => 'nullable|date|after:inicio_inscripciones|before:fecha_inicio',
             //las inscripciones podrán seguir después de iniciado el curso?
         ]);
@@ -1998,6 +2018,8 @@ class CourseController extends Controller
 
     public function inscribir($id)
     {
+        \Gate::authorize('haveaccess', 'alumno.perm');
+
         $curso = Course::with('modules:course_id,id,nombre,numero')->findOrFail($id);
 
         //Verificar que el usuario no pertenezca a algún curso activo

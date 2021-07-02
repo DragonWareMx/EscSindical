@@ -5,8 +5,9 @@ import { Inertia } from '@inertiajs/inertia'
 
 const el = document.getElementById('app')
 
-Inertia.on('start', () => console.log('se comenzo a cargar'))
-Inertia.on('finish', () => console.log('se termino de cargar'))
+// Inertia.on('start', () => console.log('se comenzo a cargar'))
+// Inertia.on('finish', () => console.log('se termino de cargar'))
+
 render(
   <App
     initialPage={JSON.parse(el.dataset.page)}

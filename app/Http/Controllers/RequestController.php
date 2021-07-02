@@ -259,7 +259,14 @@ class RequestController extends Controller
 
     public function aprobar($id, Request $request)
     {
-        \Gate::authorize('haveaccess', 'ponente.perm');
+        if (Auth::user()->roles[0]->name == 'Ponente') {
+            \Gate::authorize('haveaccess', 'ponente.perm');
+        }
+        elseif (Auth::user()->roles[0]->name == 'Administrador') {
+            \Gate::authorize('haveaccess', 'admin.perm');
+        } else {
+            abort(403);
+        }
         //VALIDAMOS DATOS
         $validated = $request->validate([
             "solicitud"    => "required|array|min:1",
@@ -392,6 +399,8 @@ class RequestController extends Controller
         }
         else if(Auth::user()->roles[0]->name=='Administrador'){
             \Gate::authorize('haveaccess', 'admin.perm');
+        } else {
+            abort(403);
         }
         //VALIDAMOS DATOS
         $validated = $request->validate([
