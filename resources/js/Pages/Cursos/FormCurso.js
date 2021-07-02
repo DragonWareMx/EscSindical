@@ -111,7 +111,6 @@ const FormCurso = ({capacitaciones}) => {
             onCloseEnd: ()=>{
                 if (instanceSchedule[0].getSelectedValues().length >0){
                     var dias = instanceSchedule[0].getSelectedValues();
-                    console.log(instanceSchedule);
                     dias.forEach(dia => {
                         if (!document.getElementById(dia).disabled){
                         

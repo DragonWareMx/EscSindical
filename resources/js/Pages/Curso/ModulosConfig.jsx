@@ -44,7 +44,6 @@ const ModulosConfig = ({curso}) => {
                 set: function (sortable) {
                     var order = sortable.toArray();
                     localStorage.setItem(sortable.options.group.name, order.join('|'));
-                    console.log(order)
                     Inertia.post(route('cursos.modulos.order',curso.id), {order:order});
                 }
             }

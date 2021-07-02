@@ -134,7 +134,6 @@ const Calificaciones = ({curso, request}) => {
     //manda el forumulario
     function handleSubmit(e) {
         e.preventDefault()
-        console.log("aver")
             Inertia.post(route('cursos.calificaciones.store', curso.id), values, {
                 onSuccess: () => {
                     Inertia.visit(route('cursos.calificaciones.store', curso.id),{preserveScroll: true, preserveState: false});
