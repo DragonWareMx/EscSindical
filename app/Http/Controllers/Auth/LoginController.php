@@ -42,10 +42,12 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (Request::inertia()) {
+            \Session::put('mensaje', \Session::get('status'));
             return response('', 409)
                 ->header('X-Inertia-Location', url()->current());
         }
-
+        \Session::flash('registro', \Session::get('mensaje'));
+        \Session::forget('mensaje');
         return view('auth.login');
     }
 }

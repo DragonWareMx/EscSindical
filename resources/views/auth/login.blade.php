@@ -47,6 +47,12 @@
             <div class="form-login col s12">
                 <h1 style="margin-top:10px">INICIAR SESIÓN</h1>
                 <h2>Bienvenido de nuevo</h2>
+                @if (session('registro'))
+                <div class="col s12 green lighten-2"
+                    style="color: white; min-height: 30px; font-size: 14px; padding-top: 8px; padding-bottom: 8px; border-radius: 5px; margin-top: 20px">
+                    {{ session('registro') }}
+                </div>
+                @endif
                 <form class="col s12" method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="row">
@@ -81,7 +87,7 @@
                 </form>
             </div>
 
-            <div class="col s12 footer-login" >
+            <div class="col s12 footer-login">
                 © 2021 Escuela Sindical | &nbsp; <a href="https://dragonware.com.mx" target="_blank"> Desarrollado por
                     DragonWare
                     <img src="{{ asset('img/imagenes/dragonWare.png') }}" alt="DragonWare" width="22px"></a>
