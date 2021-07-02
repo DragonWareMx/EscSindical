@@ -34,8 +34,8 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
-   
-    
+
+
 
     /**
      * Create a new controller instance.
@@ -51,15 +51,15 @@ class RegisterController extends Controller
     public function showRegistrationForm(Request $request)
     {
         return Inertia::render('Usuarios/AuthRegister', [
-            'categories'=> fn () => Category::select('nombre')->get(),
-            'regimes'=> fn () => Regime::select('nombre')->get(),
-            'units'=>  Inertia::lazy(
-                fn () => Unit::select('units.id','units.nombre')
-                            ->leftJoin('regimes', 'regimes.id', '=', 'units.regime_id')
-                            ->when($request->regime, function ($query, $regime) {
-                                $query->where('regimes.nombre',$regime);
-                            })
-                            ->get()
+            'categories' => fn () => Category::select('nombre')->get(),
+            'regimes' => fn () => Regime::select('nombre')->get(),
+            'units' =>  Inertia::lazy(
+                fn () => Unit::select('units.id', 'units.nombre')
+                    ->leftJoin('regimes', 'regimes.id', '=', 'units.regime_id')
+                    ->when($request->regime, function ($query, $regime) {
+                        $query->where('regimes.nombre', $regime);
+                    })
+                    ->get()
             )
         ]);
     }
@@ -76,14 +76,14 @@ class RegisterController extends Controller
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
 
             //---informacion personal---
-            'nombre' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
-            'apellido_paterno' => ['required','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
-            'apellido_materno' => ['nullable','max:255','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'nombre' => ['required', 'max:255', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'apellido_paterno' => ['required', 'max:255', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'apellido_materno' => ['nullable', 'max:255', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'fecha_de_nacimiento' => 'required|date|before:17 years ago',
             'sexo' => 'required|in:h,m,o',
 
             //---informacion institucional---
-            
+
             //-de momento las matriculas son numeros solamente de tamaño maximo de 255-
             'matricula' => 'required|digits_between:7,10|numeric|unique:users,matricula',
             'regimen' => 'required|exists:regimes,nombre',
@@ -91,13 +91,13 @@ class RegisterController extends Controller
             'categoria' => 'required|exists:categories,nombre',
 
             //direccion
-            'estado' => ['required','max:50','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
-            'ciudad' => ['required','max:60','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
-            'colonia' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
-            'calle' => ['required','max:100','regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
-            'numero_exterior' => ['required','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]*\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
-            'numero_interior' => ['nullable','max:10','regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]*\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
-            'codigo_postal' => ['required','max:9','regex:/^\d{5}$/i'],
+            'estado' => ['required', 'max:50', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'ciudad' => ['required', 'max:60', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'colonia' => ['required', 'max:100', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'calle' => ['required', 'max:100', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
+            'numero_exterior' => ['required', 'max:10', 'regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]*\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'numero_interior' => ['nullable', 'max:10', 'regex:/^(((#|[nN][oO]|[a-zA-Z1-9À-ÖØ-öø-ÿ]*\.?) ?)?\d{1,4}(( ?[a-zA-Z0-9\-]+)+)?)$/i'],
+            'codigo_postal' => ['required', 'max:9', 'regex:/^\d{5}$/i'],
 
             //---cuenta---
             'tarjeton_de_pago' => 'required|file|mimes:jpeg,png,jpg,pdf|max:51200',
@@ -121,7 +121,7 @@ class RegisterController extends Controller
      * @return \App\Models\User
      */
     protected function create(Request $request)
-    { 
+    {
         //variables para comprobar la subida de archivos
         $foto = null;
         $tarjeton_pago = null;
@@ -132,41 +132,36 @@ class RegisterController extends Controller
         try {
             $regimen = Regime::where("nombre", $request->regimen)->get();
 
-            if($regimen->isEmpty())
-            {
+            if ($regimen->isEmpty()) {
                 DB::rollBack();
-                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+                return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
             }
 
             $unidad = Unit::where("nombre", $request->unidad)->get();
 
-            if($unidad->isEmpty())
-            {
+            if ($unidad->isEmpty()) {
                 DB::rollBack();
-                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+                return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
             }
 
             $categoria = Category::where("nombre", $request->categoria)->get();
 
-            if($categoria->isEmpty())
-            {
+            if ($categoria->isEmpty()) {
                 DB::rollBack();
-                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+                return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
             }
 
             //verifica que la unidad y el regimen esten relacionados
-            if($unidad[0]->regime->id != $regimen[0]->id)
-            {
+            if ($unidad[0]->regime->id != $regimen[0]->id) {
                 DB::rollBack();
-                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+                return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
             }
 
             $rol = Role::where("name", "Alumno")->get();
 
-            if($rol->isEmpty())
-            {
+            if ($rol->isEmpty()) {
                 DB::rollBack();
-                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+                return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
             }
 
             //SE CREA EL NUEVO USUARIO
@@ -175,14 +170,14 @@ class RegisterController extends Controller
             //guarda la foto
             $foto = $request->file('foto')->store('public/fotos_perfil');
             $newUser->foto = $request->file('foto')->hashName();
-            
+
             //---informacion personal---
             $newUser->nombre = $request->nombre;
             $newUser->apellido_p = $request->apellido_paterno;
             $newUser->apellido_m = $request->apellido_materno;
             $newUser->fecha_nac = $request->fecha_de_nacimiento;
             $newUser->sexo = $request->sexo;
-            
+
             //---informacion institucional---
             $newUser->matricula = $request->matricula;
             $newUser->unit_id = $unidad[0]->id;
@@ -191,7 +186,7 @@ class RegisterController extends Controller
             //guarda el tarjeton de pago
             $tarjeton_pago = $request->file('tarjeton_de_pago')->store('public/tarjetones_pago');
             $newUser->tarjeton_pago = $request->file('tarjeton_de_pago')->hashName();
-            
+
             //---direccion---
             $newUser->estado = $request->estado;
             $newUser->ciudad = $request->ciudad;
@@ -200,33 +195,33 @@ class RegisterController extends Controller
             $newUser->num_ext = $request->numero_exterior;
             $newUser->num_int = $request->numero_interior;
             $newUser->cp = $request->codigo_postal;
-            
+
             //---cuenta---
             $newUser->email = $request->email;
             $newUser->password = \Hash::make($request->contrasena);
 
             //SE GUARDA EL NUEVO USUARIO
             $newUser->save();
-            
+
             //se asigna el rol
             $newUser->roles()->sync([$rol[0]->id]);
 
             //SE CREA EL LOG
             $newLog = new Log;
-            
+
             $newLog->categoria = 'create';
             $newLog->user_id = $newUser->id;
             $newLog->accion =
-            '{
+                '{
                 users: {
                     nombre: ' . $request->nombre . ',\n
                     apellido_p: ' . $request->apellido_paterno . ',\n
                     apellido_m: ' . $request->apellido_materno . ',\n
                     fecha_nac: ' . $request->fecha_de_nacimiento . ',\n
-                    sexo: '. $request->sexo. ',\n
+                    sexo: ' . $request->sexo . ',\n
 
                     matricula: ' . $request->matricula . ',\n
-                    unit_id: '.$unidad[0]->id. ',\n
+                    unit_id: ' . $unidad[0]->id . ',\n
                     category_id: ' . $categoria[0]->id . ',\n
 
                     estado: ' . $request->estado . ',\n
@@ -241,64 +236,56 @@ class RegisterController extends Controller
                 '}
             }';
 
-            $newLog->descripcion = 'Se ha registrado un nuevo usuario: '. $newUser->email;
-                
+            $newLog->descripcion = 'Se ha registrado un nuevo usuario: ' . $newUser->email;
+
             //SE GUARDA EL LOG
             $newLog->save();
-            
-            
-            if(!$newUser)
-            {
+
+
+            if (!$newUser) {
                 DB::rollBack();
                 //si hay foto se elimina del servidor
-                if($foto)
-                {
+                if ($foto) {
                     \Storage::delete($foto);
                 }
                 //si hay tarjeton se elimina del servidor
-                if($tarjeton_pago)
-                {
+                if ($tarjeton_pago) {
                     \Storage::delete($tarjeton_pago);
                 }
-                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+                return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
             }
-            if(!$newLog)
-            {
+            if (!$newLog) {
                 DB::rollBack();
                 //si hay foto se elimina del servidor
-                if($foto)
-                {
+                if ($foto) {
                     \Storage::delete($foto);
                 }
                 //si hay tarjeton se elimina del servidor
-                if($tarjeton_pago)
-                {
+                if ($tarjeton_pago) {
                     \Storage::delete($tarjeton_pago);
                 }
-                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+                return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
             }
 
             //SE HACE COMMIT
             DB::commit();
 
             return $newUser;
-            
+
             //REDIRECCIONA A LA VISTA DE USUARIOS
-            return \Redirect::route('usuarios')->with('success','El usuario ha sido registrado con éxito!');
+            return \Redirect::route('usuarios')->with('success', 'El usuario ha sido registrado con éxito!');
         } catch (\Exception $e) {
             DB::rollBack();
 
             //si hay foto se elimina del servidor
-            if($foto)
-            {
+            if ($foto) {
                 \Storage::delete($foto);
             }
             //si hay tarjeton se elimina del servidor
-            if($tarjeton_pago)
-            {
+            if ($tarjeton_pago) {
                 \Storage::delete($tarjeton_pago);
             }
-            return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
         }
     }
 
@@ -314,19 +301,17 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($request)));
 
-        if(get_class($user) == "App\Models\User"){
-            $this->guard()->login($user);
+        if (get_class($user) == "App\Models\User") {
+            //$this->guard()->login($user);
             if ($response = $this->registered($request, $user)) {
                 return $response;
             }
-    
-            return $request->wantsJson()
-                        ? new JsonResponse([], 201)
-                        : redirect($this->redirectPath());
-        }
-        else{
-            return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
-        }
 
+            return $request->wantsJson()
+                ? new JsonResponse([], 201)
+                : redirect('login')->with('status', "Te has registrado con éxito.");
+        } else {
+            return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+        }
     }
 }

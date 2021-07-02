@@ -236,3 +236,8 @@ max-width:100%;height:auto;
 .form-reset{
   margin-top: 10px;
 }
+
+#buttonReg:disabled{
+  background-color: #646464;
+  cursor: wait;
+}
