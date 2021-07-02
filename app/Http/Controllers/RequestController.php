@@ -387,7 +387,12 @@ class RequestController extends Controller
 
     public function agregar($id, Request $request)
     {
-        \Gate::authorize('haveaccess', 'ponente.perm');
+        if(Auth::user()->roles[0]->name=='Ponente'){
+            \Gate::authorize('haveaccess', 'ponente.perm');
+        }
+        else if(Auth::user()->roles[0]->name=='Administrador'){
+            \Gate::authorize('haveaccess', 'admin.perm');
+        }
         //VALIDAMOS DATOS
         $validated = $request->validate([
             "solicitud"    => "required|array|min:1",
@@ -408,9 +413,11 @@ class RequestController extends Controller
             }
 
             //verifica que el usuario loggeado sea el maestro del curso
-            if($curso->teacher->id != Auth::User()->id){
-                DB::rollBack();
-                return \Redirect::back()->with('error', 'No puede aprobar o rechazar solicitudes si usted no es el maestro del curso.');
+            if(Auth::user()->roles[0]->name=='Ponente'){
+                if($curso->teacher->id != Auth::User()->id){
+                    DB::rollBack();
+                    return \Redirect::back()->with('error', 'No puede aprobar o rechazar solicitudes si usted no es el maestro del curso.');
+                }
             }
             
             $cadenaLog = '';

@@ -45,10 +45,11 @@ const Participantes = ({curso}) => {
                     <>
                     <div className="col s12 m1 l1 xl1 right "><a className='dropdown-trigger right' href='#' data-target={'dropdown-option-profe'}><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                     <ul id={'dropdown-option-profe'} className='dropdown-content dropdown_LC'>
-                        <li><a className="dropdown-text" href={"mailto:"}><i className="material-icons">mail</i>Enviar mensaje</a></li>
+                        <li><a className="dropdown-text" href={"mailto:"+curso.teacher.email}><i className="material-icons">mail</i>Enviar mensaje</a></li>
                         <li className="divider" tabIndex="-1"></li>
-                        <li><a className="dropdown-text modal-trigger" data-target={'modalReportar'}><i className="material-icons">report_problem</i>Reportar</a></li>
+                        <li><a className="dropdown-text modal-trigger" data-target={'modalReportar'+curso.teacher.id}><i className="material-icons">report_problem</i>Reportar</a></li>
                     </ul>
+                    <ModalReportar url={route('CrearReporte')} nombre={curso.teacher.nombre+' '+curso.teacher.apellido_p+' '+curso.teacher.apellido_m} id={curso.teacher.id} />
                     </>
                 }
                 {/* Información del usuario */}

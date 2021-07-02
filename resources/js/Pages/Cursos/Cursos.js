@@ -23,11 +23,13 @@ const Cursos = ({user, cursos, profesor, tags, finishedCourses}) => {
     return (
     <>
     <Alertas />
-    <CursoActual 
-    cursos = {user.active_courses['0']}
-    profesor = {profesor}
-    tags = {tags}
-    />
+    {user.active_courses.length>0 &&
+      <CursoActual 
+      cursos = {user.active_courses['0']}
+      profesor = {profesor}
+      tags = {tags}
+      />
+    }
     <HistorialCursos 
     cursos = {user.finished_courses}
     solicitudes ={user.requests}/>

@@ -50,11 +50,16 @@ class CourseController extends Controller
                 'cursos' => fn () => $cursos,
                 'finishedCourses' => $OldCourses,
             ]);
-        } else {
+        } else if($user->roles[0]->name == 'Alumno') {
             \Gate::authorize('haveaccess', 'alumno.perm');
-            $curso_actual = $user->activeCourses[0];
-            $profesor = $curso_actual->teacher;
-            $tags = $curso_actual->tags;
+            $curso_actual='';
+            $profesor='';
+            $tags='';
+            if(count($user->activeCourses) > 0){
+                $curso_actual = $user->activeCourses[0];
+                $profesor = $curso_actual->teacher;
+                $tags = $curso_actual->tags;
+            }
             return Inertia::render('Cursos/Cursos', [
                 'user' => fn () => User::with([
                     'roles', 'requests', 'requests.course.images', 'requests.course.teacher', 'requests.course.tags', 'activeCourses', 'activeCourses.images', 'finishedCourses', 'finishedCourses.images', 'finishedCourses.teacher', 'finishedCourses.tags'
@@ -62,6 +67,9 @@ class CourseController extends Controller
                 'profesor' => $profesor,
                 'tags' => $tags,
             ]);
+        }
+        else {
+            return \Redirect::route('cursosBuscar');
         }
     }
 
@@ -1254,12 +1262,20 @@ class CourseController extends Controller
 
     public function estadisticas($id)
     {
-        Gate::authorize('haveaccess', 'ponente.perm');
-        //verificar que el ponente sea dueño del curso
-        $curso_teacher = Course::where('id', $id)->first('teacher_id');
-        if (Auth::id() != $curso_teacher->teacher_id) {
+        if(Auth::user()->roles[0]->name=='Ponente'){
+            Gate::authorize('haveaccess', 'ponente.perm');
+            $curso_teacher = Course::where('id', $id)->first('teacher_id');
+            if (Auth::id() != $curso_teacher->teacher_id) {
+                return abort(403);
+            }
+        }
+        else if(Auth::user()->roles[0]->name=='Administrador'){
+            Gate::authorize('haveaccess', 'admin.perm');
+        }
+        else{
             return abort(403);
         }
+        
         $curso = Course::findOrFail($id);
         $alumnos = $curso->users()->select('sexo', 'calificacion_final')->get();
         $cantidad = $alumnos->count();
@@ -1280,22 +1296,42 @@ class CourseController extends Controller
 
     public function calificaciones($id)
     {
-        Gate::authorize('haveaccess', 'ponente.perm');
+        if(Auth::user()->roles[0]->name=='Administrador'){
+            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id')->select('id', 'nombre', 'teacher_id')->findOrFail($id);
+            
+            return Inertia::render('Curso/Calificaciones', [
+                'curso' => $curso
+            ]);
+        }
+        else if(Auth::user()->roles[0]->name=='Ponente'){
+            Gate::authorize('haveaccess', 'ponente.perm');
 
-        //verificar que el ponente sea dueño del curso
-        $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id')->select('id', 'nombre', 'teacher_id')->findOrFail($id);
-        if (Auth::id() != $curso->teacher_id) {
+            //verificar que el ponente sea dueño del curso
+            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id')->select('id', 'nombre', 'teacher_id')->findOrFail($id);
+            if (Auth::id() != $curso->teacher_id) {
+                return abort(403);
+            }
+    
+            return Inertia::render('Curso/Calificaciones', [
+                'curso' => $curso
+            ]);
+        }
+        else{
             return abort(403);
         }
-
-        return Inertia::render('Curso/Calificaciones', [
-            'curso' => $curso
-        ]);
     }
 
     public function storeCalificaciones($id, Request $request)
     {
-        Gate::authorize('haveaccess', 'ponente.perm');
+        if(Auth::user()->roles[0]->name=='Ponente'){
+            \Gate::authorize('haveaccess', 'ponente.perm');
+        }
+        else if(Auth::user()->roles[0]->name=='Administrador'){
+            \Gate::authorize('haveaccess', 'admin.perm');
+        }
+        else {
+            abort (403);
+        }
 
         $validated = $request->validate([
             'calificacion'    => [
@@ -1355,11 +1391,12 @@ class CourseController extends Controller
             }
 
             //verifica que el usuario loggeado sea el maestro del curso
-            if ($curso->teacher->id != Auth::User()->id) {
-                DB::rollBack();
-                return \Redirect::route('cursos.calificaciones.store', $id)->with('error', 'No puedes subir calificaciones si no eres el maestro del curso.');
+            if(Auth::user()->roles[0]->name=='Ponente'){
+                if ($curso->teacher->id != Auth::User()->id) {
+                    DB::rollBack();
+                    return \Redirect::route('cursos.calificaciones.store', $id)->with('error', 'No puedes subir calificaciones si no eres el maestro del curso.');
+                }
             }
-
             //user es el id del usuario en la iteracion
             foreach ($request->calificacion as $user => $userModules) {
                 //module es el id del modulo
@@ -1413,7 +1450,19 @@ class CourseController extends Controller
 
     public function solicitudes($id)
     {
-        \Gate::authorize('haveaccess', 'ponente.perm');
+        if(Auth::user()->roles[0]->name=='Ponente'){
+            \Gate::authorize('haveaccess', 'ponente.perm');
+            $curso=Course::findOrFail($id);
+            if($curso->teacher_id != Auth::id()){
+                return abort(403);
+            }
+        }
+        else if(Auth::user()->roles[0]->name=='Administrador'){
+            \Gate::authorize('haveaccess', 'admin.perm');
+        }
+        else {
+            abort (403);
+        }
 
         $curso = Course::with('waitingRequests:nombre,apellido_p,apellido_m,id,foto', 'modules:course_id,id,nombre,numero')
             ->select('nombre', 'id')
@@ -1451,7 +1500,20 @@ class CourseController extends Controller
 
     public function agregarParticipante($id, Request $request)
     {
-        \Gate::authorize('haveaccess', 'ponente.perm');
+        if(Auth::user()->roles[0]->name=='Ponente'){
+            \Gate::authorize('haveaccess', 'ponente.perm');
+            //Verificamos que el ponente sea dueño del curso
+            $curso=Course::findOrFail($id);
+            if($curso->teacher_id != Auth::id()){
+                return abort(403);
+            }
+        }
+        else if(Auth::user()->roles[0]->name=='Administrador'){
+            \Gate::authorize('haveaccess', 'admin.perm');
+        }
+        else if(Auth::user()->roles[0]->name=='Estudiante'){
+            return abort(403);
+        }
 
         return Inertia::render('Curso/AgregarParticipante', [
             'curso' => Course::with('modules:course_id,id,nombre,numero')->findOrFail($id),
