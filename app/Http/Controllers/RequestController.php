@@ -345,7 +345,7 @@ class RequestController extends Controller
                 }
             }';
 
-            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha '.$status.' '.$contador.' usuarios en el curso de id: ' . $id;
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha '.$status.' '.$contador.' usuarios en el curso de id: ' . $id.' llamado: '.$curso->nombre;
 
             //SE GUARDA EL LOG
             $newLog->save();
@@ -387,7 +387,12 @@ class RequestController extends Controller
 
     public function agregar($id, Request $request)
     {
-        \Gate::authorize('haveaccess', 'ponente.perm');
+        if(Auth::user()->roles[0]->name=='Ponente'){
+            \Gate::authorize('haveaccess', 'ponente.perm');
+        }
+        else if(Auth::user()->roles[0]->name=='Administrador'){
+            \Gate::authorize('haveaccess', 'admin.perm');
+        }
         //VALIDAMOS DATOS
         $validated = $request->validate([
             "solicitud"    => "required|array|min:1",
@@ -408,9 +413,11 @@ class RequestController extends Controller
             }
 
             //verifica que el usuario loggeado sea el maestro del curso
-            if($curso->teacher->id != Auth::User()->id){
-                DB::rollBack();
-                return \Redirect::back()->with('error', 'No puede aprobar o rechazar solicitudes si usted no es el maestro del curso.');
+            if(Auth::user()->roles[0]->name=='Ponente'){
+                if($curso->teacher->id != Auth::User()->id){
+                    DB::rollBack();
+                    return \Redirect::back()->with('error', 'No puede aprobar o rechazar solicitudes si usted no es el maestro del curso.');
+                }
             }
             
             $cadenaLog = '';
@@ -461,7 +468,7 @@ class RequestController extends Controller
 
             }';
 
-            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha agregado '.$contador.' usuarios en el curso de id: ' . $id;
+            $newLog->descripcion = 'El usuario ' . Auth::user()->email . ' ha agregado '.$contador.' usuarios en el curso de id: ' . $id.' llamado: '.$curso->nombre;
 
             //SE GUARDA EL LOG
             $newLog->save();
@@ -536,7 +543,7 @@ class RequestController extends Controller
                         status = Aprobado
                         }
                     }';
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha dado de baja al alumno: '. $user->nombre .' del curso '.$myRequest->course->nombre;
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha dado de baja al alumno: '. $user->nombre .' del curso '.$myRequest->course->nombre.' de id: '.$myRequest->course->id;
                 
             }
             else {
@@ -553,7 +560,7 @@ class RequestController extends Controller
                         status = Rechazado
                         }
                     }';
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' rechazó la solicitud de baja de '. $user->nombre .' del curso '.$myRequest->course->nombre;
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' rechazó la solicitud de baja de '. $user->nombre .' del curso '.$myRequest->course->nombre.' de id: '.$myRequest->course->id;
                 
             }
             
@@ -603,8 +610,7 @@ class RequestController extends Controller
                         status = Aprobado
                         }
                     }';
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' aprobó la solicitud de '. $user->nombre .' para eliminar el curso '.$myRequest->course->nombre;
-                
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' aprobó la solicitud de '. $user->nombre .' para eliminar el curso '.$myRequest->course->nombre.' de id: '.$myRequest->course->id;
             }
             else {
                 $myRequest->status ='Rechazado';
@@ -620,7 +626,7 @@ class RequestController extends Controller
                         status = Rechazado
                         }
                     }';
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' rechazó la solicitud de '. $user->nombre .' para eliminar el curso '.$myRequest->course->nombre;
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' rechazó la solicitud de '. $user->nombre .' para eliminar el curso '.$myRequest->course->nombre.' de id: '.$myRequest->course->id;
 
             }
             
@@ -668,7 +674,7 @@ class RequestController extends Controller
                 '}
             }';
 
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha restaurado el curso: '. $curso->nombre;
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha restaurado el curso: '. $curso->nombre.' de id: '.$curso->id;
 
             $newLog->save();
 
@@ -713,7 +719,7 @@ class RequestController extends Controller
                 '}
             }';
 
-            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha restaurado al alumno: '. $user->nombre. 'al curso '. $solicitud->course->nombre;
+            $newLog->descripcion = 'El usuario '.Auth::user()->email.' ha restaurado al alumno: '. $user->nombre. 'al curso '. $solicitud->course->nombre.' de id: '. $solicitud->course->id;
 
             $newLog->save();
 

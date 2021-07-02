@@ -80,9 +80,10 @@ export default function MenuLateral() {
               </InertiaLink>
             </div>
           </li>
+          {/* INICIO */}
           <li>
-            <InertiaLink href={route('inicio').url()} className="icono-menu">
-              <i className="material-icons">home</i>
+            <InertiaLink href={route('inicio').url()} className={isUrl("inicio") ? "icono-menu current-menu-text" : "icono-menu"}>
+              <i className={isUrl("inicio") ? "material-icons icono-menu current-menu" : "material-icons icono-menu"}>home</i>
                   Inicio
             </InertiaLink>
           </li>
@@ -112,9 +113,10 @@ export default function MenuLateral() {
           </li>
           }
 
+          {/* BUSCAR CURSOS */}
           <li>
-            <InertiaLink href={route('cursosBuscar').url()} className="icono-menu">
-              <i className="material-icons icono-menu">search</i>Buscar cursos
+            <InertiaLink href={route('cursosBuscar').url()} className={isUrl("buscar") ? "icono-menu current-menu-text" : "icono-menu"}>
+              <i className={isUrl("buscar") ? "material-icons icono-menu current-menu" : "material-icons icono-menu"}>search</i>Buscar cursos
             </InertiaLink>
           </li>
 
@@ -124,8 +126,8 @@ export default function MenuLateral() {
           {/* REPORTES */}
           {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
           <li>
-            <InertiaLink href={route('reportes').url()} className="icono-menu">
-              <i className="material-icons icono-menu">assignment_late</i>Reportes
+            <InertiaLink href={route('reportes').url()} className={isUrl("reportes") ? "icono-menu current-menu-text" : "icono-menu"}>
+              <i className={isUrl("reportes") ? "material-icons icono-menu current-menu" : "material-icons icono-menu"}>assignment_late</i>Reportes
             </InertiaLink>
           </li>
           }
@@ -133,8 +135,8 @@ export default function MenuLateral() {
           {/* SOLICITUDES */}
           {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
           <li>
-            <InertiaLink href={route('solicitudes').url()} className="icono-menu">
-              <i className="material-icons icono-menu">create_new_folder</i>Solicitudes
+            <InertiaLink href={route('solicitudes').url()} className={isUrl("solicitudes") ? "icono-menu current-menu-text" : "icono-menu"}>
+              <i className={isUrl("solicitudes") ? "material-icons icono-menu current-menu" : "material-icons icono-menu"}>create_new_folder</i>Solicitudes
             </InertiaLink>
           </li>
           }
@@ -179,7 +181,7 @@ export default function MenuLateral() {
         </div>
         <div className="col s12">
           <InertiaLink href={route('inicio').url()} className="icono-menu">
-            <i className="material-icons tooltipped icono-menu-compacto" data-position="right" data-tooltip="Inicio">home</i>
+            <i className={isUrl("inicio") ? "material-icons tooltipped icono-menu-compacto current-menu" : "material-icons tooltipped icono-menu-compacto"} data-position="right" data-tooltip="Inicio">home</i>
           </InertiaLink>
         </div>
 
@@ -199,14 +201,14 @@ export default function MenuLateral() {
         </div>
         <div className="col s12">
           <InertiaLink href={route('cursosBuscar').url()} className="icono-menu">
-            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Buscar cursos">search</i>
+            <i className={isUrl("buscar") ? "material-icons tooltipped icono-menu-compacto current-menu" : "material-icons tooltipped icono-menu-compacto"} data-position="right" data-tooltip="Buscar cursos">search</i>
           </InertiaLink>
         </div>
 
         {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
         <div className="col s12">
           <InertiaLink href={route('reportes').url()} className="icono-menu">
-            <i className="material-icons tooltipped icono-menu-compacto icono-menu" data-position="right" data-tooltip="Reportes">assignment_late</i>
+            <i className={isUrl("reportes") ? "material-icons tooltipped icono-menu-compacto current-menu" : "material-icons tooltipped icono-menu-compacto"} data-position="right" data-tooltip="Reportes">assignment_late</i>
           </InertiaLink>
         </div>
         }

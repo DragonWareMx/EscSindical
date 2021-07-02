@@ -105,7 +105,7 @@ Route::post('/cursos/{id}/calificaciones', [App\Http\Controllers\CourseControlle
 Route::post('/cursos/{id}/solicitudes', [App\Http\Controllers\RequestController::class, 'aprobar'])->name('solicitudes.aprobar');
 
 
-Route::get('/cursos/buscar', [App\Http\Controllers\CourseController::class, 'searchIndex'])->name('cursosBuscar');
+Route::get('/buscar', [App\Http\Controllers\CourseController::class, 'searchIndex'])->name('cursosBuscar');
 
 Route::get('/layoutCursos', [App\Http\Controllers\CourseController::class, 'layout'])->name('layoutCursos');
 
@@ -151,3 +151,5 @@ Route::post('/cursos/{cid}/modulo/{mid}/publicacion/{pid}/comment', [App\Http\Co
 
 // DAR DE BAJA ESTUDIANTE DEL CURSO
 Route::post('/dar-baja-estudiante/{id}', [App\Http\Controllers\CourseController::class, 'darBajaEstudiante'])->name('dar-baja-estudiante');
+Route::post('/cursos/{cid}/modulo/{mid}/publicacion/{pid}/comment/update', [App\Http\Controllers\CommentController::class, 'update'])->name('comment.update');
+Route::post('/comment/{id}/delete', [App\Http\Controllers\CommentController::class, 'delete'])->name('comment.delete');

@@ -26,6 +26,10 @@ class Course extends Model
         return $this->hasMany('App\Models\Module')->orderBy('numero','ASC');
     }
 
+    public function schedules()
+    {
+        return $this->hasMany('App\Models\Schedule');
+    }
 
     public function training_types()
     {
@@ -51,6 +55,7 @@ class Course extends Model
     {
         return $this->belongsToMany('App\Models\User', 'requests')->withTimestamps();
     }
+
 
     // results in a "problem", se examples below
     public function waitingRequests() {
