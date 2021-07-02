@@ -403,7 +403,6 @@ const SolicitudesAlumno = ({solicitudes, request}) => {
                 break;
         }
     }
-    console.log(solicitudes);
     //onClick de cada elemento de la tabla, obtiene el usuario y abre el modal para editar usuario
     function getSolicitud(id) {
         Inertia.get(route('verSolicitud', [id, 'drop']))
