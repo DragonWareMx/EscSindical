@@ -131,7 +131,7 @@
 }
 
 textarea#comentario{
-    border: 1px solid #134E39;
+    border: 1px solid #c5c5c5;
     box-sizing: border-box;
     border-radius: 3px;
 
@@ -142,16 +142,19 @@ textarea#comentario{
     line-height: 15px;
     /* identical to box height */
 
-    color: #8E8E8E;
+    color: #979797;
     outline: none;
 
     margin-top: 15px;
     margin-bottom: 20px;
     resize: none;
+    padding:10px;
+
+    transition: all ease 0.25s;
 }
 
 textarea#comentario_editado{
-    border: 1px solid #134E39;
+    border: 1px solid #c5c5c5;
     box-sizing: border-box;
     border-radius: 3px;
 

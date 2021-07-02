@@ -179,9 +179,9 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
                                 <div className="col s4 l2" style={{ "marginTop": "10px" }}>
                                     <div className="row center-align" style={{ display: "flex", alignContent: "center", justifyContent: "flex-end" }}>
                                         <span style={{ cursor: "pointer" }} onClick={handleVisible}>
-                                            <i className="material-icons" style={{ "color": "#134E39", "fontSize": "16px" }}>visibility_off</i>
+                                            <i className="material-icons tiny" style={{ "color": "#134E39", "fontSize": "16px" }}>visibility_off</i>
                                         </span>
-                                        <span style={{ "color": "#134E39", "fontSize": "14px", "marginLeft": "5px", marginTop: "-2px", cursor: "pointer" }} onClick={handleVisible} >Ocultar</span>
+                                        <span style={{ "color": "#134E39", "fontSize": "13px", "marginLeft": "5px", marginTop: "-2px", cursor: "pointer" }} onClick={handleVisible} >Ocultar</span>
                                     </div>
                                 </div>
 
@@ -263,10 +263,11 @@ export default function Comments({ idModulo, idCurso, idEntrada, comments, handl
                                     {/* icono de agregar comentarios */}
                                     <div className="col s12 l12" style={{ "marginTop": "10px", marginBottom: "0px" }}>
                                         <div className="row center-align" style={{ display: "flex", alignContent: "center", justifyContent: "flex-start", marginBottom: "0px", height: "15px" }} >
-                                            <span style={{ "color": "#134E39", "fontSize": "13px", "marginLeft": "0px", marginTop: "-1px", cursor: "pointer" }} onClick={handleForm}>Agregar comentario</span>
+                                            
                                             <span>
-                                                <i className="material-icons" style={{ "color": "#134E39", "fontSize": "13px", "marginLeft": "5px", cursor: "pointer" }} onClick={handleForm}>add_circle_outline</i>
+                                                <i className="material-icons" style={{ "color": "#134E39", "fontSize": "13px", "marginRight": "5px", cursor: "pointer"}} onClick={handleForm}>add_circle_outline</i>
                                             </span>
+                                            <span style={{ "color": "#134E39", "fontSize": "13px", "marginLeft": "0px", marginTop: "-1px", cursor: "pointer" }} onClick={handleForm}>Nuevo comentario</span>
                                         </div>
                                     </div>
                                     {/* Este es el formulario para comentar */}
