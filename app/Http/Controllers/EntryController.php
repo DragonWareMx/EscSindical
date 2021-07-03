@@ -624,7 +624,18 @@ class EntryController extends Controller
 
     public function update($id, Request $request)
     {
-        Gate::authorize('haveaccess', 'ponente.perm');
+        if(Auth::user()->roles[0]->name=='Ponente'){
+            \Gate::authorize('haveaccess', 'ponente.perm');
+            $tId = Auth::user()->id;
+        }
+        else if(Auth::user()->roles[0]->name=='Administrador'){
+            \Gate::authorize('haveaccess', 'admin.perm');
+            $c = Course::findOrFail($request->curso);
+            $tId = $c->teacher_id;
+        } else {
+            return abort(403);
+        }
+
         $validated = $request->validate([
             'tipo' => 'required|in:Aviso,Informacion,Enlace,Archivo,Asignacion,Examen'
         ]);
@@ -641,7 +652,7 @@ class EntryController extends Controller
             ]);
             //comprobar curso y modulo
             $curso = Course::with('modules')->where([
-                ['teacher_id', Auth::user()->id,],
+                ['teacher_id', $tId,],
                 ['id', $request->curso]
             ])->first();
             if (!$curso) {
@@ -711,6 +722,7 @@ class EntryController extends Controller
                 return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha editado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
+                dd($e);
                 // something went wrong
                 return Redirect::back()->with('error', 'Ha ocurrido un error al intentar editar la entrada, inténtelo más tarde.');
             }
@@ -728,7 +740,7 @@ class EntryController extends Controller
 
             //comprobar curso y modulo
             $curso = Course::with('modules')->where([
-                ['teacher_id', Auth::user()->id,],
+                ['teacher_id', $tId,],
                 ['id', $request->curso]
             ])->first();
             if (!$curso) {
@@ -814,7 +826,7 @@ class EntryController extends Controller
 
             //comprobar curso y modulo
             $curso = Course::with('modules')->where([
-                ['teacher_id', Auth::user()->id,],
+                ['teacher_id', $tId,],
                 ['id', $request->curso]
             ])->first();
             if (!$curso) {
@@ -881,13 +893,14 @@ class EntryController extends Controller
                 'curso' => 'required|numeric|exists:courses,id',
                 'modulo' => 'required|numeric|exists:modules,id',
                 'titulo' =>  ['required', 'max:255'],
-                'archivos' => 'required|file',
+                'archivos' => 'nullable|file',
                 'visible' => 'required|boolean',
                 'modFiles' => 'required|boolean',
             ]);
+
             //comprobar curso y modulo
             $curso = Course::with('modules')->where([
-                ['teacher_id', Auth::user()->id,],
+                ['teacher_id', $tId,],
                 ['id', $request->curso]
             ])->first();
             if (!$curso) {
@@ -979,7 +992,7 @@ class EntryController extends Controller
 
             //comprobar curso y modulo
             $curso = Course::with('modules')->where([
-                ['teacher_id', Auth::user()->id,],
+                ['teacher_id', $tId,],
                 ['id', $request->curso]
             ])->first();
             if (!$curso) {
@@ -1099,7 +1112,7 @@ class EntryController extends Controller
 
             //comprobar curso y modulo
             $curso = Course::with('modules')->where([
-                ['teacher_id', Auth::user()->id,],
+                ['teacher_id', $tId,],
                 ['id', $request->curso]
             ])->first();
             if (!$curso) {

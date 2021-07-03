@@ -293,8 +293,8 @@ const Asignacion = ({ curso, modulo, asignacion, alumnos, nAlumnos, nEntregas, c
                             {asignacion.titulo}
 
                             {/* Link visible solo para el ponente, para editar asignación */}
-                            {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Ponente" &&
-                                <InertiaLink href="#!" className="link-edit-as"><i className="material-icons" style={{ "fontSize": "16px", "marginRight": "5px" }}>edit</i>Editar</InertiaLink>
+                            {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name != "Alumno" &&
+                                <InertiaLink href={route('entrada.editar',asignacion.id)} className="link-edit-as"><i className="material-icons" style={{ "fontSize": "16px", "marginRight": "5px" }}>edit</i>Editar</InertiaLink>
                             }
                         </div>
 
@@ -310,7 +310,7 @@ const Asignacion = ({ curso, modulo, asignacion, alumnos, nAlumnos, nEntregas, c
                     {/* Estatus de la asignación */}
                     <div className="col s12 txt-status-as">ESTATUS DE LA ASIGNACIÓN</div>
 
-                    {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Ponente" &&
+                    {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name != "Alumno" &&
                         <>
                             {/* VISTA PARA EL PONENTE */}
 

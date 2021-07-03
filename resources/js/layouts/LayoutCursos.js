@@ -105,7 +105,7 @@ const LayoutCursos = ({children}) => {
                         <div className="col s12">
                             {/* contenido del dropdown de modulos */}
                             <ul id="dropdown2" className="dropdown-content drop-size">
-                                {auth.roles['0'].name == 'Ponente' &&
+                                {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name != "Alumno" &&
                                     <li>
                                         <InertiaLink href={route('cursos.modulos', curso.id )} className='drop-text-format truncate'>
                                             <b>Editar modulos</b>

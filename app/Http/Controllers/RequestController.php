@@ -265,7 +265,7 @@ class RequestController extends Controller
         elseif (Auth::user()->roles[0]->name == 'Administrador') {
             \Gate::authorize('haveaccess', 'admin.perm');
         } else {
-            abort(403);
+            return abort(403);
         }
         //VALIDAMOS DATOS
         $validated = $request->validate([
@@ -400,7 +400,7 @@ class RequestController extends Controller
         else if(Auth::user()->roles[0]->name=='Administrador'){
             \Gate::authorize('haveaccess', 'admin.perm');
         } else {
-            abort(403);
+            return abort(403);
         }
         //VALIDAMOS DATOS
         $validated = $request->validate([

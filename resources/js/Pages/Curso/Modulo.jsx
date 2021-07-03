@@ -152,7 +152,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                   <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
                     <div className="col s12 valign-wrapper">
                       <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,aviso.id])} className="advice-text">
-                        {aviso.titulo}
+                        {aviso.titulo} {!aviso.visible && "(no visible)"}
                       </InertiaLink>
                       {/* dropdown para editar */}
                       { auth.roles[0].name!='Alumno' &&
@@ -195,7 +195,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                       </div>
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
                         <div className="col s12 valign-wrapper">
-                          <a href={entrada.files && entrada.files.length > 0 && "/storage/archivos_cursos/"+entrada.files[0].archivo} target="_blank" className="nombre-subrayado">{entrada.titulo}</a>
+                          <a href={entrada.files && entrada.files.length > 0 && "/storage/archivos_cursos/"+entrada.files[0].archivo} target="_blank" className="nombre-subrayado">{entrada.titulo} {!entrada.visible && "(no visible)"}</a>
                           {/* dropdown para editar */}
                           { auth.roles[0].name!='Alumno' &&
                             <div>
@@ -230,7 +230,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
                         <div className="col s12 valign-wrapper">
                           <a href={entrada.link} target="_blank" className="advice-text nombre-subrayado">
-                            {entrada.titulo}
+                            {entrada.titulo} {!entrada.visible && "(no visible)"}
                           </a>
                           {/* dropdown para editar */}
                           { auth.roles[0].name!='Alumno' &&
@@ -267,7 +267,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                       <div className="col s10 l11" style={{"paddingLeft":"0px"}}>
                         <div className="col s12 valign-wrapper">
                           <InertiaLink href={route('cursos.publicacion',[curso.id,modulo.id,entrada.id])} className="publicacion">
-                            {entrada.titulo}
+                            {entrada.titulo} {!entrada.visible && "(no visible)"}
                           </InertiaLink>
                           {/* dropdown para editar */}
                           { auth.roles[0].name != 'Alumno'  &&
@@ -323,7 +323,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                           </div>
                           <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
                             <div className="col s12 publicacion">
-                              <span className="publicacion">{actividad.titulo}</span> 
+                              <span className="publicacion">{actividad.titulo} {!actividad.visible && "(no visible)"}</span> 
                               <span className="calificacion">{auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Alumno" &&
                                <>{
                                 actividad.calificacion ? actividad.calificacion+'/' : 'Sin calificar/'
@@ -375,7 +375,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                           </div>
                           <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
                             <div className="col s12 publicacion">
-                              <span className="publicacion">{actividad.titulo}</span> 
+                              <span className="publicacion">{actividad.titulo} {!actividad.visible && "(no visible)"}</span> 
                               <span className="calificacion">{auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Alumno" &&
                                <>{
                                 actividad.calificacion ? actividad.calificacion+'/' : 'Sin calificar/'
