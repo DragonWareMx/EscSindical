@@ -621,7 +621,6 @@ class RequestController extends Controller
                         }
                     }';
                 $newLog->descripcion = 'El usuario '.Auth::user()->email.' rechazó la solicitud de '. $user->nombre .' para eliminar el curso '.$myRequest->course->nombre;
-
             }
             
             $myRequest->save();
