@@ -147,5 +147,71 @@ class UserSeeder extends Seeder
             'category_id' => '1',
             'unit_id' => 3
         ]);
+        // Estos 3 son los de prueba
+        DB::table('users')->insert([
+            'nombre' => 'Marina ',
+            'sexo' => 'm',
+            'apellido_p' => 'Guardado',
+            'apellido_m' => 'Godoy',
+            'email' =>  'administrador@sindical.com',
+            'password' => Hash::make('password123'),
+            'foto' =>  'avatarT.jpg',
+            'fecha_nac' => '1999/12/04',
+            'estado' => 'Michoacan',
+            'ciudad' => 'Morelia',
+            'colonia' => 'Torrenueva',
+            'calle' => 'Antonio Vázquez',
+            'num_ext' => '29',
+            'num_int' => '',
+            'cp' => '58129',
+            'tarjeton_pago' => 'tarjeton.pdf',
+            'matricula' => '17121050',
+            'category_id' => '1',
+            'unit_id' => 3
+        ]);
+
+        DB::table('users')->insert([
+            'nombre' => 'Oscar Andre',
+            'sexo' => 'h',
+            'apellido_p' => 'Pantoja',
+            'apellido_m' => 'Nivardy',
+            'email' =>  'ponente@sindical.com',
+            'password' => Hash::make('password123'),
+            'foto' =>  'avatarT.jpg',
+            'fecha_nac' => '1999/12/04',
+            'estado' => 'Michoacan',
+            'ciudad' => 'Morelia',
+            'colonia' => 'Torrenueva',
+            'calle' => 'Antonio Vázquez',
+            'num_ext' => '29',
+            'num_int' => '',
+            'cp' => '58129',
+            'tarjeton_pago' => 'tarjeton.pdf',
+            'matricula' => '17121051',
+            'category_id' => '1',
+            'unit_id' => 3
+        ]);
+
+        DB::table('users')->insert([
+            'nombre' => 'Lissa',
+            'sexo' => 'm',
+            'apellido_p' => 'Corral',
+            'apellido_m' => 'Romero',
+            'email' =>  'alumno@sindical.com',
+            'password' => Hash::make('password123'),
+            'foto' =>  'avatarT.jpg',
+            'fecha_nac' => '1999/12/04',
+            'estado' => 'Michoacan',
+            'ciudad' => 'Morelia',
+            'colonia' => 'Torrenueva',
+            'calle' => 'Antonio Vázquez',
+            'num_ext' => '29',
+            'num_int' => '',
+            'cp' => '58129',
+            'tarjeton_pago' => 'tarjeton.pdf',
+            'matricula' => '17121052',
+            'category_id' => '1',
+            'unit_id' => 3
+        ]);
     }
 }
