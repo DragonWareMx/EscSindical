@@ -93,7 +93,7 @@ const LayoutCursos = ({children}) => {
                                 </ul>
                             :
                                 <ul id='dropdown_LC' className='dropdown-content'>
-                                    <li><InertiaLink className="dropdown-text" href={route('cursos.edit',1)}><i className="material-icons">edit</i>Editar curso</InertiaLink></li>
+                                    <li><InertiaLink className="dropdown-text" href={route('cursos.edit',curso.id)}><i className="material-icons">edit</i>Editar curso</InertiaLink></li>
                                     <li className="divider" tabIndex="-1"></li>
                                     {/* <li><a className="dropdown-text" href="#!"><i className="material-icons">file_download</i>Descargar reporte del curso</a></li>
                                     <li className="divider" tabIndex="-1"></li> */}
