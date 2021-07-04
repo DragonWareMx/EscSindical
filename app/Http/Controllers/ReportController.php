@@ -29,7 +29,7 @@ class ReportController extends Controller
         \Gate::authorize('haveaccess', 'admin.perm');
 
         return Inertia::render('Reportes/Reportes', [
-            'reportes' => fn () => Report::join('users', 'reports.reported', '=', 'users.id')->select(DB::raw("concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) as nombre"), 'users.matricula', 'reports.id', 'reports.status', 'reports.comentario', 'reports.created_at')
+            'reportes' => fn () => Report::join('users', 'reports.reported', '=', 'users.id')->select(DB::raw("concat(users.nombre, ' ', users.apellido_p, ' ', users.apellido_m) as nombre"), 'users.matricula', 'users.deleted_at', 'reports.id', 'reports.status', 'reports.comentario', 'reports.created_at')
             ->when($request->sort, function ($query, $sort) use ($request) {
                 switch ($sort) {
                     case 'matricula':
@@ -101,7 +101,6 @@ class ReportController extends Controller
                         "concat(users.nombre, ' ', users.apellido_p) like '%" . $search . "%' "
                     );
             })
-            
             ->orderBy('created_at', 'desc')
             ->paginate(20)
             ->withQueryString(),
@@ -120,12 +119,21 @@ class ReportController extends Controller
         $reporte=Report::findOrFail($id);
 
         $reported=$reporte->reported;
-        $reported=User::join('role_user', 'users.id', '=', 'role_user.user_id')->join('roles', 'role_user.role_id', '=', 'roles.id')->select('users.id', 'users.nombre', 'users.apellido_p', 'users.apellido_m', 'role_user.role_id', 'roles.name')->findOrFail($reported);
-        
         $reporter=$reporte->reporter;
-        $reporter=User::join('role_user', 'users.id', '=', 'role_user.user_id')->join('roles', 'role_user.role_id', '=', 'roles.id')->select('users.id', 'users.nombre', 'users.apellido_p', 'users.apellido_m', 'role_user.role_id', 'roles.name')->findOrFail($reporter);
 
-        return Inertia::render('Reportes/VerReporte', ['reporte' => $reporte, 'reported' => $reported, 'reporter' => $reporter]);
+        $userReporter = User::withTrashed()->find($reporter);
+        $userReported = User::withTrashed()->find($reported);
+        if($userReporter->deleted_at !=null || $userReported->deleted_at !=null){
+            return \Redirect::back()->with('error','Alguno(s) de los usuarios de este reporte ha sido eliminado del sistema.');
+        }
+        else{
+            // dd('hay un usuario eliminado');
+            $reporter=User::join('role_user', 'users.id', '=', 'role_user.user_id')->join('roles', 'role_user.role_id', '=', 'roles.id')->select('users.id', 'users.nombre', 'users.apellido_p', 'users.apellido_m', 'role_user.role_id', 'roles.name', 'users.deleted_at')->findOrFail($reporter);
+            $reported=User::join('role_user', 'users.id', '=', 'role_user.user_id')->join('roles', 'role_user.role_id', '=', 'roles.id')->select('users.id', 'users.nombre', 'users.apellido_p', 'users.apellido_m', 'role_user.role_id', 'roles.name', 'users.deleted_at')->findOrFail($reported);
+            return Inertia::render('Reportes/VerReporte', ['reporte' => $reporte, 'reported' => $reported, 'reporter' => $reporter]);
+        }
+
+        
         
     }
 
