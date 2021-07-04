@@ -25,14 +25,14 @@ class TagSeeder extends Seeder
         ]);
         
         DB::table('tags')->insert([
-            'nombre' => 'Matemática',
+            'nombre' => 'Economía',
         ]);
 
         DB::table('tags')->insert([
-            'nombre' => 'Anime',
+            'nombre' => 'Primeros Auxilios',
         ]);
         DB::table('tags')->insert([
-            'nombre' => 'Artes marciales',
+            'nombre' => 'Anatomía',
         ]);
     }
 }

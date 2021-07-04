@@ -18,15 +18,15 @@ class EntrySeeder extends Seeder
         DB::table('entries')->insert([
             'titulo' => 'Viernes 28 de Mayo no hay clases',
             'tipo' => 'Aviso',
-            'contenido' => 'Debido a que se festejará el cumpleaños de mi gatito',
+            'contenido' => 'Debido a que estarán remodelando los laboratorios.',
             'visible'=>1,
             'created_at'=>'2021-05-18 02:23:23.000000',
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
-            'titulo' => 'Aviso parroquial',
+            'titulo' => 'Reunión para dudas sobre calificaciones',
             'tipo' => 'Aviso',
-            'contenido' => 'Favor de asistir a la junta del lunes 31 de mayo, se pasará lista.',
+            'contenido' => 'Favor de asistir a la junta del lunes 31 de mayo si tienes alguna duda respecto a la calificación de la última únidad.',
             'visible'=>1,
             'created_at'=>'2021-05-17 16:00:00.000000',
             'module_id'=>1,
@@ -56,7 +56,7 @@ class EntrySeeder extends Seeder
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
-            'titulo' => 'Video introducción a la otra materia',
+            'titulo' => 'Video introductorio del curso',
             'tipo' => 'Enlace',
             'link' => 'https://www.youtube.com/watch?v=SA0VNwx21m8&ab_channel=Matem%C3%A1ticasprofeAlexMatem%C3%A1ticasprofeAlexVerificada',
             'visible'=>1,
@@ -64,14 +64,14 @@ class EntrySeeder extends Seeder
             'module_id'=>2,
         ]);
         DB::table('entries')->insert([
-            'titulo' => 'Archivo necesario',
+            'titulo' => 'Origen de la Programación Orientada a Objetos',
             'tipo' => 'Archivo',
             'visible'=>1,
             'created_at'=>'2021-02-22 22:22:22.000000',
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
-            'titulo' => 'Archivo necesario 2',
+            'titulo' => 'Archivo necesario',
             'tipo' => 'Archivo',
             'visible'=>1,
             'created_at'=>'2021-05-27 19:15:32.000000',
@@ -80,7 +80,7 @@ class EntrySeeder extends Seeder
         DB::table('entries')->insert([
             'titulo' => 'Actividad 1',
             'tipo' => 'Asignacion',
-            'contenido' => 'Realizar esta asignación por favorsito.',
+            'contenido' => 'Resolver los siguientes ejercicios basandose en los ejemplos vistos en clase.',
             'visible'=>1,
             'fecha_de_apertura'=>'2021-05-11 23:35:46.000000',
             'fecha_de_entrega'=>'2021-05-31 23:59:59.000000',
@@ -90,9 +90,9 @@ class EntrySeeder extends Seeder
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
-            'titulo' => 'Actividad 1 pero de la otra clase',
+            'titulo' => 'Actividad 1',
             'tipo' => 'Asignacion',
-            'contenido' => 'Realizar esta asignación por favorsito pero dos.',
+            'contenido' => 'Elaborar un mapa mental de los conceptos vistos en clase.',
             'visible'=>1,
             'fecha_de_apertura'=>'2021-05-27 08:00:00.000000',
             'fecha_de_entrega'=>'2021-06-10 23:59:59.000000',
@@ -102,9 +102,9 @@ class EntrySeeder extends Seeder
             'module_id'=>2,
         ]);
         DB::table('entries')->insert([
-            'titulo' => 'Actividad 2 pero de la otra clase',
+            'titulo' => 'Actividad 2',
             'tipo' => 'Asignacion',
-            'contenido' => 'Realizar esta asignación por favorsito pero dos.',
+            'contenido' => 'Hacer un resumen del articulo publicado en los recursos de esta unidad.',
             'visible'=>1,
             'fecha_de_apertura'=>'2021-06-27 08:00:00.000000',
             'fecha_de_entrega'=>'2021-07-30 23:59:59.000000',
@@ -117,7 +117,7 @@ class EntrySeeder extends Seeder
             'titulo' => 'Examen departamental POO',
             'tipo' => 'Examen',
             'link' => 'https://docs.google.com/forms/d/e/1FAIpQLSeFT_V9H7XvR5Hnfzznk9F9vLawiUovvC3OQ5Fz-MdFQ5ZoJQ/viewform',
-            'contenido'=>'Examen departamental muy bonito.',
+            'contenido'=>'Examen departamental Unidad 1.',
             'visible'=>1,
             'fecha_de_apertura'=>'2021-05-27 08:00:00.000000',
             'fecha_de_entrega'=>'2021-05-27 09:00:00.000000',
@@ -127,10 +127,10 @@ class EntrySeeder extends Seeder
             'module_id'=>1,
         ]);
         DB::table('entries')->insert([
-            'titulo' => 'Examen departamental de la otra materia',
+            'titulo' => 'Examen departamental',
             'tipo' => 'Examen',
             'link' => 'https://docs.google.com/forms/d/e/1FAIpQLSeFT_V9H7XvR5Hnfzznk9F9vLawiUovvC3OQ5Fz-MdFQ5ZoJQ/viewform',
-            'contenido'=>'Examen departamental muy bonito pero de la otra materia.',
+            'contenido'=>'Examen departamental Unidad 2.',
             'visible'=>1,
             'fecha_de_apertura'=>'2021-05-27 08:00:00.000000',
             'fecha_de_entrega'=>'2021-05-27 23:59:59.000000',

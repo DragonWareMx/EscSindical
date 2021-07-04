@@ -27,12 +27,12 @@ class CourseSeeder extends Seeder
             'valor_curricular' => '0',
             'tipo_acceso' => 'Automática',
             'estatus' => 'Activo',
-            'descripcion' => 'En este curso aprenderás a programar, usaremos el lenguaje Java y seremos todos muy felices',
+            'descripcion' => 'La programación Orientada a objetos se define como un paradigma de la programación, una manera de programar específica, donde se organiza el código en unidades denominadas clases, de las cuales se crean objetos que se relacionan entre sí para conseguir los objetivos de las aplicaciones.',
             'teacher_id' => '3',
         ]);
 
         DB::table('courses')->insert([
-            'nombre' => 'Curso facilito de React y laravel',
+            'nombre' => 'Curso de React y Laravel',
             'fecha_inicio' => '2021/05/20',
             'fecha_final' => '2021/11/18',
             'inicio_inscripciones' => '2021/05/01',
@@ -42,27 +42,27 @@ class CourseSeeder extends Seeder
             'valor_curricular' => '1',
             'tipo_acceso' => 'Automática',
             'estatus' => 'Activo',
-            'descripcion' => 'Laravel es un framework muy usado en la actualidad, convinado con React puede crear aplicaciones realmente poderosas y con interfaces muy agradables para el usuario final',
+            'descripcion' => 'Laravel es un framework muy usado en la actualidad, convinado con React puede crear aplicaciones realmente poderosas y con interfaces muy agradables para el usuario final.',
             'teacher_id' => '3',
         ]);
 
         DB::table('courses')->insert([
-            'nombre' => 'Curso facilito de Django',
-            'fecha_inicio' => '2021/05/20',
-            'fecha_final' => '2021/05/27',
+            'nombre' => 'Finanzas básicas',
+            'fecha_inicio' => '2021/05/15',
+            'fecha_final' => '2021/06/27',
             'inicio_inscripciones' => '2021/05/01',
-            'fecha_limite' => '2021/05/15',
+            'fecha_limite' => '2021/05/20',
             'link' => 'https://facebook.com',
             'max' => '100',
             'valor_curricular' => '1',
             'tipo_acceso' => 'Automática',
             'estatus' => 'Terminado',
-            'descripcion' => 'Django es un framework muy potente en la actualidad, además de ser el favorito de los fanáticos de Python. Entra a este curso y descúbrelo',
-            'teacher_id' => '3',
+            'descripcion' => 'En este curso aprenderás las bases para administrar tus propias finanzas de una manera fácil y eficaz.',
+            'teacher_id' => '8',
         ]);
 
         DB::table('courses')->insert([
-            'nombre' => 'Aprende a hacer un kamehameha, la técnica de Gokú',
+            'nombre' => 'Primeros auxilios básicos',
             'fecha_inicio' => '2021/05/20',
             'fecha_final' => '2021/06/30',
             'inicio_inscripciones' => '2021/05/01',
@@ -72,31 +72,57 @@ class CourseSeeder extends Seeder
             'valor_curricular' => '1',
             'tipo_acceso' => 'Sólo yo',
             'estatus' => 'Activo',
-            'descripcion' => '¿Te gustaría conocer los secretos del saiyajin más fuerte del universo?, este es tu curso',
-            'teacher_id' => '3',
+            'descripcion' => 'Conocer algunas técnicas básicas de primeros puede salvar tu vida o la de alguien más, en este curso conoceras algunas de estas técnicas y como aplicarlas adecuadamente.',
+            'teacher_id' => '8',
         ]);
 
         DB::table('course_user')->insert([
             'course_id' => 1,
-            'user_id' => 4
+            'user_id' => 4,
         ]);
 
         DB::table('course_user')->insert([
             'course_id' => 2,
-            'user_id' => 4
+            'user_id' => 5,
         ]);
 
         DB::table('course_user')->insert([
             'course_id' => 3,
-            'user_id' => 4,
+            'user_id' => 6,
             'calificacion_final' => 92,
         ]);
 
         DB::table('course_user')->insert([
             'course_id' => 1,
-            'user_id' => 5,
-            'calificacion_final' => 23,
+            'user_id' => 9,
+            'calificacion_final' => 80,
         ]);
+
+        DB::table('course_user')->insert([
+            'course_id' => 2,
+            'user_id' => 10,
+        ]);
+
+        DB::table('course_user')->insert([
+            'course_id' => 1,
+            'user_id' => 11,
+        ]);
+
+        DB::table('course_user')->insert([
+            'course_id' => 4,
+            'user_id' => 12,
+        ]);
+
+        DB::table('course_user')->insert([
+            'course_id' => 3,
+            'user_id' => 13,
+        ]);
+
+        DB::table('course_user')->insert([
+            'course_id' => 1,
+            'user_id' => 14,
+        ]);
+
 
         DB::table('course_user')->insert([
             'course_id' => 1,
@@ -113,16 +139,12 @@ class CourseSeeder extends Seeder
             'course_id' => 1
         ]);
         DB::table('course_tag')->insert([
-            'tag_id' => 3,
-            'course_id' => 1
-        ]);
-        DB::table('course_tag')->insert([
             'tag_id' => 1,
             'course_id' => 2
         ]);
         DB::table('course_tag')->insert([
-            'tag_id' => 1,
-            'course_id' => 3
+            'tag_id' => 2,
+            'course_id' => 2
         ]);
         DB::table('course_tag')->insert([
             'tag_id' => 3,
