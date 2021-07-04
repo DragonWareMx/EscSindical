@@ -259,7 +259,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                             </div>
 
                             {user.deleted_at &&
-                            <div className="errores">
+                            <div className="errores col s12">
                                 <ul>
                                     <li className="alert_message">
                                         <div className="col s11">Este usuario ha sido eliminado.</div>
