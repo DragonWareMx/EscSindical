@@ -19,7 +19,7 @@ class DropSeeder extends Seeder
             'course_id'=>1,
             'user_id'=>4,
             'status'=>'En espera',
-            'descripcion'=>'El profe es muy aburrido'
+            'descripcion'=>'El profe falta regularmente a clases'
         ]);
         DB::table('drop_requests')->insert([
             'course_id'=>1,

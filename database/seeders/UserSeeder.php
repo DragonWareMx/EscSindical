@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'nombre' => 'Oscar',
+            'nombre' => 'Agustín',
             'sexo' => 'h',
             'apellido_p' => 'Huerta',
             'apellido_m' => 'Garcia',
@@ -127,10 +127,10 @@ class UserSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'nombre' => 'Oscar Andre',
+            'nombre' => 'Adolfo',
             'sexo' => 'h',
-            'apellido_p' => 'Pantoja',
-            'apellido_m' => 'de Nivardy',
+            'apellido_p' => 'Lemus',
+            'apellido_m' => 'Magaña',
             'email' =>  'estudiante3@dragonware.com.mx',
             'password' => Hash::make('viledruid9000'),
             'foto' =>  'avatar4.jpg',
@@ -211,6 +211,118 @@ class UserSeeder extends Seeder
             'tarjeton_pago' => 'tarjeton.pdf',
             'matricula' => '17121052',
             'category_id' => '1',
+            'unit_id' => 3
+        ]);
+
+
+
+        DB::table('users')->insert([
+            'nombre' => 'Alan',
+            'sexo' => 'h',
+            'apellido_p' => 'Cardiel',
+            'apellido_m' => 'Tafolla',
+            'email' =>  'estudiante5@dragonware.com.mx',
+            'password' => Hash::make('viledruid9000'),
+            'foto' =>  'avatar4.jpg',
+            'fecha_nac' => '1999/12/04',
+            'estado' => 'Michoacan',
+            'ciudad' => 'Morelia',
+            'colonia' => 'Agua Clara',
+            'calle' => 'Ignacio Moctezuma',
+            'num_ext' => '159',
+            'num_int' => '',
+            'cp' => '58189',
+            'tarjeton_pago' => 'tarjeton.pdf',
+            'matricula' => '17122000',
+            'category_id' => '1',
+            'unit_id' => 3
+        ]);
+
+        DB::table('users')->insert([
+            'nombre' => 'Luis Eduardo',
+            'sexo' => 'h',
+            'apellido_p' => 'Martínez',
+            'apellido_m' => 'Morales',
+            'email' =>  'estudiante6@dragonware.com.mx',
+            'password' => Hash::make('viledruid9000'),
+            'foto' =>  'avatar4.jpg',
+            'fecha_nac' => '1999/12/04',
+            'estado' => 'Michoacan',
+            'ciudad' => 'Morelia',
+            'colonia' => 'Agua Clara',
+            'calle' => 'Ignacio Moctezuma',
+            'num_ext' => '159',
+            'num_int' => '',
+            'cp' => '58189',
+            'tarjeton_pago' => 'tarjeton.pdf',
+            'matricula' => '17122001',
+            'category_id' => '1',
+            'unit_id' => 3
+        ]);
+
+        DB::table('users')->insert([
+            'nombre' => 'Karol',
+            'sexo' => 'h',
+            'apellido_p' => 'Piñón',
+            'apellido_m' => 'Campos',
+            'email' =>  'estudiante7@dragonware.com.mx',
+            'password' => Hash::make('viledruid9000'),
+            'foto' =>  'avatar4.jpg',
+            'fecha_nac' => '1999/12/04',
+            'estado' => 'Michoacan',
+            'ciudad' => 'Morelia',
+            'colonia' => 'Agua Clara',
+            'calle' => 'Ignacio Moctezuma',
+            'num_ext' => '159',
+            'num_int' => '',
+            'cp' => '58189',
+            'tarjeton_pago' => 'tarjeton.pdf',
+            'matricula' => '17122002',
+            'category_id' => '2',
+            'unit_id' => 3
+        ]);
+
+        DB::table('users')->insert([
+            'nombre' => 'Ariel',
+            'sexo' => 'h',
+            'apellido_p' => 'Lara',
+            'apellido_m' => 'Pedraza',
+            'email' =>  'estudiante8@dragonware.com.mx',
+            'password' => Hash::make('viledruid9000'),
+            'foto' =>  'avatar4.jpg',
+            'fecha_nac' => '1999/12/04',
+            'estado' => 'Michoacan',
+            'ciudad' => 'Morelia',
+            'colonia' => 'Agua Clara',
+            'calle' => 'Ignacio Moctezuma',
+            'num_ext' => '159',
+            'num_int' => '',
+            'cp' => '58189',
+            'tarjeton_pago' => 'tarjeton.pdf',
+            'matricula' => '17122003',
+            'category_id' => '2',
+            'unit_id' => 3
+        ]);
+
+        DB::table('users')->insert([
+            'nombre' => 'David',
+            'sexo' => 'h',
+            'apellido_p' => 'Zavala',
+            'apellido_m' => 'Moreno',
+            'email' =>  'estudiante9@dragonware.com.mx',
+            'password' => Hash::make('viledruid9000'),
+            'foto' =>  'avatar4.jpg',
+            'fecha_nac' => '1999/12/04',
+            'estado' => 'Michoacan',
+            'ciudad' => 'Morelia',
+            'colonia' => 'Agua Clara',
+            'calle' => 'Ignacio Moctezuma',
+            'num_ext' => '159',
+            'num_int' => '',
+            'cp' => '58189',
+            'tarjeton_pago' => 'tarjeton.pdf',
+            'matricula' => '17122004',
+            'category_id' => '2',
             'unit_id' => 3
         ]);
     }
