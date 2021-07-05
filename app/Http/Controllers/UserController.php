@@ -731,6 +731,8 @@ class UserController extends Controller
             {
                 \Storage::delete($tarjeton_pago);
             }
+
+            dd($e);
             return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
         }
     }
