@@ -28,7 +28,7 @@ class CourseSeeder extends Seeder
             'tipo_acceso' => 'Automática',
             'estatus' => 'Activo',
             'descripcion' => 'La programación Orientada a objetos se define como un paradigma de la programación, una manera de programar específica, donde se organiza el código en unidades denominadas clases, de las cuales se crean objetos que se relacionan entre sí para conseguir los objetivos de las aplicaciones.',
-            'teacher_id' => '3',
+            'teacher_id' => '8',
         ]);
 
         DB::table('courses')->insert([
@@ -88,7 +88,7 @@ class CourseSeeder extends Seeder
 
         DB::table('course_user')->insert([
             'course_id' => 3,
-            'user_id' => 6,
+            'user_id' => 9,
             'calificacion_final' => 92,
         ]);
 
