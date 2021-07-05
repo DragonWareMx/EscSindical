@@ -746,6 +746,7 @@ class CourseController extends Controller
                 $newRequest->course_id = $id;
                 $newRequest->user_id = Auth::id();
                 $newRequest->descripcion = $request->descripcion;
+                $newRequest->status = "En espera";
 
                 $newRequest->save();
                 //SE CREA EL LOG
@@ -797,7 +798,7 @@ class CourseController extends Controller
                 $newRequest->course_id = $id;
                 $newRequest->user_id = Auth::id();
                 $newRequest->comentario = $request->descripcion;
-                $newRequest->status = 'Pendiente';
+                $newRequest->status = 'En espera';
                 $newRequest->save();
                 //SE CREA EL LOG
 
@@ -824,6 +825,7 @@ class CourseController extends Controller
             }
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
         }
     }
