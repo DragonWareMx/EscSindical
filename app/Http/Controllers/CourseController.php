@@ -1386,7 +1386,7 @@ class CourseController extends Controller
     public function calificaciones($id)
     {
         if(Auth::user()->roles[0]->name=='Administrador'){
-            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id')->select('id', 'nombre', 'teacher_id')->findOrFail($id);
+            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id,foto')->select('id', 'nombre', 'teacher_id')->findOrFail($id);
             
             return Inertia::render('Curso/Calificaciones', [
                 'curso' => $curso
@@ -1396,7 +1396,7 @@ class CourseController extends Controller
             Gate::authorize('haveaccess', 'ponente.perm');
 
             //verificar que el ponente sea dueño del curso
-            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id')->select('id', 'nombre', 'teacher_id')->findOrFail($id);
+            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id,foto')->select('id', 'nombre', 'teacher_id')->findOrFail($id);
             if (Auth::id() != $curso->teacher_id) {
                 return abort(403);
             }
