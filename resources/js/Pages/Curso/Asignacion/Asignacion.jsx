@@ -597,7 +597,7 @@ const Asignacion = ({ curso, modulo, asignacion, alumnos, nAlumnos, nEntregas, c
                                         <div className="col s12 padding-0px row-extatus">
                                             <div className="col s12 m3 l3 xl3 txt-title-estatus">Comentarios</div>
                                             <div className="col s12 m9 l9 xl9 txt-content-estatus">
-                                                {asignacion.users[0].pivot.comentario_retroalimentacion}
+                                                <div dangerouslySetInnerHTML={{ __html: asignacion.users[0].pivot.comentario_retroalimentacion }} />
                                             </div>
                                         </div>
                                     }
