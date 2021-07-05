@@ -825,7 +825,6 @@ class CourseController extends Controller
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar procesar tu solicitud, inténtelo más tarde.');
         }
     }
