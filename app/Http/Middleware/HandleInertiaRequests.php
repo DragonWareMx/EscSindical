@@ -53,10 +53,6 @@ class HandleInertiaRequests extends Middleware
                 ? $request->user()
                 : null,
 
-            'auth.employee' => fn () => $request->user()
-                ? $request->user()->employee()->get()
-                : null,
-
             // Lazily
             'auth.roles' => fn () => $request->user() ?
                 $request->user()->roles()->get()
