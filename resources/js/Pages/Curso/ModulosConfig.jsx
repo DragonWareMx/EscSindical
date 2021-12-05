@@ -16,7 +16,7 @@ import { Modal } from 'bootstrap';
 import Sortable from 'sortablejs';
 
 const ModulosConfig = ({curso}) => {
-    
+
     function initializeMaterialize(){
         var elems = document.querySelectorAll('.dropdown-trigger');
         var instances = M.Dropdown.init(elems);
@@ -50,7 +50,7 @@ const ModulosConfig = ({curso}) => {
         });
     }
 
-    
+
 
     useEffect(() => {
         initializeMaterialize();
@@ -66,7 +66,7 @@ const ModulosConfig = ({curso}) => {
                 </div>
             </div>
             <ul id="items" className="col s12">
-            {curso.modules && curso.modules.length>0 && 
+            {curso.modules && curso.modules.length>0 &&
                 <>
                     {curso.modules.map((modulo) =>
                         <li data-id={modulo.id} key={modulo.id} className="valign-wrapper">
@@ -83,7 +83,7 @@ const ModulosConfig = ({curso}) => {
                                             <li><a className="dropdown-text modal-trigger" href={route('module.edit',modulo.id)}><i className="material-icons">edit</i>Editar módulo</a></li>
                                             <li><a className="dropdown-text modal-trigger" data-target={'modalEliminar'+modulo.nombre} href=""><i className="material-icons">clear</i>Eliminar módulo</a></li>
                                         </ul>
-                                    
+
                                     </div>
                                     <div className="col s12 txt-titulo-objetivo">OBJETIVO</div>
                                     <div className="col s12 txt-objetivo">{modulo.objetivo}</div>
@@ -106,18 +106,18 @@ const ModulosConfig = ({curso}) => {
                     <li data-id="2" className="list-group-item valign-wrapper red"><span className="material-icons my-handle">home</span>item 2</li>
                     <li data-id="3" className="list-group-item valign-wrapper purple"><span className="material-icons my-handle">home</span>item 3</li>
                 </ul>
-                
+
             </div> */}
-            
+
 
         </div>
-        
+
     </>
   )
 }
 
 ModulosConfig.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="Módulos">
+  <Layout title="Formación XX Mich - Curso" pageTitle="Módulos">
     <LayoutCursos children={page} />
   </Layout>
 )

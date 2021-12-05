@@ -127,6 +127,6 @@ const BuscarCursos = ({ cursos, cursosParaTi }) => {
     )
 }
 
-BuscarCursos.layout = page => <Layout children={page} title="Escuela Sindical - Buscar Cursos" pageTitle="BUSCAR CURSOS" />
+BuscarCursos.layout = page => <Layout children={page} title="Formación XX Mich - Buscar Cursos" pageTitle="BUSCAR CURSOS" />
 
 export default BuscarCursos

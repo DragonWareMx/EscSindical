@@ -179,11 +179,11 @@ const Usuarios = ({ categories, regimes, units }) => {
 
                     <div className="col s12 head-login forgot left-align">
                         <div className="left">
-                            <div className="titulo1">Escuela Sindical</div>
+                            <div className="titulo1">Formación XX Mich</div>
                             <div className="titulo2">Sección XX Michoacán</div>
                         </div>
                         <div className="right">
-                            <img src="img/imagenes/LogoSeccional.png" alt="Escuela Sindical" width="80px" />
+                            <img src="img/imagenes/LogoSeccional.png" alt="Formación XX Mich" width="80px" />
                         </div>
                     </div>
 
@@ -197,10 +197,10 @@ const Usuarios = ({ categories, regimes, units }) => {
                 <div className="col s12 m9 l8 div-blanco-form" style={{ padding: '4%', paddingBottom: '0%', backgroundColor: 'white' }}>
                     <div className="col s12 head-login">
 
-                        <img src="img/imagenes/LogoSeccional.png" className="col" alt="Escuela Sindical" width="80px" style={{ display: 'none' }} />
+                        <img src="img/imagenes/LogoSeccional.png" className="col" alt="Formación XX Mich" width="80px" style={{ display: 'none' }} />
 
                         <div className="escHead col" style={{ display: 'none' }}>
-                            Escuela Sindical Sección XX Michoacán
+                            Formación XX Mich Sección XX Michoacán
                         </div>
 
                         <div className="row tabs-responsive-register" style={{ width: '100%' }}>
@@ -488,7 +488,7 @@ const Usuarios = ({ categories, regimes, units }) => {
                         </div>
                     </form>
                     <div className="col s12 footer-login" style={{ padding: '15px' }}>
-                        © 2021 Escuela Sindical | &nbsp; <a href="https://dragonware.com.mx" target="_blank"> Desarrollado por
+                        © 2021 Formación XX Mich | &nbsp; <a href="https://dragonware.com.mx" target="_blank"> Desarrollado por
                             DragonWare
                             <img src="img/imagenes/dragonWare.png" alt="DragonWare" width="22px" /></a>
                     </div>

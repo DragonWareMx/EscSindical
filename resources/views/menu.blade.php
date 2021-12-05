@@ -17,11 +17,11 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-    
+
     <title>@yield('title')</title>
 </head>
 <body>
-    
+
     <!-- derecha -->
     <div>
         <!-- bara de busqueda superior -->
@@ -50,7 +50,7 @@
                 <input type="text" class="main-bar-input" placeholder="Ingresa tu búsqueda" style="color:white;">
               </div>
             </div>
-            
+
           </form> --}}
 
           {{-- Parte derecha de la barra superior--}}
@@ -61,7 +61,7 @@
             </div>
             <div class="main-bar-right-rightSide">
               <div> <span class="main-username">Monse Jocabed Marín Piñón</span> </div>
-              <img class="main-userimage" src="{{ asset('/imgPrueba/profile.jpg') }}" 
+              <img class="main-userimage" src="{{ asset('/imgPrueba/profile.jpg') }}"
                   alt="">
             </div>
           </div>
@@ -69,13 +69,13 @@
 
         <!-- contenido -->
         <div class="main-bar-background"></div>
-    
-        
-        
-        
+
+
+
+
         <!-- contenido -->
         <div class="content">
-          
+
             <div class="row">
                 <div class="col s12 m6">
                   <div class="card blue-grey darken-1">
@@ -136,7 +136,7 @@
                   </div>
                 </div>
               </div>
-    
+
         </div>
     </div>
 
@@ -149,7 +149,7 @@
                 <img src="img/imagenes/Classroom-cuate.svg" style="position: relative;height:150px">
               </div>
               <div class="menu-profile-info">
-                <img style="margin-left:10px;" src="{{ asset('/img/imagenes/1703234.png') }}" class="main-userimage"> 
+                <img style="margin-left:10px;" src="{{ asset('/img/imagenes/1703234.png') }}" class="main-userimage">
                 <div class="profile-info-name truncate">Monse Jocabed Marín Píñón</div>
               </div>
             </div>
@@ -172,7 +172,7 @@
               <img src="/img/imagenes/LogoNacional2.png" alt="logo">
             </div>
             <div class="col s7 valign-wrapper" style="height: 64px;">
-              Escuela Sindical
+              Formación XX Mich
             </div>
           </div>
         </ul>
@@ -207,11 +207,11 @@
       <div class="col s12">
         <i class="material-icons icono-menu-compacto icono-menu">logout</i>
       </div>
-      
+
       <div class="col s12 center-align" style="margin-top: 10px;" >
         <a onclick="openNav()"  data-target="slide-out" class="btn-floating btn-medium waves-effect waves-light sidenav-trigger" style="background-color: #108058"><i class="material-icons">arrow_forward</i></a>
       </div>
-    </div>   
+    </div>
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -248,6 +248,6 @@
     openNav();
     closeNav();
   }
-  
+
 </script>
 </html>

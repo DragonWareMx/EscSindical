@@ -796,6 +796,6 @@ const Crear = ({ cursos }) => {
     )
 }
 
-Crear.layout = page => <Layout children={page} title="Escuela Sindical - Entrada" pageTitle="AGREGAR ENTRADA" />
+Crear.layout = page => <Layout children={page} title="Formación XX Mich - Entrada" pageTitle="AGREGAR ENTRADA" />
 
 export default Crear

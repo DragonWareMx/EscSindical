@@ -119,7 +119,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
                   <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
                     {/* titulo de la asignacion y calificacion */}
                     <div className="col s12 publicacion">
-                      <span className="publicacion">{pendiente.titulo}</span> 
+                      <span className="publicacion">{pendiente.titulo}</span>
                       <span className="calificacion">0/{pendiente.max_calif}</span>
                     </div>
                     {/* nombre del modulo y fecha de vencimiento*/}
@@ -150,7 +150,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
         </div>
         {/* contenedor que se muestra y oculta */}
         <div id="completado" className="col s12 hide" style={{"marginTop":"5px"}}>
-          
+
           {/* ejemplo de asignacion */}
           {realizadas && realizadas.length > 0 && realizadas.map((realizada, index)=>
           <InertiaLink href={route('cursos.asignacion',[curso.id, realizada.module_id, realizada.id])} key={index}>
@@ -165,7 +165,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
                   <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
                     {/* titulo de la asignacion y calificacion */}
                     <div className="col s12 publicacion">
-                      <span className="publicacion">{realizada.titulo}</span> 
+                      <span className="publicacion">{realizada.titulo}</span>
                       <span className="calificacion">{realizada.calificacion ? realizada.calificacion : 'Sin calificar'}/{realizada.max_calif}</span>
                     </div>
                     {/* nombre del modulo y fecha de vencimiento*/}
@@ -190,7 +190,7 @@ const Informacion = ({curso, realizadas, pendientes}) => {
 }
 
 Informacion.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="Curso">
+  <Layout title="Formación XX Mich - Curso" pageTitle="Curso">
     <LayoutCursos children={page} />
   </Layout>
 )

@@ -441,7 +441,7 @@ const Editar = ({ cursos, entry }) => {
             <div className="">
                 <div className="row">
                     <div className="col s12">
-                        <div className="card"> 
+                        <div className="card">
                             <div className="card-content card-entradas">
                                 <div className="col s12 m9 l10 xl10 card-title left" style={{marginTop:"15px","padding":"0px 0px 0px 0px","display":"flex","alignItems":"center"}}>
                                     {/* regresar */}
@@ -983,6 +983,6 @@ const Editar = ({ cursos, entry }) => {
     )
 }
 
-Editar.layout = page => <Layout children={page} title="Escuela Sindical - Entrada" pageTitle="EDITAR ENTRADA" />
+Editar.layout = page => <Layout children={page} title="Formación XX Mich - Entrada" pageTitle="EDITAR ENTRADA" />
 
 export default Editar

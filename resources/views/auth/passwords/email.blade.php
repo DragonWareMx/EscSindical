@@ -38,11 +38,11 @@
             </div>
             <div class="col s12 head-login forgot left-align">
                 <div class="left">
-                    <div class="titulo1">Escuela Sindical</div>
+                    <div class="titulo1">Formación XX Mich</div>
                     <div class="titulo2">Sección XX Michoacán</div>
                 </div>
                 <div class="right">
-                    <img src="{{ asset('img/imagenes/LogoSeccional.png') }}" alt="Escuela Sindical" width="80px">
+                    <img src="{{ asset('img/imagenes/LogoSeccional.png') }}" alt="Formación XX Mich" width="80px">
                 </div>
             </div>
             <div class="col s12">
@@ -52,11 +52,11 @@
         <div class="divleft col s12 m9 l8">
             <div class="col hide-on-med-and-up s12 head-login">
                 <div class="left">
-                    <div class="titulo1">Escuela Sindical</div>
+                    <div class="titulo1">Formación XX Mich</div>
                     <div class="titulo2">Sección XX Michoacán</div>
                 </div>
                 <div class="right">
-                    <img src="{{ asset('img/imagenes/LogoSeccional.png') }}" alt="Escuela Sindical" width="121px">
+                    <img src="{{ asset('img/imagenes/LogoSeccional.png') }}" alt="Formación XX Mich" width="121px">
                 </div>
             </div>
             <div class="col hide-on-small-only s12 head-login">
@@ -95,7 +95,7 @@
             </div>
 
             <div class="col s12 footer-login">
-                © 2021 Escuela Sindical | &nbsp; <a href="https://dragonware.com.mx" target="_blank"> Desarrollado por
+                © 2021 Formación XX Mich | &nbsp; <a href="https://dragonware.com.mx" target="_blank"> Desarrollado por
                     DragonWare
                     <img src="{{ asset('img/imagenes/dragonWare.png') }}" alt="DragonWare" width="22px"></a>
             </div>

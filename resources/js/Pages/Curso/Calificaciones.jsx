@@ -34,7 +34,7 @@ const Calificaciones = ({curso, request}) => {
         if(curso.users && curso.users.length > 0 && curso.modules && curso.modules.length > 0){
             //se crea un json vacio de usuarios
             var users = {}
-            
+
             //se crea un json vacio para las calificaciones finales
             var calificacionFinal = {}
 
@@ -104,7 +104,7 @@ const Calificaciones = ({curso, request}) => {
             //se crea la calificacion del usuario
             calificacion[user] = modules
         }
-        
+
         setValues(values => ({
             ...values,
             calificacion: calificacion
@@ -117,7 +117,7 @@ const Calificaciones = ({curso, request}) => {
 
         //se crea o actualiza la calificacion final
         calificacion_final[user] = value
-        
+
         setValues(values => ({
             ...values,
             calificacion_final: calificacion_final
@@ -137,7 +137,7 @@ const Calificaciones = ({curso, request}) => {
   return (
     <>
         <div className="row">
-            {errors && Object.keys(errors).length > 0 && 
+            {errors && Object.keys(errors).length > 0 &&
                 <div className="col s12">
                     <div className="errores">
                         <ul>
@@ -145,7 +145,7 @@ const Calificaciones = ({curso, request}) => {
                                 <div className="col s11">Alguna calificación es incorrecta.</div>
                                 <div onClick={() => {closeAlert('alert_error')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
                             </li>
-                        </ul>  
+                        </ul>
                     </div>
                 </div>
             }
@@ -168,7 +168,7 @@ const Calificaciones = ({curso, request}) => {
                         {curso.users.map(user => (
                             <tr key={user.id}>
                                 <td style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center"}}><img src={user.foto ? "/storage/fotos_perfil/"+user.foto : "/storage/fotos_perfil/avatar1.jpg"} className="img-td-entregas" />{user.nombre} {user.apellido_p} {user.apellido_m}</td>
-                                
+
                                 {curso.modules && curso.modules.length > 0 && curso.modules.map((module) => (
                                     <td key={user.id + " " + module.id}><input type="number" className="inputs-calif" min="0" max="100" step={0.01} disabled={!editar} value={values.calificacion[user.id] && values.calificacion[user.id][module.id] && values.calificacion[user.id][module.id]} onChange={e => {handleChange(user.id, module.id, e)}} placeholder="-"/></td>
                                 ))
@@ -188,7 +188,7 @@ const Calificaciones = ({curso, request}) => {
                 <a className="no-uppercase" style={{"marginRight":"30px","fontWeight":"500","fontSize":"14px","lineHeight":"17px","color":"#8C8C8C","cursor":"pointer"}} onClick={e => {setEditar(false); Inertia.visit(route('cursos.calificaciones.store', curso.id),{preserveScroll: true, preserveState: false});}}>
                     Cancelar
                 </a>
-                
+
                 <button type="submit" className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
                     Guardar
                     <i className="material-icons right">save</i>
@@ -197,7 +197,7 @@ const Calificaciones = ({curso, request}) => {
             }
 
             {!editar &&
-            <div className="col s12 right paddingRight-0px" id="btn-editar" onClick={e => {setEditar(true)}}> 
+            <div className="col s12 right paddingRight-0px" id="btn-editar" onClick={e => {setEditar(true)}}>
                 <a className="btn-primary btn waves-effect waves-teal btn-login right no-uppercase" style={{"height": "40px"}}>
                     Editar
                     <i className="material-icons right">edit</i>
@@ -207,20 +207,20 @@ const Calificaciones = ({curso, request}) => {
             </>
             }
             </form>
-            
-            {curso && curso.users.length == 0 && 
+
+            {curso && curso.users.length == 0 &&
                 <div className="col s12 right paddingRight-0px">
                     No hay alumnos inscritos en el curso
                 </div>
             }
-            
+
         </div>
     </>
   )
 }
 
 Calificaciones.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="Calificaciones">
+  <Layout title="Formación XX Mich - Curso" pageTitle="Calificaciones">
     <LayoutCursos children={page} />
   </Layout>
 )

@@ -50,7 +50,7 @@ function isUrl(...urls) {
 // }
 
 
-const LayoutCursos = ({children}) => {   
+const LayoutCursos = ({children}) => {
 
     const {curso} =usePage().props;
     const { auth } = usePage().props;
@@ -64,21 +64,21 @@ const LayoutCursos = ({children}) => {
     }
 
     return (
-        <>  
+        <>
             <div className="row contenedor">
                <div className="card darken-1" style={{"padding":"5px 25px"}}>
                <Alertas />
                    <div className="card-content row valign-wrapper" style={{"padding":"10px","marginBottom":"0px"}}>
-                        <div className="col s11 valign-wrapper LC_title">{curso.nombre}&nbsp; 
+                        <div className="col s11 valign-wrapper LC_title">{curso.nombre}&nbsp;
                             {curso.valor_curricular == 1 &&
                                 <i className="material-icons tooltipped" data-position="top" data-tooltip="Curso con valor curricular">verified</i>
                             }
-                        </div>   
+                        </div>
                         <div className="col s1 LC_more"><a className='dropdown-trigger' href='#' data-target='dropdown_LC'><i className="material-icons" style={{"color":"#727272", "fontSize":"22px"}}>more_vert</i></a></div>
                             {
-                                auth.roles['0'].name == 'Alumno' ? 
+                                auth.roles['0'].name == 'Alumno' ?
                                 <ul id='dropdown_LC' className='dropdown-content'>
-                                    {curso.estatus == "Terminado" 
+                                    {curso.estatus == "Terminado"
                                     ?
                                     <div>
                                     {/* <li><a className="dropdown-text" href="#"><i className="material-icons">error_outline</i>Descargar certificado</a></li>
@@ -87,9 +87,9 @@ const LayoutCursos = ({children}) => {
                                     :
                                     <div>
                                     <li><a className="dropdown-text modal-trigger" data-target="modalSolicitudBaja" href="#"><i className="material-icons">error_outline</i>Solicitar baja del curso</a></li>
-                                    <li className="divider" tabIndex="-1"></li> 
+                                    <li className="divider" tabIndex="-1"></li>
                                     </div>
-                                    }  
+                                    }
                                 </ul>
                             :
                                 <ul id='dropdown_LC' className='dropdown-content'>
@@ -97,9 +97,9 @@ const LayoutCursos = ({children}) => {
                                     <li className="divider" tabIndex="-1"></li>
                                     {/* <li><a className="dropdown-text" href="#!"><i className="material-icons">file_download</i>Descargar reporte del curso</a></li>
                                     <li className="divider" tabIndex="-1"></li> */}
-                                    <li><a className="dropdown-text modal-trigger" data-target="modalSolicitudEliminacion"><i className="material-icons">error_outline</i>Solicitar eliminación del curso</a></li>           
+                                    <li><a className="dropdown-text modal-trigger" data-target="modalSolicitudEliminacion"><i className="material-icons">error_outline</i>Solicitar eliminación del curso</a></li>
                                 </ul>
-                            }    
+                            }
                    </div>
                     <div className="row">
                         <div className="col s12">
@@ -150,7 +150,7 @@ const LayoutCursos = ({children}) => {
                                                 </InertiaLink>
                                             </li>
                                         }
-                                        
+
                                         {/* Participantes */}
                                         <li className={isUrl("participantes") ? "li-style selected-nav" : "li-style"}>
                                             <InertiaLink id="tab_participantes" href={route('cursos.participantes', curso.id)} className={isUrl("participantes") ? "LC_a_2" : "LC_a"} target="_self">
@@ -175,7 +175,7 @@ const LayoutCursos = ({children}) => {
                                                     <div className="col s9">Estadísticas</div>
                                                 </InertiaLink>
                                             </li>
-                                        } 
+                                        }
                                     </ul>
                                 </div>
                             </nav>
@@ -184,7 +184,7 @@ const LayoutCursos = ({children}) => {
                         <div className="col s12" style={{"marginTop":"25px"}}>
                             {children}
                         </div>
-                    </div> 
+                    </div>
                </div>
             </div>
             <ModalSolicitudBaja curso = {curso} url = {'/cursos/deleteRequest/'+curso.id}/>
@@ -193,6 +193,6 @@ const LayoutCursos = ({children}) => {
     )
 }
 
-// LayoutCursos.layout = page => <Layout children={page} title="Escuela Sindical - Curso" pageTitle="MIS CURSOS" />
+// LayoutCursos.layout = page => <Layout children={page} title="Formación XX Mich - Curso" pageTitle="MIS CURSOS" />
 
 export default LayoutCursos

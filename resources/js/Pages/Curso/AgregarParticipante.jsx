@@ -58,7 +58,7 @@ const AgregarParticipante = ({curso, users, request}) => {
         document.getElementById("txt-select-all").style.display = "none";
         document.getElementById("txt-select-all-not").style.display = "block";
     }
-    
+
      function seleccionar_todo_not(){
         for (var i=0;i<document.form_solicitudes.elements.length;i++)
             if(document.form_solicitudes.elements[i].type == "checkbox")
@@ -85,10 +85,10 @@ const AgregarParticipante = ({curso, users, request}) => {
         if (state.typingTimeout) {
             clearTimeout(state.typingTimeout);
         }
-        
+
         let search = event.target.value
         let data;
-        
+
         setState(state => ({
             ...state,
             typingTimeout: setTimeout(function () {
@@ -200,7 +200,7 @@ const AgregarParticipante = ({curso, users, request}) => {
 
     return (
     <>
-        <div className="row"> 
+        <div className="row">
         <form name="form_solicitudes"  onSubmit={handleSubmit}>
             <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
                 {/* regresar */}
@@ -220,7 +220,7 @@ const AgregarParticipante = ({curso, users, request}) => {
                                 <div className="col s11">No se ha seleccionado ningún usuario.</div>
                                 <div onClick={() => {closeAlert('alert_error')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
                             </li>
-                        </ul>  
+                        </ul>
                     </div>
                 </div>
             }
@@ -266,10 +266,10 @@ const AgregarParticipante = ({curso, users, request}) => {
                         </span>
                     </label>
                 </div>
-            ))  
+            ))
             }
             {
-                !users ? 
+                !users ?
                 <div className="col s12 div-collection-item div-item-solicitudes">
                 <label className="pink">
                     <span className="P_collection_item col s12" style={{"display":"flex"}}>
@@ -278,9 +278,9 @@ const AgregarParticipante = ({curso, users, request}) => {
                         </div>
                     </span>
                 </label>
-            </div> 
-            : 
-            !users.data || users.data.length == 0 && 
+            </div>
+            :
+            !users.data || users.data.length == 0 &&
             <div className="col s12 div-collection-item div-item-solicitudes">
                 <label className="pink">
                     <span className="P_collection_item col s12" style={{"display":"flex"}}>
@@ -309,7 +309,7 @@ const AgregarParticipante = ({curso, users, request}) => {
 }
 
 AgregarParticipante.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="PARTICIPANTES">
+  <Layout title="Formación XX Mich - Curso" pageTitle="PARTICIPANTES">
     <LayoutCursos children={page} />
   </Layout>
 )

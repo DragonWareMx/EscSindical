@@ -10,19 +10,19 @@ import '/css/asignaciones.css'
 
 
 const Examen = ({curso , modulo, asignacion}) => {
-    
+
     function initializeMaterialize(){
         var elems = document.querySelectorAll('.dropdown-trigger');
         var instances = M.Dropdown.init(elems);
         var elems = document.querySelectorAll('.tooltipped');
         var instances = M.Tooltip.init(elems);
       }
-      
+
       useEffect(() => {
         initializeMaterialize();
       }, [])
 
-      
+
     return (
         <>
         <div className="row">
@@ -39,9 +39,9 @@ const Examen = ({curso , modulo, asignacion}) => {
 }
 
 Examen.layout = page => (
-    <Layout title="Escuela sindical - Modulo" pageTitle="Examen">
+    <Layout title="Formación XX Mich - Modulo" pageTitle="Examen">
       <LayoutCursos children={page} />
     </Layout>
   )
-  
+
   export default Examen

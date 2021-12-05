@@ -42,11 +42,11 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
 
   function initializeMaterialize(){
     var elems = document.querySelectorAll('.slider');
-    var options = { 
+    var options = {
       interval: 4000,
       duration: 1000,
       height: 250,
-      width: 275, 
+      width: 275,
     }
     var instances = M.Slider.init(elems, options);
 
@@ -65,7 +65,7 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
         <div className="col s12 m6 l4" style={{marginTop:"25px"}}>
           <div className="slider">
             <ul className="slides">
-            {curso.images && curso.images.length>0 && 
+            {curso.images && curso.images.length>0 &&
                 curso.images.map( (foto , index) => (
                   <li key={index}><img src={'/storage/imagenes_curso/'+foto.imagen}></img></li>
                 ))
@@ -121,7 +121,7 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
               {/* Fechas */}
               <div className="col s12">
                 <div className="info-title">FECHAS</div>
-                <div className="txt-presentation txt-date-course">Inicio {transformaFecha(curso.fecha_inicio)}, Fin {transformaFecha(curso.fecha_final)}</div>                   
+                <div className="txt-presentation txt-date-course">Inicio {transformaFecha(curso.fecha_inicio)}, Fin {transformaFecha(curso.fecha_final)}</div>
                 {/* DIV progress bar del curso */}
                 <div className="row" style={{"display":"flex", "alignItems": "center", "marginBottom": "0px"}}>
                     <div className="col s5">
@@ -150,8 +150,8 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
                   {/* cantidad de cursos */}
                   <div className="txt-video-course">
                       {/* cantidad de participantes */}
-                      <i className="material-icons tiny">play_circle</i> 
-                      <p style={{"marginLeft": "5px", "color": "#585858 !important"}}>{cursos_count} cursos</p> 
+                      <i className="material-icons tiny">play_circle</i>
+                      <p style={{"marginLeft": "5px", "color": "#585858 !important"}}>{cursos_count} cursos</p>
                   </div>
                   {/* cantidad de participantes */}
                   <div className="txt-video-course" style={{"marginTop":"0px"}}>
@@ -205,8 +205,8 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
 
 Informacion.layout = page => (
   <>
-    <Layout title="Escuela sindical - Curso" pageTitle="Información">
-      <LayoutCursos children={page} />  
+    <Layout title="Formación XX Mich - Curso" pageTitle="Información">
+      <LayoutCursos children={page} />
     </Layout>
   </>
 )

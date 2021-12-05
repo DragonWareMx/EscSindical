@@ -24,7 +24,7 @@ function transformaFechaModulo(fecha) {
 
 function getFileSize(archivo){
   alert(archivo.size)
-  return 0  
+  return 0
 }
 
 
@@ -68,7 +68,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
     var elems = document.querySelectorAll('.tooltipped');
     var instances = M.Tooltip.init(elems);
   }
-  
+
   useEffect(() => {
     initializeMaterialize();
   }, [])
@@ -112,7 +112,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
               <div className="subtitulo-modulo">DURACIÓN</div>
               {modulo.duracion} semanas
             </div>
-            
+
           </div>
           {/* contenedor 1 */}
           <div className="col s12 l10 pull-l2">
@@ -139,9 +139,9 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
             RECURSOS
           </div>
           <div>
-            
+
             {/* avisos */}
-            {avisos && avisos.length>0 && 
+            {avisos && avisos.length>0 &&
                avisos.map( (aviso , index) => (
                 <div key={index} className="col s12" style={{"margin":"5px","padding":"0px 0px 0px 0px"}}>
                   <div className="col s2 l1 center-align" style={{"padding":"0px 0px 0px 0px"}}>
@@ -174,11 +174,11 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                       }
                     </div>
                     <div className="col s12 posted-date">
-                      Publicado el {transformaFechaModulo(aviso.created_at)} 
+                      Publicado el {transformaFechaModulo(aviso.created_at)}
                     </div>
                   </div>
                   <ModalEliminar tipo={"aviso"} nombre={aviso.titulo} url={route('entrada.delete', aviso.id)}/>
-                </div>  
+                </div>
                 ))
                }
 
@@ -212,11 +212,11 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                                   </InertiaLink>
                                 </li>
                               </ul>
-                            </div>  
+                            </div>
                           }
                         </div>
                         <div className="col s12 posted-date">
-                          Publicado el {transformaFechaModulo(entrada.created_at)} 
+                          Publicado el {transformaFechaModulo(entrada.created_at)}
                         </div>
                       </div>
                     </div>
@@ -251,15 +251,15 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                             </div>
                           }
                         </div>
-                        
+
                         <div className="col s12 posted-date">
-                          Publicado el {transformaFechaModulo(entrada.created_at)} 
+                          Publicado el {transformaFechaModulo(entrada.created_at)}
                         </div>
                       </div>
                     </div>
                   }
                   {/* informacion */}
-                  {entrada.tipo == 'Informacion' && 
+                  {entrada.tipo == 'Informacion' &&
                     <div>
                       <div className="col s2 l1 center-align" style={{"padding":"0px 0px 0px 0px"}}>
                         <i className="material-icons" style={{"color":"#134E39"}}>assignment</i>
@@ -289,14 +289,14 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                           }
                         </div>
                         <div className="col s12 posted-date">
-                          Publicado el {transformaFechaModulo(entrada.created_at)} 
+                          Publicado el {transformaFechaModulo(entrada.created_at)}
                         </div>
                       </div>
                     </div>
                   }
                 <ModalEliminar tipo={"Entrada"} nombre={entrada.titulo} url={route('entrada.delete', entrada.id)}/>
                 </div>
-                
+
               ))
             }
           </div>
@@ -323,7 +323,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                           </div>
                           <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
                             <div className="col s12 publicacion">
-                              <span className="publicacion">{actividad.titulo} {!actividad.visible && "(no visible)"}</span> 
+                              <span className="publicacion">{actividad.titulo} {!actividad.visible && "(no visible)"}</span>
                               <span className="calificacion">{auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Alumno" &&
                                <>{
                                 actividad.calificacion ? actividad.calificacion+'/' : 'Sin calificar/'
@@ -375,7 +375,7 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                           </div>
                           <div className="col s8 l10" style={{"paddingLeft":"0px"}}>
                             <div className="col s12 publicacion">
-                              <span className="publicacion">{actividad.titulo} {!actividad.visible && "(no visible)"}</span> 
+                              <span className="publicacion">{actividad.titulo} {!actividad.visible && "(no visible)"}</span>
                               <span className="calificacion">{auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Alumno" &&
                                <>{
                                 actividad.calificacion ? actividad.calificacion+'/' : 'Sin calificar/'
@@ -421,20 +421,20 @@ const Informacion = ({curso , modulo, avisos, entradas, actividades, calificacio
                     <ModalEliminar tipo={"actividad"} nombre={actividad.titulo} url={route('entrada.delete', actividad.id)}/>
                   </div>
                 </InertiaLink>
-                
+
               ))
             }
           </div>
         </div>
 
       </div>
-      
+
     </>
   )
 }
 
 Informacion.layout = page => (
-  <Layout title="Escuela sindical - Modulo" pageTitle="Módulo">
+  <Layout title="Formación XX Mich - Modulo" pageTitle="Módulo">
     <LayoutCursos children={page} />
   </Layout>
 )

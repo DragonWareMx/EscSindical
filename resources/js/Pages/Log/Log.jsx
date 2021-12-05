@@ -27,16 +27,16 @@ const Log = ({ logs, request }) => {
         filter: "nombre",
         newUser: true
     })
-    
+
     //realiza la búsqueda cada vez que se escribe en el input
     function changeName(event) {
         if (state.typingTimeout) {
             clearTimeout(state.typingTimeout);
         }
-        
+
         let search = event.target.value
         let data;
-        
+
         setState({
             typingTimeout: setTimeout(function () {
                 data = {
@@ -48,7 +48,7 @@ const Log = ({ logs, request }) => {
             }, 250)
         });
     }
-    
+
     //sort de la tabla
     function sort(campo) {
         let data;
@@ -356,7 +356,7 @@ const Log = ({ logs, request }) => {
     function initializeMat() {
         var elems = document.querySelectorAll('.dropdown-trigger');
         var instances = M.Dropdown.init(elems);
-    
+
         var elems = document.querySelectorAll('.collapsible');
         var instances = M.Collapsible.init(elems);
         var elems = document.querySelectorAll('.modal');
@@ -519,9 +519,9 @@ const Log = ({ logs, request }) => {
                                         <tr style={{"cursor":"pointer"}} key={log.id}>
                                             <td>{log.id}</td>
                                             <td>{
-                                            log.user ? 
+                                            log.user ?
                                             <>
-                                                {log.user.nombre} {log.user.apellido_p} {log.user.apellido_m} 
+                                                {log.user.nombre} {log.user.apellido_p} {log.user.apellido_m}
                                             </>
                                             : "Sin Usuario"
                                             }</td>
@@ -546,6 +546,6 @@ const Log = ({ logs, request }) => {
     )
 }
 
-Log.layout = page => <Layout children={page} title="Escuela Sindical - Bitácora" pageTitle="BITÁCORA" />
+Log.layout = page => <Layout children={page} title="Formación XX Mich - Bitácora" pageTitle="BITÁCORA" />
 
 export default Log

@@ -46,7 +46,7 @@ const Solicitudes = ({curso}) => {
         document.getElementById("txt-select-all").style.display = "none";
         document.getElementById("txt-select-all-not").style.display = "block";
      }
-    
+
      function seleccionar_todo_not(){
         for (var i=0;i<document.form_solicitudes.elements.length;i++)
             if(document.form_solicitudes.elements[i].type == "checkbox")
@@ -126,7 +126,7 @@ const Solicitudes = ({curso}) => {
                                 <div className="col s11">No se ha seleccionado ningún usuario.</div>
                                 <div onClick={() => {closeAlert('alert_error')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
                             </li>
-                        </ul>  
+                        </ul>
                     </div>
                 </div>
             }
@@ -138,7 +138,7 @@ const Solicitudes = ({curso}) => {
                                 <div className="col s11">Ha ocurrido un error, vuelva a intentarlo.</div>
                                 <div onClick={() => {closeAlert('alert_error')}} style={{"cursor":"pointer"}}><i className="col s1 tiny material-icons">clear</i></div>
                             </li>
-                        </ul>  
+                        </ul>
                     </div>
                 </div>
             }
@@ -146,7 +146,7 @@ const Solicitudes = ({curso}) => {
                 <a className="a-select-all" id="txt-select-all" onClick={seleccionar_todo}>Seleccionar todos</a>
                 <a className="a-select-all" id="txt-select-all-not" onClick={seleccionar_todo_not} style={{"display":"none"}}>Descartar selección</a>
             </div>
-            
+
             {curso.waiting_requests && curso.waiting_requests.length > 0 &&  curso.waiting_requests.map(usuario => (
                 <div className="col s12 div-collection-item div-item-solicitudes" key={usuario.id}>
                     <label>
@@ -160,10 +160,10 @@ const Solicitudes = ({curso}) => {
                         </span>
                     </label>
                 </div>
-            ))  
+            ))
             }
             {
-                !curso.waiting_requests ? 
+                !curso.waiting_requests ?
                 <div className="col s12 div-collection-item div-item-solicitudes">
                     <label>
                         <span className="P_collection_item col s12 space-padding" style={{"display":"flex"}}>
@@ -172,9 +172,9 @@ const Solicitudes = ({curso}) => {
                             </div>
                         </span>
                     </label>
-                </div> 
-            : 
-            curso.waiting_requests.length == 0 && 
+                </div>
+            :
+            curso.waiting_requests.length == 0 &&
             <div className="col s12 div-collection-item div-item-solicitudes">
             <label>
                 <span className="P_collection_item col s12 space-padding" style={{"display":"flex","padding":"0px 0px 0px 0px !important"}}>
@@ -185,7 +185,7 @@ const Solicitudes = ({curso}) => {
             </label>
         </div>
 
-        
+
             }
 
             <div className="col s12  right">
@@ -199,7 +199,7 @@ const Solicitudes = ({curso}) => {
                     Aprobar
                     <i className="material-icons right">task_alt</i>
                 </button>
-                
+
                 <button type="submit" onClick={
                 () => {
                     setValues(values => ({
@@ -218,7 +218,7 @@ const Solicitudes = ({curso}) => {
 }
 
 Solicitudes.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="PARTICIPANTES">
+  <Layout title="Formación XX Mich - Curso" pageTitle="PARTICIPANTES">
     <LayoutCursos children={page} />
   </Layout>
 )

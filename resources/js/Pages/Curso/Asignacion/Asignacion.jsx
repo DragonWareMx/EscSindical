@@ -399,7 +399,7 @@ const Asignacion = ({ curso, modulo, asignacion, alumnos, nAlumnos, nEntregas, c
                                 </InertiaLink>
                             </div>
                             }
-                        
+
                             {/* información para el estudiante antes de entregar la asignación */}
                             <div className="col s12 padding-0px row-extatus">
                                 <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus</div>
@@ -417,7 +417,7 @@ const Asignacion = ({ curso, modulo, asignacion, alumnos, nAlumnos, nEntregas, c
                                 <div className="col s12 m3 l3 xl3 txt-title-estatus">Fecha de {asignacion.tipo == "Examen" ? "cierre" : "entrega"}</div>
                                 <div className="col s12 m9 l9 xl9 txt-content-estatus">{asignacion.fecha_de_entrega && transformaFecha(asignacion.fecha_de_entrega)}</div>
                             </div>
-                            {asignacion.permitir_envios_retrasados ? 
+                            {asignacion.permitir_envios_retrasados ?
                             <div className="col s12 padding-0px row-extatus">
                                 <div className="col s12 m3 l3 xl3 txt-title-estatus">Tiempo restante</div>
                                 <div className="col s12 m9 l9 xl9 txt-content-estatus">{tiempoRestante(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados)}</div>
@@ -428,7 +428,7 @@ const Asignacion = ({ curso, modulo, asignacion, alumnos, nAlumnos, nEntregas, c
                                 <div className="col s12 m3 l3 xl3 txt-title-estatus">Tiempo restante</div>
                                 <div className="col s12 m9 l9 xl9 txt-content-estatus">{tiempoRestante(asignacion.fecha_de_entrega, asignacion.permitir_envios_retrasados)}</div>
                             </div>
-                            }  
+                            }
                             <div className="col s12 padding-0px row-extatus">
                                 <div className="col s12 m3 l3 xl3 txt-title-estatus">Estatus de calificación</div>
                                 <div className="col s12 m9 l9 xl9 txt-content-estatus">
@@ -618,7 +618,7 @@ const Asignacion = ({ curso, modulo, asignacion, alumnos, nAlumnos, nEntregas, c
 }
 
 Asignacion.layout = page => (
-    <Layout title="Escuela sindical - Curso" pageTitle="ASIGNACIÓN">
+    <Layout title="Formación XX Mich - Curso" pageTitle="ASIGNACIÓN">
         <LayoutCursos children={page} />
     </Layout>
 )

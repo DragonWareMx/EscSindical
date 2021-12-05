@@ -5,7 +5,7 @@ import { InertiaLink, useRemember } from '@inertiajs/inertia-react';
 import { usePage } from '@inertiajs/inertia-react'
 import ModalDarBaja from '../../components/common/ModalDarBaja';
 import ModalReportar from '../../components/common/ModalReportar';
-import Alertas from '../../components/common/Alertas'; 
+import Alertas from '../../components/common/Alertas';
 
 import '/css/participantes.css'
 import '/css/modulos.css'
@@ -38,7 +38,7 @@ const Participantes = ({curso}) => {
                 </div>
             }
             <div className="col s12 P_sub" style={{marginTop:"15px"}}>Ponente</div>
-            
+
             {/* Row de ponente */}
             <div className="col s12 div-collection-item ">
                 {auth.roles[0].name!='Ponente' &&
@@ -63,7 +63,7 @@ const Participantes = ({curso}) => {
             </div>
 
             <div className="col s12 P_sub" style={{marginTop:"15px"}}>{curso.users && curso.users.length > 0 ? "Compañeros de clase" : "Sin alumnos registrados" }</div>
-            
+
             {/* Rows de estudiantes */}
             {curso.users && curso.users.length>0 && curso.users.map((user, index) =>
                 <div className="col s12 div-collection-item" key={index}>
@@ -92,16 +92,16 @@ const Participantes = ({curso}) => {
                     <ModalDarBaja url={route('dar-baja-estudiante', user.id)} nombre={user.nombre+' '+user.apellido_p+' '+user.apellido_m} id={user.id} curso={curso.nombre} />
                     <ModalReportar url={route('CrearReporte')} nombre={user.nombre+' '+user.apellido_p+' '+user.apellido_m} id={user.id} />
                 </div>
-                
+
             )}
-            
+
         </div>
     </>
   )
 }
 
 Participantes.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="Participantes">
+  <Layout title="Formación XX Mich - Curso" pageTitle="Participantes">
     <LayoutCursos children={page} />
   </Layout>
 )

@@ -140,7 +140,7 @@ const Perfil = ({ user }) => {
                                         {/* Boton de editar */}
                                         <div className="col s12 m12 right-align" style={{ "marginTop": "25px" }}>
                                             <InertiaLink href={route('perfil.edit')} className="waves-effect waves-light btn boton-verde"><i className="material-icons right" style={{ "fontSize": "18px" }}>settings</i>Configuración</InertiaLink>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -154,6 +154,6 @@ const Perfil = ({ user }) => {
     )
 }
 
-Perfil.layout = page => <Layout children={page} title="Escuela Sindical - Perfil" pageTitle="PERFIL" />
+Perfil.layout = page => <Layout children={page} title="Formación XX Mich - Perfil" pageTitle="PERFIL" />
 
 export default Perfil

@@ -106,7 +106,7 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
         M.updateTextFields();
     }, [])
 
-    
+
     return (
         <>
             <div className="row">
@@ -127,8 +127,8 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
                     </div>
                     {/* fecha de la asignacion */}
                     <div className="col s12 txt-date-as">{asignacion.fecha_de_entrega && "Fecha de entrega " + transformaFecha(asignacion.created_at)} </div>
-                    
-                    
+
+
                     <div className="col s12 padding-0px" style={{"fontSize":"14px", "color":"#1E1E1E","display":"flex","alignItems":"center","marginTop":"15px"}}>
                         <img src={entrega.foto ? '/storage/fotos_perfil/'+entrega.foto : '/img/avatar1.png'} className="img-td-entregas" />
                         <InertiaLink href={route('perfil.public',entrega.id)} className="link-profile-e">{entrega.nombre} {entrega.apellido_p} {entrega.apellido_m}</InertiaLink>
@@ -136,7 +136,7 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
 
                     {/* fecha del envio */}
                     <div className="col s12 txt-date-as padding-0px" style={{"marginTop":"10px"}}>{entrega.created_at && "Fecha de entrega " + transformaFecha(entrega.created_at)}</div>
-                    
+
                     {asignacion.tipo != 'Examen' &&
                         <div className='td-estatus col s12 padding-0px' style={{"color": entrega.usuario ? 'red' :asignacion.fecha_de_entrega >= entrega.created_at ?"#41AB59" : "#ffb90a", "marginTop":"5px"}}>{entrega.usuario ? 'SIN ENVÍO' : realizadaEstatus(asignacion.fecha_de_entrega, entrega.created_at)}</div>
                     }
@@ -157,7 +157,7 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
                             <div className="col s12 txt-comentariosE padding-0px" dangerouslySetInnerHTML={{__html:entrega.Comentario}}></div>
                         </>
                     }
-                
+
                     {/* Retroalimentación */}
                     <div className="col s12 txt-status-as">RETROALIMENTACIÓN</div>
                     <div className="col s12 padding-0px row-extatus">
@@ -206,7 +206,7 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
 
                         <div class="input-field col s12 padding-0px paddingRight-0px">
                             <input id="calificacion" name="calificacion" type="number" min="0" max ={asignacion.max_calif} className={errors.calificacion ? "validate form-control invalid" : "validate form-control"}  value={values.calificacion} onChange={handleChange} required />
-                            <label for="calificacion">Calificación obtenida</label> 
+                            <label for="calificacion">Calificación obtenida</label>
                         </div>
 
                         {/* Agregar comentarios */}
@@ -236,7 +236,7 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
                             </button>
                         </div>
                     </form>
-                
+
                 </div>
             </div>
         </>
@@ -245,7 +245,7 @@ const AsignacionEntrega = ({curso, modulo, asignacion, entrega}) => {
 }
 
 AsignacionEntrega.layout = page => (
-  <Layout title="Escuela sindical - Curso" pageTitle="ASIGNACIÓN">
+  <Layout title="Formación XX Mich - Curso" pageTitle="ASIGNACIÓN">
     <LayoutCursos children={page} />
   </Layout>
 )

@@ -27,16 +27,16 @@ const Usuarios = ({ users, request }) => {
         filter: "nombre",
         newUser: true
     })
-    
+
     //realiza la búsqueda cada vez que se escribe en el input
     function changeName(event) {
         if (state.typingTimeout) {
             clearTimeout(state.typingTimeout);
         }
-        
+
         let search = event.target.value
         let data;
-        
+
         setState({
             typingTimeout: setTimeout(function () {
                 data = {
@@ -48,7 +48,7 @@ const Usuarios = ({ users, request }) => {
             }, 250)
         });
     }
-    
+
     //sort de la tabla
     function sort(campo) {
         let data;
@@ -410,7 +410,7 @@ const Usuarios = ({ users, request }) => {
     function initializeMat() {
         var elems = document.querySelectorAll('.dropdown-trigger');
         var instances = M.Dropdown.init(elems);
-    
+
         var elems = document.querySelectorAll('.collapsible');
         var instances = M.Collapsible.init(elems);
         var elems = document.querySelectorAll('.modal');
@@ -580,6 +580,6 @@ const Usuarios = ({ users, request }) => {
     )
 }
 
-Usuarios.layout = page => <Layout children={page} title="Escuela Sindical - Usuarios" pageTitle="USUARIOS" />
+Usuarios.layout = page => <Layout children={page} title="Formación XX Mich - Usuarios" pageTitle="USUARIOS" />
 
 export default Usuarios

@@ -65,7 +65,7 @@ const Configuracion = ({ user }) => {
                         cambiar_contrasena: false,
                         cambiar_tarjeton: false
                     }))
-                    M.updateTextFields();     
+                    M.updateTextFields();
                 }
             }
         )
@@ -173,7 +173,7 @@ const Configuracion = ({ user }) => {
                                 <InertiaLink  href={route('perfil')}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
                                 CONFIGURACIÓN
                             </div>
-                            
+
                             <div className="col s12">
                                 <div style={{margin: "auto"}}>
                                     <Alertas />
@@ -250,7 +250,7 @@ const Configuracion = ({ user }) => {
                                                 <span className="helper-text" data-error={errors.sexo} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.sexo}</span>
                                             }
                                         </div>
-                                        
+
                                     </div>
 
                                     <div className="col s12 m6 div-division user-form-border2">
@@ -330,7 +330,7 @@ const Configuracion = ({ user }) => {
                                             }
 
                                             <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>¿Cambiar contraseña?</p>
-                                            
+
                                             <div className="switch">
                                                 <label>
                                                 No
@@ -385,6 +385,6 @@ const Configuracion = ({ user }) => {
     )
 }
 
-Configuracion.layout = page => <Layout children={page} title="Escuela Sindical - Configuración" pageTitle="CONFIGURACIÓN" />
+Configuracion.layout = page => <Layout children={page} title="Formación XX Mich - Configuración" pageTitle="CONFIGURACIÓN" />
 
 export default Configuracion

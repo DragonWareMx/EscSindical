@@ -93,7 +93,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
     }
 
     function changeTarjeton(e){
-        
+
         var inputFotos = document.getElementById('tarjeton_de_pago');
         if (inputFotos.files && inputFotos.files[0]) {
             setValues(values => ({
@@ -166,7 +166,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
                             <InertiaLink  href={route('usuarios')}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
                             AGREGAR USUARIO
                         </div>
-                        
+
                         <Alertas />
                         {/* ----Formulario---- */}
                         <form onSubmit={handleSubmit}>
@@ -303,7 +303,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
                                         }
                                     </div>
                                 </div>
-                                
+
                                 <div className="col s12 m6 div-division">
                                     <p className="titles-sub" style={{"marginLeft":"3%", marginBottom: "15px"}}>INFORMACIÓN INSTITUCIONAL</p>
 
@@ -379,7 +379,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
                                             <span style={{fontSize:"12px", textAlign: "center", paddingTop:"10px"}} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
                                             <input type="file" accept="image/png, image/jpeg, image/jpg, application/pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" required autoComplete="tarjeton" onChange={changeTarjeton} />
                                             {
-                                                errors.tarjeton_de_pago && 
+                                                errors.tarjeton_de_pago &&
                                                 <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px", color: "#F44336"}}>{errors.tarjeton_de_pago}</span>
                                             }
                                             </div>
@@ -457,6 +457,6 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
     )
 }
 
-Usuarios.layout = page => <Layout children={page} title="Escuela Sindical - Usuarios" pageTitle="USUARIOS" />
+Usuarios.layout = page => <Layout children={page} title="Formación XX Mich - Usuarios" pageTitle="USUARIOS" />
 
 export default Usuarios

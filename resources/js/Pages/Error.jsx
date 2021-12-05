@@ -38,6 +38,6 @@ function ErrorPage({ status }) {
     )
 }
 
-ErrorPage.layout = page => <Layout children={page} title="Escuela Sindical - Error" pageTitle="ERROR" />
+ErrorPage.layout = page => <Layout children={page} title="Formación XX Mich - Error" pageTitle="ERROR" />
 
 export default ErrorPage

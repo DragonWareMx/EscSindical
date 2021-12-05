@@ -86,7 +86,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                         cambiar_contrasena: false,
                         cambiar_tarjeton: false
                     }))
-                    M.updateTextFields();     
+                    M.updateTextFields();
                 }
             }
         )
@@ -245,7 +245,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
                         <div className="card-content">
-                            
+
                             <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
                                 {/* regresar */}
                                 <InertiaLink  href={route('usuarios')}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
@@ -265,7 +265,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         <div className="col s11">Este usuario ha sido eliminado.</div>
                                         <button data-target="modalRestaurar" type="button" className="col s3 m2 center-align modal-trigger" style={{ "border": "none", "backgroundColor": "transparent", "color": "#515B60", "cursor": "pointer", marginLeft: "3%", marginRight: "auto" }}>Restaurar</button>
                                     </li>
-                                </ul>  
+                                </ul>
                             </div>
                             }
 
@@ -476,13 +476,13 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="area col s12" style={{marginBottom:"4%"}}>
-                                            
+
                                             {!values.cambiar_tarjeton &&
                                                 <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px" }}>Tarjetón de pago <a target="_blank" href={user == null || user.tarjeton_pago == null ? null : "/storage/tarjetones_pago/" + user.tarjeton_pago}>{user != null && user.tarjeton_pago}</a><i style={{ "color": "#7E7E7E" }} className="material-icons tiny">description</i></p>
                                             }
 
                                             <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>¿Cambiar tarjetón de pago?</p>
-                                            
+
                                             <div className="switch">
                                                 <label>
                                                 No
@@ -500,7 +500,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                                     <span style={{fontSize:"12px", textAlign: "center", paddingTop:"10px"}} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
                                                     <input type="file" accept="image/png, image/jpeg, image/jpg, application/pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" required autoComplete="tarjeton" onChange={changeTarjeton} />
                                                     {
-                                                        errors.tarjeton_de_pago && 
+                                                        errors.tarjeton_de_pago &&
                                                         <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px", color: "#F44336"}}>{errors.tarjeton_de_pago}</span>
                                                     }
                                                     </div>
@@ -524,7 +524,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                             }
 
                                             <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>¿Cambiar contraseña?</p>
-                                            
+
                                             <div className="switch"  style={{"marginBottom":"15px"}}>
                                                 <label>
                                                 No
@@ -596,7 +596,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                 </div>
                                 <div className="row container-buttons">
                                     {
-                                    !user.deleted_at && 
+                                    !user.deleted_at &&
                                         <button data-target="modalEliminar" type="button" className="col s3 m2 center-align modal-trigger" style={{ "border": "none", "backgroundColor": "transparent", "color": "#515B60", "cursor": "pointer", marginLeft: "3%", marginRight: "auto" }}><i className="material-icons">delete</i></button>
                                     }
                                     <button type="button" className=" center-align  btn waves-effect waves-light cancelar" style={{ marginRight: "15px" }} onClick={cancelEditUser}>Cancelar</button>
@@ -616,25 +616,25 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                             <div className="collapsible-body collapsible-padding padding3">
 
                                 <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>CURSOS ACTUALES</div>
-                                    {user.active_courses &&  user.active_courses.length > 0 ? 
+                                    {user.active_courses &&  user.active_courses.length > 0 ?
                                         <div className="row">
                                             {user.active_courses.map(curso=>(
                                                 <div key={curso.id}><CourseCard curso={curso} actuales={true}/></div>
                                             ))}
                                         </div>
-                                        : 
+                                        :
                                         <div>Este usuario no pertenece a ningún curso activo</div>
                                     }
 
                                 <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>HISTORIAL DE CURSOS</div>
                                     {
-                                    user.finished_courses &&  user.finished_courses.length > 0 ? 
+                                    user.finished_courses &&  user.finished_courses.length > 0 ?
                                     <div className="row">
                                         {user.finished_courses.map(curso=>(
                                             <div key={curso.id}><CourseCard curso={curso} actuales={false}/></div>
                                         ))}
                                     </div>
-                                    : 
+                                    :
                                     <div>Este usuario aún no tiene cursos terminados</div>
                                     }
                                 </div>
@@ -649,25 +649,25 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                             <div className="collapsible-body collapsible-padding padding3">
 
                                 <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>CURSOS ACTUALES</div>
-                                    {user.teacher_active_courses &&  user.teacher_active_courses.length > 0 ? 
+                                    {user.teacher_active_courses &&  user.teacher_active_courses.length > 0 ?
                                         <div className="row">
                                             {user.teacher_active_courses.map(curso=>(
                                                 <div key={curso.id}><CourseCard curso={curso} actuales={true}/></div>
                                             ))}
                                         </div>
-                                        : 
+                                        :
                                         <div>Este usuario no pertenece a ningún curso activo</div>
                                     }
 
                                 <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>HISTORIAL DE CURSOS</div>
                                     {
-                                    user.teacher_finished_courses &&  user.teacher_finished_courses.length > 0 ? 
+                                    user.teacher_finished_courses &&  user.teacher_finished_courses.length > 0 ?
                                     <div className="row">
                                         {user.teacher_finished_courses.map(curso=>(
                                             <div key={curso.id}><CourseCard curso={curso} actuales={false}/></div>
                                         ))}
                                     </div>
-                                    : 
+                                    :
                                     <div>Este usuario aún no tiene cursos terminados</div>
                                     }
                                 </div>
@@ -678,12 +678,12 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
             </div >
 
             <ModalEliminar url={route('usuarios.delete', user.id)} nombre={user.nombre} tipo="usuario" />
-            
+
             <ModalRestaurar url={route('usuarios.restore',user.id)} nombre={user.nombre} tipo="usuario" />
         </>
     )
 }
 
-Usuarios.layout = page => <Layout children={page} title="Escuela Sindical - Usuarios" pageTitle="USUARIOS" />
+Usuarios.layout = page => <Layout children={page} title="Formación XX Mich - Usuarios" pageTitle="USUARIOS" />
 
 export default Usuarios

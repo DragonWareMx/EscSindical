@@ -299,7 +299,7 @@ const Informacion = ({ curso, cantidad, alumnos, categorias }) => {
 
 Informacion.layout = page => (
   <>
-    <Layout title="Escuela sindical - Curso" pageTitle="Estadísticas">
+    <Layout title="Formación XX Mich - Curso" pageTitle="Estadísticas">
       <LayoutCursos children={page} />
     </Layout>
   </>

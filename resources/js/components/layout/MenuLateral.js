@@ -131,7 +131,7 @@ export default function MenuLateral() {
             </InertiaLink>
           </li>
           }
-          
+
           {/* SOLICITUDES */}
           {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
           <li>
@@ -140,7 +140,7 @@ export default function MenuLateral() {
             </InertiaLink>
           </li>
           }
-  
+
           {/* BITACORA */}
           {auth && auth.roles && auth.roles.length > 0 && auth.roles[0].name == "Administrador" &&
             <li>
@@ -168,7 +168,7 @@ export default function MenuLateral() {
               <img src="/img/imagenes/LogoNacional2.png" alt="logo" />
             </div>
             <div className="col s7 valign-wrapper" style={{ height: '64px' }}>
-              Escuela Sindical
+              Formación XX Mich
               </div>
           </div>
         </ul>
@@ -177,7 +177,7 @@ export default function MenuLateral() {
       {/* menu lateral comprimido */}
       <div className="menu-compacto center-align">
         <div className="col s12">
-          <img src="/img/imagenes/LogoNacional2.png" alt="logo" className="imagen-menu-compacto tooltipped" data-position="right" data-tooltip="Escuela Sindical" />
+          <img src="/img/imagenes/LogoNacional2.png" alt="logo" className="imagen-menu-compacto tooltipped" data-position="right" data-tooltip="Formación XX Mich" />
         </div>
         <div className="col s12">
           <InertiaLink href={route('inicio').url()} className="icono-menu">
