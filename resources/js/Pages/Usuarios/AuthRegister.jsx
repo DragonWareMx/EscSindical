@@ -267,7 +267,7 @@ const Usuarios = ({ categories, regimes, units }) => {
                                 </div>
 
                                 <div className="input-field col s6 input-50-re">
-                                    <input id="fecha_de_nacimiento" type="text" className={errors.fecha_inicio ? "validate datepicker invalid" : "validate datepicker"} name="fecha_de_nacimiento" required value={values.fecha_de_nacimiento} autoComplete="fecha_nacimiento" readOnly />
+                                    <input id="fecha_de_nacimiento" type="text" className={errors.fecha_inicio ? "validate datepicker invalid" : "validate datepicker"} name="fecha_de_nacimiento" required value={values.fecha_de_nacimiento} autoComplete="fecha_nacimiento" />
                                     <label htmlFor="fecha_de_nacimiento">Fec. Nacimiento</label>
                                     {
                                         errors.fecha_de_nacimiento &&
