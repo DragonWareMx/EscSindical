@@ -23,7 +23,11 @@ function collapsible(){
 }
 
 function transformaFecha(fecha) {
-    const dob = new Date(fecha);
+    let dob
+        if(fecha)
+            dob = new Date(fecha.replace(/-/g, '\/').replace(/T.+/, ''));
+        else
+            dob = new Date()
     const monthNames = [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
         'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'

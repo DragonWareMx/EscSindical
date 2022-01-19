@@ -874,6 +874,7 @@ class CourseController extends Controller
                         });
                 }
             })
+            ->orderBy('fecha_final', 'desc')
             ->select('courses.nombre','valor_curricular', 'courses.fecha_inicio', 'courses.fecha_final', 'courses.id', 'courses.teacher_id', 'courses.inicio_inscripciones', 'courses.fecha_limite')
             ->paginate(12);
 
