@@ -2119,6 +2119,18 @@ class CourseController extends Controller
             }
         }
 
+        //verifica la fecha de inscripcion
+        $fIncio = new \DateTime($curso->inicio_inscripciones);
+        $fFinal = new \DateTime($curso->fecha_limite);
+        $fHoy = new \DateTime("midnight");
+
+        // dd($fHoy, $fIncio, $fFinal);
+
+        if($fHoy < $fIncio)
+            return \Redirect::back()->with('message', 'No puedes inscribirte, aún no comienza el periodo de inscripciones para este curso.');
+        else if($fHoy > $fFinal)
+            return \Redirect::back()->with('error', 'No puedes inscribirte, el periodo de inscripciones para este curso ha terminado.');
+        
         try {
             DB::beginTransaction();
 

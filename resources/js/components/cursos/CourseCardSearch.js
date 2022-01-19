@@ -83,8 +83,7 @@ export default function CourseCardSearch({ curso }) {
                             <div>{transformaFecha(curso.fecha_inicio)}-{transformaFecha(curso.fecha_final)} </div>
                         </div>
                         <div className="button-course col s12 transicion" >
-                            <button className="btn waves-effect waves-light" name="action">Inscribirme
-                                <i className="material-icons right">add_circle</i>
+                            <button className="btn waves-effect waves-light" name="action">VER CURSO
                             </button>
                         </div>
 
