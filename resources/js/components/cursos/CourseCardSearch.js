@@ -33,7 +33,9 @@ export default function CourseCardSearch({ curso }) {
                     <div className="row" style={{ "marginBottom": "0px" }}>
                         {/* Nombre del curso */}
                         <div className="col s12 valign-wrapper transicion course-name" style={{ "marginTop": "7px" }}>
-                            <i className="material-icons verified-icon">verified</i>
+                            {curso.valor_curricular == 1 &&
+                                <i className="material-icons verified-icon">verified</i>
+                            }
                             {curso.nombre}
                         </div>
                         {/* Nombre del ponente */}
@@ -61,10 +63,12 @@ export default function CourseCardSearch({ curso }) {
                             </div>
                         </div>
                         <div className="col s12">
+                            {curso.valor_curricular == 1 &&
                             <div className=" valor-curri valign-wrapper">
                                 <i className="material-icons verified-icon">verified</i>
-                            VALOR CURRICULAR
+                                VALOR CURRICULAR
                             </div>
+                            }
                         </div>
                         <div className="fechas-card transicion">
                             <h3>Inscripciones</h3>
