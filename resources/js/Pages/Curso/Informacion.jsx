@@ -58,6 +58,16 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
     var instances = M.Collapsible.init(elems);
   }
 
+  function isFinished(finalDate){
+    const today = new Date();
+    const end = new Date(finalDate.replace(/-/g, '\/').replace(/T.+/, ''));
+
+    today.setHours(0,0,0,0)
+    end.setHours(0,0,0,0)
+
+    return today > end
+}
+
   useEffect(() => {
     initializeMaterialize();
   }, [])
@@ -111,11 +121,15 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
                   </a>
                 </div>
                 :
-                <form onSubmit={handleSubmit}>
-                  <button type="submit" className="button_inscribir waves-effect waves-light" name="action">INSCRIBIRME
-                      <i className="tiny material-icons right">add_circle</i>
-                  </button>
-                </form>
+                  <>
+                    {!isFinished(curso.fecha_final) &&
+                      <form onSubmit={handleSubmit}>
+                      <button type="submit" className="button_inscribir waves-effect waves-light" name="action">INSCRIBIRME
+                          <i className="tiny material-icons right">add_circle</i>
+                      </button>
+                    </form>
+                    }
+                  </>
                 }
 
               </div>
