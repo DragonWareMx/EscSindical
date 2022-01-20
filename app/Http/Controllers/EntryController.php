@@ -722,7 +722,6 @@ class EntryController extends Controller
                 return Redirect::route('cursos.informacion', $curso->id)->with('success', 'La entrada se ha editado con éxito!');
             } catch (\Exception $e) {
                 DB::rollback();
-                dd($e);
                 // something went wrong
                 return Redirect::back()->with('error', 'Ha ocurrido un error al intentar editar la entrada, inténtelo más tarde.');
             }

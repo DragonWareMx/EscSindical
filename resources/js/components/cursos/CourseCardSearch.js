@@ -9,7 +9,11 @@ import Tag from '../common/Tag'
 export default function CourseCardSearch({ curso }) {
 
     function transformaFecha(fecha) {
-        const dob = new Date(fecha);
+        let dob
+        if(fecha)
+            dob = new Date(fecha.replace(/-/g, '\/').replace(/T.+/, ''));
+        else
+            dob = new Date()
         const monthNames = [
             'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
             'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
@@ -18,6 +22,16 @@ export default function CourseCardSearch({ curso }) {
         const monthIndex = dob.getMonth();
         const year = dob.getFullYear();
         return `${day} ${monthNames[monthIndex]} ${year}`;
+    }
+
+    function isFinished(finalDate){
+        const today = new Date();
+        const end = new Date(finalDate.replace(/-/g, '\/').replace(/T.+/, ''));
+
+        today.setHours(0,0,0,0)
+        end.setHours(0,0,0,0)
+
+        return today > end ? '(Curso terminado)' : '' 
     }
 
     return (
@@ -33,8 +47,10 @@ export default function CourseCardSearch({ curso }) {
                     <div className="row" style={{ "marginBottom": "0px" }}>
                         {/* Nombre del curso */}
                         <div className="col s12 valign-wrapper transicion course-name" style={{ "marginTop": "7px" }}>
-                            <i className="material-icons verified-icon">verified</i>
-                            {curso.nombre}
+                            {curso.valor_curricular == 1 &&
+                                <i className="material-icons verified-icon">verified</i>
+                            }
+                            <b>{isFinished(curso.fecha_final)}</b> {curso.nombre}
                         </div>
                         {/* Nombre del ponente */}
                         <div className="col s12" style={{ "marginTop": "5px" }}>
@@ -61,10 +77,12 @@ export default function CourseCardSearch({ curso }) {
                             </div>
                         </div>
                         <div className="col s12">
+                            {curso.valor_curricular == 1 &&
                             <div className=" valor-curri valign-wrapper">
                                 <i className="material-icons verified-icon">verified</i>
-                            VALOR CURRICULAR
+                                VALOR CURRICULAR
                             </div>
+                            }
                         </div>
                         <div className="fechas-card transicion">
                             <h3>Inscripciones</h3>
@@ -79,8 +97,7 @@ export default function CourseCardSearch({ curso }) {
                             <div>{transformaFecha(curso.fecha_inicio)}-{transformaFecha(curso.fecha_final)} </div>
                         </div>
                         <div className="button-course col s12 transicion" >
-                            <button className="btn waves-effect waves-light" name="action">Inscribirme
-                                <i className="material-icons right">add_circle</i>
+                            <button className="btn waves-effect waves-light" name="action">VER CURSO
                             </button>
                         </div>
 

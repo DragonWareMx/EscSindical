@@ -216,7 +216,7 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
                                     </div>
 
                                     <div className="input-field col s6 input-50-re">
-                                        <input id="fecha_de_nacimiento" type="text" className={errors.fecha_de_nacimiento ? "validate datepicker invalid" : "validate datepicker"} name="fecha_de_nacimiento" required autoComplete="fecha_de_nacimiento" value={values.fecha_de_nacimiento} readOnly />
+                                        <input id="fecha_de_nacimiento" type="text" className={errors.fecha_de_nacimiento ? "validate datepicker invalid" : "validate datepicker"} name="fecha_de_nacimiento" required autoComplete="fecha_de_nacimiento" value={values.fecha_de_nacimiento} />
                                         <label htmlFor="fecha_de_nacimiento">Fec. Nacimiento</label>
                                         {
                                             errors.fecha_de_nacimiento &&
@@ -403,21 +403,21 @@ const Usuarios = ({ categories, regimes, units, roles }) => {
 
                                     <div className="input-field col s12">
                                         <i className="material-icons prefix">lock</i>
-                                        <input  id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"} name="contrasena" value={values.contrasena} required onChange={handleChange} />
+                                        <input  id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"} name="contrasena" value={values.contrasena} required onChange={handleChange} style={errors.contrasena ? {borderBottom: "1px solid #F44336", boxShadow: "0 1px 0 0 #f44336"} : {}} />
                                         <label htmlFor="contrasena">Contraseña</label>
                                         {
                                             errors.contrasena &&
-                                            <span className="helper-text" data-error={errors.contrasena} style={{ "marginBottom": "10px" }}>{errors.contrasena}</span>
+                                            <span className="helper-text" data-error={errors.contrasena} style={{ "marginBottom": "10px", color: "#F44336"}}>{errors.contrasena}</span>
                                         }
                                     </div>
 
                                     <div className="input-field col s12">
                                         <i className="material-icons prefix">lock</i>
-                                        <input  id="confirmar_contrasena" type="password" className={errors.confirmar_contrasena ? "validate form-control invalid" : "validate form-control"} name="confirmar_contrasena" value={values.confirmar_contrasena} required onChange={handleChange} />
+                                        <input  id="confirmar_contrasena" type="password" className={errors.confirmar_contrasena ? "validate form-control invalid" : "validate form-control"} name="confirmar_contrasena" value={values.confirmar_contrasena} required onChange={handleChange} style={errors.confirmar_contrasena ? {borderBottom: "1px solid #F44336", boxShadow: "0 1px 0 0 #f44336"} : {}} />
                                         <label htmlFor="confirmar_contrasena">Confirmar contraseña</label>
                                         {
                                             errors.confirmar_contrasena &&
-                                            <span className="helper-text" data-error={errors.confirmar_contrasena} style={{ "marginBottom": "10px" }}>{errors.confirmar_contrasena}</span>
+                                            <span className="helper-text" data-error={errors.confirmar_contrasena} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.confirmar_contrasena}</span>
                                         }
                                     </div>
 

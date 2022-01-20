@@ -9,7 +9,11 @@ import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia';
 
 function transformaFecha(fecha) {
-  const dob = new Date(fecha);
+  let dob
+        if(fecha)
+            dob = new Date(fecha.replace(/-/g, '\/').replace(/T.+/, ''));
+        else
+            dob = new Date()
   const monthNames = [
       'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
       'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
@@ -53,6 +57,16 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
     var elems = document.querySelectorAll('.collapsible');
     var instances = M.Collapsible.init(elems);
   }
+
+  function isFinished(finalDate){
+    const today = new Date();
+    const end = new Date(finalDate.replace(/-/g, '\/').replace(/T.+/, ''));
+
+    today.setHours(0,0,0,0)
+    end.setHours(0,0,0,0)
+
+    return today > end
+}
 
   useEffect(() => {
     initializeMaterialize();
@@ -107,11 +121,15 @@ const Informacion = ({curso, cursos_count, participantes_count, calificacion, in
                   </a>
                 </div>
                 :
-                <form onSubmit={handleSubmit}>
-                  <button type="submit" className="button_inscribir waves-effect waves-light" name="action">INSCRIBIRME
-                      <i className="tiny material-icons right">add_circle</i>
-                  </button>
-                </form>
+                  <>
+                    {!isFinished(curso.fecha_final) &&
+                      <form onSubmit={handleSubmit}>
+                      <button type="submit" className="button_inscribir waves-effect waves-light" name="action">INSCRIBIRME
+                          <i className="tiny material-icons right">add_circle</i>
+                      </button>
+                    </form>
+                    }
+                  </>
                 }
 
               </div>
