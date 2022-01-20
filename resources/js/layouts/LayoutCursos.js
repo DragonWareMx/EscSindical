@@ -65,7 +65,11 @@ const LayoutCursos = ({children}) => {
 
     function isFinished(finalDate){
         const today = new Date();
-        const end = new Date(finalDate.replace(/-/g, '\/').replace(/T.+/, ''));
+        let end
+        if(finalDate)
+            end = new Date(finalDate.replace(/-/g, '\/').replace(/T.+/, ''));
+        else
+            end = new Date()
 
         today.setHours(0,0,0,0)
         end.setHours(0,0,0,0)
