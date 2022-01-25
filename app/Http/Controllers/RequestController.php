@@ -606,8 +606,9 @@ class RequestController extends Controller
                 $myRequest->status = 'Aprobado';
                 $user = User::find($myRequest->user_id);
                 $curso = Course::find($myRequest->course_id);
-
-                $notificacion->titulo = "Tu solicitud de eliminación del curso ".$curso->nombre. " ha sido aprobada";//creamos notificación
+                $nombre = $curso->nombre;
+                $notificacion->titulo = "Tu solicitud de eliminación del curso ".$nombre. " ha sido aprobada";//creamos notificación
+                
                 $curso->delete();
 
                 $newLog = new Log;
@@ -619,7 +620,7 @@ class RequestController extends Controller
                         status = Aprobado
                         }
                     }';
-                $newLog->descripcion = 'El usuario '.Auth::user()->email.' aprobó la solicitud de '. $user->nombre .' para eliminar el curso '.$myRequest->course->nombre.' de id: '.$myRequest->course->id;
+                $newLog->descripcion = 'El usuario '.Auth::user()->email.' aprobó la solicitud de '. $user->nombre .' para eliminar el curso '.$nombre.' de id: '.$myRequest->course_id;
             }
             else {
                 $myRequest->status ='Rechazado';
@@ -646,9 +647,8 @@ class RequestController extends Controller
             return \Redirect::route('solicitudes')->with('success', 'La acción se llevó a cabo con éxito');//poner info del curso
         } catch (\Exception $e) {
             //throw $th;
-            // dd($e);
             DB::rollBack();
-            return \Redirect::back('solicitudes')->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
+            return \Redirect::back()->with('error', 'Hubo un problema, inténtalo de nuevo más tarde');
         }
         
     }
