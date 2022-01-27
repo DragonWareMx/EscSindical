@@ -30,6 +30,33 @@ const Solicitudes = ({solicitudes, request}) => {
         filter: "usuario", //?
         newUser: true //?
     })
+
+    function transformaFecha(fecha) {
+        let dob
+        if(fecha)
+            dob = new Date(fecha.replace(/-/g, '\/').replace(/T.+/, ''));
+        else
+            dob = new Date()
+        const monthNames = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+            'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        const day = dob.getDate();
+        const monthIndex = dob.getMonth();
+        const year = dob.getFullYear();
+        let hour = ("0" + dob.getHours()).slice(-2);
+        const minutes = ("0" + dob.getMinutes()).slice(-2);
+        let formato
+
+        if(hour > 12){
+            hour = hour - 12
+            formato = "pm"
+        }
+        else
+            formato = "am"
+
+        return `${day} de ${monthNames[monthIndex]} de ${year} a las ${hour}:${minutes} ${formato}`;
+    }
     
     //realiza la búsqueda cada vez que se escribe en el input
     function changeName(event) {
@@ -568,7 +595,7 @@ const Solicitudes = ({solicitudes, request}) => {
                                             <td>{solicitud.user.nombre} {solicitud.user.apellido_p} {solicitud.user.apellido_m} </td>
                                             <td>{solicitud.course ? solicitud.course.nombre : "Este curso fue eliminado, da click para más información" }</td>
                                             <td>{solicitud.status}</td>
-                                            <td>{solicitud.created_at}</td>
+                                            <td>{solicitud.created_at ? transformaFecha(solicitud.created_at) : "Sin fecha"}</td>
                                             <td><button><i className="material-icons">edit</i> </button></td>
                                             {/*<td>
                                         <InertiaLink href={`/users/${user.id}/edit`}>Edit</InertiaLink>
