@@ -1101,7 +1101,7 @@ class EntryController extends Controller
                 'visible' => 'required|boolean',
                 'notificacion' => 'required|boolean',
                 'permitir_envios_retrasados' => 'required|boolean',
-                'fecha_de_apertura' => 'required|date|after_or_equal:today',
+                'fecha_de_apertura' => 'required|date',
                 'fecha_de_entrega' => 'required|date|after_or_equal:fecha_de_apertura',
                 'hora_de_apertura' => 'required|date_format:H:i',
                 'hora_de_entrega' => 'required|date_format:H:i',

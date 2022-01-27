@@ -8,7 +8,9 @@ import Create2 from '../../components/cursos/create/Create2.js'
 import Create3 from '../../components/cursos/create/Create3.js' 
 import '../../styles/cursos.css'
 import { values } from 'lodash';
+import '/css/alertas.css'
 
+import Alertas from '../../components/common/Alertas'; 
 
 function initializeModals() {
     var elems = document.querySelectorAll('.modal');
@@ -26,6 +28,7 @@ var instanceSchedule;
 
 
 const FormCurso = ({capacitaciones}) => {
+    const {flash}=usePage().props
     
     const { errors } = usePage().props
 
@@ -385,12 +388,19 @@ const FormCurso = ({capacitaciones}) => {
     initializeSelects();
    }
 
+   console.log(errors)
+
     return(
         
     <>
         <div className="row">                
             <div className="col s12">
                 <div className="card ">
+                    {Object.keys(errors).length !== 0 &&   
+                        <li className="alert_error">
+                            <div className="col s11">Occurrió un error, revisa los campos</div>
+                        </li>
+                    }
                     <div className="card-content">
                         <form onSubmit={handleSubmit} noValidate>
                             <div className="modal-content">

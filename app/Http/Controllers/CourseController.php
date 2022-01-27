@@ -426,7 +426,7 @@ class CourseController extends Controller
         $validated = $request->validate([
             'nombre' => ['required', 'max:100', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'tags' => 'required',
-            'fecha_inicio' => 'required|date|after:today',
+            'fecha_inicio' => 'required|date',
             'fecha_final' => 'required|date|after:fecha_inicio',
             'link' => 'required|url',
             'vc' => 'required|boolean',
@@ -435,8 +435,8 @@ class CourseController extends Controller
             'descripcion' => 'required',
             'imgs' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
             'maximo' => 'required|digits_between:1,3|numeric',
-            'inicio_inscripciones' => 'nullable|date|after:today|before:fecha_inicio',
-            'final_inscripciones' => 'nullable|date|after:inicio_inscripciones|before:fecha_inicio',
+            'inicio_inscripciones' => 'nullable|date',
+            'final_inscripciones' => 'nullable|date|after:inicio_inscripciones',
             //las inscripciones podrán seguir después de iniciado el curso?
         ]);
 
@@ -593,8 +593,8 @@ class CourseController extends Controller
             'descripcion' => 'required',
             'imgs' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
             'maximo' => 'required|digits_between:1,3|numeric',
-            'inicio_inscripciones' => 'nullable|date|before:fecha_inicio',
-            'final_inscripciones' => 'nullable|date|after:inicio_inscripciones|before:fecha_inicio',
+            'inicio_inscripciones' => 'nullable|date',
+            'final_inscripciones' => 'nullable|date|after:inicio_inscripciones',
             //las inscripciones podrán seguir después de iniciado el curso?
         ]);
 
