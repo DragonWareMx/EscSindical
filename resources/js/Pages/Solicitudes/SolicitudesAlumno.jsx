@@ -437,6 +437,7 @@ const SolicitudesAlumno = ({solicitudes, request}) => {
             <div className="row contenedor">
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
+                        <InertiaLink className="btn-floating btn-large waves-effect waves-light green-sind button-addUser" href={route('solicitudes')}><i className="material-icons"><span class="material-icons-outlined">school</span></i></InertiaLink>
                         <div className="card-content">
                             <span className="card-title">Solicitudes al sistema (baja de curso)</span>
                             <Alertas/>
