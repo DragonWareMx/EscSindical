@@ -739,7 +739,7 @@ class CourseController extends Controller
         DB::beginTransaction();
         try {
 
-            if (Drop_requests::where('course_id', $id)->where('user_id', Auth::id())->first()) {
+            if (Drop_requests::where('course_id', $id)->where('user_id', Auth::id())->where('status', 'En espera')->first()) {
                 return \Redirect::route('cursos')->with('message', 'Ya solicitaste tu baja a este curso');
             } else {
                 $newRequest = new Drop_requests;
@@ -791,7 +791,7 @@ class CourseController extends Controller
         DB::beginTransaction();
         try {
 
-            if (Delete_requests::where('course_id', $id)->where('user_id', Auth::id())->first()) {
+            if (Delete_requests::where('course_id', $id)->where('user_id', Auth::id())->where('status', 'En espera')->first()) {
                 return \Redirect::route('cursos')->with('message', 'Ya solicitaste la eliminación de este curso');
             } else {
                 $newRequest = new Delete_requests;
