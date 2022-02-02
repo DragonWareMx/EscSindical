@@ -874,7 +874,7 @@ class CourseController extends Controller
                         });
                 }
             })
-            ->select('courses.nombre', 'courses.fecha_inicio', 'courses.fecha_final', 'courses.id', 'courses.teacher_id', 'courses.inicio_inscripciones', 'courses.fecha_limite')
+            ->select('courses.nombre','valor_curricular', 'courses.fecha_inicio', 'courses.fecha_final', 'courses.id', 'courses.teacher_id', 'courses.inicio_inscripciones', 'courses.fecha_limite')
             ->paginate(12);
 
         $cursosParaTi = Course::with(['teacher:nombre,apellido_p,apellido_m,foto,id', 'tags:nombre', 'images:imagen,course_id', 'training_types'])
@@ -2119,6 +2119,18 @@ class CourseController extends Controller
             }
         }
 
+        //verifica la fecha de inscripcion
+        $fIncio = new \DateTime($curso->inicio_inscripciones);
+        $fFinal = new \DateTime($curso->fecha_limite);
+        $fHoy = new \DateTime("midnight");
+
+        // dd($fHoy, $fIncio, $fFinal);
+
+        if($fHoy < $fIncio)
+            return \Redirect::back()->with('message', 'No puedes inscribirte, aún no comienza el periodo de inscripciones para este curso.');
+        else if($fHoy > $fFinal)
+            return \Redirect::back()->with('error', 'No puedes inscribirte, el periodo de inscripciones para este curso ha terminado.');
+        
         try {
             DB::beginTransaction();
 
