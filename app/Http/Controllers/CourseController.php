@@ -739,7 +739,7 @@ class CourseController extends Controller
         DB::beginTransaction();
         try {
 
-            if (Drop_requests::where('course_id', $id)->where('user_id', Auth::id())->first()) {
+            if (Drop_requests::where('course_id', $id)->where('user_id', Auth::id())->where('status', 'En espera')->first()) {
                 return \Redirect::route('cursos')->with('message', 'Ya solicitaste tu baja a este curso');
             } else {
                 $newRequest = new Drop_requests;
@@ -791,7 +791,7 @@ class CourseController extends Controller
         DB::beginTransaction();
         try {
 
-            if (Delete_requests::where('course_id', $id)->where('user_id', Auth::id())->first()) {
+            if (Delete_requests::where('course_id', $id)->where('user_id', Auth::id())->where('status', 'En espera')->first()) {
                 return \Redirect::route('cursos')->with('message', 'Ya solicitaste la eliminación de este curso');
             } else {
                 $newRequest = new Delete_requests;
@@ -874,6 +874,7 @@ class CourseController extends Controller
                         });
                 }
             })
+            ->orderBy('fecha_final', 'desc')
             ->select('courses.nombre','valor_curricular', 'courses.fecha_inicio', 'courses.fecha_final', 'courses.id', 'courses.teacher_id', 'courses.inicio_inscripciones', 'courses.fecha_limite')
             ->paginate(12);
 
@@ -1387,7 +1388,7 @@ class CourseController extends Controller
     public function calificaciones($id)
     {
         if(Auth::user()->roles[0]->name=='Administrador'){
-            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id,foto')->select('id', 'nombre', 'teacher_id')->findOrFail($id);
+            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id,foto')->select('id', 'nombre', 'teacher_id', 'fecha_final')->findOrFail($id);
             
             return Inertia::render('Curso/Calificaciones', [
                 'curso' => $curso
@@ -1397,7 +1398,7 @@ class CourseController extends Controller
             Gate::authorize('haveaccess', 'ponente.perm');
 
             //verificar que el ponente sea dueño del curso
-            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id,foto')->select('id', 'nombre', 'teacher_id')->findOrFail($id);
+            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id,foto')->select('id', 'nombre', 'teacher_id', 'fecha_final')->findOrFail($id);
             if (Auth::id() != $curso->teacher_id) {
                 return abort(403);
             }

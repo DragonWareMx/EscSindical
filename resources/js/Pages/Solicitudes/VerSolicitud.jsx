@@ -27,6 +27,33 @@ const VerSolicitud = ({solicitud, tipo, curso, relacion}) => {
             Inertia.post('/solicitudes/bajaAlumno/'+solicitud.id, a)
         }
 
+        function transformaFecha(fecha) {
+            let dob
+            if(fecha)
+                dob = new Date(fecha.replace(/-/g, '\/').replace(/T.+/, ''));
+            else
+                dob = new Date()
+            const monthNames = [
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+                'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ];
+            const day = dob.getDate();
+            const monthIndex = dob.getMonth();
+            const year = dob.getFullYear();
+            let hour = ("0" + dob.getHours()).slice(-2);
+            const minutes = ("0" + dob.getMinutes()).slice(-2);
+            let formato
+    
+            if(hour > 12){
+                hour = hour - 12
+                formato = "pm"
+            }
+            else
+                formato = "am"
+    
+            return `${day} de ${monthNames[monthIndex]} de ${year} a las ${hour}:${minutes} ${formato}`;
+        }
+
         return (
             <>
 
@@ -65,7 +92,7 @@ const VerSolicitud = ({solicitud, tipo, curso, relacion}) => {
 
                                     <div className="col s12 m6" style={{"marginBottom":"20px"}}>
                                         <div className="col s12 txt-title-report">FECHA DE SOLICITUD</div>
-                                        <div className="col s12 txt-report">{solicitud.created_at}</div>
+                                        <div className="col s12 txt-report">{solicitud.created_at ? transformaFecha(solicitud.created_at) : "Sin fecha"}</div>
                                     </div>
                                 </div>
 

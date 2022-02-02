@@ -9,7 +9,11 @@ import Tag from '../common/Tag'
 export default function CourseCardSearch({ curso }) {
 
     function transformaFecha(fecha) {
-        const dob = new Date(fecha);
+        let dob
+        if(fecha)
+            dob = new Date(fecha.replace(/-/g, '\/').replace(/T.+/, ''));
+        else
+            dob = new Date()
         const monthNames = [
             'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
             'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
@@ -18,6 +22,16 @@ export default function CourseCardSearch({ curso }) {
         const monthIndex = dob.getMonth();
         const year = dob.getFullYear();
         return `${day} ${monthNames[monthIndex]} ${year}`;
+    }
+
+    function isFinished(finalDate){
+        const today = new Date();
+        const end = new Date(finalDate.replace(/-/g, '\/').replace(/T.+/, ''));
+
+        today.setHours(0,0,0,0)
+        end.setHours(0,0,0,0)
+
+        return today > end ? '(Curso terminado)' : '' 
     }
 
     return (
@@ -36,7 +50,7 @@ export default function CourseCardSearch({ curso }) {
                             {curso.valor_curricular == 1 &&
                                 <i className="material-icons verified-icon">verified</i>
                             }
-                            {curso.nombre}
+                            <b>{isFinished(curso.fecha_final)}</b> {curso.nombre}
                         </div>
                         {/* Nombre del ponente */}
                         <div className="col s12" style={{ "marginTop": "5px" }}>

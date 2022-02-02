@@ -121,7 +121,6 @@ const Usuarios = ({ categories, regimes, units }) => {
         var options = {
             format: 'yyyy-mm-dd',
             setDefaultDate: false,
-            defaultDate: new Date(2021, 0, 1),
             i18n: {
                 months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
                 monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
