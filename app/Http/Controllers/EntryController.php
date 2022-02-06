@@ -306,15 +306,13 @@ class EntryController extends Controller
 
                 //aqui va lo de los archivos
                 if ($request->file('archivos')) {
-                    foreach ($request->file('archivos') as $file) {
-                        $archivo = $file->store('public/archivos_cursos');
-                        $name = $file->hashName();
-                        $newFile = new File();
-                        $newFile->archivo = $name;
-                        $newFile->original = $file->getClientOriginalName();
-                        $newFile->entry_id = $entrada->id;
-                        $newFile->save();
-                    }
+                    $archivo = $request->file('archivos')->store('public/archivos_cursos');
+                    $name = $request->file('archivos')->hashName();
+                    $newFile = new File();
+                    $newFile->archivo = $name;
+                    $newFile->original = $request->file('archivos')->getClientOriginalName();
+                    $newFile->entry_id = $entrada->id;
+                    $newFile->save();
                 }
                 DB::commit();
                 // all good
