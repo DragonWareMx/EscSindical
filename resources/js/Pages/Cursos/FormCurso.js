@@ -8,7 +8,9 @@ import Create2 from '../../components/cursos/create/Create2.js'
 import Create3 from '../../components/cursos/create/Create3.js'
 import '../../styles/cursos.css'
 import { values } from 'lodash';
+import '/css/alertas.css'
 
+import Alertas from '../../components/common/Alertas'; 
 
 function initializeModals() {
     var elems = document.querySelectorAll('.modal');
@@ -25,8 +27,9 @@ var instancesDate2;
 var instanceSchedule;
 
 
-const FormCurso = ({ capacitaciones }) => {
-
+const FormCurso = ({capacitaciones}) => {
+    const {flash}=usePage().props
+    
     const { errors } = usePage().props
 
     useEffect(() => {
@@ -345,84 +348,90 @@ const FormCurso = ({ capacitaciones }) => {
             document.getElementById(dia).disabled = true;
         });
         initializeSelects();
-    }
+   }
 
-    function refreshSchedule() {
-        setValues(values => ({
-            ...values,
-            lunes: "",
-            martes: "",
-            miercoles: "",
-            jueves: "",
-            viernes: "",
-            sabado: "",
-            domingo: "",
-            lu: false,
-            ma: false,
-            mi: false,
-            jue: false,
-            vie: false,
-            sa: false,
-            do: false,
-        }));
-        document.getElementById('horario_lunes').innerHTML = "";
-        document.getElementById('horario_martes').innerHTML = "";
-        document.getElementById('horario_miercoles').innerHTML = "";
-        document.getElementById('horario_jueves').innerHTML = "";
-        document.getElementById('horario_viernes').innerHTML = "";
-        document.getElementById('horario_sabado').innerHTML = "";
-        document.getElementById('horario_domingo').innerHTML = "";
+   function refreshSchedule(){
+    setValues (values =>({
+        ... values,
+        lunes:"",
+        martes:"",
+        miercoles:"",
+        jueves:"",
+        viernes:"",
+        sabado:"",
+        domingo:"",
+        lu:false,
+        ma:false,
+        mi:false,
+        jue:false,
+        vie:false,
+        sa:false,
+        do:false, 
+    }));
+    document.getElementById('horario_lunes').innerHTML="";
+    document.getElementById('horario_martes').innerHTML="";
+    document.getElementById('horario_miercoles').innerHTML="";
+    document.getElementById('horario_jueves').innerHTML="";
+    document.getElementById('horario_viernes').innerHTML="";
+    document.getElementById('horario_sabado').innerHTML="";
+    document.getElementById('horario_domingo').innerHTML="";
 
-        document.getElementById('lunes').disabled = false;
-        document.getElementById('martes').disabled = false;
-        document.getElementById('miercoles').disabled = false;
-        document.getElementById('jueves').disabled = false;
-        document.getElementById('viernes').disabled = false;
-        document.getElementById('sabado').disabled = false;
-        document.getElementById('domingo').disabled = false;
-        document.getElementById('dias_de_la_semana').value = "";
-        initializeSelects();
-    }
+    document.getElementById('lunes').disabled = false;
+    document.getElementById('martes').disabled = false;
+    document.getElementById('miercoles').disabled = false;
+    document.getElementById('jueves').disabled = false;
+    document.getElementById('viernes').disabled = false;
+    document.getElementById('sabado').disabled = false;
+    document.getElementById('domingo').disabled = false;
+    document.getElementById('dias_de_la_semana').value ="";
+    initializeSelects();
+   }
 
-    return (
+   console.log(errors)
 
-        <>
-            <div className="row">
-                <div className="col s12">
-                    <div className="card ">
-                        <div className="card-content">
-                            <form onSubmit={handleSubmit} noValidate>
-                                <div className="modal-content">
-                                    <div className="row">
-                                        <ul id="tabs-swipe-demo" className="tabs" style={{ "marginBottom": "20px" }}>
-                                            <li className="tab col s4"><a href="#create1" className="active" >1. Generalidades</a></li>
-                                            <li className="tab col s4"><a href="#create2">2. Participantes</a></li>
-                                            <li className="tab col s4"><a href="#create3">3. Presentación</a></li>
-                                        </ul>
+    return(
+        
+    <>
+        <div className="row">                
+            <div className="col s12">
+                <div className="card ">
+                    {Object.keys(errors).length !== 0 &&   
+                        <li className="alert_error">
+                            <div className="col s11">Occurrió un error, revisa los campos</div>
+                        </li>
+                    }
+                    <div className="card-content">
+                        <form onSubmit={handleSubmit} noValidate>
+                            <div className="modal-content">
+                                <div className="row">
+                                    <ul id="tabs-swipe-demo" className="tabs" style={{"marginBottom": "20px"}}>
+                                        <li className="tab col s4"><a href="#create1" className="active" >1. Generalidades</a></li>
+                                        <li className="tab col s4"><a href="#create2">2. Participantes</a></li>
+                                        <li className="tab col s4"><a href="#create3">3. Presentación</a></li>
+                                    </ul>
 
-                                        <div id="create2" className="col s12"><Create2
-                                            change={handleChange}
-                                            values={useState}
-                                            onValueChange={onValueChange}
-                                            errors={errors}
-                                            capacitaciones={capacitaciones}
-                                            changeSelect={changeSelect} /></div>
-                                        <div id="create1" className="col s12"><Create1
-                                            change={handleChange}
-                                            values={useState}
-                                            onChangeTags={onChangeTags}
-                                            changeTime={changeTime}
-                                            changeSwitch={changeSwitch}
-                                            addSchedule={addSchedule}
-                                            refreshSchedule={refreshSchedule}
-                                            errors={errors} /></div>
-                                        <div id="create3" className="col s12"><Create3
-                                            change={handleChange}
-                                            values={useState}
-                                            setValues={setValues}
-                                            errors={errors}
-                                            changeCK={changeCK} /></div>
-                                    </div>
+                                    <div id="create2" className="col s12"><Create2 
+                                                                            change = {handleChange} 
+                                                                            values = {useState} 
+                                                                            onValueChange ={onValueChange} 
+                                                                            errors ={ errors }
+                                                                            capacitaciones = {capacitaciones}
+                                                                            changeSelect ={changeSelect}/></div>
+                                    <div id="create1" className="col s12"><Create1 
+                                                                            change = {handleChange} 
+                                                                            values = {useState} 
+                                                                            onChangeTags ={onChangeTags} 
+                                                                            changeTime ={changeTime}
+                                                                            changeSwitch = {changeSwitch}
+                                                                            addSchedule ={addSchedule}
+                                                                            refreshSchedule={refreshSchedule}
+                                                                            errors ={ errors }/></div>
+                                    <div id="create3" className="col s12"><Create3 
+                                                                            change = {handleChange} 
+                                                                            values = {useState} 
+                                                                            setValues ={setValues}
+                                                                            errors ={ errors }
+                                                                            changeCK ={changeCK}/></div>
                                 </div>
                             </form>
                         </div>
