@@ -433,12 +433,13 @@ const FormCurso = ({capacitaciones}) => {
                                                                             errors ={ errors }
                                                                             changeCK ={changeCK}/></div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-        </>
+        </div>
+    </>
     )
 }
 
