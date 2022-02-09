@@ -426,7 +426,7 @@ class CourseController extends Controller
         $validated = $request->validate([
             'nombre' => ['required', 'max:100', 'regex:/^[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$/i'],
             'tags' => 'required',
-            'fecha_inicio' => 'required|date|after:today',
+            'fecha_inicio' => 'required|date',
             'fecha_final' => 'required|date|after:fecha_inicio',
             'link' => 'required|url',
             'vc' => 'required|boolean',
@@ -435,8 +435,8 @@ class CourseController extends Controller
             'descripcion' => 'required',
             'imgs' => 'required|image|mimes:jpeg,png,jpg,gif|max:51200',
             'maximo' => 'required|digits_between:1,3|numeric',
-            'inicio_inscripciones' => 'nullable|date|after:today|before:fecha_inicio',
-            'final_inscripciones' => 'nullable|date|after:inicio_inscripciones|before:fecha_inicio',
+            'inicio_inscripciones' => 'nullable|date',
+            'final_inscripciones' => 'nullable|date|after:inicio_inscripciones',
             //las inscripciones podrán seguir después de iniciado el curso?
         ]);
 
@@ -593,8 +593,8 @@ class CourseController extends Controller
             'descripcion' => 'required',
             'imgs' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:51200',
             'maximo' => 'required|digits_between:1,3|numeric',
-            'inicio_inscripciones' => 'nullable|date|before:fecha_inicio',
-            'final_inscripciones' => 'nullable|date|after:inicio_inscripciones|before:fecha_inicio',
+            'inicio_inscripciones' => 'nullable|date',
+            'final_inscripciones' => 'nullable|date|after:inicio_inscripciones',
             //las inscripciones podrán seguir después de iniciado el curso?
         ]);
 
@@ -739,7 +739,7 @@ class CourseController extends Controller
         DB::beginTransaction();
         try {
 
-            if (Drop_requests::where('course_id', $id)->where('user_id', Auth::id())->first()) {
+            if (Drop_requests::where('course_id', $id)->where('user_id', Auth::id())->where('status', 'En espera')->first()) {
                 return \Redirect::route('cursos')->with('message', 'Ya solicitaste tu baja a este curso');
             } else {
                 $newRequest = new Drop_requests;
@@ -791,7 +791,7 @@ class CourseController extends Controller
         DB::beginTransaction();
         try {
 
-            if (Delete_requests::where('course_id', $id)->where('user_id', Auth::id())->first()) {
+            if (Delete_requests::where('course_id', $id)->where('user_id', Auth::id())->where('status', 'En espera')->first()) {
                 return \Redirect::route('cursos')->with('message', 'Ya solicitaste la eliminación de este curso');
             } else {
                 $newRequest = new Delete_requests;
@@ -1388,7 +1388,7 @@ class CourseController extends Controller
     public function calificaciones($id)
     {
         if(Auth::user()->roles[0]->name=='Administrador'){
-            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id,foto')->select('id', 'nombre', 'teacher_id')->findOrFail($id);
+            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id,foto')->select('id', 'nombre', 'teacher_id', 'fecha_final')->findOrFail($id);
             
             return Inertia::render('Curso/Calificaciones', [
                 'curso' => $curso
@@ -1398,7 +1398,7 @@ class CourseController extends Controller
             Gate::authorize('haveaccess', 'ponente.perm');
 
             //verificar que el ponente sea dueño del curso
-            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id,foto')->select('id', 'nombre', 'teacher_id')->findOrFail($id);
+            $curso = Course::with('modules:course_id,id,nombre,numero', 'modules.users:id', 'users:nombre,apellido_p,apellido_m,id,foto')->select('id', 'nombre', 'teacher_id', 'fecha_final')->findOrFail($id);
             if (Auth::id() != $curso->teacher_id) {
                 return abort(403);
             }

@@ -63,13 +63,27 @@ const LayoutCursos = ({children}) => {
         return window.location.href.indexOf(url) > -1
     }
 
+    function isFinished(finalDate){
+        const today = new Date();
+        let end
+        if(finalDate)
+            end = new Date(finalDate.replace(/-/g, '\/').replace(/T.+/, ''));
+        else
+            end = new Date()
+
+        today.setHours(0,0,0,0)
+        end.setHours(0,0,0,0)
+
+        return today > end ? '(Curso terminado)' : '' 
+    }
+
     return (
         <>
             <div className="row contenedor">
                <div className="card darken-1" style={{"padding":"5px 25px"}}>
                <Alertas />
                    <div className="card-content row valign-wrapper" style={{"padding":"10px","marginBottom":"0px"}}>
-                        <div className="col s11 valign-wrapper LC_title">{curso.nombre}&nbsp;
+                        <div className="col s11 valign-wrapper LC_title"><b>{isFinished(curso.fecha_final)}</b> {curso.nombre}&nbsp;
                             {curso.valor_curricular == 1 &&
                                 <i className="material-icons tooltipped" data-position="top" data-tooltip="Curso con valor curricular">verified</i>
                             }

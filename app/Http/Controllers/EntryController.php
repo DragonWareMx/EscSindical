@@ -306,15 +306,13 @@ class EntryController extends Controller
 
                 //aqui va lo de los archivos
                 if ($request->file('archivos')) {
-                    foreach ($request->file('archivos') as $file) {
-                        $archivo = $file->store('public/archivos_cursos');
-                        $name = $file->hashName();
-                        $newFile = new File();
-                        $newFile->archivo = $name;
-                        $newFile->original = $file->getClientOriginalName();
-                        $newFile->entry_id = $entrada->id;
-                        $newFile->save();
-                    }
+                    $archivo = $request->file('archivos')->store('public/archivos_cursos');
+                    $name = $request->file('archivos')->hashName();
+                    $newFile = new File();
+                    $newFile->archivo = $name;
+                    $newFile->original = $request->file('archivos')->getClientOriginalName();
+                    $newFile->entry_id = $entrada->id;
+                    $newFile->save();
                 }
                 DB::commit();
                 // all good
@@ -1101,7 +1099,7 @@ class EntryController extends Controller
                 'visible' => 'required|boolean',
                 'notificacion' => 'required|boolean',
                 'permitir_envios_retrasados' => 'required|boolean',
-                'fecha_de_apertura' => 'required|date|after_or_equal:today',
+                'fecha_de_apertura' => 'required|date',
                 'fecha_de_entrega' => 'required|date|after_or_equal:fecha_de_apertura',
                 'hora_de_apertura' => 'required|date_format:H:i',
                 'hora_de_entrega' => 'required|date_format:H:i',
