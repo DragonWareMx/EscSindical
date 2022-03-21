@@ -21,10 +21,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/menu', function () {
-    return view('menu');
-});
-
 
 Route::get('/inicio', function () {
     return view('index');
@@ -134,8 +130,8 @@ Route::post('/reportes/crear/{id}', [App\Http\Controllers\ReportController::clas
 // SOLICITUDES
 Route::get('/solicitudes/bajaCurso', [App\Http\Controllers\RequestController::class, 'index'])->name('solicitudes');
 Route::get('/solicitudes/bajaAlumno', [App\Http\Controllers\RequestController::class, 'indexAlumno'])->name('solicitudes.alumno');
-Route::post('/solicitudes/bajaCurso/{id}',[App\Http\Controllers\RequestController::class, 'bajaCurso'])->name('solicitudes.bajaCurso');
-Route::post('/solicitudes/bajaAlumno/{id}',[App\Http\Controllers\RequestController::class, 'bajaAlumno'])->name('solicitudes.bajaAlumno');
+Route::post('/solicitudes/bajaCurso/{id}', [App\Http\Controllers\RequestController::class, 'bajaCurso'])->name('solicitudes.bajaCurso');
+Route::post('/solicitudes/bajaAlumno/{id}', [App\Http\Controllers\RequestController::class, 'bajaAlumno'])->name('solicitudes.bajaAlumno');
 Route::get('/solicitudes/{id}/{type}', [App\Http\Controllers\RequestController::class, 'verSolicitud'])->name('verSolicitud');
 Route::put('/cursos/{id}/restore',  [App\Http\Controllers\RequestController::class, 'restoreCourse'])->name('cursos.restore');
 Route::put('/alumno/{id}/restore',  [App\Http\Controllers\RequestController::class, 'restoreAlumno'])->name('alumnos.restore');
