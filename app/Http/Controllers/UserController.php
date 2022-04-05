@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
+use Image;
 
 class UserController extends Controller
 {
@@ -275,8 +276,20 @@ class UserController extends Controller
             $newUser = new User;
 
             //guarda la foto
-            $foto = $request->file('foto')->store('public/fotos_perfil');
-            $newUser->foto = $request->file('foto')->hashName();
+            if(!is_null($request->file('foto'))){
+                //guarda la foto comprimida
+                $image = $request->file('foto');
+                $input['imagename'] = pathinfo($image->getClientOriginalName(),PATHINFO_FILENAME).'_'.time().'.'.$image->getClientOriginalExtension();
+                
+                $destinationPath = public_path('storage/fotos_perfil');
+                $img = Image::make($image->getRealPath());
+                $img->resize(500, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($destinationPath.'/'.$input['imagename']);
+                    
+                $newUser->foto=$img->basename;
+                $foto=$destinationPath.'/'.$input['imagename'];
+            }
             
             //---informacion personal---
             $newUser->nombre = $request->nombre;
@@ -546,7 +559,7 @@ class UserController extends Controller
 
         //COMIENZA LA TRANSACCION
         DB::beginTransaction();
-
+        
         try {
             //se busca el regimen en la bd
             $regimen = Regime::where("nombre", $request->regimen)->get();
@@ -594,13 +607,19 @@ class UserController extends Controller
             //SE CREA EL NUEVO USUARIO
             $user = User::find($id);
 
-            //guarda la foto
             if(!is_null($request->file('foto'))){
-                if($user->foto){
-                    \Storage::delete('public/fotos_perfil/'.$user->foto);
-                }
-                $foto = $request->file('foto')->store('public/fotos_perfil');
-                $user->foto = $request->file('foto')->hashName();
+                //guarda la foto comprimida
+                $image = $request->file('foto');
+                $input['imagename'] = pathinfo($image->getClientOriginalName(),PATHINFO_FILENAME).'_'.time().'.'.$image->getClientOriginalExtension();
+                
+                $destinationPath = public_path('storage/fotos_perfil');
+                $img = Image::make($image->getRealPath());
+                $img->resize(500, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($destinationPath.'/'.$input['imagename']);
+                    
+                $user->foto=$img->basename;
+                $foto=$destinationPath.'/'.$input['imagename'];
             }
             
             //---informacion personal---

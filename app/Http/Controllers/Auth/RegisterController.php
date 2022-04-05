@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Events\Registered;
 use App\Permission\Models\Role;
 use App\Models\Log;
+use Image;
 
 class RegisterController extends Controller
 {
@@ -167,9 +168,20 @@ class RegisterController extends Controller
             //SE CREA EL NUEVO USUARIO
             $newUser = new User;
 
-            //guarda la foto
-            $foto = $request->file('foto')->store('public/fotos_perfil');
-            $newUser->foto = $request->file('foto')->hashName();
+            if(!is_null($request->file('foto'))){
+                //guarda la foto comprimida
+                $image = $request->file('foto');
+                $input['imagename'] = pathinfo($image->getClientOriginalName(),PATHINFO_FILENAME).'_'.time().'.'.$image->getClientOriginalExtension();
+                
+                $destinationPath = public_path('storage/fotos_perfil');
+                $img = Image::make($image->getRealPath());
+                $img->resize(500, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($destinationPath.'/'.$input['imagename']);
+                    
+                $newUser->foto=$img->basename;
+                $foto=$destinationPath.'/'.$input['imagename'];
+            }
 
             //---informacion personal---
             $newUser->nombre = $request->nombre;
@@ -285,6 +297,7 @@ class RegisterController extends Controller
             if ($tarjeton_pago) {
                 \Storage::delete($tarjeton_pago);
             }
+            dd($e);
             return \Redirect::back()->with('error', 'Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
         }
     }

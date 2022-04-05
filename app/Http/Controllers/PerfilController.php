@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Password;
+use Image;
 
 class PerfilController extends Controller
 {
@@ -107,11 +108,18 @@ class PerfilController extends Controller
 
             //guarda la foto
             if(!is_null($request->file('foto'))){
-                if($user->foto){
-                    \Storage::delete('public/fotos_perfil/'.$user->foto);
-                }
-                $foto = $request->file('foto')->store('public/fotos_perfil');
-                $user->foto = $request->file('foto')->hashName();
+                //guarda la foto comprimida
+                $image = $request->file('foto');
+                $input['imagename'] = pathinfo($image->getClientOriginalName(),PATHINFO_FILENAME).'_'.time().'.'.$image->getClientOriginalExtension();
+                
+                $destinationPath = public_path('storage/fotos_perfil');
+                $img = Image::make($image->getRealPath());
+                $img->resize(500, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save($destinationPath.'/'.$input['imagename']);
+                    
+                $user->foto=$img->basename;
+                $foto=$destinationPath.'/'.$input['imagename'];
             }
             
             //---informacion personal---
@@ -179,7 +187,7 @@ class PerfilController extends Controller
                     \Storage::delete($foto);
                 }
 
-                return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+                return \Redirect::back()->with('error','Ha ocurrido un error al intentar actualizar el usuario, inténtelo más tarde.');
             }
             if(!$newLog)
             {
@@ -207,7 +215,7 @@ class PerfilController extends Controller
                 \Storage::delete($foto);
             }
             
-            return \Redirect::back()->with('error','Ha ocurrido un error al intentar registrar el usuario, inténtelo más tarde.');
+            return \Redirect::back()->with('error','Ha ocurrido un error al intentar actualizar el usuario, inténtelo más tarde.');
         }
     }
 
