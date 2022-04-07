@@ -112,7 +112,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
         }
     }
 
-    function changeTarjeton(e){
+    function changeTarjeton(e) {
         var inputFotos = document.getElementById('tarjeton_de_pago');
         if (inputFotos.files && inputFotos.files[0]) {
             setValues(values => ({
@@ -139,12 +139,14 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
         var elems = document.querySelectorAll('.dropdown-trigger');
         var options;
-        var instances = M.Dropdown.init(elems, ({inDuration: 300,
+        var instances = M.Dropdown.init(elems, ({
+            inDuration: 300,
             outDuration: 225,
             constrainWidth: false,
             gutter: 0, // Spacing from edge
             belowOrigin: true, // Displays dropdown below the button
-            stopPropogation: true})
+            stopPropogation: true
+        })
         );
 
         initializeDatePicker();
@@ -176,24 +178,23 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                 labelMonthSelect: 'Selecciona un mes',
                 labelYearSelect: 'Selecciona un año',
             },
-            onClose: ()=>{
+            onClose: () => {
                 setValues(values => ({
                     ...values,
                     fecha_de_nacimiento: document.getElementById("fecha_de_nacimiento").value,
                 }))
             },
-          };
+        };
         const instancesDate = M.Datepicker.init(elems, options);
     }
 
-    function cambiarContrasena(){
+    function cambiarContrasena() {
         setValues(values => ({
             ...values,
             cambiar_contrasena: !values.cambiar_contrasena,
         }))
 
-        if(!values.cambiar_contrasena == false)
-        {
+        if (!values.cambiar_contrasena == false) {
             setValues(values => ({
                 ...values,
                 contrasena: "",
@@ -202,14 +203,13 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
         }
     }
 
-    function cambiarTarjeton(){
+    function cambiarTarjeton() {
         setValues(values => ({
             ...values,
             cambiar_tarjeton: !values.cambiar_tarjeton,
         }))
 
-        if(!values.cambiar_tarjeton == false)
-        {
+        if (!values.cambiar_tarjeton == false) {
             setValues(values => ({
                 ...values,
                 tarjeton_de_pago: ""
@@ -246,27 +246,27 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                     <div className="card darken-1 cardUsers">
                         <div className="card-content">
 
-                            <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
+                            <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{ marginTop: "15px" }}>
                                 {/* regresar */}
-                                <InertiaLink  href={route('usuarios')}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
+                                <InertiaLink href={route('usuarios')} className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
                                 EDITAR USUARIO
                             </div>
 
                             <div className="col s12">
-                                <div style={{margin: "auto"}}>
+                                <div style={{ margin: "auto" }}>
                                     <Alertas />
                                 </div>
                             </div>
 
                             {user.deleted_at &&
-                            <div className="errores col s12">
-                                <ul>
-                                    <li className="alert_message">
-                                        <div className="col s11">Este usuario ha sido eliminado.</div>
-                                        <button data-target="modalRestaurar" type="button" className="col s3 m2 center-align modal-trigger" style={{ "border": "none", "backgroundColor": "transparent", "color": "#515B60", "cursor": "pointer", marginLeft: "3%", marginRight: "auto" }}>Restaurar</button>
-                                    </li>
-                                </ul>
-                            </div>
+                                <div className="errores col s12">
+                                    <ul>
+                                        <li className="alert_message">
+                                            <div className="col s11">Este usuario ha sido eliminado.</div>
+                                            <button data-target="modalRestaurar" type="button" className="col s3 m2 center-align modal-trigger" style={{ "border": "none", "backgroundColor": "transparent", "color": "#515B60", "cursor": "pointer", marginLeft: "3%", marginRight: "auto" }}>Restaurar</button>
+                                        </li>
+                                    </ul>
+                                </div>
                             }
 
                             {/* ----Formulario---- */}
@@ -276,7 +276,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" }}>INFORMACIÓN PERSONAL</p>
 
                                         <div className="col s12" style={{ "display": "flex", "justifyContent": "center", "flexDirection": "column", "marginTop": "5px", "marginBottom": "5px" }}>
-                                            <img id="profileImage" onClick={clickFoto} src={user.foto ? "/storage/fotos_perfil/"+user.foto : "/storage/fotos_perfil/avatar1.jpg"}></img>
+                                            <img id="profileImage" onClick={clickFoto} src={user.foto ? "/storage/fotos_perfil/" + user.foto : "/storage/fotos_perfil/avatar1.jpg"}></img>
                                             <p id="txt-profile" style={{ "cursor": "pointer" }} onClick={clickFoto}>Foto de perfil</p>
                                         </div>
 
@@ -290,7 +290,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s12">
-                                            <input  id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={values.nombre} onChange={handleChange} autoFocus maxLength="255" />
+                                            <input id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={values.nombre} onChange={handleChange} autoFocus maxLength="255" pattern='[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$' />
                                             <label htmlFor="nombre">Nombre</label>
                                             {
                                                 errors.nombre &&
@@ -299,7 +299,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s12 input-50-re">
-                                            <input  id="apellido_paterno" type="text" className={errors.apellido_paterno ? "validate form-control invalid" : "validate form-control"} name="apellido_paterno" value={values.apellido_paterno} onChange={handleChange} required autoComplete="apellido_paterno" maxLength="255" />
+                                            <input id="apellido_paterno" type="text" className={errors.apellido_paterno ? "validate form-control invalid" : "validate form-control"} name="apellido_paterno" value={values.apellido_paterno} onChange={handleChange} required autoComplete="apellido_paterno" maxLength="255" />
                                             <label htmlFor="apellido_paterno">Apellido Paterno</label>
                                             {
                                                 errors.apellido_paterno &&
@@ -309,7 +309,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s12 input-50-re">
-                                            <input  id="apellido_materno" type="text" className={errors.apellido_materno ? "validate form-control invalid" : "validate form-control"} name="apellido_materno" value={values.apellido_materno} onChange={handleChange} autoComplete="apellido_materno" maxLength="255" />
+                                            <input id="apellido_materno" type="text" className={errors.apellido_materno ? "validate form-control invalid" : "validate form-control"} name="apellido_materno" value={values.apellido_materno} onChange={handleChange} autoComplete="apellido_materno" maxLength="255" />
                                             <label htmlFor="apellido_materno">Apellido Materno (opcional)</label>
                                             {
                                                 errors.apellido_materno &&
@@ -318,7 +318,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s6 input-50-re">
-                                            <input  id="fecha_de_nacimiento" type="text" className={errors.fecha_de_nacimiento ? "validate datepicker invalid" : "validate datepicker"} name="fecha_de_nacimiento" required autoComplete="fecha_de_nacimiento" value={values.fecha_de_nacimiento} />
+                                            <input id="fecha_de_nacimiento" type="text" className={errors.fecha_de_nacimiento ? "validate datepicker invalid" : "validate datepicker"} name="fecha_de_nacimiento" required autoComplete="fecha_de_nacimiento" value={values.fecha_de_nacimiento} />
                                             <label htmlFor="fecha_de_nacimiento">Fec. Nacimiento</label>
                                             {
                                                 errors.fecha_de_nacimiento &&
@@ -327,7 +327,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s6 input-50-re">
-                                            <select  id="sexo" name="sexo" autoComplete="sexo" value={values.sexo} onChange={handleChange} className={errors.sexo ? "input-field invalid" : "input-field"}>
+                                            <select id="sexo" name="sexo" autoComplete="sexo" value={values.sexo} onChange={handleChange} className={errors.sexo ? "input-field invalid" : "input-field"}>
                                                 <option value="" disabled>Selecciona una opción</option>
                                                 <option value="m">Femenino</option>
                                                 <option value="h">Masculino</option>
@@ -340,10 +340,10 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                             }
                                         </div>
 
-                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", "marginBottom":"20px"}}>DIRECCIÓN</p>
+                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", "marginBottom": "20px" }}>DIRECCIÓN</p>
 
                                         <div className="input-field col s12 ">
-                                            <input  maxLength="50" id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado" value={values.estado} required autoComplete="estado" onChange={handleChange} />
+                                            <input maxLength="50" id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado" value={values.estado} required autoComplete="estado" onChange={handleChange} />
                                             <label htmlFor="estado">Estado</label>
                                             {
                                                 errors.estado &&
@@ -352,7 +352,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s6 input-50-re">
-                                            <input  maxLength="60" id="ciudad" type="text" className={errors.ciudad ? "validate form-control invalid" : "validate"} name="ciudad" value={values.ciudad} required autoComplete="ciudad" onChange={handleChange} />
+                                            <input maxLength="60" id="ciudad" type="text" className={errors.ciudad ? "validate form-control invalid" : "validate"} name="ciudad" value={values.ciudad} required autoComplete="ciudad" onChange={handleChange} />
                                             <label htmlFor="ciudad">Ciudad</label>
                                             {
                                                 errors.ciudad &&
@@ -361,7 +361,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s6 input-50-re">
-                                            <input  maxLength="100" id="colonia" type="text" className={errors.colonia ? "validate form-control invalid" : "validate"} name="colonia" value={values.colonia} required autoComplete="colonia" onChange={handleChange} />
+                                            <input maxLength="100" id="colonia" type="text" className={errors.colonia ? "validate form-control invalid" : "validate"} name="colonia" value={values.colonia} required autoComplete="colonia" onChange={handleChange} />
                                             <label htmlFor="colonia">Colonia</label>
                                             {
                                                 errors.colonia &&
@@ -370,7 +370,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s6 input-50-re">
-                                            <input  maxLength="100" id="calle" type="text" className={errors.calle ? "validate form-control invalid" : "validate"} name="calle" value={values.calle} required autoComplete="calle" onChange={handleChange} />
+                                            <input maxLength="100" id="calle" type="text" className={errors.calle ? "validate form-control invalid" : "validate"} name="calle" value={values.calle} required autoComplete="calle" onChange={handleChange} />
                                             <label htmlFor="calle">Calle</label>
                                             {
                                                 errors.calle &&
@@ -379,7 +379,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s6 input-50-re">
-                                            <input  maxLength="9" id="codigo_postal" type="text" className={errors.codigo_postal ? "validate form-control invalid" : "validate"} name="codigo_postal" value={values.codigo_postal} required autoComplete="codigo_postal" onChange={handleChange} />
+                                            <input maxLength="9" id="codigo_postal" type="text" className={errors.codigo_postal ? "validate form-control invalid" : "validate"} name="codigo_postal" value={values.codigo_postal} required autoComplete="codigo_postal" onChange={handleChange} />
                                             <label htmlFor="codigo_postal">Código Postal</label>
                                             {
                                                 errors.codigo_postal &&
@@ -388,7 +388,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s6 input-50-re">
-                                            <input  maxLength="10" id="numero_exterior" type="text" className={errors.numero_exterior ? "validate form-control invalid" : "validate"} name="numero_exterior" value={values.numero_exterior} required autoComplete="numero_exterior" onChange={handleChange} />
+                                            <input maxLength="10" id="numero_exterior" type="text" className={errors.numero_exterior ? "validate form-control invalid" : "validate"} name="numero_exterior" value={values.numero_exterior} required autoComplete="numero_exterior" onChange={handleChange} />
                                             <label htmlFor="numero_exterior">No. Exterior</label>
                                             {
                                                 errors.numero_exterior &&
@@ -397,7 +397,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s6 input-50-re">
-                                            <input  maxLength="10" id="numero_interior" type="text" className={errors.numero_interior ? "validate form-control invalid" : "validate"} name="numero_interior" value={values.numero_interior} autoComplete="numero_interior" onChange={handleChange} />
+                                            <input maxLength="10" id="numero_interior" type="text" className={errors.numero_interior ? "validate form-control invalid" : "validate"} name="numero_interior" value={values.numero_interior} autoComplete="numero_interior" onChange={handleChange} />
                                             <label htmlFor="numero_interior">No. Interior (Op)</label>
                                             {
                                                 errors.numero_interior &&
@@ -411,7 +411,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", marginBottom: "20px" }}>INFORMACIÓN INSTITUCIONAL</p>
 
                                         <div className="input-field col s12">
-                                            <input  id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="10" />
+                                            <input id="matricula" type="text" className={errors.matricula ? "validate form-control invalid" : "validate"} name="matricula" value={values.matricula} onChange={handleChange} required autoComplete="matricula" maxLength="10" />
                                             <label htmlFor="matricula">Matrícula</label>
                                             {
                                                 errors.matricula &&
@@ -420,7 +420,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                         </div>
 
                                         <div className="input-field col s12">
-                                            <select  id="regimen" name="regimen" value={values.regimen} onChange={handleChange}>
+                                            <select id="regimen" name="regimen" value={values.regimen} onChange={handleChange}>
                                                 <option value="" disabled>Selecciona una opción</option>
                                                 {regimes && regimes.length > 0 &&
                                                     regimes.map(regime => (
@@ -437,7 +437,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
                                         <div className="col s12" style={{ "marginTop": "5px" }}>
                                             <div className="input-field select-wrapper">
-                                                <input placeholder={values.regimen ? "Selecciona una unidad" : "Selecciona primerio un régimen"}  id="unidad" list="unidades" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.unidad} onChange={handleChange} required autoComplete="off" />
+                                                <input placeholder={values.regimen ? "Selecciona una unidad" : "Selecciona primerio un régimen"} id="unidad" list="unidades" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.unidad} onChange={handleChange} required autoComplete="off" />
                                                 <label htmlFor="unidad">Unidad</label>
                                                 <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
                                                 {
@@ -457,7 +457,7 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
 
                                         <div className="col s12">
                                             <div className="input-field select-wrapper">
-                                                <input placeholder="Selecciona una categoría"  id="categoria" list="categorias" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.categoria} onChange={handleChange} required autoComplete="off" />
+                                                <input placeholder="Selecciona una categoría" id="categoria" list="categorias" type="text" className={errors.unidad ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.categoria} onChange={handleChange} required autoComplete="off" />
                                                 <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
                                                 <label htmlFor="categoria">Categoría</label>
                                                 {
@@ -475,94 +475,94 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                             </datalist>
                                         </div>
 
-                                        <div className="area col s12" style={{marginBottom:"4%"}}>
+                                        <div className="area col s12" style={{ marginBottom: "4%" }}>
 
                                             {!values.cambiar_tarjeton &&
                                                 <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px" }}>Tarjetón de pago <a target="_blank" href={user == null || user.tarjeton_pago == null ? null : "/storage/tarjetones_pago/" + user.tarjeton_pago}>{user != null && user.tarjeton_pago}</a><i style={{ "color": "#7E7E7E" }} className="material-icons tiny">description</i></p>
                                             }
 
-                                            <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>¿Cambiar tarjetón de pago?</p>
+                                            <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)", cursor: "pointer" }}>¿Cambiar tarjetón de pago?</p>
 
                                             <div className="switch">
                                                 <label>
-                                                No
-                                                <input id="cambiar_tarjeton" type="checkbox" checked={values.cambiar_tarjeton} onChange={cambiarTarjeton} />
-                                                <span className="lever"></span>
-                                                Sí
+                                                    No
+                                                    <input id="cambiar_tarjeton" type="checkbox" checked={values.cambiar_tarjeton} onChange={cambiarTarjeton} />
+                                                    <span className="lever"></span>
+                                                    Sí
                                                 </label>
                                             </div>
 
                                             {values.cambiar_tarjeton &&
-                                            <>
-                                                <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF o imagen) para validar que seas un usuario activo">help_outline</i></p>
-                                                <div className="file-field input-field" style={{"border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px"}}>
-                                                    <div className="col s12">
-                                                    <span style={{fontSize:"12px", textAlign: "center", paddingTop:"10px"}} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
-                                                    <input type="file" accept="image/png, image/jpeg, image/jpg, application/pdf"  className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" required autoComplete="tarjeton" onChange={changeTarjeton} />
-                                                    {
-                                                        errors.tarjeton_de_pago &&
-                                                        <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{"marginBottom":"10px", color: "#F44336"}}>{errors.tarjeton_de_pago}</span>
-                                                    }
+                                                <>
+                                                    <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)", cursor: "pointer" }}>Tarjetón de pago<i className="material-icons tiny tooltipped" data-position="top" data-tooltip="Archivo (PDF o imagen) para validar que seas un usuario activo">help_outline</i></p>
+                                                    <div className="file-field input-field" style={{ "border": "1px dashed rgba(159, 157, 157, 0.6)", boxSizing: "border-box", borderRadius: "4px" }}>
+                                                        <div className="col s12">
+                                                            <span style={{ fontSize: "12px", textAlign: "center", paddingTop: "10px" }} className="col s12">Arrastre aquí el archivo o <b>clic</b> para seleccionarlo</span>
+                                                            <input type="file" accept="image/png, image/jpeg, image/jpg, application/pdf" className={errors.tarjeton_de_pago ? "form-control is-invalid" : "form-control"} id="tarjeton_de_pago" name="tarjeton_de_pago" required autoComplete="tarjeton" onChange={changeTarjeton} />
+                                                            {
+                                                                errors.tarjeton_de_pago &&
+                                                                <span className="helper-text" data-error={errors.tarjeton_de_pago} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.tarjeton_de_pago}</span>
+                                                            }
+                                                        </div>
+                                                        <div className="file-path-wrapper">
+                                                            <input className="file-path validate" type="text" />
+                                                        </div>
                                                     </div>
-                                                    <div className="file-path-wrapper">
-                                                        <input className="file-path validate" type="text" />
-                                                    </div>
-                                                </div>
-                                            </>
+                                                </>
                                             }
                                         </div>
 
-                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", "marginBottom":"20px" }}>CUENTA</p>
+                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", "marginBottom": "20px" }}>CUENTA</p>
 
                                         <div className="input-field col s12">
                                             {/* <i className="material-icons prefix">account_circle</i> */}
-                                            <input  id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required autoComplete="email" onChange={handleChange} />
+                                            <input id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required autoComplete="email" onChange={handleChange} />
                                             <label htmlFor="email">Correo electrónico</label>
                                             {
                                                 errors.email &&
                                                 <span className="helper-text" data-error={errors.email} style={{ "marginBottom": "10px" }}>{errors.email}</span>
                                             }
 
-                                            <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>¿Cambiar contraseña?</p>
+                                            <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)", cursor: "pointer" }}>¿Cambiar contraseña?</p>
 
-                                            <div className="switch"  style={{"marginBottom":"15px"}}>
+                                            <div className="switch" style={{ "marginBottom": "15px" }}>
                                                 <label>
-                                                No
-                                                <input id="cambiar_contrasena" type="checkbox"  checked={values.cambiar_contrasena} onChange={cambiarContrasena} />
-                                                <span className="lever"></span>
-                                                Sí
+                                                    No
+                                                    <input id="cambiar_contrasena" type="checkbox" checked={values.cambiar_contrasena} onChange={cambiarContrasena} />
+                                                    <span className="lever"></span>
+                                                    Sí
                                                 </label>
                                             </div>
                                         </div>
 
 
                                         {values.cambiar_contrasena &&
-                                        <>
-                                            <div className="input-field col s12" style={{"marginBottom":"5px"}}>
-                                                <i className="material-icons prefix">lock</i>
-                                                <input  id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"} name="contrasena" value={values.contrasena} required onChange={handleChange} />
-                                                <label htmlFor="contrasena">Nueva contraseña</label>
-                                                {
-                                                    errors.contrasena &&
-                                                    <span className="helper-text" data-error={errors.contrasena} style={{ "marginBottom": "10px" }}>{errors.contrasena}</span>
-                                                }
-                                            </div>
+                                            <>
+                                                <div className="input-field col s12" style={{ "marginBottom": "5px" }}>
+                                                    <i className="material-icons prefix">lock</i>
+                                                    <input id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"} name="contrasena" value={values.contrasena} required onChange={handleChange} />
+                                                    <label htmlFor="contrasena">Nueva contraseña</label>
+                                                    {
+                                                        errors.contrasena &&
+                                                        <span className="helper-text" data-error={errors.contrasena} style={{ "marginBottom": "10px" }}>{errors.contrasena}</span>
+                                                    }
+                                                </div>
 
-                                            <div className="input-field col s12">
-                                                <i className="material-icons prefix">lock</i>
-                                                <input  id="confirmar_contrasena" type="password" className={errors.confirmar_contrasena ? "validate form-control invalid" : "validate form-control"} name="confirmar_contrasena" value={values.confirmar_contrasena} required onChange={handleChange} />
-                                                <label htmlFor="confirmar_contrasena">Confirmar contraseña</label>
-                                                {
-                                                    errors.confirmar_contrasena &&
-                                                    <span className="helper-text" data-error={errors.confirmar_contrasena} style={{ "marginBottom": "10px" }}>{errors.confirmar_contrasena}</span>
-                                                }
-                                            </div>
-                                        </>
+                                                <div className="input-field col s12">
+                                                    <i className="material-icons prefix">lock</i>
+                                                    <input id="confirmar_contrasena" type="password" className={errors.confirmar_contrasena ? "validate form-control invalid" : "validate form-control"} name="confirmar_contrasena" value={values.confirmar_contrasena} required onChange={handleChange} />
+                                                    <label htmlFor="confirmar_contrasena">Confirmar contraseña</label>
+                                                    {
+                                                        errors.confirmar_contrasena &&
+                                                        <span className="helper-text" data-error={errors.confirmar_contrasena} style={{ "marginBottom": "10px" }}>{errors.confirmar_contrasena}</span>
+                                                    }
+                                                </div>
+                                            </>
                                         }
 
                                         <div className="col s12">
                                             <div className="input-field select-wrapper">
-                                                <input placeholder="Selecciona un rol"  id="rol" list="roles" type="text" className={errors.rol ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.rol} onChange={handleChange} required autoComplete="off" />
+                                                <input placeholder="Selecciona un rol" id="rol" list="roles" type="text" className={errors.rol ? "datalist-register validate form-control invalid" : "datalist-register validate"} value={values.rol} onChange={handleChange} required autoComplete="off" />
                                                 <svg className="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
                                                 <label htmlFor="rol">Rol</label>
                                                 {
@@ -596,13 +596,13 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                                 </div>
                                 <div className="row container-buttons">
                                     {
-                                    !user.deleted_at &&
+                                        !user.deleted_at &&
                                         <button data-target="modalEliminar" type="button" className="col s3 m2 center-align modal-trigger" style={{ "border": "none", "backgroundColor": "transparent", "color": "#515B60", "cursor": "pointer", marginLeft: "3%", marginRight: "auto" }}><i className="material-icons">delete</i></button>
                                     }
                                     <button type="button" className=" center-align  btn waves-effect waves-light cancelar" style={{ marginRight: "15px" }} onClick={cancelEditUser}>Cancelar</button>
                                     < button type="submit" className=" center-align btn waves-effect waves-light guardar" style={{ marginRight: "3%", marginLeft: "0" }}>
                                         Guardar
-                                            < i className="material-icons right" > save</i>
+                                        < i className="material-icons right" > save</i>
                                     </button>
                                 </div>
                             </form>
@@ -610,76 +610,76 @@ const Usuarios = ({ user, categories, regimes, units, roles }) => {
                     </div>
 
                     {user.roles && user.roles.length > 0 && user.roles[0].name == "Alumno" &&
-                    <ul className="collapsible">
-                        <li className="active">
-                            <div className="collapsible-header" style={{"color":"#108058"}}><i className="material-icons">school</i>Cursos</div>
-                            <div className="collapsible-body collapsible-padding padding3">
+                        <ul className="collapsible">
+                            <li className="active">
+                                <div className="collapsible-header" style={{ "color": "#108058" }}><i className="material-icons">school</i>Cursos</div>
+                                <div className="collapsible-body collapsible-padding padding3">
 
-                                <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>CURSOS ACTUALES</div>
-                                    {user.active_courses &&  user.active_courses.length > 0 ?
+                                    <div style={{ "fontSize": "17px", "color": "#134E39", "marginTop": "15px" }}>CURSOS ACTUALES</div>
+                                    {user.active_courses && user.active_courses.length > 0 ?
                                         <div className="row">
-                                            {user.active_courses.map(curso=>(
-                                                <div key={curso.id}><CourseCard curso={curso} actuales={true}/></div>
+                                            {user.active_courses.map(curso => (
+                                                <div key={curso.id}><CourseCard curso={curso} actuales={true} /></div>
                                             ))}
                                         </div>
                                         :
                                         <div>Este usuario no pertenece a ningún curso activo</div>
                                     }
 
-                                <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>HISTORIAL DE CURSOS</div>
+                                    <div style={{ "fontSize": "17px", "color": "#134E39", "marginTop": "15px" }}>HISTORIAL DE CURSOS</div>
                                     {
-                                    user.finished_courses &&  user.finished_courses.length > 0 ?
-                                    <div className="row">
-                                        {user.finished_courses.map(curso=>(
-                                            <div key={curso.id}><CourseCard curso={curso} actuales={false}/></div>
-                                        ))}
-                                    </div>
-                                    :
-                                    <div>Este usuario aún no tiene cursos terminados</div>
+                                        user.finished_courses && user.finished_courses.length > 0 ?
+                                            <div className="row">
+                                                {user.finished_courses.map(curso => (
+                                                    <div key={curso.id}><CourseCard curso={curso} actuales={false} /></div>
+                                                ))}
+                                            </div>
+                                            :
+                                            <div>Este usuario aún no tiene cursos terminados</div>
                                     }
                                 </div>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
                     }
 
                     {user.roles && user.roles.length > 0 && user.roles[0].name == "Ponente" &&
-                    <ul className="collapsible">
-                        <li className="active">
-                            <div className="collapsible-header" style={{"color":"#108058"}}><i className="material-icons">school</i>Cursos</div>
-                            <div className="collapsible-body collapsible-padding padding3">
+                        <ul className="collapsible">
+                            <li className="active">
+                                <div className="collapsible-header" style={{ "color": "#108058" }}><i className="material-icons">school</i>Cursos</div>
+                                <div className="collapsible-body collapsible-padding padding3">
 
-                                <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>CURSOS ACTUALES</div>
-                                    {user.teacher_active_courses &&  user.teacher_active_courses.length > 0 ?
+                                    <div style={{ "fontSize": "17px", "color": "#134E39", "marginTop": "15px" }}>CURSOS ACTUALES</div>
+                                    {user.teacher_active_courses && user.teacher_active_courses.length > 0 ?
                                         <div className="row">
-                                            {user.teacher_active_courses.map(curso=>(
-                                                <div key={curso.id}><CourseCard curso={curso} actuales={true}/></div>
+                                            {user.teacher_active_courses.map(curso => (
+                                                <div key={curso.id}><CourseCard curso={curso} actuales={true} /></div>
                                             ))}
                                         </div>
                                         :
                                         <div>Este usuario no pertenece a ningún curso activo</div>
                                     }
 
-                                <div style={{"fontSize":"17px","color":"#134E39","marginTop":"15px"}}>HISTORIAL DE CURSOS</div>
+                                    <div style={{ "fontSize": "17px", "color": "#134E39", "marginTop": "15px" }}>HISTORIAL DE CURSOS</div>
                                     {
-                                    user.teacher_finished_courses &&  user.teacher_finished_courses.length > 0 ?
-                                    <div className="row">
-                                        {user.teacher_finished_courses.map(curso=>(
-                                            <div key={curso.id}><CourseCard curso={curso} actuales={false}/></div>
-                                        ))}
-                                    </div>
-                                    :
-                                    <div>Este usuario aún no tiene cursos terminados</div>
+                                        user.teacher_finished_courses && user.teacher_finished_courses.length > 0 ?
+                                            <div className="row">
+                                                {user.teacher_finished_courses.map(curso => (
+                                                    <div key={curso.id}><CourseCard curso={curso} actuales={false} /></div>
+                                                ))}
+                                            </div>
+                                            :
+                                            <div>Este usuario aún no tiene cursos terminados</div>
                                     }
                                 </div>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
                     }
                 </div>
             </div >
 
             <ModalEliminar url={route('usuarios.delete', user.id)} nombre={user.nombre} tipo="usuario" />
 
-            <ModalRestaurar url={route('usuarios.restore',user.id)} nombre={user.nombre} tipo="usuario" />
+            <ModalRestaurar url={route('usuarios.restore', user.id)} nombre={user.nombre} tipo="usuario" />
         </>
     )
 }

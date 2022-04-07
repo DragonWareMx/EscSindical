@@ -131,24 +131,23 @@ const Configuracion = ({ user }) => {
                 labelMonthSelect: 'Selecciona un mes',
                 labelYearSelect: 'Selecciona un año',
             },
-            onClose: ()=>{
+            onClose: () => {
                 setValues(values => ({
                     ...values,
                     fecha_de_nacimiento: document.getElementById("fecha_de_nacimiento").value,
                 }))
             },
-          };
+        };
         const instancesDate = M.Datepicker.init(elems, options);
     }
 
-    function cambiarContrasena(){
+    function cambiarContrasena() {
         setValues(values => ({
             ...values,
             cambiar_contrasena: !values.cambiar_contrasena,
         }))
 
-        if(!values.cambiar_contrasena == false)
-        {
+        if (!values.cambiar_contrasena == false) {
             setValues(values => ({
                 ...values,
                 contrasena: "",
@@ -168,14 +167,14 @@ const Configuracion = ({ user }) => {
                 <div className="col contenedor s12">
                     <div className="card darken-1 cardUsers">
                         <div className="card-content">
-                            <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{marginTop:"15px"}}>
+                            <div className="col s12 m9 l10 xl10 titulo-modulo left" style={{ marginTop: "15px" }}>
                                 {/* regresar */}
-                                <InertiaLink  href={route('perfil')}  className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
+                                <InertiaLink href={route('perfil')} className="icon-back-course tooltipped" data-position="left" data-tooltip="Regresar"><i className="material-icons">keyboard_backspace</i></InertiaLink>
                                 CONFIGURACIÓN
                             </div>
 
                             <div className="col s12">
-                                <div style={{margin: "auto"}}>
+                                <div style={{ margin: "auto" }}>
                                     <Alertas />
                                 </div>
                             </div>
@@ -184,10 +183,10 @@ const Configuracion = ({ user }) => {
                             <form onSubmit={handleSubmit}>
                                 <div className="row div-form-register" style={{ "padding": "3%" }}>
                                     <div className="col s12 m6 div-division">
-                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" , "marginBottom":"15px"}}>INFORMACIÓN PERSONAL</p>
+                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", "marginBottom": "15px" }}>INFORMACIÓN PERSONAL</p>
 
                                         <div className="col s12" style={{ "display": "flex", "justifyContent": "center", "flexDirection": "column", "marginTop": "5px", "marginBottom": "5px" }}>
-                                            <img id="profileImage" onClick={clickFoto} src={user.foto ? "/storage/fotos_perfil/"+user.foto : "/storage/fotos_perfil/avatar1.jpg"}></img>
+                                            <img id="profileImage" onClick={clickFoto} src={user.foto ? "/storage/fotos_perfil/" + user.foto : "/storage/fotos_perfil/avatar1.jpg"}></img>
                                             <p id="txt-profile" style={{ "cursor": "pointer" }} onClick={clickFoto}>Foto de perfil</p>
                                         </div>
 
@@ -201,7 +200,7 @@ const Configuracion = ({ user }) => {
                                         </div>
 
                                         <div className="input-field col s12">
-                                            <input disabled={false} id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={values.nombre} onChange={handleChange} autoFocus maxLength="255" />
+                                            <input disabled={false} id="nombre" type="text" className={errors.nombre ? "validate form-control invalid" : "validate form-control"} name="nombre" required autoComplete="nombre" value={values.nombre} onChange={handleChange} autoFocus maxLength="255" pattern='[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?(( |\-)[a-zA-Z1-9À-ÖØ-öø-ÿ]+\.?)*$' />
                                             <label htmlFor="nombre">Nombre</label>
                                             {
                                                 errors.nombre &&
@@ -254,7 +253,7 @@ const Configuracion = ({ user }) => {
                                     </div>
 
                                     <div className="col s12 m6 div-division user-form-border2">
-                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" , "marginBottom":"25px" }}>DIRECCIÓN</p>
+                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", "marginBottom": "25px" }}>DIRECCIÓN</p>
 
                                         <div className="input-field col s12 ">
                                             <input disabled={false} maxLength="50" id="estado" type="text" className={errors.estado ? "validate form-control invalid" : "validate"} name="estado" value={values.estado} required autoComplete="estado" onChange={handleChange} />
@@ -319,7 +318,7 @@ const Configuracion = ({ user }) => {
                                             }
                                         </div>
 
-                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%" , "marginBottom":"25px" }}>CUENTA</p>
+                                        <p className="titles-sub" style={{ "margin": "1em 0px 1em 3%", "marginBottom": "25px" }}>CUENTA</p>
 
                                         <div className="input-field col s12">
                                             <input disabled={true} id="email" type="email" className={errors.email ? "validate form-control invalid" : "validate form-control"} name="email" value={values.email} required autoComplete="email" onChange={handleChange} />
@@ -329,41 +328,41 @@ const Configuracion = ({ user }) => {
                                                 <span className="helper-text" data-error={errors.email} style={{ "marginBottom": "10px" }}>{errors.email}</span>
                                             }
 
-                                            <p style={{"marginTop":"0px","fontFamily":"Montserrat","fontSize":"13px",color:"rgb(159, 157, 157)", cursor:"pointer"}}>¿Cambiar contraseña?</p>
+                                            <p style={{ "marginTop": "0px", "fontFamily": "Montserrat", "fontSize": "13px", color: "rgb(159, 157, 157)", cursor: "pointer" }}>¿Cambiar contraseña?</p>
 
                                             <div className="switch">
                                                 <label>
-                                                No
-                                                <input id="cambiar_contrasena" type="checkbox"  checked={values.cambiar_contrasena} onChange={cambiarContrasena} />
-                                                <span className="lever"></span>
-                                                Sí
+                                                    No
+                                                    <input id="cambiar_contrasena" type="checkbox" checked={values.cambiar_contrasena} onChange={cambiarContrasena} />
+                                                    <span className="lever"></span>
+                                                    Sí
                                                 </label>
                                             </div>
                                         </div>
 
 
                                         {values.cambiar_contrasena &&
-                                        <>
-                                            <div className="input-field col s12">
-                                                <i className="material-icons prefix">lock</i>
-                                                <input disabled={false} id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"} name="contrasena" value={values.contrasena} required onChange={handleChange} style={errors.contrasena ? {borderBottom: "1px solid #F44336", boxShadow: "0 1px 0 0 #f44336"} : {}}/>
-                                                <label htmlFor="contrasena">Nueva contraseña</label>
-                                                {
-                                                    errors.contrasena &&
-                                                    <span className="helper-text" data-error={errors.contrasena} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.contrasena}</span>
-                                                }
-                                            </div>
+                                            <>
+                                                <div className="input-field col s12">
+                                                    <i className="material-icons prefix">lock</i>
+                                                    <input disabled={false} id="contrasena" type="password" className={errors.contrasena ? "validate form-control invalid" : "validate form-control"} name="contrasena" value={values.contrasena} required onChange={handleChange} style={errors.contrasena ? { borderBottom: "1px solid #F44336", boxShadow: "0 1px 0 0 #f44336" } : {}} />
+                                                    <label htmlFor="contrasena">Nueva contraseña</label>
+                                                    {
+                                                        errors.contrasena &&
+                                                        <span className="helper-text" data-error={errors.contrasena} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.contrasena}</span>
+                                                    }
+                                                </div>
 
-                                            <div className="input-field col s12">
-                                                <i className="material-icons prefix">lock</i>
-                                                <input disabled={false} id="confirmar_contrasena" type="password" className={errors.confirmar_contrasena ? "validate form-control invalid" : "validate form-control"} name="confirmar_contrasena" value={values.confirmar_contrasena} required onChange={handleChange} style={errors.confirmar_contrasena ? {borderBottom: "1px solid #F44336", boxShadow: "0 1px 0 0 #f44336"} : {}}/>
-                                                <label htmlFor="confirmar_contrasena">Confirmar contraseña</label>
-                                                {
-                                                    errors.confirmar_contrasena &&
-                                                    <span className="helper-text" data-error={errors.confirmar_contrasena} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.confirmar_contrasena}</span>
-                                                }
-                                            </div>
-                                        </>
+                                                <div className="input-field col s12">
+                                                    <i className="material-icons prefix">lock</i>
+                                                    <input disabled={false} id="confirmar_contrasena" type="password" className={errors.confirmar_contrasena ? "validate form-control invalid" : "validate form-control"} name="confirmar_contrasena" value={values.confirmar_contrasena} required onChange={handleChange} style={errors.confirmar_contrasena ? { borderBottom: "1px solid #F44336", boxShadow: "0 1px 0 0 #f44336" } : {}} />
+                                                    <label htmlFor="confirmar_contrasena">Confirmar contraseña</label>
+                                                    {
+                                                        errors.confirmar_contrasena &&
+                                                        <span className="helper-text" data-error={errors.confirmar_contrasena} style={{ "marginBottom": "10px", color: "#F44336" }}>{errors.confirmar_contrasena}</span>
+                                                    }
+                                                </div>
+                                            </>
                                         }
 
                                     </div>
@@ -372,7 +371,7 @@ const Configuracion = ({ user }) => {
                                     <button type="button" className=" center-align  btn waves-effect waves-light cancelar" style={{ marginRight: "15px" }} onClick={cancelEditUser}>Cancelar</button>
                                     <button type="submit" className=" center-align btn waves-effect waves-light guardar" style={{ marginRight: "3%", marginLeft: "0" }}>
                                         Guardar
-                                            < i className="material-icons right" > save</i>
+                                        < i className="material-icons right" > save</i>
                                     </button>
                                 </div>
                             </form>
