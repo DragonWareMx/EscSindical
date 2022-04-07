@@ -24,6 +24,9 @@ use App\Models\Drop_requests;
 use App\Models\Delete_requests;
 use Illuminate\Support\Facades\Gate;
 use Carbon\Carbon;
+use Image as ImagePro;
+use Illuminate\Support\Facades\Storage;
+
 
 class CourseController extends Controller
 {
@@ -501,13 +504,30 @@ class CourseController extends Controller
 
             $newCourse->training_types()->sync($tipos);
 
-            //IMÁGENES
-            $newImagen = new Image;
-            $newImagen->course_id = $newCourse->id;
-            $imagen = $request->file('imgs')->store('/public/imagenes_curso');
-            $newImagen->imagen = $request->file('imgs')->hashName();
+            // //IMÁGENES
+            // $newImagen = new Image;
+            // $newImagen->course_id = $newCourse->id;
+            // $imagen = $request->file('imgs')->store('/public/imagenes_curso');
+            // $newImagen->imagen = $request->file('imgs')->hashName();
 
-            $newImagen->save();
+            // $newImagen->save();
+
+            //guarda la foto
+            if ($request->imgs) {
+                //guarda la foto
+                $newImagen = new Image;
+                $newImagen->course_id = $newCourse->id;
+
+                $foto = $request->imgs->store('/public/imagenes_curso');
+                $fileName = $request->imgs->hashName();
+
+                $image = ImagePro::make(Storage::get($foto));
+
+                Storage::put($foto, (string) $image->encode('jpg', 30));
+
+                $newImagen->imagen = $fileName;
+                $newImagen->save();
+            }
 
             //SE CREA EL LOG
             $newLog = new Log;
@@ -679,14 +699,33 @@ class CourseController extends Controller
 
             //IMÁGENES
             $imagenes = "No hubo cambios";
+            // if ($request->imgs) {
+            //     $newImagen = new Image;
+            //     $newImagen->course_id = $myCourse->id;
+            //     $imagen = $request->file('imgs')->store('/public/imagenes_curso');
+            //     $newImagen->imagen = $request->file('imgs')->hashName();
+
+            //     $newImagen->save();
+            //     $imagenes = $request->file('imgs')->hashName();
+            // }
+
+            //guarda la foto
             if ($request->imgs) {
+                //guarda la foto
                 $newImagen = new Image;
                 $newImagen->course_id = $myCourse->id;
-                $imagen = $request->file('imgs')->store('/public/imagenes_curso');
-                $newImagen->imagen = $request->file('imgs')->hashName();
 
+                $foto = $request->imgs->store('/public/imagenes_curso');
+                $fileName = $request->imgs->hashName();
+
+                $image = ImagePro::make(Storage::get($foto));
+
+                Storage::put($foto, (string) $image->encode('jpg', 30));
+
+                $newImagen->imagen = $fileName;
                 $newImagen->save();
-                $imagenes = $request->file('imgs')->hashName();
+
+                $imagenes = $fileName;
             }
 
             //SE CREA EL LOG
